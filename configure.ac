@@ -198,6 +198,9 @@ case $target_os in
   freebsd*)
     AC_DEFINE([FREEBSD])
     ;;
+  hpux*)
+    AC_DEFINE([HPUX])
+    ;;
   linux*)
     AC_DEFINE([LINUX])
     ;;
@@ -278,6 +281,11 @@ if test "$ac_enable_threads" = yes; then
       CFLAGS="$CFLAGS -pthread"
       CPPFLAGS="$CPPFLAGS -pthread"
       LDFLAGS="$LDFLAGS -pthread"
+      ;;
+    hpux*)
+      if test "$ac_cv_prog_gcc" != yes; then
+        CFLAGS="$CFLAGS -fast"
+      fi
       ;;
     osf*)
       if test "$ac_cv_prog_DECC" = yes; then
@@ -827,8 +835,6 @@ else
     fi
   elif test "$ac_cv_prog_DECC" = yes; then
     CFLAGS="$CFLAGS -fast"
-  else
-    CFLAGS="$CFLAGS -O2"
   fi
 fi
 
