@@ -30,76 +30,38 @@
 
 #include <stdio.h>
 
-/*!\fn void mpzero(register size_t size, register mpw* data)
- * \brief Multi-precision zeroing.
- *
- * Zero (fill with 0) a number of multi-precision words.
- *
- * \param size The size of the multi-precision integer.
- * \param data The multi-precision integer data.
- */
 #ifndef ASM_MPZERO
-void mpzero(register size_t size, register mpw* data)
+void mpzero(size_t size, mpw* data)
 {
 	while (size--)
 		*(data++) = 0;
 }
 #endif
 
-/*!\fn void mpfill(register size_t size, register mpw* data, register mpw fill)
- * \brief Multi-precision zeroing.
- *
- * Fill a number of multi-precision words with a specific value.
- *
- * \param size The size of the multi-precision integer.
- * \param data The multi-precision integer data.
- * \param fill The value fill the data with.
- */
 #ifndef ASM_MPFILL
-void mpfill(register size_t size, register mpw* data, register mpw fill)
+void mpfill(size_t size, mpw* data, mpw fill)
 {
 	while (size--)
 		*(data++) = fill;
 }
 #endif
 
-/*!\fn int mpodd(register size_t size, register mpw* data)
- * \brief Test if multi-precision integer is odd.
- * \param size The size of the multi-precision integer.
- * \param data The multi-precision integer data.
- * \retval 1 if odd
- * \retval 0 if even
- */
 #ifndef ASM_MPODD
-int mpodd(register size_t size, register const mpw* data)
+int mpodd(size_t size, const mpw* data)
 {
 	return (int)(data[size-1] & 0x1);
 }
 #endif
 
-/*!\fn int mpodd(register size_t size, register mpw* data)
- * \brief Test if multi-precision integer is even.
- * \param size The size of the multi-precision integer.
- * \param data The multi-precision integer data.
- * \retval 1 if even
- * \retval 0 if odd
- */
 #ifndef ASM_MPEVEN
-int mpeven(register size_t size, register const mpw* data)
+int mpeven(size_t size, const mpw* data)
 {
 	return !(int)(data[size-1] & 0x1);
 }
 #endif
 
-/*!\fn int mpz(register size_t size, register mpw* data)
- * \brief Test if multi-precision integer is zero.
- * \param size The size of the multi-precision integer.
- * \param data The multi-precision integer data.
- * \retval 1 if zero
- * \retval 0 if not zero
- */
 #ifndef ASM_MPZ
-int mpz(register size_t size, register const mpw* data)
+int mpz(size_t size, const mpw* data)
 {
 	while (size--)
 		if (*(data++))
@@ -108,15 +70,8 @@ int mpz(register size_t size, register const mpw* data)
 }
 #endif
 
-/*!\fn int mpnz(register size_t size, register mpw* data)
- * \brief Test if multi-precision integer is not zero.
- * \param size The size of the multi-precision integer.
- * \param data The multi-precision integer data.
- * \retval 1 if not zero
- * \retval 0 if zero
- */
 #ifndef ASM_MPNZ
-int mpnz(register size_t size, register const mpw* data)
+int mpnz(size_t size, const mpw* data)
 {
 	while (size--)
 		if (*(data++))
@@ -125,16 +80,8 @@ int mpnz(register size_t size, register const mpw* data)
 }
 #endif
 
-/*!\fn int mpeq(register size_t size, register mpw* xdata, register const mpw* ydata)
- * \brief Test if two multi-precision integers (of same size) are equal.
- * \param size The size of the multi-precision integers.
- * \param xdata The first multi-precision integer.
- * \param ydata The second multi-precision integer.
- * \retval 1 if equal
- * \retval 0 if not equal
- */
 #ifndef ASM_MPEQ
-int mpeq(register size_t size, register const mpw* xdata, register const mpw* ydata)
+int mpeq(size_t size, const mpw* xdata, const mpw* ydata)
 {
 	while (size--)
 	{
@@ -150,17 +97,8 @@ int mpeq(register size_t size, register const mpw* xdata, register const mpw* yd
 }
 #endif
 
-/*!\fn int mpeqx(register size_t xsize, register mpw* xdata, register size_t ysize, register const mpw* ydata)
- * \brief Test if two multi-precision integers (of different size) are equal.
- * \param xsize The size of the first multi-precision integer.
- * \param xdata The first multi-precision integer.
- * \param ysize The size of the first multi-precision integer.
- * \param ydata The second multi-precision integer.
- * \retval 1 if equal
- * \retval 0 if not equal
- */
 #ifndef ASM_MPEQX
-int mpeqx(register size_t xsize, register const mpw* xdata, register size_t ysize, register const mpw* ydata)
+int mpeqx(size_t xsize, const mpw* xdata, size_t ysize, const mpw* ydata)
 {
 	if (xsize > ysize)
 	{
@@ -178,7 +116,7 @@ int mpeqx(register size_t xsize, register const mpw* xdata, register size_t ysiz
 #endif
 
 #ifndef ASM_MPNE
-int mpne(register size_t size, register const mpw* xdata, register const mpw* ydata)
+int mpne(size_t size, const mpw* xdata, const mpw* ydata)
 {
 	while (size--)
 	{
@@ -195,7 +133,7 @@ int mpne(register size_t size, register const mpw* xdata, register const mpw* yd
 #endif
 
 #ifndef ASM_MPNEX
-int mpnex(register size_t xsize, register const mpw* xdata, register size_t ysize, register const mpw* ydata)
+int mpnex(size_t xsize, const mpw* xdata, size_t ysize, const mpw* ydata)
 {
 	if (xsize > ysize)
 	{
@@ -213,7 +151,7 @@ int mpnex(register size_t xsize, register const mpw* xdata, register size_t ysiz
 #endif
 
 #ifndef ASM_MPGT
-int mpgt(register size_t size, register const mpw* xdata, register const mpw* ydata)
+int mpgt(size_t size, const mpw* xdata, const mpw* ydata)
 {
 	while (size--)
 	{
@@ -228,7 +166,7 @@ int mpgt(register size_t size, register const mpw* xdata, register const mpw* yd
 #endif
 
 #ifndef ASM_MPGTX
-int mpgtx(register size_t xsize, register const mpw* xdata, register size_t ysize, register const mpw* ydata)
+int mpgtx(size_t xsize, const mpw* xdata, size_t ysize, const mpw* ydata)
 {
 	if (xsize > ysize)
 	{
@@ -246,7 +184,7 @@ int mpgtx(register size_t xsize, register const mpw* xdata, register size_t ysiz
 #endif
 
 #ifndef ASM_MPLT
-int mplt(register size_t size, register const mpw* xdata, register const mpw* ydata)
+int mplt(size_t size, const mpw* xdata, const mpw* ydata)
 {
 	while (size--)
 	{
@@ -261,7 +199,7 @@ int mplt(register size_t size, register const mpw* xdata, register const mpw* yd
 #endif
 
 #ifndef ASM_MPLTX
-int mpltx(register size_t xsize, register const mpw* xdata, register size_t ysize, register const mpw* ydata)
+int mpltx(size_t xsize, const mpw* xdata, size_t ysize, const mpw* ydata)
 {
 	if (xsize > ysize)
 	{
@@ -279,7 +217,7 @@ int mpltx(register size_t xsize, register const mpw* xdata, register size_t ysiz
 #endif
 
 #ifndef ASM_MPGE
-int mpge(register size_t size, register const mpw* xdata, register const mpw* ydata)
+int mpge(size_t size, const mpw* xdata, const mpw* ydata)
 {
 	while (size--)
 	{
@@ -294,7 +232,7 @@ int mpge(register size_t size, register const mpw* xdata, register const mpw* yd
 #endif
 
 #ifndef ASM_MPGEX
-int mpgex(register size_t xsize, register const mpw* xdata, register size_t ysize, register const mpw* ydata)
+int mpgex(size_t xsize, const mpw* xdata, size_t ysize, const mpw* ydata)
 {
 	if (xsize > ysize)
 	{
@@ -312,7 +250,7 @@ int mpgex(register size_t xsize, register const mpw* xdata, register size_t ysiz
 #endif
 
 #ifndef ASM_MPLE
-int mple(register size_t size, register const mpw* xdata, register const mpw* ydata)
+int mple(size_t size, const mpw* xdata, const mpw* ydata)
 {
 	while (size--)
 	{
@@ -327,7 +265,7 @@ int mple(register size_t size, register const mpw* xdata, register const mpw* yd
 #endif
 
 #ifndef ASM_MPLEX
-int mplex(register size_t xsize, register const mpw* xdata, register size_t ysize, register const mpw* ydata)
+int mplex(size_t xsize, const mpw* xdata, size_t ysize, const mpw* ydata)
 {
 	if (xsize > ysize)
 	{
@@ -344,9 +282,8 @@ int mplex(register size_t xsize, register const mpw* xdata, register size_t ysiz
 }
 #endif
 
-
 #ifndef ASM_MPISONE
-int mpisone(register size_t size, register const mpw* data)
+int mpisone(size_t size, const mpw* data)
 {
 	data += size;
 	if (*(--data) == 1)
@@ -361,7 +298,7 @@ int mpisone(register size_t size, register const mpw* data)
 #endif
 
 #ifndef ASM_MPISTWO
-int mpistwo(register size_t size, register const mpw* data)
+int mpistwo(size_t size, const mpw* data)
 {
 	data += size;
 	if (*(--data) == 2)
@@ -376,7 +313,7 @@ int mpistwo(register size_t size, register const mpw* data)
 #endif
 
 #ifndef ASM_MPEQMONE
-int mpeqmone(register size_t size, register const mpw* xdata, register const mpw* ydata)
+int mpeqmone(size_t size, const mpw* xdata, const mpw* ydata)
 {
     xdata += size;
     ydata += size;
@@ -393,7 +330,7 @@ int mpeqmone(register size_t size, register const mpw* xdata, register const mpw
 #endif
 
 #ifndef ASM_MPLEONE
-int mpleone(register size_t size, register const mpw* data)
+int mpleone(size_t size, const mpw* data)
 {
 	data += size;
 	if (*(--data) > 1)
@@ -409,49 +346,49 @@ int mpleone(register size_t size, register const mpw* data)
 #endif
 
 #ifndef ASM_MPMSBSET
-int mpmsbset(register size_t size, register const mpw* data)
+int mpmsbset(size_t size, const mpw* data)
 {
 	return (int)((*data) >> (MP_WBITS-1));
 }
 #endif
 
 #ifndef ASM_MPLSBSET
-int mplsbset(register size_t size, register const mpw* data)
+int mplsbset(size_t size, const mpw* data)
 {
     return (int)(data[size-1] & 0x1);
 }
 #endif
 
 #ifndef ASM_MPSETMSB
-void mpsetmsb(register size_t size, register mpw* data)
+void mpsetmsb(size_t size, mpw* data)
 {
 	*data |= MP_MSBMASK;
 }
 #endif
 
 #ifndef ASM_MPSETLSB
-void mpsetlsb(register size_t size, register mpw* data)
+void mpsetlsb(size_t size, mpw* data)
 {
 	data[size-1] |= MP_LSBMASK;
 }
 #endif
 
 #ifndef ASM_MPCLRMSB
-void mpclrmsb(register size_t size, register mpw* data)
+void mpclrmsb(size_t size, mpw* data)
 {
 	*data &= ~ MP_MSBMASK;
 }
 #endif
 
 #ifndef ASM_MPCLRLSB
-void mpclrlsb(register size_t size, register mpw* data)
+void mpclrlsb(size_t size, mpw* data)
 {
     data[size-1] &= ~ MP_LSBMASK;
 }
 #endif
 
 #ifndef ASM_MPXOR
-void mpxor(register size_t size, register mpw* xdata, register const mpw* ydata)
+void mpxor(size_t size, mpw* xdata, const mpw* ydata)
 {
 	while (size--)
 		xdata[size] ^= ydata[size];
@@ -459,7 +396,7 @@ void mpxor(register size_t size, register mpw* xdata, register const mpw* ydata)
 #endif
 
 #ifndef ASM_MPNOT
-void mpnot(register size_t size, register mpw* data)
+void mpnot(size_t size, mpw* data)
 {
 	while (size--)
 		data[size] = ~data[size];
@@ -467,16 +404,16 @@ void mpnot(register size_t size, register mpw* data)
 #endif
 
 #ifndef ASM_MPSETW
-void mpsetw(register size_t xsize, register mpw* xdata, register mpw y)
+void mpsetw(size_t size, mpw* xdata, mpw y)
 {
-	while (--xsize)
+	while (--size)
 		*(xdata++) = 0;
 	*(xdata++) = y;
 }
 #endif
 
 #ifndef ASM_MPSETX
-void mpsetx(register size_t xsize, register mpw* xdata, register size_t ysize, register const mpw* ydata)
+void mpsetx(size_t xsize, mpw* xdata, size_t ysize, const mpw* ydata)
 {
 	while (xsize > ysize)
 	{
@@ -494,7 +431,7 @@ void mpsetx(register size_t xsize, register mpw* xdata, register size_t ysize, r
 #endif
 
 #ifndef ASM_MPADDW
-int mpaddw(register size_t size, register mpw* xdata, register mpw y)
+int mpaddw(size_t size, mpw* xdata, mpw y)
 {
 	register mpw load, temp;
 	register int carry = 0;
@@ -518,7 +455,7 @@ int mpaddw(register size_t size, register mpw* xdata, register mpw y)
 #endif
 
 #ifndef ASM_MPADD
-int mpadd(register size_t size, register mpw* xdata, register const mpw* ydata)
+int mpadd(size_t size, mpw* xdata, const mpw* ydata)
 {
 	register mpw load, temp;
 	register int carry = 0;
@@ -539,7 +476,7 @@ int mpadd(register size_t size, register mpw* xdata, register const mpw* ydata)
 #endif
 
 #ifndef ASM_MPADDX
-int mpaddx(register size_t xsize, register mpw* xdata, register size_t ysize, register const mpw* ydata)
+int mpaddx(size_t xsize, mpw* xdata, size_t ysize, const mpw* ydata)
 {
 	if (xsize > ysize)
 	{
@@ -555,7 +492,7 @@ int mpaddx(register size_t xsize, register mpw* xdata, register size_t ysize, re
 #endif
 
 #ifndef ASM_MPSUBW
-int mpsubw(register size_t size, register mpw* xdata, register mpw y)
+int mpsubw(size_t size, mpw* xdata, mpw y)
 {
 	register mpw load, temp;
 	register int carry = 0;
@@ -579,7 +516,7 @@ int mpsubw(register size_t size, register mpw* xdata, register mpw y)
 #endif
 
 #ifndef ASM_MPSUB
-int mpsub(register size_t size, register mpw* xdata, register const mpw* ydata)
+int mpsub(size_t size, mpw* xdata, const mpw* ydata)
 {
 	register mpw load, temp;
 	register int carry = 0;
@@ -600,7 +537,7 @@ int mpsub(register size_t size, register mpw* xdata, register const mpw* ydata)
 #endif
 
 #ifndef ASM_MPSUBX
-int mpsubx(register size_t xsize, register mpw* xdata, register size_t ysize, register const mpw* ydata)
+int mpsubx(size_t xsize, mpw* xdata, size_t ysize, const mpw* ydata)
 {
 	if (xsize > ysize)
 	{
@@ -616,31 +553,17 @@ int mpsubx(register size_t xsize, register mpw* xdata, register size_t ysize, re
 #endif
 
 #ifndef ASM_MPNEG
-void mpneg(register size_t size, register mpw* data)
+void mpneg(size_t size, mpw* data)
 {
 	mpnot(size, data);
 	mpaddw(size, data, 1);
 }
 #endif
 
-/*!\fn mpw mpsetmul(register size_t size, register mpw* result, register const mpw* data, register mpw y)
- * \brief Multi-precision multiply-setup.
- *
- * This function is used in the computation of a full multi-precision
- * multiplication. By using it we can shave off a few cycles; otherwise we'd
- * have to zero the least significant half of the result first and use
- * another call to the slightly slower mpaddmul function.
-
- * \param size The size of multi-precision word data.
- * \param result The place where result should be stored.
- * \param data The multi-precision word data.
- * \param y The multiplicand.
- * \retval carry-over mpw.
- */
 #ifndef ASM_MPSETMUL
-mpw mpsetmul(register size_t size, register mpw* result, register const mpw* data, register mpw y)
+mpw mpsetmul(size_t size, mpw* result, const mpw* data, mpw y)
 {
-    #if HAVE_MPDW
+	#if HAVE_MPDW
 	register mpdw temp;
 	register mpw  carry = 0;
 
@@ -693,21 +616,8 @@ mpw mpsetmul(register size_t size, register mpw* result, register const mpw* dat
 }
 #endif
 
-/*!\fn mpw mpaddmul(register size_t size, register mpw* result, register const mpw* data, register mpw y)
- * \brief Multi-precision multiply-accumulate.
- *
- * This function is used in the computation of a full multi-precision
- * multiplication. It computes the product-by-one-word, accumulated with
- * previous results.
- *
- * \param size The size of multi-precision word data.
- * \param result The place where result should be stored.
- * \param data The multi-precision word data.
- * \param y The multiplicand.
- * \retval carry-over mpw.
- */
 #ifndef ASM_MPADDMUL
-mpw mpaddmul(register size_t size, register mpw* result, register const mpw* data, register mpw y)
+mpw mpaddmul(size_t size, mpw* result, const mpw* data, mpw y)
 {
 	#if HAVE_MPDW
 	register mpdw temp;
@@ -809,7 +719,7 @@ void mpmul(mpw* result, size_t xsize, const mpw* xdata, size_t ysize, const mpw*
 #endif
 
 #ifndef ASM_MPADDSQRTRC
-mpw mpaddsqrtrc(register size_t size, register mpw* result, register const mpw* data)
+void mpaddsqrtrc(size_t size, mpw* result, const mpw* data)
 {
 	#if HAVE_MPDW
 	register mpdw temp;
@@ -867,12 +777,11 @@ mpw mpaddsqrtrc(register size_t size, register mpw* result, register const mpw* 
 		carry += (load > rhi);
 	}
 	#endif
-	return carry;
 }
 #endif
 
 #ifndef ASM_MPSQR
-void mpsqr(register mpw* result, register size_t size, register const mpw* data)
+void mpsqr(mpw* result, size_t size, const mpw* data)
 {
 	register mpw rc;
 	register size_t n = size-1;
@@ -900,7 +809,7 @@ void mpsqr(register mpw* result, register size_t size, register const mpw* data)
 #endif
 
 #ifndef ASM_MPSIZE
-size_t mpsize(register size_t size, register const mpw* data)
+size_t mpsize(size_t size, const mpw* data)
 {
 	while (size)
 	{
@@ -914,14 +823,14 @@ size_t mpsize(register size_t size, register const mpw* data)
 #endif
 
 #ifndef ASM_MPBITS
-size_t mpbits(register size_t size, register const mpw* data)
+size_t mpbits(size_t size, const mpw* data)
 {
 	return MP_WORDS_TO_BITS(size) - mpmszcnt(size, data); 
 }
 #endif
 
 #ifndef ASM_MPNORM
-size_t mpnorm(register size_t size, register mpw* data)
+size_t mpnorm(size_t size, mpw* data)
 {
 	register size_t shift = mpmszcnt(size, data);
 	mplshift(size, data, shift);
@@ -930,7 +839,7 @@ size_t mpnorm(register size_t size, register mpw* data)
 #endif
 
 #ifndef ASM_MPDIVTWO
-void mpdivtwo(register size_t size, register mpw* data)
+void mpdivtwo(size_t size, mpw* data)
 {
 	register mpw temp, carry = 0;
 
@@ -944,7 +853,7 @@ void mpdivtwo(register size_t size, register mpw* data)
 #endif
 
 #ifndef ASM_MPSDIVTWO
-void mpsdivtwo(register size_t size, register mpw* data)
+void mpsdivtwo(size_t size, mpw* data)
 {
 	int carry = mpmsbset(size, data);
 	mpdivtwo(size, data);
@@ -954,7 +863,7 @@ void mpsdivtwo(register size_t size, register mpw* data)
 #endif
 
 #ifndef ASM_MPMULTWO
-int mpmultwo(register size_t size, register mpw* data)
+int mpmultwo(size_t size, mpw* data)
 {
 	register mpw temp, carry = 0;
 
@@ -970,7 +879,7 @@ int mpmultwo(register size_t size, register mpw* data)
 #endif
 
 #ifndef ASM_MPMSZCNT
-size_t mpmszcnt(register size_t size, register const mpw* data)
+size_t mpmszcnt(size_t size, const mpw* data)
 {
 	register size_t zbits = 0;
 	register size_t i = 0;
@@ -995,7 +904,7 @@ size_t mpmszcnt(register size_t size, register const mpw* data)
 #endif
 
 #ifndef ASM_MPLSZCNT
-size_t mplszcnt(register size_t size, register const mpw* data)
+size_t mplszcnt(size_t size, const mpw* data)
 {
 	register size_t zbits = 0;
 
@@ -1019,7 +928,7 @@ size_t mplszcnt(register size_t size, register const mpw* data)
 #endif
 
 #ifndef ASM_MPLSHIFT
-void mplshift(register size_t size, register mpw* data, size_t count)
+void mplshift(size_t size, mpw* data, size_t count)
 {
 	register size_t words = MP_BITS_TO_WORDS(count);
 
@@ -1053,7 +962,7 @@ void mplshift(register size_t size, register mpw* data, size_t count)
 #endif
 
 #ifndef ASM_MPRSHIFT
-void mprshift(register size_t size, register mpw* data, size_t count)
+void mprshift(size_t size, mpw* data, size_t count)
 {
 	register size_t words = MP_BITS_TO_WORDS(count);
 
@@ -1087,8 +996,7 @@ void mprshift(register size_t size, register mpw* data, size_t count)
 #endif
 
 #ifndef ASM_MPRSHIFTLSZ
-/* x must be != 0 */
-size_t mprshiftlsz(register size_t size, register mpw* data)
+size_t mprshiftlsz(size_t size, mpw* data)
 {
 	register mpw* slide = data+size-1;
 	register size_t  zwords = 0; /* counter for 'all zero bit' words */
@@ -1334,52 +1242,58 @@ void mpndivmod(mpw* result, size_t xsize, const mpw* xdata, size_t ysize, const 
 }
 #endif
 
-#ifndef ASM_MPPRINT
-void mpprint(register size_t size, register const mpw* data)
+void mpprint(size_t size, const mpw* data)
 {
-	while (size--)
-	{
-		#if (MP_WBITS == 32)
-		printf("%08x", *(data++));
-		#elif (MP_WBITS == 64)
-		# if WIN32
-		printf("%016I64x", *(data++));
-		# elif SIZEOF_UNSIGNED_LONG == 8
-		printf("%016lx", *(data++));
-		# else
-		printf("%016llx", *(data++));
-		# endif
-		#else
-		# error
-		#endif
-	}
-	fflush(stdout);
+	mpfprint(stdout, size, data);
 }
-#endif
 
-#ifndef ASM_MPPRINTLN
-void mpprintln(register size_t size, register const mpw* data)
+void mpprintln(size_t size, const mpw* data)
+{
+	mpfprintln(stdout, size, data);
+}
+
+void mpfprint(FILE* f, size_t size, const mpw* data)
 {
 	while (size--)
 	{
 		#if (MP_WBITS == 32)
-		printf("%08x", *(data++));
+		fprintf(f, "%08x", *(data++));
 		#elif (MP_WBITS == 64)
 		# if WIN32
-		printf("%016I64x", *(data++));
+		fprintf(f, "%016I64x", *(data++));
 		# elif SIZEOF_UNSIGNED_LONG == 8
-		printf("%016lx", *(data++));
+		fprintf(f, "%016lx", *(data++));
 		# else
-		printf("%016llx", *(data++));
+		fprintf(f, "%016llx", *(data++));
 		# endif
 		#else
 		# error
 		#endif
 	}
-	printf("\n");
-	fflush(stdout);
+	fflush(f);
 }
-#endif
+
+void mpfprintln(FILE* f, size_t size, const mpw* data)
+{
+	while (size--)
+	{
+		#if (MP_WBITS == 32)
+		fprintf(f, "%08x", *(data++));
+		#elif (MP_WBITS == 64)
+		# if WIN32
+		fprintf(f, "%016I64x", *(data++));
+		# elif SIZEOF_UNSIGNED_LONG == 8
+		fprintf(f, "%016lx", *(data++));
+		# else
+		fprintf(f, "%016llx", *(data++));
+		# endif
+		#else
+		# error
+		#endif
+	}
+	fprintf(f, "\n");
+	fflush(f);
+}
 
 int i2osp(byte *osdata, size_t ossize, const mpw* idata, size_t isize)
 {

@@ -34,24 +34,6 @@
 # include <malloc.h>
 #endif
 
-/*!\addtogroup IF_rsa_m
- * \{
- */
-
-/*!\fn int rsapub(const rsapk* pk, const mpnumber* m, mpnumber* c)
- * \brief The raw RSA public key operation.
- *
- * This function can be used for encryption and verifying.
- *
- * It performs the following operation:
- * \li \f$c=m^{e}\ \textrm{mod}\ n\f$
- *
- * \param pk The RSA public key.
- * \param m The message.
- * \param c The ciphertext.
- * \retval 0 on success.
- * \retval -1 on failure.
- */ 
 int rsapub(const rsapk* pk, const mpnumber* m, mpnumber* c)
 {
 	register size_t size = pk->n.size;
@@ -73,21 +55,6 @@ int rsapub(const rsapk* pk, const mpnumber* m, mpnumber* c)
 	return -1;
 }
 
-
-/*!\fn int rsapri(const rsakp* kp, const mpnumber* c, mpnumber* m)
- * \brief The raw RSA private key operation.
- *
- * This function can be used for decryption and signing.
- *
- * It performs the operation:
- * \li \f$m=c^{d}\ \textrm{mod}\ n\f$
- *
- * \param kp The RSA keypair.
- * \param c The ciphertext.
- * \param m The message.
- * \retval 0 on success.
- * \retval -1 on failure.
- */
 int rsapri(const rsakp* kp, const mpnumber* c, mpnumber* m)
 {
 	register size_t size = kp->n.size;
@@ -110,21 +77,6 @@ int rsapri(const rsakp* kp, const mpnumber* c, mpnumber* m)
 	return -1;
 }
 
-/*!\fn int rsapricrt(const rsakp* kp, const mpnumber* c, mpnumber* m)
- * \brief The raw RSA private key operation, with Chinese Remainder Theorem.
- *
- * It performs the operation:
- * \li \f$j_1=c^{d_1}\ \textrm{mod}\ p\f$
- * \li \f$j_2=c^{d_2}\ \textrm{mod}\ q\f$
- * \li \f$h=c \cdot (j_1-j_2)\ \textrm{mod}\ p\f$
- * \li \f$m=j_2+hq\f$
- *
- * \param kp The RSA keypair.
- * \param c The ciphertext.
- * \param m The message.
- * \retval 0 on success.
- * \retval -1 on failure.
- */
 int rsapricrt(const rsakp* kp, const mpnumber* c, mpnumber* m)
 {
 	register size_t nsize = kp->n.size;
@@ -185,21 +137,6 @@ int rsapricrt(const rsakp* kp, const mpnumber* c, mpnumber* m)
 	return 0;
 }
 
-/*!\fn int rsavrfy(const rsapk* pk, const mpnumber* m, const mpnumber* c)
- *
- * This function verifies if ciphertext \e c was encrypted from cleartext \e m
- * with the private key matching the given public key \e pk.
- *
- * \param pk The public key.
- * \param m The cleartext message.
- * \param c The ciphertext message.
- *
- * \warning The return type of this function should be a boolean, but since
- *          that type isn't as portable, an int is used.
- *
- * \retval 1 on success.
- * \retval 0 on failure.
- */
 int rsavrfy(const rsapk* pk, const mpnumber* m, const mpnumber* c)
 {
 	int rc;
@@ -226,6 +163,3 @@ int rsavrfy(const rsapk* pk, const mpnumber* m, const mpnumber* c)
 	}
 	return 0;
 }
-
-/*!\}
- */
