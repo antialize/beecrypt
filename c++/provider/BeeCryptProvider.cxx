@@ -21,6 +21,7 @@
 #endif
 
 #include "beecrypt/c++/provider/BeeCertificateFactory.h"
+#include "beecrypt/c++/provider/BeeCertPathValidator.h"
 #include "beecrypt/c++/provider/BeeCryptProvider.h"
 #include "beecrypt/c++/provider/BeeKeyFactory.h"
 #include "beecrypt/c++/provider/BeeKeyStore.h"
@@ -42,6 +43,7 @@
 #include "beecrypt/c++/provider/RSAKeyPairGenerator.h"
 #include "beecrypt/c++/provider/SHA1Digest.h"
 #include "beecrypt/c++/provider/SHA256Digest.h"
+#include "beecrypt/c++/provider/SHA384Digest.h"
 #include "beecrypt/c++/provider/SHA512Digest.h"
 #include "beecrypt/c++/provider/SHA1withDSASignature.h"
 #include "beecrypt/c++/provider/SHA1withRSASignature.h"
@@ -51,7 +53,7 @@
 namespace {
 	const String PROVIDER_NAME = UNICODE_STRING_SIMPLE("BeeCrypt++");
 	const String PROVIDER_INFO = UNICODE_STRING_SIMPLE("Copyright (c) 2004 Beeyond Software Holding BV");
-	const double PROVIDER_VERSION = 0.1;
+	const double PROVIDER_VERSION = 0.2;
 }
 
 extern "C" {
@@ -66,6 +68,12 @@ PROVAPI
 void* beecrypt_BeeCertificateFactory_create()
 {
 	return new beecrypt::provider::BeeCertificateFactory();
+}
+
+PROVAPI
+void* beecrypt_BeeCertPathValidator_create()
+{
+	return new beecrypt::provider::BeeCertPathValidator();
 }
 
 PROVAPI
@@ -189,6 +197,12 @@ void* beecrypt_SHA256Digest_create()
 }
 
 PROVAPI
+void* beecrypt_SHA384Digest_create()
+{
+	return new beecrypt::provider::SHA384Digest();
+}
+
+PROVAPI
 void* beecrypt_SHA512Digest_create()
 {
 	return new beecrypt::provider::SHA512Digest();
@@ -247,6 +261,7 @@ void BeeCryptProvider::putall()
 	put("AlgorithmParameters.DH"                   , "beecrypt_DHParameters_create");
 	put("AlgorithmParameters.DSA"                  , "beecrypt_DSAParameters_create");
 	put("CertificateFactory.BEE"                   , "beecrypt_BeeCertificateFactory_create");
+	put("CertPathValidator.BEE"                    , "beecrypt_BeeCertificateFactory_create");
 	put("KeyFactory.BEE"                           , "beecrypt_BeeKeyFactory_create");
 	put("KeyFactory.DH"                            , "beecrypt_DHKeyFactory_create");
 	put("KeyFactory.DSA"                           , "beecrypt_DSAKeyFactory_create");
@@ -261,6 +276,7 @@ void BeeCryptProvider::putall()
 	put("MessageDigest.MD5"                        , "beecrypt_MD5Digest_create");
 	put("MessageDigest.SHA-1"                      , "beecrypt_SHA1Digest_create");
 	put("MessageDigest.SHA-256"                    , "beecrypt_SHA256Digest_create");
+	put("MessageDigest.SHA-384"                    , "beecrypt_SHA384Digest_create");
 	put("MessageDigest.SHA-512"                    , "beecrypt_SHA512Digest_create");
 	put("SecretKeyFactory.PKCS#12/PBE"             , "beecrypt_PKCS12KeyFactory_create");
 	put("SecureRandom.BEE"                         , "beecrypt_BeeSecureRandom_create");
