@@ -592,5 +592,6 @@ LOCAL(aesDecryptECB_loop):
 	popl %edi
 	ret
 C_FUNCTION_END(aesDecryptECB)
+',`
 
 ')

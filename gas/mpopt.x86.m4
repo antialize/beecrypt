@@ -122,6 +122,7 @@ LOCAL(mpsubw_loop):
 LOCAL(mpsubw_skip):
 	sbbl %eax,%eax
 	negl %eax
+
 	popl %edi
 	ret
 C_FUNCTION_END(mpsubw)
