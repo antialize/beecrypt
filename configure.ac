@@ -193,6 +193,7 @@ AC_SUBST(INCLUDE_DLFCN_H,$bc_include_dlfcn_h)
 
 BEECRYPT_DLFCN
 BEECRYPT_MULTITHREAD
+BEECRYPT_THREAD_LOCAL_STORAGE
 
 # Checks for libraries.
 if test "$ac_enable_aio" = yes; then

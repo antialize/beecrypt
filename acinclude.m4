@@ -1245,3 +1245,42 @@ AC_DEFUN([BEECRYPT_MULTITHREAD],[
   AC_SUBST(TYPEDEF_BC_MUTEX_T,$bc_typedef_bc_mutex_t)
   AC_SUBST(TYPEDEF_BC_THREAD_T,$bc_typedef_bc_thread_t)
   ])
+
+AH_BOTTOM([
+#if ENABLE_THREADS
+# ifndef _REENTRANT
+#  define _REENTRANT
+# endif
+# if LINUX
+#  define _LIBC_REENTRANT
+# endif
+#else
+# ifdef _REENTRANT
+#  undef _REENTRANT
+# endif
+#endif
+])
+
+
+dnl  BEECRYPT_THREAD_LOCAL_STORAGE
+AC_DEFUN([BEECRYPT_THREAD_LOCAL_STORAGE],[
+  AH_TEMPLATE([ENABLE_THREAD_LOCAL_STORAGE],[Define to 1 if you want to enable thread-local-storage support])
+  if test "$ac_enable_threads" = yes; then
+    AC_MSG_CHECKING([if your compiler supports thread-local-storage])
+    AC_COMPILE_IFELSE([__thread int a = 0;],[
+      AC_DEFINE([ENABLE_THREAD_LOCAL_STORAGE],1)
+      AC_MSG_RESULT([yes])
+      ],[
+      AC_DEFINE([ENABLE_THREAD_LOCAL_STORAGE],0)
+      AC_MSG_RESULT([no])
+      ])
+  else
+    AC_DEFINE([ENABLE_THREAD_LOCAL_STORAGE],0)
+  fi
+  ])
+
+AH_BOTTOM([
+#if !ENABLE_THREAD_LOCAL_STORAGE
+# define __thread
+#endif
+])
