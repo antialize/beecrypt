@@ -1,11 +1,5 @@
 /*
- * endianness.c
- *
- * Endianness-dependant encoding/decoding - implementation
- *
  * Copyright (c) 1998, 1999, 2000, 2001 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,7 +16,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
- 
+
+/*!\file endianness.c
+ * \brief Endian-dependant encoding/decoding.
+ * \author Bob Deblier <bob.deblier@pandora.be>
+ */
+
 #define BEECRYPT_DLL_EXPORT
 
 #include "endianness.h"
@@ -33,19 +32,19 @@
 
 #include <stdio.h>
 
-int16 swap16(int16 n)
+int16_t swap16(int16_t n)
 {
 	return (    ((n & 0xff) << 8) |
 				((n & 0xff00) >> 8) );
 }
 
-uint16 swapu16(uint16 n)
+uint16_t swapu16(uint16_t n)
 {
 	return (    ((n & 0xffU) << 8) |
 				((n & 0xff00U) >> 8) );
 }
 
-int32 swap32(int32 n)
+int32_t swap32(int32_t n)
 {
 	return (    ((n & 0xff) << 24) |
 				((n & 0xff00) << 8) |
@@ -53,7 +52,7 @@ int32 swap32(int32 n)
 				((n & 0xff000000) >> 24) );
 }
 
-uint32 swapu32(uint32 n)
+uint32_t swapu32(uint32_t n)
 {
 	return (    ((n & 0xffU) << 24) |
 				((n & 0xff00U) << 8) |
@@ -61,7 +60,7 @@ uint32 swapu32(uint32 n)
 				((n & 0xff000000U) >> 24) );
 }
 
-int64 swap64(int64 n)
+int64_t swap64(int64_t n)
 {
 	#if HAVE_LONG_LONG
 	return (    ((n & 0xffLL) << 56) |
@@ -114,32 +113,6 @@ int encodeLong(javalong l, byte* data)
 	l = swap64(l);
 	#endif
 	memcpy(data, &l, 8);
-	return 8;
-}
-
-int encodeFloat(javafloat f, byte* data)
-{
-	#if (!WORDS_BIGENDIAN)
-	register const byte* src = ((const byte*) &f) + 3;
-	register int i;
-	for (i = 0; i < 4; i++)
-		data[i] = *(src--);
-	#else
-	memcpy(data, &f, 4);
-	#endif
-	return 4;
-}
-
-int encodeDouble(javadouble d, byte* data)
-{
-	#if (!WORDS_BIGENDIAN)
-	register const byte* src = ((byte*) &d) + 7;
-	register int i;
-	for (i = 0; i < 8; i++)
-		data[i] = *(src--);
-	#else
-	memcpy(data, &d, 8);
-	#endif
 	return 8;
 }
 
@@ -267,32 +240,6 @@ int decodeLong(javalong* l, const byte* data)
 	javalong tmp;
 	memcpy(&tmp, data, 8);
 	*l = swap64(tmp);
-	#endif
-	return 8;
-}
-
-int decodeFloat(javafloat* f, const byte* data)
-{
-	#if (WORDS_BIGENDIAN)
-	memcpy(f, data, 4);
-	#else
-	register byte *dst = ((byte*) f) + 3;
-	register int i;
-	for (i = 0; i < 4; i++)
-		*(dst--) = data[i];
-	#endif
-	return 4;
-}
-
-int decodeDouble(javadouble* d, const byte* data)
-{
-	#if (WORDS_BIGENDIAN)
-	memcpy(d, data, 8);
-	#else
-	register byte *dst = ((byte*) d) + 7;
-	register int i;
-	for (i = 0; i < 8; i++)
-		*(dst--) = data[i];
 	#endif
 	return 8;
 }

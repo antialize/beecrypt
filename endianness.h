@@ -31,19 +31,19 @@
 #include <stdio.h>
 
 #ifdef __cplusplus
-inline int16 swap16(int16 n)
+inline int16_t swap16(int16_t n)
 {
 	return (    ((n & 0xff) << 8) |
 				((n & 0xff00) >> 8) );
 }
 
-inline uint16 swapu16(uint16 n)
+inline uint16_t swapu16(uint16_t n)
 {
 	return (    ((n & 0xffU) << 8) |
 				((n & 0xff00U) >> 8) );
 }
 
-inline int32 swap32(int32 n)
+inline int32_t swap32(int32_t n)
 {
 	#if (SIZEOF_LONG == 4)
 	return (    ((n & 0xff) << 24) |
@@ -58,7 +58,7 @@ inline int32 swap32(int32 n)
 	#endif
 }
 
-inline uint32 swapu32(uint32 n)
+inline uint32_t swapu32(uint32_t n)
 {
 	#if (SIZEOF_UNSIGNED_LONG == 4)
 	return (    ((n & 0xffU) << 24) |
@@ -73,7 +73,7 @@ inline uint32 swapu32(uint32 n)
 	#endif
 }
 
-inline int64 swap64(int64 n)
+inline int64_t swap64(int64_t n)
 {
 	#if HAVE_LONG_LONG
 	return (    ((n & 0xffLL) << 56) |
@@ -96,11 +96,11 @@ inline int64 swap64(int64 n)
 	#endif
 }
 #else
- int16 swap16 (int16);
-uint16 swapu16(uint16);
- int32 swap32 (int32);
-uint32 swapu32(uint32);
- int64 swap64 (int64);
+ int16_t swap16 (int16_t);
+uint16_t swapu16(uint16_t);
+ int32_t swap32 (int32_t);
+uint32_t swapu32(uint32_t);
+ int64_t swap64 (int64_t);
 #endif
 
 #ifdef __cplusplus
@@ -118,10 +118,6 @@ BEECRYPTAPI
 int encodeLong(javalong, byte*);
 BEECRYPTAPI
 int encodeChar(javachar, byte*);
-BEECRYPTAPI
-int encodeFloat(javafloat, byte*);
-BEECRYPTAPI
-int encodeDouble(javadouble, byte*);
 
 BEECRYPTAPI
 int encodeInts(const javaint*, byte*, int);
@@ -142,10 +138,6 @@ BEECRYPTAPI
 int decodeLong(javalong*, const byte*);
 BEECRYPTAPI
 int decodeChar(javachar*, const byte*);
-BEECRYPTAPI
-int decodeFloat(javafloat*, const byte*);
-BEECRYPTAPI
-int decodeDouble(javadouble*, const byte*);
 
 BEECRYPTAPI
 int decodeInts(javaint*, const byte*, int);
