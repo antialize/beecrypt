@@ -32,9 +32,9 @@
 typedef struct
 {
 	dldp_p param;
+	hashFunctionContext hash;
 	blockCipherContext cipher;
 	keyedHashFunctionContext mac;
-	hashFunctionContext hash;
 	randomGeneratorContext rng;
 } dhaes_p;
 
