@@ -82,7 +82,7 @@ extern "C" {
 #  define ASM_MP32ADDMUL
 #  define ASM_MP32ADDSQRTRC
 # endif
-# if defined(sparcv9) || defined(sparcv8plus)
+# if defined(sparcv8plus) || defined(sparcv9)
 #  define ASM_MP32ADDW
 #  define ASM_MP32ADD
 #  define ASM_MP32SUBW
@@ -94,7 +94,7 @@ extern "C" {
 #endif
 
 #if defined(__SUNPRO_C) || defined(__SUNPRO_CC)
-# if defined(sparcv9) || defined(sparcv8plus)
+# if defined(sparcv8plus) /* || defined(sparcv9) */
 #  define ASM_MP32ADDW
 #  define ASM_MP32ADD
 #  define ASM_MP32SUBW

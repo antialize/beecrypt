@@ -207,9 +207,9 @@ extern "C" {
 #endif
 
 BEEDLLAPI
-void randomGeneratorContextInit(randomGeneratorContext*, const randomGenerator*);
+int randomGeneratorContextInit(randomGeneratorContext*, const randomGenerator*);
 BEEDLLAPI
-void randomGeneratorContextFree(randomGeneratorContext*);
+int randomGeneratorContextFree(randomGeneratorContext*);
 
 #ifdef __cplusplus
 }
@@ -316,9 +316,9 @@ extern "C" {
 #endif
 
 BEEDLLAPI
-void hashFunctionContextInit(hashFunctionContext*, const hashFunction*);
+int hashFunctionContextInit(hashFunctionContext*, const hashFunction*);
 BEEDLLAPI
-void hashFunctionContextFree(hashFunctionContext*);
+int hashFunctionContextFree(hashFunctionContext*);
 BEEDLLAPI
 int hashFunctionContextReset(hashFunctionContext*);
 BEEDLLAPI

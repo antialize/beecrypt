@@ -57,7 +57,6 @@ BEEDLLAPI
 void mp32nsetw  (mp32number*, uint32);
 BEEDLLAPI
 void mp32nsethex(mp32number*, const char*);
-
 #ifdef __cplusplus
 }
 #endif

@@ -75,7 +75,7 @@ inline uint32 swapu32(uint32 n)
 
 inline int64 swap64(int64 n)
 {
-	#if (SIZEOF_LONG == 4)
+	#if HAVE_LONG_LONG
 	return (    ((n & 0xffLL) << 56) |
 				((n & 0xff00LL) << 40) |
 				((n & 0xff0000LL) << 24) |

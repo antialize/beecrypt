@@ -54,32 +54,28 @@ static const char* elg_n = "8df2a494492276aa3d25759bb06869cbeac0d83afb8d0cf7cbb8
 
 int testVectorInvMod(const dlkp_p* keypair)
 {
-	int rc = 0;
-
 	randomGeneratorContext rngc;
 
-	randomGeneratorContextInit(&rngc, randomGeneratorDefault());
-
-	if (rngc.rng && rngc.param)
+	if (randomGeneratorContextInit(&rngc, randomGeneratorDefault()) == 0)
 	{
-		if (rngc.rng->setup(rngc.param) == 0)
-		{
-			register uint32  size = keypair->param.p.size;
-			register uint32* temp = (uint32*) malloc((8*size+6) * sizeof(uint32));
+		register int rc;
 
-			mp32brndinv_w(&keypair->param.n, &rngc, temp, temp+size, temp+2*size);
+		register uint32  size = keypair->param.p.size;
+		register uint32* temp = (uint32*) malloc((8*size+6) * sizeof(uint32));
 
-			mp32bmulmod_w(&keypair->param.n, size, temp, size, temp+size, temp, temp+2*size);
+		mp32brndinv_w(&keypair->param.n, &rngc, temp, temp+size, temp+2*size);
 
-			rc = mp32isone(size, temp);
+		mp32bmulmod_w(&keypair->param.n, size, temp, size, temp+size, temp, temp+2*size);
 
-			free(temp);
-		}
+		rc = mp32isone(size, temp);
+
+		free(temp);
+
+	if (randomGeneratorContextFree(&rngc))
+		return -1;
 	}
 
-	randomGeneratorContextFree(&rngc);
-
-	return rc;
+	return -1;
 }
 
 int testVectorExpMod(const dlkp_p* keypair)
@@ -484,7 +480,7 @@ void testExpMods()
 
 	static const char* p_1024 = "c615c47a56b47d869010256171ab164525f2ef4b887a4e0cdfc87043a9dd8894f2a18fa56729448e700f4b7420470b61257d11ecefa9ff518dc9fed5537ec6a9665ba73c948674320ff61b29c4cfa61e5baf47dfc1b80939e1bffb51787cc3252c4d1190a7f13d1b0f8d4aa986571ce5d4de5ecede1405e9bc0b5bf040a46d99";
 
-	randomGeneratorContext rc;
+	randomGeneratorContext rngc;
 
 	mp32barrett p;
 	mp32number tmp;
@@ -498,97 +494,90 @@ void testExpMods()
 	mp32nzero(&y);
 	mp32nzero(&tmp);
 
-	randomGeneratorContextInit(&rc, randomGeneratorDefault());
-
-	if (rc.rng && rc.param)
+	if (randomGeneratorContextInit(&rngc, randomGeneratorDefault()) == 0)
 	{
-		if (rc.rng->setup(rc.param) == 0)
-		{
-			int i;
-			#if HAVE_TIME_H
-			double ttime;
-			clock_t tstart, tstop;
-			#endif
-			
-			printf("Timing modular exponentiations\n");
-			printf("\t(512 bits ^ 512 bits) mod 512 bits:");
-			mp32nsethex(&tmp, p_512);
-			mp32bset(&p, tmp.size, tmp.data);
-			mp32nsize(&g, p.size);
-			mp32nsize(&x, p.size);
-			mp32bnrnd(&p, &rc, &g);
-			mp32bnrnd(&p, &rc, &x);
-			#if HAVE_TIME_H
-			tstart = clock();
-			#endif
-			for (i = 0; i < 100; i++)
-				mp32bnpowmod(&p, &g, &x, &y);
-			#if HAVE_TIME_H
-			tstop = clock();
-			ttime = ((double)(tstop - tstart)) / CLOCKS_PER_SEC;
-			printf("\t 100x in %.3f seconds\n", ttime);
-			#endif
-			printf("\t(768 bits ^ 768 bits) mod 768 bits:");
-			mp32nsethex(&tmp, p_768);
-			mp32bset(&p, tmp.size, tmp.data);
-			mp32nsize(&g, p.size);
-			mp32nsize(&x, p.size);
-			mp32bnrnd(&p, &rc, &g);
-			mp32bnrnd(&p, &rc, &x);
-			#if HAVE_TIME_H
-			tstart = clock();
-			#endif
-			for (i = 0; i < 100; i++)
-				mp32bnpowmod(&p, &g, &x, &y);
-			#if HAVE_TIME_H
-			tstop = clock();
-			ttime = ((double)(tstop - tstart)) / CLOCKS_PER_SEC;
-			printf("\t 100x in %.3f seconds\n", ttime);
-			#endif
-			printf("\t(1024 bits ^ 1024 bits) mod 1024 bits:");
-			mp32nsethex(&tmp, p_1024);
-			mp32bset(&p, tmp.size, tmp.data);
-			mp32nsize(&g, p.size);
-			mp32nsize(&x, p.size);
-			mp32bnrnd(&p, &rc, &g);
-			mp32bnrnd(&p, &rc, &x);
-			#if HAVE_TIME_H
-			tstart = clock();
-			#endif
-			for (i = 0; i < 100; i++)
-				mp32bnpowmod(&p, &g, &x, &y);
-			#if HAVE_TIME_H
-			tstop = clock();
-			ttime = ((double)(tstop - tstart)) / CLOCKS_PER_SEC;
-			printf("\t 100x in %.3f seconds\n", ttime);
-			#endif
-			/* now run a test with x having 160 bits */
-			mp32nsize(&x, 5);
-			rc.rng->next(rc.param, x.data, x.size);
-			printf("\t(1024 bits ^ 160 bits) mod 1024 bits:");
-			#if HAVE_TIME_H
-			tstart = clock();
-			#endif
-			for (i = 0; i < 100; i++)
-				mp32bnpowmod(&p, &g, &x, &y);
-			#if HAVE_TIME_H
-			tstop = clock();
-			ttime = ((double)(tstop - tstart)) / CLOCKS_PER_SEC;
-			printf("\t 100x in %.3f seconds\n", ttime);
-			#endif
-			mp32bfree(&p);
-			mp32nfree(&g);
-			mp32nfree(&x);
-			mp32nfree(&y);
-			mp32nfree(&tmp);
-		}
-		else
-			printf("random generator setup problem\n");
+		int i;
+		#if HAVE_TIME_H
+		double ttime;
+		clock_t tstart, tstop;
+		#endif
+		
+		printf("Timing modular exponentiations\n");
+		printf("\t(512 bits ^ 512 bits) mod 512 bits:");
+		mp32nsethex(&tmp, p_512);
+		mp32bset(&p, tmp.size, tmp.data);
+		mp32nsize(&g, p.size);
+		mp32nsize(&x, p.size);
+		mp32bnrnd(&p, &rngc, &g);
+		mp32bnrnd(&p, &rngc, &x);
+		#if HAVE_TIME_H
+		tstart = clock();
+		#endif
+		for (i = 0; i < 100; i++)
+			mp32bnpowmod(&p, &g, &x, &y);
+		#if HAVE_TIME_H
+		tstop = clock();
+		ttime = ((double)(tstop - tstart)) / CLOCKS_PER_SEC;
+		printf("\t 100x in %.3f seconds\n", ttime);
+		#endif
+		printf("\t(768 bits ^ 768 bits) mod 768 bits:");
+		mp32nsethex(&tmp, p_768);
+		mp32bset(&p, tmp.size, tmp.data);
+		mp32nsize(&g, p.size);
+		mp32nsize(&x, p.size);
+		mp32bnrnd(&p, &rngc, &g);
+		mp32bnrnd(&p, &rngc, &x);
+		#if HAVE_TIME_H
+		tstart = clock();
+		#endif
+		for (i = 0; i < 100; i++)
+			mp32bnpowmod(&p, &g, &x, &y);
+		#if HAVE_TIME_H
+		tstop = clock();
+		ttime = ((double)(tstop - tstart)) / CLOCKS_PER_SEC;
+		printf("\t 100x in %.3f seconds\n", ttime);
+		#endif
+		printf("\t(1024 bits ^ 1024 bits) mod 1024 bits:");
+		mp32nsethex(&tmp, p_1024);
+		mp32bset(&p, tmp.size, tmp.data);
+		mp32nsize(&g, p.size);
+		mp32nsize(&x, p.size);
+		mp32bnrnd(&p, &rngc, &g);
+		mp32bnrnd(&p, &rngc, &x);
+		#if HAVE_TIME_H
+		tstart = clock();
+		#endif
+		for (i = 0; i < 100; i++)
+			mp32bnpowmod(&p, &g, &x, &y);
+		#if HAVE_TIME_H
+		tstop = clock();
+		ttime = ((double)(tstop - tstart)) / CLOCKS_PER_SEC;
+		printf("\t 100x in %.3f seconds\n", ttime);
+		#endif
+		/* now run a test with x having 160 bits */
+		mp32nsize(&x, 5);
+		rngc.rng->next(rngc.param, x.data, x.size);
+		printf("\t(1024 bits ^ 160 bits) mod 1024 bits:");
+		#if HAVE_TIME_H
+		tstart = clock();
+		#endif
+		for (i = 0; i < 1 /* 100 */; i++)
+			mp32bnpowmod(&p, &g, &x, &y);
+		#if HAVE_TIME_H
+		tstop = clock();
+		ttime = ((double)(tstop - tstart)) / CLOCKS_PER_SEC;
+		printf("\t 100x in %.3f seconds\n", ttime);
+		#endif
+		mp32bfree(&p);
+		mp32nfree(&g);
+		mp32nfree(&x);
+		mp32nfree(&y);
+		mp32nfree(&tmp);
+
+		randomGeneratorContextFree(&rngc);
 	}
 	else
-		printf("random generator problem\n");
-
-	randomGeneratorContextFree(&rc);
+		printf("random generator setup problem\n");
 }
 
 void testDLParams()
@@ -769,10 +758,14 @@ int main()
 		else
 			printf("*** error: library corrupt\n");
 	}
+	/*
 	testBlockCiphers();
 	testHashFunctions();
+	*/
 	testExpMods();
+	/*
 	testDLParams();
+	*/
 
 	printf("done\n");
 

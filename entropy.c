@@ -153,8 +153,8 @@ static int entropy_noisebits_8(HWAVEIN wavein, uint32 *data, int size)
 			}
 			else
 			{
+				waveInStop(wavein);
 				waveInReset(wavein);
-				waveInClose(wavein);
 				return -1;
 			}
 		}
@@ -174,11 +174,8 @@ static int entropy_noisebits_8(HWAVEIN wavein, uint32 *data, int size)
 		}
 	}
 	
+	waveInStop(wavein);
 	waveInReset(wavein);
-	waveInClose(wavein);
-
-	ReleaseMutex(entropy_wavein_lock);
-
 	return 0;
 }
 
@@ -221,8 +218,8 @@ static int entropy_noisebits_16(HWAVEIN wavein, uint32 *data, int size)
 			}
 			else
 			{
+				waveInStop(wavein);
 				waveInReset(wavein);
-				waveInClose(wavein);
 				return -1;
 			}
 		}
@@ -242,11 +239,8 @@ static int entropy_noisebits_16(HWAVEIN wavein, uint32 *data, int size)
 		}
 	}
 	
+	waveInStop(wavein);
 	waveInReset(wavein);
-	waveInClose(wavein);
-
-	ReleaseMutex(entropy_wavein_lock);
-
 	return 0;
 }
 
@@ -351,7 +345,7 @@ int entropy_wavein(uint32* data, int size)
 	rc = waveInOpen(&wavein, WAVE_MAPPER, &waveformatex, (DWORD) entropy_wavein_event, (DWORD) 0, CALLBACK_EVENT);
 	if (rc != MMSYSERR_NOERROR)
 	{
-		fprintf(stderr, "waveInOpen returned %d\n", rc);
+		fprintf(stderr, "waveInOpen failed!\n", rc);
 		ReleaseMutex(entropy_wavein_lock);
 		return -1;
 	}
@@ -359,14 +353,20 @@ int entropy_wavein(uint32* data, int size)
 	switch (waveformatex.wBitsPerSample)
 	{
 	case 8:
-		return entropy_noisebits_8(wavein, data, size);
+		rc = entropy_noisebits_8(wavein, data, size);
+		break;
 	case 16:
-		return entropy_noisebits_16(wavein, data, size);
+		rc = entropy_noisebits_16(wavein, data, size);
+		break;
 	default:
-		waveInClose(wavein);
-		ReleaseMutex(entropy_wavein_lock);
-		return -1;
+		rc = -1;
 	}
+
+	waveInClose(wavein);
+
+	ReleaseMutex(entropy_wavein_lock);
+
+	return rc;
 }
 
 int entropy_console(uint32* data, int size)

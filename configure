@@ -1033,32 +1033,23 @@ else
 fi
 echo "$ac_t""$CPP" 1>&6
 
-# Extract the first word of "ranlib", so it can be a program name with args.
-set dummy ranlib; ac_word=$2
-echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:1040: checking for $ac_word" >&5
-if eval "test \"`echo '$''{'ac_cv_prog_RANLIB'+set}'`\" = set"; then
+echo $ac_n "checking whether ln -s works""... $ac_c" 1>&6
+echo "configure:1038: checking whether ln -s works" >&5
+if eval "test \"`echo '$''{'ac_cv_prog_LN_S'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
-  if test -n "$RANLIB"; then
-  ac_cv_prog_RANLIB="$RANLIB" # Let the user override the test.
+  rm -f conftestdata
+if ln -s X conftestdata 2>/dev/null
+then
+  rm -f conftestdata
+  ac_cv_prog_LN_S="ln -s"
 else
-  IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS=":"
-  ac_dummy="$PATH"
-  for ac_dir in $ac_dummy; do
-    test -z "$ac_dir" && ac_dir=.
-    if test -f $ac_dir/$ac_word; then
-      ac_cv_prog_RANLIB="ranlib"
-      break
-    fi
-  done
-  IFS="$ac_save_ifs"
-  test -z "$ac_cv_prog_RANLIB" && ac_cv_prog_RANLIB=":"
+  ac_cv_prog_LN_S=ln
 fi
 fi
-RANLIB="$ac_cv_prog_RANLIB"
-if test -n "$RANLIB"; then
-  echo "$ac_t""$RANLIB" 1>&6
+LN_S="$ac_cv_prog_LN_S"
+if test "$ac_cv_prog_LN_S" = "ln -s"; then
+  echo "$ac_t""yes" 1>&6
 else
   echo "$ac_t""no" 1>&6
 fi
@@ -1075,7 +1066,7 @@ fi
 # SVR4 /usr/ucb/install, which tries to use the nonexistent group "staff"
 # ./install, which can be erroneously created by make from ./install.sh.
 echo $ac_n "checking for a BSD compatible install""... $ac_c" 1>&6
-echo "configure:1079: checking for a BSD compatible install" >&5
+echo "configure:1070: checking for a BSD compatible install" >&5
 if test -z "$INSTALL"; then
 if eval "test \"`echo '$''{'ac_cv_path_install'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -1129,21 +1120,21 @@ test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
 
 
 echo $ac_n "checking for inline""... $ac_c" 1>&6
-echo "configure:1133: checking for inline" >&5
+echo "configure:1124: checking for inline" >&5
 if eval "test \"`echo '$''{'ac_cv_c_inline'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   ac_cv_c_inline=no
 for ac_kw in inline __inline__ __inline; do
   cat > conftest.$ac_ext <<EOF
-#line 1140 "configure"
+#line 1131 "configure"
 #include "confdefs.h"
 
 int main() {
 } $ac_kw foo() {
 ; return 0; }
 EOF
-if { (eval echo configure:1147: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+if { (eval echo configure:1138: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
   rm -rf conftest*
   ac_cv_c_inline=$ac_kw; break
 else
@@ -1171,9 +1162,9 @@ esac
 
 if test "$ac_cv_prog_gcc" != yes; then
   echo $ac_n "checking whether we are using Sun Workshop C""... $ac_c" 1>&6
-echo "configure:1175: checking whether we are using Sun Workshop C" >&5
+echo "configure:1166: checking whether we are using Sun Workshop C" >&5
   cat > conftest.$ac_ext <<EOF
-#line 1177 "configure"
+#line 1168 "configure"
 #include "confdefs.h"
  #ifdef __SUNPRO_C
   yes;
@@ -1193,9 +1184,9 @@ rm -f conftest*
   echo "$ac_t""$ac_cv_prog_SUNPRO_CC" 1>&6
   if test "$ac_cv_prog_SUNPRO_CC" != yes; then
     echo $ac_n "checking whether we are using Compaq's C compiler""... $ac_c" 1>&6
-echo "configure:1197: checking whether we are using Compaq's C compiler" >&5
+echo "configure:1188: checking whether we are using Compaq's C compiler" >&5
     cat > conftest.$ac_ext <<EOF
-#line 1199 "configure"
+#line 1190 "configure"
 #include "confdefs.h"
  #ifdef __DECC
   yes;
@@ -1234,7 +1225,7 @@ if test "$ac_enable_javaglue" = yes ; then
   # Extract the first word of "java", so it can be a program name with args.
 set dummy java; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:1238: checking for $ac_word" >&5
+echo "configure:1229: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_prog_ac_cv_have_java'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -1264,7 +1255,7 @@ fi
   # Extract the first word of "javac", so it can be a program name with args.
 set dummy javac; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:1268: checking for $ac_word" >&5
+echo "configure:1259: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_prog_ac_cv_have_javac'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -1294,7 +1285,7 @@ fi
   if test "$ac_cv_have_java" = yes; then
     if test "$ac_cv_have_javac" = yes; then
       echo $ac_n "checking for Java JNI headers""... $ac_c" 1>&6
-echo "configure:1298: checking for Java JNI headers" >&5
+echo "configure:1289: checking for Java JNI headers" >&5
       cat > conftest.java << EOF
 public class conftest
 {
@@ -1407,13 +1398,15 @@ EOF
 
 
 
+
+
 echo $ac_n "checking for working const""... $ac_c" 1>&6
-echo "configure:1412: checking for working const" >&5
+echo "configure:1405: checking for working const" >&5
 if eval "test \"`echo '$''{'ac_cv_c_const'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 1417 "configure"
+#line 1410 "configure"
 #include "confdefs.h"
 
 int main() {
@@ -1462,7 +1455,7 @@ ccp = (char const *const *) p;
 
 ; return 0; }
 EOF
-if { (eval echo configure:1466: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+if { (eval echo configure:1459: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
   rm -rf conftest*
   ac_cv_c_const=yes
 else
@@ -1483,12 +1476,12 @@ EOF
 fi
 
 echo $ac_n "checking for ANSI C header files""... $ac_c" 1>&6
-echo "configure:1487: checking for ANSI C header files" >&5
+echo "configure:1480: checking for ANSI C header files" >&5
 if eval "test \"`echo '$''{'ac_cv_header_stdc'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 1492 "configure"
+#line 1485 "configure"
 #include "confdefs.h"
 #include <stdlib.h>
 #include <stdarg.h>
@@ -1496,7 +1489,7 @@ else
 #include <float.h>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:1500: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:1493: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
   rm -rf conftest*
@@ -1513,7 +1506,7 @@ rm -f conftest*
 if test $ac_cv_header_stdc = yes; then
   # SunOS 4.x string.h does not declare mem*, contrary to ANSI.
 cat > conftest.$ac_ext <<EOF
-#line 1517 "configure"
+#line 1510 "configure"
 #include "confdefs.h"
 #include <string.h>
 EOF
@@ -1531,7 +1524,7 @@ fi
 if test $ac_cv_header_stdc = yes; then
   # ISC 2.0.2 stdlib.h does not declare free, contrary to ANSI.
 cat > conftest.$ac_ext <<EOF
-#line 1535 "configure"
+#line 1528 "configure"
 #include "confdefs.h"
 #include <stdlib.h>
 EOF
@@ -1552,7 +1545,7 @@ if test "$cross_compiling" = yes; then
   :
 else
   cat > conftest.$ac_ext <<EOF
-#line 1556 "configure"
+#line 1549 "configure"
 #include "confdefs.h"
 #include <ctype.h>
 #define ISLOWER(c) ('a' <= (c) && (c) <= 'z')
@@ -1563,7 +1556,7 @@ if (XOR (islower (i), ISLOWER (i)) || toupper (i) != TOUPPER (i)) exit(2);
 exit (0); }
 
 EOF
-if { (eval echo configure:1567: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+if { (eval echo configure:1560: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
 then
   :
 else
@@ -1587,12 +1580,12 @@ EOF
 fi
 
 echo $ac_n "checking for size_t""... $ac_c" 1>&6
-echo "configure:1591: checking for size_t" >&5
+echo "configure:1584: checking for size_t" >&5
 if eval "test \"`echo '$''{'ac_cv_type_size_t'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 1596 "configure"
+#line 1589 "configure"
 #include "confdefs.h"
 #include <sys/types.h>
 #if STDC_HEADERS
@@ -1621,7 +1614,7 @@ fi
 
 
 echo $ac_n "checking for 8-bit clean memcmp""... $ac_c" 1>&6
-echo "configure:1625: checking for 8-bit clean memcmp" >&5
+echo "configure:1618: checking for 8-bit clean memcmp" >&5
 if eval "test \"`echo '$''{'ac_cv_func_memcmp_clean'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -1629,7 +1622,7 @@ else
   ac_cv_func_memcmp_clean=no
 else
   cat > conftest.$ac_ext <<EOF
-#line 1633 "configure"
+#line 1626 "configure"
 #include "confdefs.h"
 
 main()
@@ -1639,7 +1632,7 @@ main()
 }
 
 EOF
-if { (eval echo configure:1643: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+if { (eval echo configure:1636: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
 then
   ac_cv_func_memcmp_clean=yes
 else
@@ -1658,12 +1651,12 @@ test $ac_cv_func_memcmp_clean = no && LIBOBJS="$LIBOBJS memcmp.${ac_objext}"
 
 
 echo $ac_n "checking for ANSI C header files""... $ac_c" 1>&6
-echo "configure:1662: checking for ANSI C header files" >&5
+echo "configure:1655: checking for ANSI C header files" >&5
 if eval "test \"`echo '$''{'ac_cv_header_stdc'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 1667 "configure"
+#line 1660 "configure"
 #include "confdefs.h"
 #include <stdlib.h>
 #include <stdarg.h>
@@ -1671,7 +1664,7 @@ else
 #include <float.h>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:1675: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:1668: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
   rm -rf conftest*
@@ -1688,7 +1681,7 @@ rm -f conftest*
 if test $ac_cv_header_stdc = yes; then
   # SunOS 4.x string.h does not declare mem*, contrary to ANSI.
 cat > conftest.$ac_ext <<EOF
-#line 1692 "configure"
+#line 1685 "configure"
 #include "confdefs.h"
 #include <string.h>
 EOF
@@ -1706,7 +1699,7 @@ fi
 if test $ac_cv_header_stdc = yes; then
   # ISC 2.0.2 stdlib.h does not declare free, contrary to ANSI.
 cat > conftest.$ac_ext <<EOF
-#line 1710 "configure"
+#line 1703 "configure"
 #include "confdefs.h"
 #include <stdlib.h>
 EOF
@@ -1727,7 +1720,7 @@ if test "$cross_compiling" = yes; then
   :
 else
   cat > conftest.$ac_ext <<EOF
-#line 1731 "configure"
+#line 1724 "configure"
 #include "confdefs.h"
 #include <ctype.h>
 #define ISLOWER(c) ('a' <= (c) && (c) <= 'z')
@@ -1738,7 +1731,7 @@ if (XOR (islower (i), ISLOWER (i)) || toupper (i) != TOUPPER (i)) exit(2);
 exit (0); }
 
 EOF
-if { (eval echo configure:1742: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+if { (eval echo configure:1735: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
 then
   :
 else
@@ -1766,17 +1759,17 @@ for ac_hdr in errno.h string.h ctype.h stdlib.h
 do
 ac_safe=`echo "$ac_hdr" | sed 'y%./+-%__p_%'`
 echo $ac_n "checking for $ac_hdr""... $ac_c" 1>&6
-echo "configure:1770: checking for $ac_hdr" >&5
+echo "configure:1763: checking for $ac_hdr" >&5
 if eval "test \"`echo '$''{'ac_cv_header_$ac_safe'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 1775 "configure"
+#line 1768 "configure"
 #include "confdefs.h"
 #include <$ac_hdr>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:1780: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:1773: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
   rm -rf conftest*
@@ -1806,17 +1799,17 @@ for ac_hdr in unistd.h fcntl.h limits.h
 do
 ac_safe=`echo "$ac_hdr" | sed 'y%./+-%__p_%'`
 echo $ac_n "checking for $ac_hdr""... $ac_c" 1>&6
-echo "configure:1810: checking for $ac_hdr" >&5
+echo "configure:1803: checking for $ac_hdr" >&5
 if eval "test \"`echo '$''{'ac_cv_header_$ac_safe'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 1815 "configure"
+#line 1808 "configure"
 #include "confdefs.h"
 #include <$ac_hdr>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:1820: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:1813: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
   rm -rf conftest*
@@ -1846,17 +1839,17 @@ for ac_hdr in time.h
 do
 ac_safe=`echo "$ac_hdr" | sed 'y%./+-%__p_%'`
 echo $ac_n "checking for $ac_hdr""... $ac_c" 1>&6
-echo "configure:1850: checking for $ac_hdr" >&5
+echo "configure:1843: checking for $ac_hdr" >&5
 if eval "test \"`echo '$''{'ac_cv_header_$ac_safe'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 1855 "configure"
+#line 1848 "configure"
 #include "confdefs.h"
 #include <$ac_hdr>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:1860: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:1853: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
   rm -rf conftest*
@@ -1886,17 +1879,17 @@ for ac_hdr in sys/types.h sys/stat.h sys/time.h
 do
 ac_safe=`echo "$ac_hdr" | sed 'y%./+-%__p_%'`
 echo $ac_n "checking for $ac_hdr""... $ac_c" 1>&6
-echo "configure:1890: checking for $ac_hdr" >&5
+echo "configure:1883: checking for $ac_hdr" >&5
 if eval "test \"`echo '$''{'ac_cv_header_$ac_safe'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 1895 "configure"
+#line 1888 "configure"
 #include "confdefs.h"
 #include <$ac_hdr>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:1900: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:1893: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
   rm -rf conftest*
@@ -1926,17 +1919,17 @@ for ac_hdr in thread.h pthread.h synch.h semaphore.h
 do
 ac_safe=`echo "$ac_hdr" | sed 'y%./+-%__p_%'`
 echo $ac_n "checking for $ac_hdr""... $ac_c" 1>&6
-echo "configure:1930: checking for $ac_hdr" >&5
+echo "configure:1923: checking for $ac_hdr" >&5
 if eval "test \"`echo '$''{'ac_cv_header_$ac_safe'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 1935 "configure"
+#line 1928 "configure"
 #include "confdefs.h"
 #include <$ac_hdr>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:1940: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:1933: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
   rm -rf conftest*
@@ -1966,17 +1959,17 @@ for ac_hdr in termio.h termios.h
 do
 ac_safe=`echo "$ac_hdr" | sed 'y%./+-%__p_%'`
 echo $ac_n "checking for $ac_hdr""... $ac_c" 1>&6
-echo "configure:1970: checking for $ac_hdr" >&5
+echo "configure:1963: checking for $ac_hdr" >&5
 if eval "test \"`echo '$''{'ac_cv_header_$ac_safe'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 1975 "configure"
+#line 1968 "configure"
 #include "confdefs.h"
 #include <$ac_hdr>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:1980: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:1973: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
   rm -rf conftest*
@@ -2006,17 +1999,17 @@ for ac_hdr in sys/audioio.h sys/ioctl.h sys/soundcard.h
 do
 ac_safe=`echo "$ac_hdr" | sed 'y%./+-%__p_%'`
 echo $ac_n "checking for $ac_hdr""... $ac_c" 1>&6
-echo "configure:2010: checking for $ac_hdr" >&5
+echo "configure:2003: checking for $ac_hdr" >&5
 if eval "test \"`echo '$''{'ac_cv_header_$ac_safe'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 2015 "configure"
+#line 2008 "configure"
 #include "confdefs.h"
 #include <$ac_hdr>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:2020: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:2013: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
   rm -rf conftest*
@@ -2045,12 +2038,12 @@ done
 
 if test "$ac_cv_header_sys_time_h" = yes; then
   echo $ac_n "checking for gettimeofday""... $ac_c" 1>&6
-echo "configure:2049: checking for gettimeofday" >&5
+echo "configure:2042: checking for gettimeofday" >&5
 if eval "test \"`echo '$''{'ac_cv_func_gettimeofday'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 2054 "configure"
+#line 2047 "configure"
 #include "confdefs.h"
 /* System header to define __stub macros and hopefully few prototypes,
     which can conflict with char gettimeofday(); below.  */
@@ -2073,7 +2066,7 @@ gettimeofday();
 
 ; return 0; }
 EOF
-if { (eval echo configure:2077: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:2070: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   eval "ac_cv_func_gettimeofday=yes"
 else
@@ -2098,12 +2091,12 @@ else
 fi
 
   echo $ac_n "checking for gethrtime""... $ac_c" 1>&6
-echo "configure:2102: checking for gethrtime" >&5
+echo "configure:2095: checking for gethrtime" >&5
 if eval "test \"`echo '$''{'ac_cv_func_gethrtime'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 2107 "configure"
+#line 2100 "configure"
 #include "confdefs.h"
 /* System header to define __stub macros and hopefully few prototypes,
     which can conflict with char gethrtime(); below.  */
@@ -2126,7 +2119,7 @@ gethrtime();
 
 ; return 0; }
 EOF
-if { (eval echo configure:2130: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:2123: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   eval "ac_cv_func_gethrtime=yes"
 else
@@ -2154,21 +2147,21 @@ fi
 
 if test "$ac_cv_header_thread_h" = yes; then
   echo $ac_n "checking for -lthread""... $ac_c" 1>&6
-echo "configure:2158: checking for -lthread" >&5
+echo "configure:2151: checking for -lthread" >&5
 if eval "test \"`echo '$''{'ac_cv_lib_thread'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   ac_save_LIBS="$LIBS"
 LIBS="-lthread  $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 2165 "configure"
+#line 2158 "configure"
 #include "confdefs.h"
 
 int main() {
 main()
 ; return 0; }
 EOF
-if { (eval echo configure:2172: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:2165: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   ac_cv_lib_thread=yes
 else
@@ -2193,21 +2186,21 @@ fi
 
 elif test  "$ac_cv_header_pthread_h" = yes; then
   echo $ac_n "checking for -lpthread""... $ac_c" 1>&6
-echo "configure:2197: checking for -lpthread" >&5
+echo "configure:2190: checking for -lpthread" >&5
 if eval "test \"`echo '$''{'ac_cv_lib_pthread'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   ac_save_LIBS="$LIBS"
 LIBS="-lpthread  $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 2204 "configure"
+#line 2197 "configure"
 #include "confdefs.h"
 
 int main() {
 main()
 ; return 0; }
 EOF
-if { (eval echo configure:2211: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:2204: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   ac_cv_lib_pthread=yes
 else
@@ -2232,569 +2225,11 @@ fi
 
 fi
 
-echo $ac_n "checking size of char""... $ac_c" 1>&6
-echo "configure:2237: checking size of char" >&5
-if eval "test \"`echo '$''{'ac_cv_sizeof_char'+set}'`\" = set"; then
-  echo $ac_n "(cached) $ac_c" 1>&6
-else
-  if test "$cross_compiling" = yes; then
-    { echo "configure: error: can not run test program while cross compiling" 1>&2; exit 1; }
-else
-  cat > conftest.$ac_ext <<EOF
-#line 2245 "configure"
-#include "confdefs.h"
-#include <stdio.h>
-main()
-{
-  FILE *f=fopen("conftestval", "w");
-  if (!f) exit(1);
-  fprintf(f, "%d\n", sizeof(char));
-  exit(0);
-}
-EOF
-if { (eval echo configure:2256: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
-then
-  ac_cv_sizeof_char=`cat conftestval`
-else
-  echo "configure: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-  rm -fr conftest*
-  ac_cv_sizeof_char=0
-fi
-rm -fr conftest*
-fi
-
-fi
-echo "$ac_t""$ac_cv_sizeof_char" 1>&6
-cat >> confdefs.h <<EOF
-#define SIZEOF_CHAR $ac_cv_sizeof_char
-EOF
-
-
-echo $ac_n "checking size of unsigned char""... $ac_c" 1>&6
-echo "configure:2276: checking size of unsigned char" >&5
-if eval "test \"`echo '$''{'ac_cv_sizeof_unsigned_char'+set}'`\" = set"; then
-  echo $ac_n "(cached) $ac_c" 1>&6
-else
-  if test "$cross_compiling" = yes; then
-    { echo "configure: error: can not run test program while cross compiling" 1>&2; exit 1; }
-else
-  cat > conftest.$ac_ext <<EOF
-#line 2284 "configure"
-#include "confdefs.h"
-#include <stdio.h>
-main()
-{
-  FILE *f=fopen("conftestval", "w");
-  if (!f) exit(1);
-  fprintf(f, "%d\n", sizeof(unsigned char));
-  exit(0);
-}
-EOF
-if { (eval echo configure:2295: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
-then
-  ac_cv_sizeof_unsigned_char=`cat conftestval`
-else
-  echo "configure: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-  rm -fr conftest*
-  ac_cv_sizeof_unsigned_char=0
-fi
-rm -fr conftest*
-fi
-
-fi
-echo "$ac_t""$ac_cv_sizeof_unsigned_char" 1>&6
-cat >> confdefs.h <<EOF
-#define SIZEOF_UNSIGNED_CHAR $ac_cv_sizeof_unsigned_char
-EOF
-
-
-echo $ac_n "checking size of short""... $ac_c" 1>&6
-echo "configure:2315: checking size of short" >&5
-if eval "test \"`echo '$''{'ac_cv_sizeof_short'+set}'`\" = set"; then
-  echo $ac_n "(cached) $ac_c" 1>&6
-else
-  if test "$cross_compiling" = yes; then
-    { echo "configure: error: can not run test program while cross compiling" 1>&2; exit 1; }
-else
-  cat > conftest.$ac_ext <<EOF
-#line 2323 "configure"
-#include "confdefs.h"
-#include <stdio.h>
-main()
-{
-  FILE *f=fopen("conftestval", "w");
-  if (!f) exit(1);
-  fprintf(f, "%d\n", sizeof(short));
-  exit(0);
-}
-EOF
-if { (eval echo configure:2334: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
-then
-  ac_cv_sizeof_short=`cat conftestval`
-else
-  echo "configure: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-  rm -fr conftest*
-  ac_cv_sizeof_short=0
-fi
-rm -fr conftest*
-fi
-
-fi
-echo "$ac_t""$ac_cv_sizeof_short" 1>&6
-cat >> confdefs.h <<EOF
-#define SIZEOF_SHORT $ac_cv_sizeof_short
-EOF
-
-
-echo $ac_n "checking size of unsigned short""... $ac_c" 1>&6
-echo "configure:2354: checking size of unsigned short" >&5
-if eval "test \"`echo '$''{'ac_cv_sizeof_unsigned_short'+set}'`\" = set"; then
-  echo $ac_n "(cached) $ac_c" 1>&6
-else
-  if test "$cross_compiling" = yes; then
-    { echo "configure: error: can not run test program while cross compiling" 1>&2; exit 1; }
-else
-  cat > conftest.$ac_ext <<EOF
-#line 2362 "configure"
-#include "confdefs.h"
-#include <stdio.h>
-main()
-{
-  FILE *f=fopen("conftestval", "w");
-  if (!f) exit(1);
-  fprintf(f, "%d\n", sizeof(unsigned short));
-  exit(0);
-}
-EOF
-if { (eval echo configure:2373: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
-then
-  ac_cv_sizeof_unsigned_short=`cat conftestval`
-else
-  echo "configure: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-  rm -fr conftest*
-  ac_cv_sizeof_unsigned_short=0
-fi
-rm -fr conftest*
-fi
-
-fi
-echo "$ac_t""$ac_cv_sizeof_unsigned_short" 1>&6
-cat >> confdefs.h <<EOF
-#define SIZEOF_UNSIGNED_SHORT $ac_cv_sizeof_unsigned_short
-EOF
-
-
-echo $ac_n "checking size of int""... $ac_c" 1>&6
-echo "configure:2393: checking size of int" >&5
-if eval "test \"`echo '$''{'ac_cv_sizeof_int'+set}'`\" = set"; then
-  echo $ac_n "(cached) $ac_c" 1>&6
-else
-  if test "$cross_compiling" = yes; then
-    { echo "configure: error: can not run test program while cross compiling" 1>&2; exit 1; }
-else
-  cat > conftest.$ac_ext <<EOF
-#line 2401 "configure"
-#include "confdefs.h"
-#include <stdio.h>
-main()
-{
-  FILE *f=fopen("conftestval", "w");
-  if (!f) exit(1);
-  fprintf(f, "%d\n", sizeof(int));
-  exit(0);
-}
-EOF
-if { (eval echo configure:2412: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
-then
-  ac_cv_sizeof_int=`cat conftestval`
-else
-  echo "configure: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-  rm -fr conftest*
-  ac_cv_sizeof_int=0
-fi
-rm -fr conftest*
-fi
-
-fi
-echo "$ac_t""$ac_cv_sizeof_int" 1>&6
-cat >> confdefs.h <<EOF
-#define SIZEOF_INT $ac_cv_sizeof_int
-EOF
-
-
-echo $ac_n "checking size of unsigned int""... $ac_c" 1>&6
-echo "configure:2432: checking size of unsigned int" >&5
-if eval "test \"`echo '$''{'ac_cv_sizeof_unsigned_int'+set}'`\" = set"; then
-  echo $ac_n "(cached) $ac_c" 1>&6
-else
-  if test "$cross_compiling" = yes; then
-    { echo "configure: error: can not run test program while cross compiling" 1>&2; exit 1; }
-else
-  cat > conftest.$ac_ext <<EOF
-#line 2440 "configure"
-#include "confdefs.h"
-#include <stdio.h>
-main()
-{
-  FILE *f=fopen("conftestval", "w");
-  if (!f) exit(1);
-  fprintf(f, "%d\n", sizeof(unsigned int));
-  exit(0);
-}
-EOF
-if { (eval echo configure:2451: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
-then
-  ac_cv_sizeof_unsigned_int=`cat conftestval`
-else
-  echo "configure: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-  rm -fr conftest*
-  ac_cv_sizeof_unsigned_int=0
-fi
-rm -fr conftest*
-fi
-
-fi
-echo "$ac_t""$ac_cv_sizeof_unsigned_int" 1>&6
-cat >> confdefs.h <<EOF
-#define SIZEOF_UNSIGNED_INT $ac_cv_sizeof_unsigned_int
-EOF
-
-
-echo $ac_n "checking size of long""... $ac_c" 1>&6
-echo "configure:2471: checking size of long" >&5
-if eval "test \"`echo '$''{'ac_cv_sizeof_long'+set}'`\" = set"; then
-  echo $ac_n "(cached) $ac_c" 1>&6
-else
-  if test "$cross_compiling" = yes; then
-    { echo "configure: error: can not run test program while cross compiling" 1>&2; exit 1; }
-else
-  cat > conftest.$ac_ext <<EOF
-#line 2479 "configure"
-#include "confdefs.h"
-#include <stdio.h>
-main()
-{
-  FILE *f=fopen("conftestval", "w");
-  if (!f) exit(1);
-  fprintf(f, "%d\n", sizeof(long));
-  exit(0);
-}
-EOF
-if { (eval echo configure:2490: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
-then
-  ac_cv_sizeof_long=`cat conftestval`
-else
-  echo "configure: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-  rm -fr conftest*
-  ac_cv_sizeof_long=0
-fi
-rm -fr conftest*
-fi
-
-fi
-echo "$ac_t""$ac_cv_sizeof_long" 1>&6
-cat >> confdefs.h <<EOF
-#define SIZEOF_LONG $ac_cv_sizeof_long
-EOF
-
-
-echo $ac_n "checking size of unsigned long""... $ac_c" 1>&6
-echo "configure:2510: checking size of unsigned long" >&5
-if eval "test \"`echo '$''{'ac_cv_sizeof_unsigned_long'+set}'`\" = set"; then
-  echo $ac_n "(cached) $ac_c" 1>&6
-else
-  if test "$cross_compiling" = yes; then
-    { echo "configure: error: can not run test program while cross compiling" 1>&2; exit 1; }
-else
-  cat > conftest.$ac_ext <<EOF
-#line 2518 "configure"
-#include "confdefs.h"
-#include <stdio.h>
-main()
-{
-  FILE *f=fopen("conftestval", "w");
-  if (!f) exit(1);
-  fprintf(f, "%d\n", sizeof(unsigned long));
-  exit(0);
-}
-EOF
-if { (eval echo configure:2529: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
-then
-  ac_cv_sizeof_unsigned_long=`cat conftestval`
-else
-  echo "configure: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-  rm -fr conftest*
-  ac_cv_sizeof_unsigned_long=0
-fi
-rm -fr conftest*
-fi
-
-fi
-echo "$ac_t""$ac_cv_sizeof_unsigned_long" 1>&6
-cat >> confdefs.h <<EOF
-#define SIZEOF_UNSIGNED_LONG $ac_cv_sizeof_unsigned_long
-EOF
-
-
-echo $ac_n "checking size of long long""... $ac_c" 1>&6
-echo "configure:2549: checking size of long long" >&5
-if eval "test \"`echo '$''{'ac_cv_sizeof_long_long'+set}'`\" = set"; then
-  echo $ac_n "(cached) $ac_c" 1>&6
-else
-  if test "$cross_compiling" = yes; then
-    { echo "configure: error: can not run test program while cross compiling" 1>&2; exit 1; }
-else
-  cat > conftest.$ac_ext <<EOF
-#line 2557 "configure"
-#include "confdefs.h"
-#include <stdio.h>
-main()
-{
-  FILE *f=fopen("conftestval", "w");
-  if (!f) exit(1);
-  fprintf(f, "%d\n", sizeof(long long));
-  exit(0);
-}
-EOF
-if { (eval echo configure:2568: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
-then
-  ac_cv_sizeof_long_long=`cat conftestval`
-else
-  echo "configure: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-  rm -fr conftest*
-  ac_cv_sizeof_long_long=0
-fi
-rm -fr conftest*
-fi
-
-fi
-echo "$ac_t""$ac_cv_sizeof_long_long" 1>&6
-cat >> confdefs.h <<EOF
-#define SIZEOF_LONG_LONG $ac_cv_sizeof_long_long
-EOF
-
-
-echo $ac_n "checking size of unsigned long long""... $ac_c" 1>&6
-echo "configure:2588: checking size of unsigned long long" >&5
-if eval "test \"`echo '$''{'ac_cv_sizeof_unsigned_long_long'+set}'`\" = set"; then
-  echo $ac_n "(cached) $ac_c" 1>&6
-else
-  if test "$cross_compiling" = yes; then
-    { echo "configure: error: can not run test program while cross compiling" 1>&2; exit 1; }
-else
-  cat > conftest.$ac_ext <<EOF
-#line 2596 "configure"
-#include "confdefs.h"
-#include <stdio.h>
-main()
-{
-  FILE *f=fopen("conftestval", "w");
-  if (!f) exit(1);
-  fprintf(f, "%d\n", sizeof(unsigned long long));
-  exit(0);
-}
-EOF
-if { (eval echo configure:2607: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
-then
-  ac_cv_sizeof_unsigned_long_long=`cat conftestval`
-else
-  echo "configure: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-  rm -fr conftest*
-  ac_cv_sizeof_unsigned_long_long=0
-fi
-rm -fr conftest*
-fi
-
-fi
-echo "$ac_t""$ac_cv_sizeof_unsigned_long_long" 1>&6
-cat >> confdefs.h <<EOF
-#define SIZEOF_UNSIGNED_LONG_LONG $ac_cv_sizeof_unsigned_long_long
-EOF
-
-
-echo $ac_n "checking size of float""... $ac_c" 1>&6
-echo "configure:2627: checking size of float" >&5
-if eval "test \"`echo '$''{'ac_cv_sizeof_float'+set}'`\" = set"; then
-  echo $ac_n "(cached) $ac_c" 1>&6
-else
-  if test "$cross_compiling" = yes; then
-    { echo "configure: error: can not run test program while cross compiling" 1>&2; exit 1; }
-else
-  cat > conftest.$ac_ext <<EOF
-#line 2635 "configure"
-#include "confdefs.h"
-#include <stdio.h>
-main()
-{
-  FILE *f=fopen("conftestval", "w");
-  if (!f) exit(1);
-  fprintf(f, "%d\n", sizeof(float));
-  exit(0);
-}
-EOF
-if { (eval echo configure:2646: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
-then
-  ac_cv_sizeof_float=`cat conftestval`
-else
-  echo "configure: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-  rm -fr conftest*
-  ac_cv_sizeof_float=0
-fi
-rm -fr conftest*
-fi
-
-fi
-echo "$ac_t""$ac_cv_sizeof_float" 1>&6
-cat >> confdefs.h <<EOF
-#define SIZEOF_FLOAT $ac_cv_sizeof_float
-EOF
-
-
-echo $ac_n "checking size of double""... $ac_c" 1>&6
-echo "configure:2666: checking size of double" >&5
-if eval "test \"`echo '$''{'ac_cv_sizeof_double'+set}'`\" = set"; then
-  echo $ac_n "(cached) $ac_c" 1>&6
-else
-  if test "$cross_compiling" = yes; then
-    { echo "configure: error: can not run test program while cross compiling" 1>&2; exit 1; }
-else
-  cat > conftest.$ac_ext <<EOF
-#line 2674 "configure"
-#include "confdefs.h"
-#include <stdio.h>
-main()
-{
-  FILE *f=fopen("conftestval", "w");
-  if (!f) exit(1);
-  fprintf(f, "%d\n", sizeof(double));
-  exit(0);
-}
-EOF
-if { (eval echo configure:2685: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
-then
-  ac_cv_sizeof_double=`cat conftestval`
-else
-  echo "configure: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-  rm -fr conftest*
-  ac_cv_sizeof_double=0
-fi
-rm -fr conftest*
-fi
-
-fi
-echo "$ac_t""$ac_cv_sizeof_double" 1>&6
-cat >> confdefs.h <<EOF
-#define SIZEOF_DOUBLE $ac_cv_sizeof_double
-EOF
-
-
-
-echo $ac_n "checking whether byte ordering is bigendian""... $ac_c" 1>&6
-echo "configure:2706: checking whether byte ordering is bigendian" >&5
-if eval "test \"`echo '$''{'ac_cv_c_bigendian'+set}'`\" = set"; then
-  echo $ac_n "(cached) $ac_c" 1>&6
-else
-  ac_cv_c_bigendian=unknown
-# See if sys/param.h defines the BYTE_ORDER macro.
-cat > conftest.$ac_ext <<EOF
-#line 2713 "configure"
-#include "confdefs.h"
-#include <sys/types.h>
-#include <sys/param.h>
-int main() {
-
-#if !BYTE_ORDER || !BIG_ENDIAN || !LITTLE_ENDIAN
- bogus endian macros
-#endif
-; return 0; }
-EOF
-if { (eval echo configure:2724: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
-  rm -rf conftest*
-  # It does; now see whether it defined to BIG_ENDIAN or not.
-cat > conftest.$ac_ext <<EOF
-#line 2728 "configure"
-#include "confdefs.h"
-#include <sys/types.h>
-#include <sys/param.h>
-int main() {
-
-#if BYTE_ORDER != BIG_ENDIAN
- not big endian
-#endif
-; return 0; }
-EOF
-if { (eval echo configure:2739: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
-  rm -rf conftest*
-  ac_cv_c_bigendian=yes
-else
-  echo "configure: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-  rm -rf conftest*
-  ac_cv_c_bigendian=no
-fi
-rm -f conftest*
-else
-  echo "configure: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-fi
-rm -f conftest*
-if test $ac_cv_c_bigendian = unknown; then
-if test "$cross_compiling" = yes; then
-    { echo "configure: error: can not run test program while cross compiling" 1>&2; exit 1; }
-else
-  cat > conftest.$ac_ext <<EOF
-#line 2759 "configure"
-#include "confdefs.h"
-main () {
-  /* Are we little or big endian?  From Harbison&Steele.  */
-  union
-  {
-    long l;
-    char c[sizeof (long)];
-  } u;
-  u.l = 1;
-  exit (u.c[sizeof (long) - 1] == 1);
-}
-EOF
-if { (eval echo configure:2772: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
-then
-  ac_cv_c_bigendian=no
-else
-  echo "configure: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-  rm -fr conftest*
-  ac_cv_c_bigendian=yes
-fi
-rm -fr conftest*
-fi
-
-fi
-fi
-
-echo "$ac_t""$ac_cv_c_bigendian" 1>&6
-if test $ac_cv_c_bigendian = yes; then
-  cat >> confdefs.h <<\EOF
-#define WORDS_BIGENDIAN 1
-EOF
-
-fi
-
-
-CONFCFLAGS=""
 CONFCPPFLAGS=""
+CONFCFLAGS=""
+CONFCLIBFLAGS=""
 CONFLDFLAGS=""
+CONFLDLIBFLAGS=""
 
 case $target_cpu in
 alpha*)
@@ -2818,10 +2253,10 @@ ia64)
 powerpc)
   CONFCPPFLAGS="$CONFCPPFLAGS -Dpowerpc"
   ;;
-sparcv8plus)
+sparcv8plus*)
   CONFCPPFLAGS="$CONFCPPFLAGS -Dsparcv8plus"
   ;;
-sparcv9)
+sparcv9*)
   CONFCPPFLAGS="$CONFCPPFLAGS -Dsparcv9"
   ;;
 x86)
@@ -2830,14 +2265,15 @@ x86)
 esac
 
 if test "$ac_cv_prog_gcc" = yes; then
-  CONFCFLAGS="$CONFCFLAGS -shared"
-  CONFLDFLAGS="$CONFLDFLAGS -shared -dy -soname $SHARED_LIBRARY_NAME"
+  CONFCLIBFLAGS="$CONFCFLAGS -shared"
+  CONFLDLIBFLAGS="$CONFLDFLAGS -shared -dy -soname $SHARED_LIBRARY_NAME"
 elif test "$ac_cv_prog_SUNPRO_CC" = yes; then
-  CONFCFLAGS="$CONFCFLAGS -mt -KPIC"
-  CONFLDFLAGS="$CONFLDFLAGS -G -h $SHARED_LIBRARY_NAME"
+  CONFCFLAGS="$CONFCFLAGS -mt"
+  CONFCLIBFLAGS="$CONFCLIBFLAGS -KPIC"
+  CONFLDLIBFLAGS="$CONFLDLIBFLAGS -G -h $SHARED_LIBRARY_NAME"
 else
-  CONFCFLAGS="$CONFCFLAGS -shared"
-  CONFLDFLAGS="$CONFLDFLAGS -shared"
+  CONFCLIBFLAGS="$CONFCLIBFLAGS -shared"
+  CONFLDLIBFLAGS="$CONFLDLIBFLAGS -shared"
 fi
 
 if test "$ac_enable_debug" = yes; then
@@ -2862,10 +2298,10 @@ else
     i686)
       CONFCFLAGS="$CONFCFLAGS -mpentiumpro"
       ;;
-    sparcv8plus)
+    sparcv8plus*)
       CONFCFLAGS="$CONFCFLAGS -mcpu=ultrasparc"
       ;;
-    sparcv9)
+    sparcv9*)
       CONFCFLAGS="$CONFCFLAGS -mcpu=ultrasparc"
       ;;
     esac
@@ -2873,11 +2309,28 @@ else
     CONFCFLAGS="$CONFCFLAGS -fast"
     case $target_cpu in
     sparcv8plus)
-      CONFCFLAGS="$CONFCFLAGS -xchip=ultra -xarch=v8plus"
+      CONFCFLAGS="$CONFCFLAGS -xtarget=generic -xarch=v8plus"
+      ;;
+    sparcv8plusa)
+      CONFCFLAGS="$CONFCFLAGS -xtarget=generic -xarch=v8plusa"
+      ;;
+    sparcv8plusb)
+      CONFCFLAGS="$CONFCFLAGS -xtarget=generic -xarch=v8plusb"
       ;;
     sparcv9)
-      CONFCFLAGS="$CONFCFLAGS -xchip=ultra -xarch=v9"
-      CONFCPPFLAGS="$CONFCPPFLAGS -Dsparcv9"
+	  CFLAGS="-xarch=v9"
+      CONFCFLAGS="$CONFCFLAGS -xtarget=generic64 -xarch=v9"
+      CONFLDFLAGS="$CONFLDFLAGS -64"
+      ;;
+    sparcv9a)
+	  CFLAGS="-xarch=v9"
+      CONFCFLAGS="$CONFCFLAGS -xtarget=generic64 -xarch=v9a"
+      CONFLDFLAGS="$CONFLDFLAGS -64"
+      ;;
+    sparcv9b)
+	  CFLAGS="-xarch=v9"
+      CONFCFLAGS="$CONFCFLAGS -xtarget=generic64 -xarch=v9b"
+      CONFLDFLAGS="$CONFLDFLAGS -64"
       ;;
     esac
   else
@@ -2893,7 +2346,14 @@ case $target_os in
     ;;
   osf*)
 	LD=$CC
-    CONFLDFLAGS="$CONFLDFLAGS -msym -soname $SHARED_LIBRARY_NAME"
+    CONFLDLIBFLAGS="$CONFLDLIBFLAGS -msym -soname $SHARED_LIBRARY_NAME"
+    ;;
+  solaris*)
+    if test "$ac_cv_prog_SUNPRO_CC" = yes; then
+      LD=/usr/ccs/bin/ld
+    else
+      LD=ld
+    fi
     ;;
   *)
     LD=ld
@@ -2906,12 +2366,572 @@ sparcv8plus)
   CONFASFLAGS="-Av8plus"
   ;;
 sparcv9)
-  CONFASFLAGS="-Av9"
+  CONFASFLAGS="-Av9 -64"
   ;;
 esac
 
+echo $ac_n "checking size of char""... $ac_c" 1>&6
+echo "configure:2375: checking size of char" >&5
+if eval "test \"`echo '$''{'ac_cv_sizeof_char'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  if test "$cross_compiling" = yes; then
+    { echo "configure: error: can not run test program while cross compiling" 1>&2; exit 1; }
+else
+  cat > conftest.$ac_ext <<EOF
+#line 2383 "configure"
+#include "confdefs.h"
+#include <stdio.h>
+main()
+{
+  FILE *f=fopen("conftestval", "w");
+  if (!f) exit(1);
+  fprintf(f, "%d\n", sizeof(char));
+  exit(0);
+}
+EOF
+if { (eval echo configure:2394: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+then
+  ac_cv_sizeof_char=`cat conftestval`
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -fr conftest*
+  ac_cv_sizeof_char=0
+fi
+rm -fr conftest*
+fi
+
+fi
+echo "$ac_t""$ac_cv_sizeof_char" 1>&6
+cat >> confdefs.h <<EOF
+#define SIZEOF_CHAR $ac_cv_sizeof_char
+EOF
+
+
+echo $ac_n "checking size of unsigned char""... $ac_c" 1>&6
+echo "configure:2414: checking size of unsigned char" >&5
+if eval "test \"`echo '$''{'ac_cv_sizeof_unsigned_char'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  if test "$cross_compiling" = yes; then
+    { echo "configure: error: can not run test program while cross compiling" 1>&2; exit 1; }
+else
+  cat > conftest.$ac_ext <<EOF
+#line 2422 "configure"
+#include "confdefs.h"
+#include <stdio.h>
+main()
+{
+  FILE *f=fopen("conftestval", "w");
+  if (!f) exit(1);
+  fprintf(f, "%d\n", sizeof(unsigned char));
+  exit(0);
+}
+EOF
+if { (eval echo configure:2433: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+then
+  ac_cv_sizeof_unsigned_char=`cat conftestval`
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -fr conftest*
+  ac_cv_sizeof_unsigned_char=0
+fi
+rm -fr conftest*
+fi
+
+fi
+echo "$ac_t""$ac_cv_sizeof_unsigned_char" 1>&6
+cat >> confdefs.h <<EOF
+#define SIZEOF_UNSIGNED_CHAR $ac_cv_sizeof_unsigned_char
+EOF
+
+
+echo $ac_n "checking size of short""... $ac_c" 1>&6
+echo "configure:2453: checking size of short" >&5
+if eval "test \"`echo '$''{'ac_cv_sizeof_short'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  if test "$cross_compiling" = yes; then
+    { echo "configure: error: can not run test program while cross compiling" 1>&2; exit 1; }
+else
+  cat > conftest.$ac_ext <<EOF
+#line 2461 "configure"
+#include "confdefs.h"
+#include <stdio.h>
+main()
+{
+  FILE *f=fopen("conftestval", "w");
+  if (!f) exit(1);
+  fprintf(f, "%d\n", sizeof(short));
+  exit(0);
+}
+EOF
+if { (eval echo configure:2472: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+then
+  ac_cv_sizeof_short=`cat conftestval`
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -fr conftest*
+  ac_cv_sizeof_short=0
+fi
+rm -fr conftest*
+fi
+
+fi
+echo "$ac_t""$ac_cv_sizeof_short" 1>&6
+cat >> confdefs.h <<EOF
+#define SIZEOF_SHORT $ac_cv_sizeof_short
+EOF
+
+
+echo $ac_n "checking size of unsigned short""... $ac_c" 1>&6
+echo "configure:2492: checking size of unsigned short" >&5
+if eval "test \"`echo '$''{'ac_cv_sizeof_unsigned_short'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  if test "$cross_compiling" = yes; then
+    { echo "configure: error: can not run test program while cross compiling" 1>&2; exit 1; }
+else
+  cat > conftest.$ac_ext <<EOF
+#line 2500 "configure"
+#include "confdefs.h"
+#include <stdio.h>
+main()
+{
+  FILE *f=fopen("conftestval", "w");
+  if (!f) exit(1);
+  fprintf(f, "%d\n", sizeof(unsigned short));
+  exit(0);
+}
+EOF
+if { (eval echo configure:2511: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+then
+  ac_cv_sizeof_unsigned_short=`cat conftestval`
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -fr conftest*
+  ac_cv_sizeof_unsigned_short=0
+fi
+rm -fr conftest*
+fi
+
+fi
+echo "$ac_t""$ac_cv_sizeof_unsigned_short" 1>&6
+cat >> confdefs.h <<EOF
+#define SIZEOF_UNSIGNED_SHORT $ac_cv_sizeof_unsigned_short
+EOF
+
+
+echo $ac_n "checking size of int""... $ac_c" 1>&6
+echo "configure:2531: checking size of int" >&5
+if eval "test \"`echo '$''{'ac_cv_sizeof_int'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  if test "$cross_compiling" = yes; then
+    { echo "configure: error: can not run test program while cross compiling" 1>&2; exit 1; }
+else
+  cat > conftest.$ac_ext <<EOF
+#line 2539 "configure"
+#include "confdefs.h"
+#include <stdio.h>
+main()
+{
+  FILE *f=fopen("conftestval", "w");
+  if (!f) exit(1);
+  fprintf(f, "%d\n", sizeof(int));
+  exit(0);
+}
+EOF
+if { (eval echo configure:2550: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+then
+  ac_cv_sizeof_int=`cat conftestval`
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -fr conftest*
+  ac_cv_sizeof_int=0
+fi
+rm -fr conftest*
+fi
+
+fi
+echo "$ac_t""$ac_cv_sizeof_int" 1>&6
+cat >> confdefs.h <<EOF
+#define SIZEOF_INT $ac_cv_sizeof_int
+EOF
+
+
+echo $ac_n "checking size of unsigned int""... $ac_c" 1>&6
+echo "configure:2570: checking size of unsigned int" >&5
+if eval "test \"`echo '$''{'ac_cv_sizeof_unsigned_int'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  if test "$cross_compiling" = yes; then
+    { echo "configure: error: can not run test program while cross compiling" 1>&2; exit 1; }
+else
+  cat > conftest.$ac_ext <<EOF
+#line 2578 "configure"
+#include "confdefs.h"
+#include <stdio.h>
+main()
+{
+  FILE *f=fopen("conftestval", "w");
+  if (!f) exit(1);
+  fprintf(f, "%d\n", sizeof(unsigned int));
+  exit(0);
+}
+EOF
+if { (eval echo configure:2589: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+then
+  ac_cv_sizeof_unsigned_int=`cat conftestval`
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -fr conftest*
+  ac_cv_sizeof_unsigned_int=0
+fi
+rm -fr conftest*
+fi
+
+fi
+echo "$ac_t""$ac_cv_sizeof_unsigned_int" 1>&6
+cat >> confdefs.h <<EOF
+#define SIZEOF_UNSIGNED_INT $ac_cv_sizeof_unsigned_int
+EOF
+
+
+echo $ac_n "checking size of long""... $ac_c" 1>&6
+echo "configure:2609: checking size of long" >&5
+if eval "test \"`echo '$''{'ac_cv_sizeof_long'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  if test "$cross_compiling" = yes; then
+    { echo "configure: error: can not run test program while cross compiling" 1>&2; exit 1; }
+else
+  cat > conftest.$ac_ext <<EOF
+#line 2617 "configure"
+#include "confdefs.h"
+#include <stdio.h>
+main()
+{
+  FILE *f=fopen("conftestval", "w");
+  if (!f) exit(1);
+  fprintf(f, "%d\n", sizeof(long));
+  exit(0);
+}
+EOF
+if { (eval echo configure:2628: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+then
+  ac_cv_sizeof_long=`cat conftestval`
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -fr conftest*
+  ac_cv_sizeof_long=0
+fi
+rm -fr conftest*
+fi
+
+fi
+echo "$ac_t""$ac_cv_sizeof_long" 1>&6
+cat >> confdefs.h <<EOF
+#define SIZEOF_LONG $ac_cv_sizeof_long
+EOF
+
+
+echo $ac_n "checking size of unsigned long""... $ac_c" 1>&6
+echo "configure:2648: checking size of unsigned long" >&5
+if eval "test \"`echo '$''{'ac_cv_sizeof_unsigned_long'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  if test "$cross_compiling" = yes; then
+    { echo "configure: error: can not run test program while cross compiling" 1>&2; exit 1; }
+else
+  cat > conftest.$ac_ext <<EOF
+#line 2656 "configure"
+#include "confdefs.h"
+#include <stdio.h>
+main()
+{
+  FILE *f=fopen("conftestval", "w");
+  if (!f) exit(1);
+  fprintf(f, "%d\n", sizeof(unsigned long));
+  exit(0);
+}
+EOF
+if { (eval echo configure:2667: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+then
+  ac_cv_sizeof_unsigned_long=`cat conftestval`
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -fr conftest*
+  ac_cv_sizeof_unsigned_long=0
+fi
+rm -fr conftest*
+fi
+
+fi
+echo "$ac_t""$ac_cv_sizeof_unsigned_long" 1>&6
+cat >> confdefs.h <<EOF
+#define SIZEOF_UNSIGNED_LONG $ac_cv_sizeof_unsigned_long
+EOF
+
+
+echo $ac_n "checking size of long long""... $ac_c" 1>&6
+echo "configure:2687: checking size of long long" >&5
+if eval "test \"`echo '$''{'ac_cv_sizeof_long_long'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  if test "$cross_compiling" = yes; then
+    { echo "configure: error: can not run test program while cross compiling" 1>&2; exit 1; }
+else
+  cat > conftest.$ac_ext <<EOF
+#line 2695 "configure"
+#include "confdefs.h"
+#include <stdio.h>
+main()
+{
+  FILE *f=fopen("conftestval", "w");
+  if (!f) exit(1);
+  fprintf(f, "%d\n", sizeof(long long));
+  exit(0);
+}
+EOF
+if { (eval echo configure:2706: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+then
+  ac_cv_sizeof_long_long=`cat conftestval`
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -fr conftest*
+  ac_cv_sizeof_long_long=0
+fi
+rm -fr conftest*
+fi
+
+fi
+echo "$ac_t""$ac_cv_sizeof_long_long" 1>&6
+cat >> confdefs.h <<EOF
+#define SIZEOF_LONG_LONG $ac_cv_sizeof_long_long
+EOF
+
+
+echo $ac_n "checking size of unsigned long long""... $ac_c" 1>&6
+echo "configure:2726: checking size of unsigned long long" >&5
+if eval "test \"`echo '$''{'ac_cv_sizeof_unsigned_long_long'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  if test "$cross_compiling" = yes; then
+    { echo "configure: error: can not run test program while cross compiling" 1>&2; exit 1; }
+else
+  cat > conftest.$ac_ext <<EOF
+#line 2734 "configure"
+#include "confdefs.h"
+#include <stdio.h>
+main()
+{
+  FILE *f=fopen("conftestval", "w");
+  if (!f) exit(1);
+  fprintf(f, "%d\n", sizeof(unsigned long long));
+  exit(0);
+}
+EOF
+if { (eval echo configure:2745: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+then
+  ac_cv_sizeof_unsigned_long_long=`cat conftestval`
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -fr conftest*
+  ac_cv_sizeof_unsigned_long_long=0
+fi
+rm -fr conftest*
+fi
+
+fi
+echo "$ac_t""$ac_cv_sizeof_unsigned_long_long" 1>&6
+cat >> confdefs.h <<EOF
+#define SIZEOF_UNSIGNED_LONG_LONG $ac_cv_sizeof_unsigned_long_long
+EOF
+
+
+echo $ac_n "checking size of float""... $ac_c" 1>&6
+echo "configure:2765: checking size of float" >&5
+if eval "test \"`echo '$''{'ac_cv_sizeof_float'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  if test "$cross_compiling" = yes; then
+    { echo "configure: error: can not run test program while cross compiling" 1>&2; exit 1; }
+else
+  cat > conftest.$ac_ext <<EOF
+#line 2773 "configure"
+#include "confdefs.h"
+#include <stdio.h>
+main()
+{
+  FILE *f=fopen("conftestval", "w");
+  if (!f) exit(1);
+  fprintf(f, "%d\n", sizeof(float));
+  exit(0);
+}
+EOF
+if { (eval echo configure:2784: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+then
+  ac_cv_sizeof_float=`cat conftestval`
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -fr conftest*
+  ac_cv_sizeof_float=0
+fi
+rm -fr conftest*
+fi
+
+fi
+echo "$ac_t""$ac_cv_sizeof_float" 1>&6
+cat >> confdefs.h <<EOF
+#define SIZEOF_FLOAT $ac_cv_sizeof_float
+EOF
+
+
+echo $ac_n "checking size of double""... $ac_c" 1>&6
+echo "configure:2804: checking size of double" >&5
+if eval "test \"`echo '$''{'ac_cv_sizeof_double'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  if test "$cross_compiling" = yes; then
+    { echo "configure: error: can not run test program while cross compiling" 1>&2; exit 1; }
+else
+  cat > conftest.$ac_ext <<EOF
+#line 2812 "configure"
+#include "confdefs.h"
+#include <stdio.h>
+main()
+{
+  FILE *f=fopen("conftestval", "w");
+  if (!f) exit(1);
+  fprintf(f, "%d\n", sizeof(double));
+  exit(0);
+}
+EOF
+if { (eval echo configure:2823: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+then
+  ac_cv_sizeof_double=`cat conftestval`
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -fr conftest*
+  ac_cv_sizeof_double=0
+fi
+rm -fr conftest*
+fi
+
+fi
+echo "$ac_t""$ac_cv_sizeof_double" 1>&6
+cat >> confdefs.h <<EOF
+#define SIZEOF_DOUBLE $ac_cv_sizeof_double
+EOF
+
+
+
+echo $ac_n "checking whether byte ordering is bigendian""... $ac_c" 1>&6
+echo "configure:2844: checking whether byte ordering is bigendian" >&5
+if eval "test \"`echo '$''{'ac_cv_c_bigendian'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  ac_cv_c_bigendian=unknown
+# See if sys/param.h defines the BYTE_ORDER macro.
+cat > conftest.$ac_ext <<EOF
+#line 2851 "configure"
+#include "confdefs.h"
+#include <sys/types.h>
+#include <sys/param.h>
+int main() {
+
+#if !BYTE_ORDER || !BIG_ENDIAN || !LITTLE_ENDIAN
+ bogus endian macros
+#endif
+; return 0; }
+EOF
+if { (eval echo configure:2862: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+  rm -rf conftest*
+  # It does; now see whether it defined to BIG_ENDIAN or not.
+cat > conftest.$ac_ext <<EOF
+#line 2866 "configure"
+#include "confdefs.h"
+#include <sys/types.h>
+#include <sys/param.h>
+int main() {
+
+#if BYTE_ORDER != BIG_ENDIAN
+ not big endian
+#endif
+; return 0; }
+EOF
+if { (eval echo configure:2877: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+  rm -rf conftest*
+  ac_cv_c_bigendian=yes
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -rf conftest*
+  ac_cv_c_bigendian=no
+fi
+rm -f conftest*
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+fi
+rm -f conftest*
+if test $ac_cv_c_bigendian = unknown; then
+if test "$cross_compiling" = yes; then
+    { echo "configure: error: can not run test program while cross compiling" 1>&2; exit 1; }
+else
+  cat > conftest.$ac_ext <<EOF
+#line 2897 "configure"
+#include "confdefs.h"
+main () {
+  /* Are we little or big endian?  From Harbison&Steele.  */
+  union
+  {
+    long l;
+    char c[sizeof (long)];
+  } u;
+  u.l = 1;
+  exit (u.c[sizeof (long) - 1] == 1);
+}
+EOF
+if { (eval echo configure:2910: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+then
+  ac_cv_c_bigendian=no
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -fr conftest*
+  ac_cv_c_bigendian=yes
+fi
+rm -fr conftest*
+fi
+
+fi
+fi
+
+echo "$ac_t""$ac_cv_c_bigendian" 1>&6
+if test $ac_cv_c_bigendian = yes; then
+  cat >> confdefs.h <<\EOF
+#define WORDS_BIGENDIAN 1
+EOF
+
+fi
+
+
 echo $ac_n "checking for entropy device""... $ac_c" 1>&6
-echo "configure:2915: checking for entropy device" >&5
+echo "configure:2935: checking for entropy device" >&5
 case $target_os in
   cygwin*)
     ;;
@@ -2996,12 +3016,12 @@ There is no entropy device to initialize the random generator on host $host
 esac
 echo "$ac_t""$ac_cv_entropy_device" 1>&6
 
-BLOWFISHOPTDEP=""
-BLOWFISHOPTRULE=""
-FIPS180OPTDEP=""
-FIPS180OPTRULE=""
-MP32OPTDEP=""
-MP32OPTRULE=""
+BLOWFISHOPTDEP="blowfishopt.o: blowfishopt.c"
+BLOWFISHOPTRULE="	\$(COMPILE.c) \$(CLIBFLAGS)"
+FIPS180OPTDEP="fips180opt.o: fips180opt.c"
+FIPS180OPTRULE="	\$(COMPILE.c) \$(CLIBFLAGS)"
+MP32OPTDEP="mp32opt.o: mp32opt.c"
+MP32OPTRULE="	\$(COMPILE.c) \$(CLIBFLAGS)"
 case $target_cpu in
   i386)
     MP32OPTDEP="mp32opt.o: gnu/mp32opt.gas.i386.S"
@@ -3023,7 +3043,7 @@ case $target_cpu in
     MP32OPTDEP="mp32opt.o: gnu/mp32opt.gas.powerpc.S"
     MP32OPTRULE="	\$(CPP) \$(CPPFLAGS) gnu/mp32opt.gas.powerpc.S | \$(AS) \$(ASFLAGS) -o mp32opt.o"
     ;;
-  sparcv8plus | sparcv9)
+  sparcv8plus) 
     MP32OPTDEP="mp32opt.o: gnu/mp32opt.gas.sparcv9.S"
     MP32OPTRULE="	\$(CPP) \$(CPPFLAGS) gnu/mp32opt.gas.sparcv9.S | \$(AS) \$(ASFLAGS) -o mp32opt.o"
     ;;
@@ -3187,7 +3207,7 @@ s%@build_vendor@%$build_vendor%g
 s%@build_os@%$build_os%g
 s%@CC@%$CC%g
 s%@CPP@%$CPP%g
-s%@RANLIB@%$RANLIB%g
+s%@LN_S@%$LN_S%g
 s%@INSTALL_PROGRAM@%$INSTALL_PROGRAM%g
 s%@INSTALL_SCRIPT@%$INSTALL_SCRIPT%g
 s%@INSTALL_DATA@%$INSTALL_DATA%g
@@ -3198,9 +3218,11 @@ s%@VERSION@%$VERSION%g
 s%@MAJOR@%$MAJOR%g
 s%@LD@%$LD%g
 s%@CONFASFLAGS@%$CONFASFLAGS%g
-s%@CONFCFLAGS@%$CONFCFLAGS%g
 s%@CONFCPPFLAGS@%$CONFCPPFLAGS%g
+s%@CONFCFLAGS@%$CONFCFLAGS%g
+s%@CONFCLIBFLAGS@%$CONFCLIBFLAGS%g
 s%@CONFLDFLAGS@%$CONFLDFLAGS%g
+s%@CONFLDLIBFLAGS@%$CONFLDLIBFLAGS%g
 s%@JAVAGLUE@%$JAVAGLUE%g
 s%@JNIFLAGS@%$JNIFLAGS%g
 s%@LIBOBJS@%$LIBOBJS%g

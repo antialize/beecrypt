@@ -47,12 +47,14 @@ CPP = @CPP@
 LD = @LD@
 
 RM = rm
-LN = ln
+LN_S = @LN_S@
 
 ASFLAGS = @CONFASFLAGS@
-CFLAGS = @CONFCFLAGS@
 CPPFLAGS = @DEFS@ @CONFCPPFLAGS@ -I. -I${srcdir}
+CFLAGS = @CONFCFLAGS@
+CLIBFLAGS = @CONFCLIBFLAGS@
 LDFLAGS = @CONFLDFLAGS@ @LIBS@
+LDLIBFLAGS = @CONFLDLIBFLAGS@
 
 JAVAGLUE = @JAVAGLUE@
 JNIFLAGS = @JNIFLAGS@
@@ -158,23 +160,107 @@ LIBBEECRYPT = libbeecrypt.so
 
 all: $(LIBBEECRYPT) $(LIBBEECRYPT).$(MAJOR)
 
-javaglue.o: javaglue.c
-	$(COMPILE.c) $(JNIFLAGS)
+base64.o: base64.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
+beecrypt.o: beecrypt.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
+blockmode.o: blockmode.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
+blowfish.o: blowfish.c
+	$(COMPILE.c) $(CLIBFLAGS)
 
 @BLOWFISHOPTDEP@
 	@BLOWFISHOPTRULE@
 
+dldp.o: dldp.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
+dlkp.o: dlkp.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
+dlpk.o: dlpk.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
+dlsvdp-dh.o: dlsvdp-dh.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
+elgamal.o: elgamal.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
+endianness.o: endianness.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
+entropy.o: entropy.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
+fips180.o: fips180.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
 @FIPS180OPTDEP@
 	@FIPS180OPTRULE@
+
+fips186.o: fips186.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
+hmac.o: hmac.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
+javaglue.o: javaglue.c
+	$(COMPILE.c) $(CLIBFLAGS) $(JNIFLAGS)
+
+md5.o: md5.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
+md5hmac.o: md5hmac.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
+mp32.o: mp32.c
+	$(COMPILE.c) $(CLIBFLAGS)
 
 @MP32OPTDEP@
 	@MP32OPTRULE@
 
+mp32barrett.o: mp32barrett.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
+mp32number.o: mp32number.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
+mp32prime.o: mp32prime.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
+mtprng.o: mtprng.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
+rsa.o: rsa.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
+rsakp.o: rsakp.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
+rsapk.o: rsapk.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
+sha1hmac.o: sha1hmac.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
+sha256.o: sha256.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
+sha256hmac.o: sha256hmac.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
+timestamp.o: timestamp.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
 $(LIBBEECRYPT): $(LIBBEECRYPT).$(MAJOR)
-	$(LN) -s $(LIBBEECRYPT).$(MAJOR) $(LIBBEECRYPT)
+	$(LN_S) $(LIBBEECRYPT).$(MAJOR) $(LIBBEECRYPT)
 
 $(LIBBEECRYPT).$(MAJOR): $(OBJFILES)
-	$(LD) $(LDFLAGS) -o $@ $(OBJFILES)
+	$(LD) $(LDFLAGS) $(LDLIBFLAGS) -o $@ $(OBJFILES)
 
 java-header:
 	javah -o javaglue.h javax.crypto.Cipher com.beeyond.security.NativeMessageDigest com.beeyond.security.NativeSecureRandom com.beeyond.crypto.NativeBlockCipher
@@ -183,7 +269,7 @@ install: $(LIBBEECRYPT).$(MAJOR)
 	$(INSTALL) -d ${libdir}
 	$(INSTALL) $(LIBBEECRYPT).$(MAJOR) ${libdir}
 	$(RM) -f ${libdir}/$(LIBBEECRYPT)
-	$(LN) -s ${libdir}/$(LIBBEECRYPT).$(MAJOR) ${libdir}/$(LIBBEECRYPT)
+	$(LN_S) ${libdir}/$(LIBBEECRYPT).$(MAJOR) ${libdir}/$(LIBBEECRYPT)
 	
 install-headers:
 	$(INSTALL) -d ${includedir}/beecrypt
@@ -220,7 +306,7 @@ install-headers:
 	$(INSTALL_DATA) ${srcdir}/timestamp.h ${includedir}/beecrypt
 
 beetest: beetest.o
-	$(CC) -o $@ beetest.o -L. -lbeecrypt
+	$(CC) $(CFLAGS) -o $@ beetest.o -L. -lbeecrypt
 
 clean:
 	rm -f *.so *.so.$(MAJOR) *.o beetest

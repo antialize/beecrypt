@@ -161,15 +161,33 @@ const randomGenerator* randomGeneratorDefault()
 		return &fips186prng;
 }
 
-void randomGeneratorContextInit(randomGeneratorContext* ctxt, const randomGenerator* rng)
+int randomGeneratorContextInit(randomGeneratorContext* ctxt, const randomGenerator* rng)
 {
-	ctxt->rng = rng;
-	ctxt->param = malloc(rng->paramsize);
+	if (ctxt && rng)
+	{
+		ctxt->rng = rng;
+		ctxt->param = (randomGeneratorParam*) calloc(rng->paramsize, 1);
+		if (ctxt->param)
+			return ctxt->rng->setup(ctxt->param);
+	}
+	return -1;
 }
 
-void randomGeneratorContextFree(randomGeneratorContext* ctxt)
+int randomGeneratorContextCleanup(randomGeneratorContext* ctxt)
 {
-	free(ctxt->param);
+	return (ctxt && ctxt->param) ? ctxt->rng->cleanup(ctxt->param) : -1;
+}
+
+int randomGeneratorContextFree(randomGeneratorContext* ctxt)
+{
+	register int rc = -1;
+	if (ctxt && ctxt->param)
+	{
+		rc = ctxt->rng->cleanup(ctxt->param);
+		free(ctxt->param);
+		ctxt->param = (randomGeneratorParam*) 0;
+	}
+	return rc;
 }
 
 static const hashFunction* hashFunctionList[] =
@@ -213,58 +231,78 @@ const hashFunction* hashFunctionFind(const char* name)
 	return (const hashFunction*) 0;
 }
 
-void hashFunctionContextInit(hashFunctionContext* ctxt, const hashFunction* hash)
+int hashFunctionContextInit(hashFunctionContext* ctxt, const hashFunction* hash)
 {
-	ctxt->hash = hash;
-	ctxt->param = malloc(hash->paramsize);
+	if (ctxt && hash)
+	{
+		ctxt->hash = hash;
+		ctxt->param = (hashFunctionParam*) calloc(hash->paramsize, 1);
+		if (ctxt->param != (hashFunctionParam*) 0)
+			return 0;
+	}
+	return -1;
 }
 
-void hashFunctionContextFree(hashFunctionContext* ctxt)
+int hashFunctionContextFree(hashFunctionContext* ctxt)
 {
-	free(ctxt->param);
+	if (ctxt && ctxt->param)
+	{
+		free(ctxt->param);
+		ctxt->param = (hashFunctionParam*) 0;
+		return 0;
+	}
+	return -1;
 }
 
 int hashFunctionContextReset(hashFunctionContext* ctxt)
 {
-	return ctxt->hash->reset(ctxt->param);
+	return (ctxt && ctxt->param) ? ctxt->hash->reset(ctxt->param) : -1;
 }
 
 int hashFunctionContextUpdate(hashFunctionContext* ctxt, const byte* data, int size)
 {
-	return ctxt->hash->update(ctxt->param, data, size);
+	return (ctxt && ctxt->param) ? ctxt->hash->update(ctxt->param, data, size) : -1;
 }
 
 int hashFunctionContextUpdateMC(hashFunctionContext* ctxt, const memchunk* m)
 {
-	return ctxt->hash->update(ctxt->param, m->data, m->size);
+	return (ctxt && ctxt->param) ? ctxt->hash->update(ctxt->param, m->data, m->size) : -1;
 }
 
 int hashFunctionContextUpdateMP32(hashFunctionContext* ctxt, const mp32number* n)
 {
-	register int rc;
-	register byte* temp = (byte*) malloc((n->size << 2) + 1);
+	register int rc = -1;
 
-	if (mp32msbset(n->size, n->data))
+	if (ctxt && ctxt->param)
 	{
-		temp[0] = 0;
-		encodeInts((javaint*) n->data, temp+1, n->size);
-		rc = ctxt->hash->update(ctxt->param, temp, (n->size << 2) + 1);
+		register byte* temp = (byte*) malloc((n->size << 2) + 1);
+
+		if (mp32msbset(n->size, n->data))
+		{
+			temp[0] = 0;
+			encodeInts((javaint*) n->data, temp+1, n->size);
+			rc = ctxt->hash->update(ctxt->param, temp, (n->size << 2) + 1);
+		}
+		else
+		{
+			encodeInts((javaint*) n->data, temp, n->size);
+			rc = ctxt->hash->update(ctxt->param, temp, n->size << 2);
+		}
+		free(temp);
 	}
-	else
-	{
-		encodeInts((javaint*) n->data, temp, n->size);
-		rc = ctxt->hash->update(ctxt->param, temp, n->size << 2);
-	}
-	free(temp);
 
 	return rc;
 }
 
 int hashFunctionContextDigest(hashFunctionContext* ctxt, mp32number* dig)
 {
-	mp32nsize(dig, (ctxt->hash->digestsize + 3) >> 2);
+	if (ctxt && ctxt->param)
+	{
+		mp32nsize(dig, (ctxt->hash->digestsize + 3) >> 2);
 
-	return ctxt->hash->digest(ctxt->param, dig->data);
+		return ctxt->hash->digest(ctxt->param, dig->data);
+	}
+	return -1;
 }
 
 
@@ -314,7 +352,7 @@ const keyedHashFunction* keyedHashFunctionFind(const char* name)
 void keyedHashFunctionContextInit(keyedHashFunctionContext* ctxt, const keyedHashFunction* hash)
 {
 	ctxt->hash = hash;
-	ctxt->param = malloc(hash->paramsize);
+	ctxt->param = calloc(hash->paramsize, 1);
 }
 
 void keyedHashFunctionContextFree(keyedHashFunctionContext* ctxt)
@@ -412,7 +450,7 @@ const blockCipher* blockCipherFind(const char* name)
 void blockCipherContextInit(blockCipherContext* ctxt, const blockCipher* ciph)
 {
 	ctxt->ciph = ciph;
-	ctxt->param = malloc(ciph->paramsize);
+	ctxt->param = calloc(ciph->paramsize, 1);
 }
 
 void blockCipherContextSetup(blockCipherContext* ctxt, const uint32* key, int keybits, cipherOperation op)

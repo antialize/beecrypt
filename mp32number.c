@@ -40,8 +40,28 @@ void mp32nzero(mp32number* n)
 
 void mp32nsize(mp32number* n, uint32 size)
 {
-	n->size = size;
-	n->data = (uint32*) malloc(size * sizeof(uint32));
+	if (size)
+	{
+		if (n->data)
+		{
+			if (n->size != size)
+				n->data = (uint32*) realloc(n->data, size * sizeof(uint32));
+		}
+		else
+			n->data = (uint32*) malloc(size * sizeof(uint32));
+
+		if (n->data == (uint32*) 0)
+			n->size = 0;
+		else
+			n->size = size;
+
+	}
+	else if (n->data)
+	{
+		free(n->data);
+		n->data = (uint32*) 0;
+		n->size = 0;
+	}
 }
 
 void mp32ninit(mp32number* n, uint32 size, const uint32* data)
@@ -50,9 +70,7 @@ void mp32ninit(mp32number* n, uint32 size, const uint32* data)
 	n->data = (uint32*) malloc(size * sizeof(uint32));
 
 	if (n->data)
-	{
 		mp32copy(size, n->data, data);
-	}
 }
 
 void mp32nfree(mp32number* n)

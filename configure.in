@@ -49,7 +49,7 @@ esac
 dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_CPP
-AC_PROG_RANLIB
+AC_PROG_LN_S
 AC_PROG_INSTALL
 
 AC_C_INLINE
@@ -171,9 +171,11 @@ AC_SUBST(CC)
 AC_SUBST(CPP)
 AC_SUBST(LD)
 AC_SUBST(CONFASFLAGS)
-AC_SUBST(CONFCFLAGS)
 AC_SUBST(CONFCPPFLAGS)
+AC_SUBST(CONFCFLAGS)
+AC_SUBST(CONFCLIBFLAGS)
 AC_SUBST(CONFLDFLAGS)
+AC_SUBST(CONFLDLIBFLAGS)
 AC_SUBST(JAVAGLUE)
 AC_SUBST(JNIFLAGS)
 
@@ -210,27 +212,12 @@ elif test  "$ac_cv_header_pthread_h" = yes; then
   AC_HAVE_LIBRARY(pthread)
 fi
 
-dnl Checks for word sizes
-AC_CHECK_SIZEOF(char)
-AC_CHECK_SIZEOF(unsigned char)
-AC_CHECK_SIZEOF(short)
-AC_CHECK_SIZEOF(unsigned short)
-AC_CHECK_SIZEOF(int)
-AC_CHECK_SIZEOF(unsigned int)
-AC_CHECK_SIZEOF(long)
-AC_CHECK_SIZEOF(unsigned long)
-AC_CHECK_SIZEOF(long long)
-AC_CHECK_SIZEOF(unsigned long long)
-AC_CHECK_SIZEOF(float)
-AC_CHECK_SIZEOF(double)
-
-dnl Checks for endianness
-AC_C_BIGENDIAN
-
 dnl Checks for compiler flags
-CONFCFLAGS=""
 CONFCPPFLAGS=""
+CONFCFLAGS=""
+CONFCLIBFLAGS=""
 CONFLDFLAGS=""
+CONFLDLIBFLAGS=""
 
 case $target_cpu in
 alpha*)
@@ -254,10 +241,10 @@ ia64)
 powerpc)
   CONFCPPFLAGS="$CONFCPPFLAGS -Dpowerpc"
   ;;
-sparcv8plus)
+sparcv8plus*)
   CONFCPPFLAGS="$CONFCPPFLAGS -Dsparcv8plus"
   ;;
-sparcv9)
+sparcv9*)
   CONFCPPFLAGS="$CONFCPPFLAGS -Dsparcv9"
   ;;
 x86)
@@ -266,14 +253,15 @@ x86)
 esac
 
 if test "$ac_cv_prog_gcc" = yes; then
-  CONFCFLAGS="$CONFCFLAGS -shared"
-  CONFLDFLAGS="$CONFLDFLAGS -shared -dy -soname $SHARED_LIBRARY_NAME"
+  CONFCLIBFLAGS="$CONFCFLAGS -shared"
+  CONFLDLIBFLAGS="$CONFLDFLAGS -shared -dy -soname $SHARED_LIBRARY_NAME"
 elif test "$ac_cv_prog_SUNPRO_CC" = yes; then
-  CONFCFLAGS="$CONFCFLAGS -mt -KPIC"
-  CONFLDFLAGS="$CONFLDFLAGS -G -h $SHARED_LIBRARY_NAME"
+  CONFCFLAGS="$CONFCFLAGS -mt"
+  CONFCLIBFLAGS="$CONFCLIBFLAGS -KPIC"
+  CONFLDLIBFLAGS="$CONFLDLIBFLAGS -G -h $SHARED_LIBRARY_NAME"
 else
-  CONFCFLAGS="$CONFCFLAGS -shared"
-  CONFLDFLAGS="$CONFLDFLAGS -shared"
+  CONFCLIBFLAGS="$CONFCLIBFLAGS -shared"
+  CONFLDLIBFLAGS="$CONFLDLIBFLAGS -shared"
 fi
 
 if test "$ac_enable_debug" = yes; then
@@ -298,10 +286,10 @@ else
     i686)
       CONFCFLAGS="$CONFCFLAGS -mpentiumpro"
       ;;
-    sparcv8plus)
+    sparcv8plus*)
       CONFCFLAGS="$CONFCFLAGS -mcpu=ultrasparc"
       ;;
-    sparcv9)
+    sparcv9*)
       CONFCFLAGS="$CONFCFLAGS -mcpu=ultrasparc"
       ;;
     esac
@@ -309,11 +297,28 @@ else
     CONFCFLAGS="$CONFCFLAGS -fast"
     case $target_cpu in
     sparcv8plus)
-      CONFCFLAGS="$CONFCFLAGS -xchip=ultra -xarch=v8plus"
+      CONFCFLAGS="$CONFCFLAGS -xtarget=generic -xarch=v8plus"
+      ;;
+    sparcv8plusa)
+      CONFCFLAGS="$CONFCFLAGS -xtarget=generic -xarch=v8plusa"
+      ;;
+    sparcv8plusb)
+      CONFCFLAGS="$CONFCFLAGS -xtarget=generic -xarch=v8plusb"
       ;;
     sparcv9)
-      CONFCFLAGS="$CONFCFLAGS -xchip=ultra -xarch=v9"
-      CONFCPPFLAGS="$CONFCPPFLAGS -Dsparcv9"
+	  CFLAGS="-xarch=v9"
+      CONFCFLAGS="$CONFCFLAGS -xtarget=generic64 -xarch=v9"
+      CONFLDFLAGS="$CONFLDFLAGS -64"
+      ;;
+    sparcv9a)
+	  CFLAGS="-xarch=v9"
+      CONFCFLAGS="$CONFCFLAGS -xtarget=generic64 -xarch=v9a"
+      CONFLDFLAGS="$CONFLDFLAGS -64"
+      ;;
+    sparcv9b)
+	  CFLAGS="-xarch=v9"
+      CONFCFLAGS="$CONFCFLAGS -xtarget=generic64 -xarch=v9b"
+      CONFLDFLAGS="$CONFLDFLAGS -64"
       ;;
     esac
   else
@@ -329,7 +334,14 @@ case $target_os in
     ;;
   osf*)
 	LD=$CC
-    CONFLDFLAGS="$CONFLDFLAGS -msym -soname $SHARED_LIBRARY_NAME"
+    CONFLDLIBFLAGS="$CONFLDLIBFLAGS -msym -soname $SHARED_LIBRARY_NAME"
+    ;;
+  solaris*)
+    if test "$ac_cv_prog_SUNPRO_CC" = yes; then
+      LD=/usr/ccs/bin/ld
+    else
+      LD=ld
+    fi
     ;;
   *)
     LD=ld
@@ -343,9 +355,26 @@ sparcv8plus)
   CONFASFLAGS="-Av8plus"
   ;;
 sparcv9)
-  CONFASFLAGS="-Av9"
+  CONFASFLAGS="-Av9 -64"
   ;;
 esac
+
+dnl Checks for word sizes
+AC_CHECK_SIZEOF(char)
+AC_CHECK_SIZEOF(unsigned char)
+AC_CHECK_SIZEOF(short)
+AC_CHECK_SIZEOF(unsigned short)
+AC_CHECK_SIZEOF(int)
+AC_CHECK_SIZEOF(unsigned int)
+AC_CHECK_SIZEOF(long)
+AC_CHECK_SIZEOF(unsigned long)
+AC_CHECK_SIZEOF(long long)
+AC_CHECK_SIZEOF(unsigned long long)
+AC_CHECK_SIZEOF(float)
+AC_CHECK_SIZEOF(double)
+
+dnl Checks for endianness
+AC_C_BIGENDIAN
 
 dnl Checks for devices
 AC_MSG_CHECKING(for entropy device)
@@ -395,12 +424,12 @@ esac
 AC_MSG_RESULT($ac_cv_entropy_device)
 
 dnl Generate the assembler optimizations
-BLOWFISHOPTDEP=""
-BLOWFISHOPTRULE=""
-FIPS180OPTDEP=""
-FIPS180OPTRULE=""
-MP32OPTDEP=""
-MP32OPTRULE=""
+BLOWFISHOPTDEP="blowfishopt.o: blowfishopt.c"
+BLOWFISHOPTRULE="	\$(COMPILE.c) \$(CLIBFLAGS)"
+FIPS180OPTDEP="fips180opt.o: fips180opt.c"
+FIPS180OPTRULE="	\$(COMPILE.c) \$(CLIBFLAGS)"
+MP32OPTDEP="mp32opt.o: mp32opt.c"
+MP32OPTRULE="	\$(COMPILE.c) \$(CLIBFLAGS)"
 case $target_cpu in
   i386)
     MP32OPTDEP="mp32opt.o: gnu/mp32opt.gas.i386.S"
@@ -422,7 +451,7 @@ case $target_cpu in
     MP32OPTDEP="mp32opt.o: gnu/mp32opt.gas.powerpc.S"
     MP32OPTRULE="	\$(CPP) \$(CPPFLAGS) gnu/mp32opt.gas.powerpc.S | \$(AS) \$(ASFLAGS) -o mp32opt.o"
     ;;
-  sparcv8plus | sparcv9)
+  sparcv8plus) 
     MP32OPTDEP="mp32opt.o: gnu/mp32opt.gas.sparcv9.S"
     MP32OPTRULE="	\$(CPP) \$(CPPFLAGS) gnu/mp32opt.gas.sparcv9.S | \$(AS) \$(ASFLAGS) -o mp32opt.o"
     ;;
