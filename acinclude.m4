@@ -8,6 +8,133 @@ dnl
 dnl  LGPL
 
 
+dnl  BEECRYPT_WITH_CPU
+AC_DEFUN(BEECRYPT_WITH_CPU,[
+  ac_with_cpu=yes
+  bc_target_cpu=$withval
+  case $target_cpu in
+  i[[3456]]86)
+    case $withval in
+    i[[3456]]86 | \
+    pentium | pentium-mmx | pentiumpro | pentium[[234]] | \
+    athlon | athlon-tbird | athlon-4 | athlon-xp | athlon-mp)
+      ;;
+    *)
+      AC_MSG_WARN([invalid cpu type])
+      bc_target_cpu=$target_cpu
+      ;;
+    esac
+    ;;
+  powerpc | powerpc64)
+    case $withval in
+    403 | 505 | \
+    60[[1234]] | 60[[34]]e | 6[[23]]0 | \
+    7[[45]]0 | 74[[05]]0 | \
+    801 | 82[[13]] | 860 | \
+    power | power2 | powerpc | powerpc64)
+      ;;
+    *)
+      AC_MSG_WARN([invalid cpu type])
+      bc_target_cpu=$target_cpu
+      ;;
+    esac
+    ;;
+  sparc | sparc64)
+    case $withval in
+    sparcv8 | sparcv8plus | sparcv8plus[[ab]] | sparcv9 | sparcv9[[ab]])
+      ;;
+    *)
+      AC_MSG_WARN([invalid cpu type])
+      bc_target_cpu=$target_cpu
+      ;;
+    esac
+    ;;
+  x86) # QNX Neutrino doesn't list the exact cpu type
+    case $withval in
+    i[[3456]]86)
+      ;;
+    *)
+      AC_MSG_WARN([unsupported or invalid cpu type])
+      bc_target_cpu=$target_cpu
+      ;;
+    esac
+    ;;
+  *)
+    AC_MSG_WARN([unsupported or invalid cpu type])
+    bc_target_cpu=$target_cpu
+    ;;
+  esac
+  ],[
+  ac_with_cpu=no
+  bc_target_cpu=$target_cpu
+  ])
+
+dnl  BEECRYPT_WITH_ARCH
+AC_DEFUN(BEECRYPT_WITH_ARCH,[
+  ac_with_arch=yes
+  bc_target_arch=$withval
+  case $target_cpu in
+  i[[3456]]86)
+    case $withval in
+    i[[3456]]86 | \
+    pentium | pentium-mmx | pentiumpro | pentium[[234]] | \
+    athlon | athlon-tbird | athlon-4 | athlon-xp | athlon-mp)
+      if test "$ac_with_cpu" != yes; then
+        bc_target_cpu=$withval
+      fi
+      ;;
+    esac
+    ;;
+  powerpc*)
+    case $withval in
+    powerpc)
+      ;;
+    powerpc64)
+      bc_target_arch=powerpc64
+      ;;
+    *)
+      AC_MSG_WARN([unsupported on invalid arch type])
+      bc_target_arch=powerpc
+      ;;
+    esac
+    ;;
+  esac
+  ],[
+  ac_with_arch=no
+   case $target_cpu in
+  alpha*)
+    bc_target_arch=alpha
+    ;;
+  arm*)
+    bc_target_arch=arm
+    ;;
+  i[[3456]]86)
+    bc_target_arch=i386
+    ;;
+  ia64)
+    bc_target_arch=ia64
+    ;;
+  m68k)
+    bc_target_arch=m68k
+    ;;
+  powerpc)
+    bc_target_arch=powerpc
+    ;;
+  powerpc64)
+    bc_target_arch=powerpc64
+    ;;
+  s390x)
+    bc_target_arch=s390x
+    ;;
+  sparc*)
+    bc_target_arch=sparc
+    ;;
+  x86_64)
+    bc_target_arch=x86_64
+    ;;
+  esac
+  ])
+
 dnl  BEECRYPT_INT_TYPES
 AC_DEFUN(BEECRYPT_INT_TYPES,[
   AC_TYPE_SIZE_T
@@ -275,6 +402,10 @@ AC_DEFUN(BEECRYPT_GNU_CC,[
       CPPFLAGS="$CPPFLAGS -pthread"
       LDFLAGS="$LDFLAGS -pthread"
       ;;
+    osf*)
+      CFLAGS="$CFLAGS -pthread"
+      CPPFLAGS="$CPPFLAGS -pthread"
+      ;;
     esac
   fi
   if test "$ac_enable_debug" = yes; then
@@ -484,6 +615,119 @@ AC_DEFUN(BEECRYPT_SUN_FORTE_CC,[
   ])
 
 
+dnl  BEECRYPT_CC
+AC_DEFUN(BEECRYPT_CC,[
+  if test "$ac_cv_c_compiler_gnu" = yes; then
+    BEECRYPT_GNU_CC
+  else
+    case $target_os in
+    aix*)
+      BEECRYPT_IBM_CC
+      ;;
+    hpux*)
+      BEECRYPT_HPUX_CC
+      ;;
+    linux*)
+      BEECRYPT_INTEL_CC
+      ;;
+    solaris*)
+      BEECRYPT_SUN_FORTE_CC
+      ;;
+    osf*)
+      BEECRYPT_COMPAQ_CC
+      ;;
+    esac
+  fi
+  ])
+
+
+dnl BEECRYPT_LIBTOOL
+AC_DEFUN(BEECRYPT_LIBTOOL,[
+  case $target_os in
+  aix*)
+    case $bc_target_arch in
+    powerpc64)
+      AR="ar -X64"
+      NM="/usr/bin/nm -B -X64"
+      ;;
+    esac
+    ;;
+  solaris*)
+    case $bc_target_arch in
+    sparcv9*)
+      LD="/usr/ccs/bin/ld -64"
+      ;;
+    esac
+    ;;
+  esac
+  ])
+
+
+dnl  BEECRYPT_OS_DEFS
+AC_DEFUN(BEECRYPT_OS_DEFS,[
+  AH_TEMPLATE([AIX],[Define to 1 if you are using AIX])
+  AH_TEMPLATE([CYGWIN],[Define to 1 if you are using Cygwin])
+  AH_TEMPLATE([DARWIN],[Define to 1 if you are using Darwin/MacOS X])
+  AH_TEMPLATE([FREEBSD],[Define to 1 if you are using FreeBSD])
+  AH_TEMPLATE([HPUX],[Define to 1 if you are using HPUX])
+  AH_TEMPLATE([LINUX],[Define to 1 if you are using GNU/Linux])
+  AH_TEMPLATE([NETBSD],[Define to 1 if you are using NetBSD])
+  AH_TEMPLATE([OPENBSD],[Define to 1 if you are using OpenBSD])
+  AH_TEMPLATE([OSF],[Define to 1 if you are using OSF])
+  AH_TEMPLATE([QNX],[Define to 1 if you are using QNX])
+  AH_TEMPLATE([SCO_UNIX],[Define to 1 if you are using SCO Unix])
+  AH_TEMPLATE([SOLARIS],[Define to 1 if you are using Solaris])
+  AH_VERBATIM([WIN32],[
+#ifndef WIN32
+ #undef WIN32
+#endif
+    ])
+
+  case $target_os in
+    aix*)
+      AC_DEFINE([AIX])
+      ;;
+    cygwin*)
+      AC_DEFINE([CYGWIN])
+      AC_DEFINE([WIN32])
+      ;;
+    darwin*)
+      AC_DEFINE([DARWIN])
+      ;;
+    freebsd*)
+      AC_DEFINE([FREEBSD])
+      ;;
+    hpux*)
+      AC_DEFINE([HPUX])
+      ;;
+    linux*)
+      AC_DEFINE([LINUX])
+      ;;
+    netbsd*)
+      AC_DEFINE([NETBSD])
+      ;;
+    openbsd*)
+      AC_DEFINE([OPENBSD])
+      ;;
+    osf*)
+      AC_DEFINE([OSF])
+      ;;
+    *qnx)
+      AC_DEFINE([QNX])
+      ;;
+    solaris*)
+      AC_DEFINE([SOLARIS])
+      ;;
+    sysv*uv*)
+      AC_DEFINE([SCO_UNIX])
+      ;;
+    *)
+      AC_MSG_WARN([Operating system type $target_os currently not supported and/or tested])
+      ;;
+  esac
+  ])
+
+
 dnl  BEECRYPT_ASM_DEFS
 AC_DEFUN(BEECRYPT_ASM_DEFS,[
   AC_SUBST(ASM_OS,$target_os)
@@ -670,4 +914,56 @@ AC_DEFUN(BEECRYPT_ASM_SOURCES,[
       esac
     fi
   fi
+  ])
+
+
+dnl  BEECRYPT_MULTITHREAD
+AC_DEFUN(BEECRYPT_MULTITHREAD,[
+  AH_TEMPLATE([ENABLE_THREADS],[Define to 1 if you want to enable multithread support])
+  AH_TEMPLATE([HAVE_THREAD_H],[.])
+  AH_TEMPLATE([HAVE_PTHREAD_H],[.])
+  AH_TEMPLATE([HAVE_SYNCH_H],[.])
+  AH_TEMPLATE([HAVE_SEMAPHORE_H],[.])
+
+  if test "$ac_enable_threads" = yes; then
+    AC_CHECK_HEADERS([thread.h pthread.h synch.h semaphore.h])
+  fi
+
+  bc_include_synch_h=
+  bc_include_pthread_h=
+  bc_typedef_bc_lock_t=
+  if test "$ac_enable_threads" = yes; then
+    if test "$ac_cv_header_thread_h" = yes -a "$ac_cv_header_synch_h" = yes; then
+      bc_include_synch_h="#include <synch.h>"
+      bc_typedef_bc_lock_t="typedef mutex_t bc_lock_t;"
+      AC_SEARCH_LIBS([mutex_lock],[thread],[
+        AC_DEFINE([ENABLE_THREADS],1)
+        ])
+    elif test "$ac_cv_header_pthread_h" = yes; then
+      bc_include_pthread_h="#include <pthread.h>"
+      bc_typedef_bc_lock_t="typedef pthread_mutex_t bc_lock_t;"
+      # On most systems this tests will say 'none required', but that doesn't
+      # mean that the linked code will work correctly!
+      case $target_os in
+      linux* | solaris* )
+        AC_DEFINE([ENABLE_THREADS],1)
+        LIBS="-lpthread $LIBS"
+        ;;
+      osf*)
+        AC_DEFINE([ENABLE_THREADS],1)
+        LIBS="-lpthread -lmach -lexc $LIBS"
+        ;;
+      *)
+        AC_SEARCH_LIBS([pthread_mutex_lock],[pthread],[
+          AC_DEFINE([ENABLE_THREADS],1)
+          ])
+        ;;
+      esac
+    else
+      AC_MSG_WARN([Don't know which thread library to check for])
+    fi
+  fi
+  AC_SUBST(INCLUDE_SYNCH_H,$bc_include_synch_h)
+  AC_SUBST(INCLUDE_PTHREAD_H,$bc_include_pthread_h)
+  AC_SUBST(TYPEDEF_BC_LOCK_T,$bc_typedef_bc_lock_t)
   ])
