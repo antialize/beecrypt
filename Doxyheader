@@ -76,66 +76,6 @@
  *  <li>RSA public & private key operations
  * </ul>
  * 
- * A new feature in version 4.x is the C++ API, built to resemble Java's security
- * and cryptography API. At this moment the number of classes provided is just
- * enough to build CSPs. If there is enough interest, we may expand this library.
- * 
- * Included in the base provider are broad spectrum of algorithms:
- * <ul>
- *  <li>AlgorithmParameterGenerator
- *   <ul>
- *    <li>DH
- *    <li>DSA
- *   </ul>
- *  <li>AlgorithmParameters
- *   <ul>
- *    <li>DH
- *    <li>DHAES
- *    <li>DSA
- *   </ul>
- *  <li>Cipher
- *   <ul>
- *    <li>AES
- *    <li>Blowfish
- *    <li>DHAES
- *   </ul>
- *  <li>KeyAgreement
- *   <ul>
- *    <li>DH
- *   </ul>
- *  <li>KeyPairGenerator
- *   <ul>
- *    <li>DH
- *    <li>DSA
- *    <li>RSA
- *   </ul>
- *  <li>Mac
- *   <ul>
- *    <li>HMAC-MD5
- *    <li>HMAC-SHA-1
- *    <li>HMAC-SHA-256
- *    <li>HMAC-SHA-384
- *    <li>HMAC-SHA-512
- *   </ul>
- *  <li>MessageDigest
- *   <ul>
- *    <li>MD5
- *    <li>SHA-1
- *    <li>SHA-256
- *    <li>SHA-384
- *    <li>SHA-512
- *   </ul>
- *  <li>Signature
- *   <ul>
- *    <li>MD5withRSA
- *    <li>SHA1withDSA
- *    <li>SHA1withRSA
- *    <li>SHA256withRSA
- *    <li>SHA384withRSA
- *    <li>SHA512withRSA
- *   </ul>
- * </ul>
- *
  * \section testing_sec Testing
  *
  * The library has been tested on the following platforms:
@@ -249,34 +189,4 @@
 /*!\defgroup	PKCS1_m		PKCS#1
  */
 /*!\defgroup	PKCS12_m	PKCS#12
- */
-/*!\defgroup	CXX_m	C++ API
- */
-/*!\defgroup	CXX_IO_m	C++ classes mimicking java.io
- */
-/*!\defgroup	CXX_LANG_m	C++ classes mimicking java.lang
- */
-/*!\defgroup	CXX_NIO_m	C++ classes mimicking java.nio
- */
-/*!\defgroup	CXX_SECURITY_m	C++ classes mimicking java.security
- */
-/*!\defgroup	CXX_SECURITY_CERT_m	C++ classes mimicking java.security.cert
- */
-/*!\defgroup	CXX_SECURITY_INTERFACES_m	C++ classes mimicking java.security.interfaces
- */
-/*!\defgroup	CXX_SECURITY_SPEC_m	C++ classes mimicking java.security.spec
- */
-/*!\defgroup	CXX_UTIL_m	C++ classes mimicking java.util
- */
-/*!\defgroup	CXX_CRYPTO_m	C++ classes mimicking javax.crypto
- */
-/*!\defgroup	CXX_CRYPTO_INTERFACES_m	C++ classes mimicking javax.crypto.interfaces
- */
-/*!\defgroup	CXX_CRYPTO_SPEC_m	C++ classes mimicking javax.crypto.spec
- */
-/*!\defgroup	JAVA_m	Java API
- */
-/*!\defgroup	UNIT_m	Unit tests
- */
-/*!\defgroup	BENCH_m	Benchmark tests
  */
