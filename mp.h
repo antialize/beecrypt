@@ -603,21 +603,19 @@ BEECRYPTAPI
 void mpsqr(mpw* result, size_t size, const mpw* data);
 
 BEECRYPTAPI
-void mpgcd_w(size_t, const mpw*, const mpw*, mpw*, mpw*);
-BEECRYPTAPI
-int  mpextgcd_w(size_t, const mpw*, const mpw*, mpw*, mpw*);
+void mpgcd_w(size_t size, const mpw* xdata, const mpw* ydata, mpw* result, mpw* wksp);
 
 BEECRYPTAPI
-mpw mppndiv(mpw, mpw, mpw);
+int  mpextgcd_w(size_t size, const mpw* xdata, const mpw* ydata, mpw* result, mpw* wksp);
 
 BEECRYPTAPI
-void mpnmod(mpw*, size_t, const mpw*, size_t, const mpw*, mpw*);
+mpw mppndiv(mpw xhi, mpw xlo, mpw y);
 
 BEECRYPTAPI
-void mpmod (mpw*, size_t, const mpw*, size_t, const mpw*, mpw*);
+void mpmod (mpw* result, size_t xsize, const mpw* xdata, size_t ysize, const mpw*ydata, mpw* wksp);
 
 BEECRYPTAPI
-void mpndivmod(mpw*, size_t, const mpw*, size_t, const mpw*, mpw*);
+void mpndivmod(mpw* result, size_t xsize, const mpw* xdata, size_t ysize, const mpw* ydata, mpw* wksp);
 
 /*
  * Output Routines
@@ -640,13 +638,13 @@ void mpfprintln(FILE* f, size_t size, const mpw* data);
  */
 
 BEECRYPTAPI
-int os2ip(mpw*, size_t, const byte*, size_t);
+int os2ip(mpw* idata, size_t isize, const byte* osdata, size_t ossize);
 
 BEECRYPTAPI
-int i2osp(byte*, size_t, const mpw*, size_t);
+int i2osp(byte* osdata, size_t ossize, const mpw* idata, size_t isize);
 
 BEECRYPTAPI
-int hs2ip(mpw*, size_t, const char*, size_t);
+int hs2ip(mpw* idata, size_t isize, const char* hsdata, size_t hssize);
 
 #ifdef __cplusplus
 }
