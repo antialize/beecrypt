@@ -1,7 +1,7 @@
 /*
- * sha256hmac.c
+ * hmacmd5.c
  *
- * SHA-256/HMAC message authentication code, code
+ * HMAC-MD5 message authentication code, code
  *
  * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
  *
@@ -25,26 +25,26 @@
 
 #define BEECRYPT_DLL_EXPORT
 
-#include "sha256hmac.h"
+#include "hmacmd5.h"
 
-const keyedHashFunction sha256hmac = { "SHA-256/HMAC", sizeof(sha256hmacParam), 64, 8 * sizeof(uint32), 64, 512, 32, (const keyedHashFunctionSetup) sha256hmacSetup, (const keyedHashFunctionReset) sha256hmacReset, (const keyedHashFunctionUpdate) sha256hmacUpdate, (const keyedHashFunctionDigest) sha256hmacDigest };
+const keyedHashFunction hmacmd5 = { "HMAC-MD5", sizeof(hmacmd5Param), 64, 4 * sizeof(uint32), 64, 512, 32, (const keyedHashFunctionSetup) hmacmd5Setup, (const keyedHashFunctionReset) hmacmd5Reset, (const keyedHashFunctionUpdate) hmacmd5Update, (const keyedHashFunctionDigest) hmacmd5Digest };
 
-int sha256hmacSetup (sha256hmacParam* sp, const uint32* key, int keybits)
+int hmacmd5Setup (hmacmd5Param* sp, const uint32* key, int keybits)
 {
-	return hmacSetup((hmacParam*) sp, &sha256, &sp->param, key, keybits);
+	return hmacSetup((hmacParam*) sp, &md5, &sp->param, key, keybits);
 }
 
-int sha256hmacReset (sha256hmacParam* sp)
+int hmacmd5Reset (hmacmd5Param* sp)
 {
-	return hmacReset((hmacParam*) sp, &sha256, &sp->param);
+	return hmacReset((hmacParam*) sp, &md5, &sp->param);
 }
 
-int sha256hmacUpdate(sha256hmacParam* sp, const byte* data, int size)
+int hmacmd5Update(hmacmd5Param* sp, const byte* data, int size)
 {
-	return hmacUpdate((hmacParam*) sp, &sha256, &sp->param, data, size);
+	return hmacUpdate((hmacParam*) sp, &md5, &sp->param, data, size);
 }
 
-int sha256hmacDigest(sha256hmacParam* sp, uint32* data)
+int hmacmd5Digest(hmacmd5Param* sp, uint32* data)
 {
-	return hmacDigest((hmacParam*) sp, &sha256, &sp->param, data);
+	return hmacDigest((hmacParam*) sp, &md5, &sp->param, data);
 }

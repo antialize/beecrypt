@@ -31,10 +31,10 @@
 #include "dlkp.h"
 #include "elgamal.h"
 #include "fips180.h"
+#include "hmacmd5.h"
+#include "md5.h"
 #include "rsa.h"
 #include "sha256.h"
-#include "md5.h"
-#include "md5hmac.h"
 
 #if HAVE_STDLIB_H
 #include <stdlib.h>
@@ -168,7 +168,7 @@ int testVectorDHAES(const dlkp_p* keypair)
 	dhaes_p dh;
 
 	/* incomplete */
-	if (dhaes_pInit(&dh, &keypair->param, &blowfish, &md5hmac, &md5, randomGeneratorDefault()) == 0)
+	if (dhaes_pInit(&dh, &keypair->param, &blowfish, &hmacmd5, &md5, randomGeneratorDefault()) == 0)
 	{
 		mp32number mkey, mac;
 

@@ -4,7 +4,7 @@
 # To be used with Microsoft's nmake utility;
 # Will need the Visual C Processor Pack installed.
 #
-# Copyright (c) 2000, 2001, Virtual Unlimited B.V.
+# Copyright (c) 2000, 2001 Virtual Unlimited B.V.
 #
 # Author: Bob Deblier <bob@virtualunlimited.com>
 #
@@ -67,9 +67,11 @@ OBJECTS= \
 	fips180opt.obj \
 	fips186.obj \
 	hmac.obj \
+	hmacmd5.obj \
+	hmacsha1.obj \
+	hmacsha256.obj \
 	javaglue.obj \
 	md5.obj \
-	md5hmac.obj \
 	mp32.obj \
 	mp32opt.obj \
 	mp32barrett.obj \
@@ -79,9 +81,7 @@ OBJECTS= \
 	rsa.obj \
 	rsakp.obj \
 	rsapk.obj \
-	sha1hmac.obj \
 	sha256.obj \
-	sha256hmac.obj \
 	timestamp.obj \
 	beecrypt.dll.obj \
 	beecrypt.res

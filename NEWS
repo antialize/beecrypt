@@ -1,6 +1,7 @@
 2.0.0:
 	- Changed mp32barrett struct and operations to be multithread-safe; this required a change in API.
 	- Changed hashFunction struct to incorporate internal block size parameter.
+	- Changed HMAC algorithm and file names to match names in RFC 2104.
 	- Changed SHA-1 C code for slightly faster results.
 	- Changed detection of entropy devices.
 	- Changed most void-returning functions to return int for error conditions.
@@ -8,7 +9,7 @@
 	- Added RSA keypair generation.
 	- Added RSA private & public key operations.
 	- Added SHA-256 hash function.
-	- Added MD5/HMAC and SHA-256/HMAC keyed hash functions.
+	- Added HMAC/MD5 and HMAC/SHA-256 keyed hash functions.
 	- Added PKCS#5 padding.
 	- Added DHAES encryption scheme.
 	- Added Microsoft Visual C support, added Makefile.mak for this purpose.

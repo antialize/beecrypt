@@ -93,8 +93,10 @@ OBJFILES = \
 	fips186.o \
 	$(JAVAGLUE) \
 	hmac.o \
+	hmacmd5.o \
+	hmacsha1.o \
+	hmacsha256.o \
 	md5.o \
-	md5hmac.o \
 	mp32.o \
 	mp32barrett.o \
 	mp32number.o \
@@ -104,9 +106,7 @@ OBJFILES = \
 	rsa.o \
 	rsakp.o \
 	rsapk.o \
-	sha1hmac.o \
 	sha256.o \
-	sha256hmac.o \
 	timestamp.o
 
 DISTFILES = \
@@ -133,9 +133,11 @@ DISTFILES = \
 	fips180opt.h fips180opt.c \
 	fips186.h fips186.c \
 	hmac.h hmac.c \
+	hmacmd5.h hmacmd5.c \
+	hmacsha1.h hmacsha1.c \
+	hmacsha256.h hmacsha256.c \
 	javaglue.h javaglue.c \
 	md5.h md5.c \
-	md5hmac.h md5hmac.c \
 	mp32barrett.h mp32barrett.c \
 	mp32.h mp32.c \
 	mp32number.h mp32number.c \
@@ -145,9 +147,7 @@ DISTFILES = \
 	rsa.h rsa.c \
 	rsakp.h rsakp.c \
 	rsapk.h rsapk.c \
-	sha1hmac.h sha1hmac.c \
 	sha256.h sha256.c \
-	sha256hmac.h sha256hmac.c \
 	timestamp.h timestamp.c \
 	gnu/config.gnu.h.in \
 	gnu/config.gas.h \
@@ -220,13 +220,19 @@ fips186.o: fips186.c
 hmac.o: hmac.c
 	$(COMPILE.c) $(CLIBFLAGS)
 
+hmacmd5.o: hmacmd5.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
+hmacsha1.o: hmacsha1.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
+hmacsha256.o: hmacsha256.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
 javaglue.o: javaglue.c
 	$(COMPILE.c) $(CLIBFLAGS) $(JNIFLAGS)
 
 md5.o: md5.c
-	$(COMPILE.c) $(CLIBFLAGS)
-
-md5hmac.o: md5hmac.c
 	$(COMPILE.c) $(CLIBFLAGS)
 
 mp32.o: mp32.c
@@ -256,13 +262,7 @@ rsakp.o: rsakp.c
 rsapk.o: rsapk.c
 	$(COMPILE.c) $(CLIBFLAGS)
 
-sha1hmac.o: sha1hmac.c
-	$(COMPILE.c) $(CLIBFLAGS)
-
 sha256.o: sha256.c
-	$(COMPILE.c) $(CLIBFLAGS)
-
-sha256hmac.o: sha256hmac.c
 	$(COMPILE.c) $(CLIBFLAGS)
 
 timestamp.o: timestamp.c
@@ -307,8 +307,10 @@ install-headers:
 	$(INSTALL_DATA) ${srcdir}/fips180opt.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/fips186.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/hmac.h ${includedir}/beecrypt
+	$(INSTALL_DATA) ${srcdir}/hmacmd5.h ${includedir}/beecrypt
+	$(INSTALL_DATA) ${srcdir}/hmacsha1.h ${includedir}/beecrypt
+	$(INSTALL_DATA) ${srcdir}/hmacsha256.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/md5.h ${includedir}/beecrypt
-	$(INSTALL_DATA) ${srcdir}/md5hmac.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/mp32.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/mp32barrett.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/mp32number.h ${includedir}/beecrypt
@@ -318,9 +320,7 @@ install-headers:
 	$(INSTALL_DATA) ${srcdir}/rsa.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/rsakp.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/rsapk.h ${includedir}/beecrypt
-	$(INSTALL_DATA) ${srcdir}/sha1hmac.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/sha256.h ${includedir}/beecrypt
-	$(INSTALL_DATA) ${srcdir}/sha256hmac.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/timestamp.h ${includedir}/beecrypt
 
 beetest: beetest.o

@@ -1,9 +1,9 @@
 /*
- * sha1hmac.h
+ * hmacmd5.h
  *
- * SHA-1/HMAC message authentication code, header
+ * HMAC-MD5 message authentication code, header
  *
- * Copyright (c) 1999, 2000 Virtual Unlimited B.V.
+ * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -23,33 +23,33 @@
  *
  */
 
-#ifndef _SHA1HMAC_H
-#define _SHA1HMAC_H
+#ifndef _HMACMD5_H
+#define _HMACMD5_H
 
 #include "hmac.h"
-#include "fips180.h"
+#include "md5.h"
 
 typedef struct
 {
 	byte kxi[64];
 	byte kxo[64];
-	sha1Param param;
-} sha1hmacParam;
+	md5Param param;
+} hmacmd5Param;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-extern BEEDLLAPI const keyedHashFunction sha1hmac;
+extern BEEDLLAPI const keyedHashFunction hmacmd5;
 
 BEEDLLAPI
-int sha1hmacSetup (sha1hmacParam*, const uint32*, int);
+int hmacmd5Setup (hmacmd5Param*, const uint32*, int);
 BEEDLLAPI
-int sha1hmacReset (sha1hmacParam*);
+int hmacmd5Reset (hmacmd5Param*);
 BEEDLLAPI
-int sha1hmacUpdate(sha1hmacParam*, const byte*, int);
+int hmacmd5Update(hmacmd5Param*, const byte*, int);
 BEEDLLAPI
-int sha1hmacDigest(sha1hmacParam*, uint32*);
+int hmacmd5Digest(hmacmd5Param*, uint32*);
 
 #ifdef __cplusplus
 }

@@ -41,13 +41,13 @@
 #include "entropy.h"
 #include "fips180.h"
 #include "fips186.h"
+#include "hmacmd5.h"
+#include "hmacsha1.h"
+#include "hmacsha256.h"
 #include "md5.h"
-#include "md5hmac.h"
 #include "mp32.h"
 #include "mtprng.h"
-#include "sha1hmac.h"
 #include "sha256.h"
-#include "sha256hmac.h"
 
 #include "blowfish.h"
 #include "blockmode.h"
@@ -396,9 +396,9 @@ int hashFunctionContextDigestMatch(hashFunctionContext* ctxt, const mp32number* 
 
 static const keyedHashFunction* keyedHashFunctionList[] =
 {
-	&md5hmac,
-	&sha1hmac,
-	&sha256hmac
+	&hmacmd5,
+	&hmacsha1,
+	&hmacsha256
 };
 
 #define KEYEDHASHFUNCTIONS 	(sizeof(keyedHashFunctionList) / sizeof(keyedHashFunction*))
@@ -414,7 +414,7 @@ const keyedHashFunction* keyedHashFunctionDefault()
 	if (tmp)
 		return keyedHashFunctionFind(tmp);
 	else
-		return &sha1hmac;
+		return &hmacsha1;
 }
 
 const keyedHashFunction* keyedHashFunctionGet(int index)

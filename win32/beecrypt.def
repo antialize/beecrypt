@@ -124,6 +124,21 @@ EXPORTS
  hmacReset
  hmacSetup
  hmacUpdate
+ hmacmd5 data
+ hmacmd5Digest
+ hmacmd5Reset
+ hmacmd5Setup
+ hmacmd5Update
+ hmacsha1 data
+ hmacsha1Digest
+ hmacsha1Reset
+ hmacsha1Setup
+ hmacsha1Update
+ hmacsha256 data
+ hmacsha256Digest
+ hmacsha256Reset
+ hmacsha256Setup
+ hmacsha256Update
  keyedHashFunctionContextDigest
  keyedHashFunctionContextDigestMatch
  keyedHashFunctionContextFree
@@ -141,11 +156,6 @@ EXPORTS
  md5Reset
  md5Update
  md5Digest
- md5hmac data
- md5hmacDigest
- md5hmacReset
- md5hmacSetup
- md5hmacUpdate
  ;mp32copy
  ;mp32move
  mp32zero
@@ -288,21 +298,11 @@ EXPORTS
  sha1Reset
  sha1Update
  sha1Digest
- sha1hmac data
- sha1hmacDigest
- sha1hmacReset
- sha1hmacSetup
- sha1hmacUpdate
  sha256 data
  sha256Process
  sha256Reset
  sha256Update
  sha256Digest
- sha256hmac data
- sha256hmacDigest
- sha256hmacReset
- sha256hmacSetup
- sha256hmacUpdate
  swap16
  swap32
  swap64
