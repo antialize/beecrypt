@@ -55,9 +55,9 @@ int main()
 		mpnsethex(&keypair.e, rsa_e);
 		mpbsethex(&keypair.p, rsa_p);
 		mpbsethex(&keypair.q, rsa_q);
-		mpnsethex(&keypair.d1, rsa_d1);
-		mpnsethex(&keypair.d2, rsa_d2);
-		mpnsethex(&keypair.c, rsa_c);
+		mpnsethex(&keypair.dp, rsa_d1);
+		mpnsethex(&keypair.dq, rsa_d2);
+		mpnsethex(&keypair.qi, rsa_c);
 
 		mpnzero(&m);
 		mpnzero(&cipher);
@@ -66,10 +66,10 @@ int main()
 		mpnsethex(&m, rsa_m);
 
 		/* it's safe to cast the keypair to a public key */
-		if (rsapub((rsapk*) &keypair, &m, &cipher))
+		if (rsapub(&keypair.n, &keypair.e, &m, &cipher))
 			failures++;
 
-		if (rsapricrt(&keypair, &cipher, &decipher))
+		if (rsapricrt(&keypair.n, &keypair.p, &keypair.q, &keypair.dp, &keypair.dq, &keypair.qi, &cipher, &decipher))
 			failures++;
 
 		if (mpnex(m.size, m.data, decipher.size, decipher.data))
@@ -92,10 +92,10 @@ int main()
 		mpbnrnd(&keypair.n, &rngc, &m);
 
 		/* it's safe to cast the keypair to a public key */
-		if (rsapub((rsapk*) &keypair, &m, &cipher))
+		if (rsapub(&keypair.n, &keypair.e, &m, &cipher))
 			failures++;
 
-		if (rsapricrt(&keypair, &cipher, &decipher))
+		if (rsapricrt(&keypair.n, &keypair.p, &keypair.q, &keypair.dp, &keypair.dq, &keypair.qi, &cipher, &decipher))
 			failures++;
 
 		if (mpnex(m.size, m.data, decipher.size, decipher.data))
