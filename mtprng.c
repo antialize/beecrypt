@@ -79,7 +79,7 @@ int mtprngSetup(mtprngParam* mp)
 		if (!(mp->lock = CreateMutex(NULL, FALSE, NULL)))
 			return -1;
 		# else
-		#  if HAVE_SYNCH_H
+		#  if HAVE_THREAD_H && HAVE_SYNCH_H
 		if (mutex_init(&mp->lock, USYNC_THREAD, (void *) 0))
 			return -1;
 		#  elif HAVE_PTHREAD_H
