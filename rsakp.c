@@ -194,5 +194,5 @@ int rsakpCopy(rsakp* dst, const rsakp* src)
 	return 0;
 }
 
-/* \}
+/*!\}
  */

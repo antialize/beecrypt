@@ -40,7 +40,7 @@
  *
  * Equation:
  *
- * \li \f$s=y^{x}\ \textrm{mod}\ \p
+ * \li \f$s=y^{x}\ \textrm{mod}\ p\f$
  *
  * \param dp The domain parameters.
  * \param x The private value.
@@ -57,5 +57,5 @@ int dlsvdp_pDHSecret(const dldp_p* dp, const mp32number* x, const mp32number* y,
 	return 0;
 }
 
-/* \}
+/*!\}
  */

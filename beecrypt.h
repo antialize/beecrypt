@@ -112,9 +112,6 @@ int						entropyGatherNext(uint32*, int);
 }
 #endif
 
-/* \}
- */
-
 /*
  * Pseudo-random Number Generators
  */
@@ -506,9 +503,6 @@ int keyedHashFunctionContextDigestMatch(keyedHashFunctionContext*, const mp32num
 #ifdef __cplusplus
 }
 #endif
-
-/* \}
- */
 
 /*
  * Block ciphers

@@ -124,5 +124,5 @@ memchunk* pkcs5UnpadCopy(int blockbytes, const memchunk* src)
 	return tmp;
 }
 
-/* \}
+/*!\}
  */

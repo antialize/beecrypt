@@ -19,7 +19,6 @@
 /*!\file beecrypt.c
  * \brief BeeCrypt API.
  * \author Bob Deblier <bob@virtualunlimited.com>
- * \ingroup ES_m PRNG_m HASH_m HMAC_m BC_m
  */
 
 #define BEECRYPT_DLL_EXPORT
@@ -58,8 +57,9 @@
 #include "blowfish.h"
 #include "blockmode.h"
 
-/*!\addgroup ES_m */
-/* \{ */
+/*!\addtogroup ES_m
+ * \{
+ */
 
 /*!\var entropySourceList
  * \brief Table holding all available entropy sources.
@@ -155,10 +155,8 @@ int entropyGatherNext(uint32* data, int size)
 	return -1;
 }
 
-/* \}
- */
-
-/*!\addtogroup PRNG_m
+/*!\}
+ * \addtogroup PRNG_m
  * \{
  */
 
@@ -249,10 +247,8 @@ int randomGeneratorContextNext(randomGeneratorContext* ctxt, uint32* data, int s
 	return ctxt->rng->next(ctxt->param, data, size);
 }
 
-/* \}
- */
-
-/*!\addtogroup HASH_m
+/*!\}
+ * \addtogroup HASH_m
  * \{
  */
 
@@ -451,10 +447,8 @@ int hashFunctionContextDigestMatch(hashFunctionContext* ctxt, const mp32number* 
 	return rc;
 }
 
-/* \}
- */
-
-/*!\addtogroup HMAC_m
+/*!\}
+ * \addtogroup HMAC_m
  * \{
  */
 
@@ -674,10 +668,8 @@ int keyedHashFunctionContextDigestMatch(keyedHashFunctionContext* ctxt, const mp
 	return rc;
 }
 
-/* \}
- */
-
-/*!\addtogroup BC_m 
+/*!\}
+ * \addtogroup BC_m 
  * \{
  */
 
@@ -814,7 +806,7 @@ int blockCipherContextFree(blockCipherContext* ctxt)
 	return 0;
 }
 
-/* \}
+/*!\}
  */
 
 #if WIN32

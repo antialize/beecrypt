@@ -70,8 +70,6 @@ and its security and cryptography classes. This library can also be
 accessed from Java by installing BeeCrypt for Java, a JCE 1.2 crypto
 provider and the counterpart of this library.
 
-Many thanks to:
- 
  */
 
 /*! \defgroup	ES_m	Entropy sources
@@ -89,6 +87,8 @@ Many thanks to:
 /*! \defgroup	PRNG_m	Pseudo-Random Number Generators
  */
 /*! \defgroup	PRNG_fips186_m	Pseudo-Random Number Generators: FIPS-186
+ */
+/*! \defgroup	PRNG_mt_m	Pseudo-Random Number Generators: Mersenne Twister
  */
 /*! \defgroup	HASH_m	Hash Functions
  */
@@ -130,3 +130,4 @@ Many thanks to:
  */
 /*! \defgroup	JAVA_m	Java API
  */
+

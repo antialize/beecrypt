@@ -187,5 +187,5 @@ int rsavrfy(const rsapk* pk, const mp32number* m, const mp32number* c)
 	return 0;
 }
 
-/* \}
+/*!\}
  */

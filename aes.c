@@ -1437,5 +1437,5 @@ int aesCBCDecrypt(aesParam* ap, int count, uint32* dst, const uint32* src)
 }
 #endif
 
-/* \}
+/*!\}
  */

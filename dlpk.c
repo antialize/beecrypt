@@ -100,5 +100,5 @@ int dlpk_pgonValidate(const dlpk_p* pk, randomGeneratorContext* rgc)
 	return 1;
 }
 
-/* \}
+/*!\}
  */

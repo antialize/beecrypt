@@ -62,5 +62,5 @@ int rsapkCopy(rsapk* dst, const rsapk* src)
 	return 0;
 }
 
-/* \}
+/*!\}
  */

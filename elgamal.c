@@ -296,5 +296,5 @@ int elgv3vrfy(const mp32barrett* p, const mp32barrett* n, const mp32number* g, c
 	return 0;
 }
 
-/* \}
+/*!\}
  */

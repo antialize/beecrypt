@@ -72,5 +72,5 @@ int blockDecrypt(const blockCipher* bc, blockCipherParam* bp, cipherMode mode, i
 	return -1;
 }
 
-/* \}
+/*!\}
  */

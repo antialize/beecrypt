@@ -75,5 +75,5 @@ int dlkp_pCopy(dlkp_p* dst, const dlkp_p* src)
 	return 0;
 }
 
-/* \}
+/*!\}
  */

@@ -383,6 +383,7 @@ INPUT = \
 	@top_srcdir@/timestamp.c \
 	@top_srcdir@/timestamp.h
 
+
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 
 # and *.h) to filter out the source-files in the directories. If left 

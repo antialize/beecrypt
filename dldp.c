@@ -442,5 +442,5 @@ int dldp_pgonValidate(const dldp_p* dp, randomGeneratorContext* rgc)
 	return dldp_pValidate((const dldp_p*) dp, rgc);
 }
 
-/* \}
+/*!\}
  */

@@ -739,7 +739,7 @@ static pthread_mutex_t dev_audio_lock = PTHREAD_MUTEX_INITIALIZER;
 #   error Need locking mechanism
 #  endif
 # endif
-/* \}
+/*!\}
  */
 #endif
 
@@ -758,7 +758,7 @@ static pthread_mutex_t dev_dsp_lock = PTHREAD_MUTEX_INITIALIZER;
 #   error Need locking mechanism
 #  endif
 # endif
-/* \}
+/*!\}
  */
 #endif
 
@@ -777,7 +777,7 @@ static pthread_mutex_t dev_random_lock = PTHREAD_MUTEX_INITIALIZER;
 #   error Need locking mechanism
 #  endif
 # endif
-/* \}
+/*!\}
  */
 #endif
 
@@ -796,7 +796,7 @@ static pthread_mutex_t dev_urandom_lock = PTHREAD_MUTEX_INITIALIZER;
 #   error Need locking mechanism
 #  endif
 # endif
-/* \}
+/*!\}
  */
 #endif
 
@@ -815,7 +815,7 @@ static pthread_mutex_t dev_tty_lock = PTHREAD_MUTEX_INITIALIZER;
 #   error Need locking mechanism
 #  endif
 # endif
-/* \}
+/*!\}
  */
 #endif
 
