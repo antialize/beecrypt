@@ -1,11 +1,5 @@
 /* beecrypt.gnu.h.in.  Generated from configure.ac by autoheader.  */
 
-
-#ifndef _REENTRANT
-#define _REENTRANT
-#endif
-
-
 /* Define to 1 if you are using AIX */
 #undef AIX
 
@@ -23,12 +17,6 @@
 
 /* Define to 1 if you are using FreeBSD */
 #undef FREEBSD
-
-/* Define to 1 if your compiler has a 64-bit signed integer type */
-#undef HAVE_64_BIT_INT
-
-/* Define to 1 if your compiler has a 64-bit unsigned integer type */
-#undef HAVE_64_BIT_UINT
 
 /* Define to 1 if you have the <aio.h> header file. */
 #undef HAVE_AIO_H
@@ -66,26 +54,17 @@
 /* Define to 1 if you have the `gettimeofday' function. */
 #undef HAVE_GETTIMEOFDAY
 
+/* */
+#undef HAVE_INT64_T
+
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
 /* Define to 1 if you have the `mtmalloc' library (-lmtmalloc). */
 #undef HAVE_LIBMTMALLOC
 
-/* Define to 1 if you have the `pthread' library (-lpthread). */
-#undef HAVE_LIBPTHREAD
-
-/* Define to 1 if you have the `thread' library (-lthread). */
-#undef HAVE_LIBTHREAD
-
 /* Define to 1 if you have the `winmm' library (-lwinmm). */
 #undef HAVE_LIBWINMM
-
-/* Define to 1 if your compiler knows the 'long long' type */
-#undef HAVE_LONG_LONG
-
-/* Define to 1 if your system has a working `malloc' function. */
-#undef HAVE_MALLOC
 
 /* Define to 1 if you have the <malloc.h> header file. */
 #undef HAVE_MALLOC_H
@@ -118,7 +97,7 @@
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H
 
-/* Define to 1 if you have the <stdlib.h> header file. */
+/* . */
 #undef HAVE_STDLIB_H
 
 /* Define to 1 if you have the `strcspn' function. */
@@ -172,11 +151,11 @@
 /* Define to 1 if you have the <time.h> header file. */
 #undef HAVE_TIME_H
 
+/* */
+#undef HAVE_UINT64_T
+
 /* . */
 #undef HAVE_UNISTD_H
-
-/* Define to 1 if your compiler knows the 'unsigned long long' type */
-#undef HAVE_UNSIGNED_LONG_LONG
 
 /* Define to 1 if you are using HPUX */
 #undef HPUX
@@ -184,16 +163,15 @@
 /* Define to 1 if you want to include the Java code */
 #undef JAVAGLUE
 
-/* Define to 1 if your system compiles object names with leading underscores
-   */
-#undef LEADING_UNDERSCORE
-
 /* Define to 1 if you are using GNU/Linux */
 #undef LINUX
 
 /* Define to 1 if `lstat' dereferences a symlink specified with a trailing
    slash. */
 #undef LSTAT_FOLLOWS_SLASHED_SYMLINK
+
+/* Define to the word size of your CPU */
+#undef MP_WBITS
 
 /* Define to 1 if you are using NetBSD */
 #undef NETBSD
@@ -230,12 +208,6 @@
 
 /* The size of a `char', as computed by sizeof. */
 #undef SIZEOF_CHAR
-
-/* The size of a `double', as computed by sizeof. */
-#undef SIZEOF_DOUBLE
-
-/* The size of a `float', as computed by sizeof. */
-#undef SIZEOF_FLOAT
 
 /* The size of a `int', as computed by sizeof. */
 #undef SIZEOF_INT
@@ -281,9 +253,17 @@
 #undef WIN32
 #endif
 
+
 /* Define to 1 if your processor stores words with the most significant byte
    first (like Motorola and SPARC, unlike Intel and VAX). */
 #undef WORDS_BIGENDIAN
+
+/* Define to 1 if on AIX 3.
+   System headers sometimes define this.
+   We just want to avoid a redefinition error message.  */
+#ifndef _ALL_SOURCE
+# undef _ALL_SOURCE
+#endif
 
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const
@@ -292,8 +272,40 @@
    if it is not supported. */
 #undef inline
 
+/* If not already defined, define as a signed integer of exactly 16 bits */
+#undef int16_t
 
-#if LINUX
-#define _LIBC_REENTRANT
+/* If not already defined, define as a signed integer of exactly 32 bits */
+#undef int32_t
+
+/* If not already defined, define as a signed integer of exactly 64 bits */
+#undef int64_t
+
+/* If not already defined, define as a signed integer of 8 bits */
+#undef int8_t
+
+/* Define to `unsigned' if <sys/types.h> does not define. */
+#undef size_t
+
+/* If not already defined, define as an unsigned integer of exactly 16 bits */
+#undef uint16_t
+
+/* If not already defined, define as an unsigned integer of exactly 32 bits */
+#undef uint32_t
+
+/* If not already defined, define as an unsigned integer of exactly 64 bits */
+#undef uint64_t
+
+/* If not already defined, define as an unsigned integer of 8 bits */
+#undef uint8_t
+
+
+#if ENABLE_THREADS
+# ifndef _REENTRANT
+#  define _REENTRANT
+# endif
+# if LINUX
+#  define _LIBC_REENTRANT
+# endif
 #endif
 

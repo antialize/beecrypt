@@ -19,7 +19,7 @@
 
 /*!\file beecrypt.api.h
  * \brief BeeCrypt API, portability headers.
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  */
 
 #ifndef _BEECRYPT_API_H
@@ -38,8 +38,15 @@
 # endif
 #else
 # include "beecrypt.gnu.h"
-# include "beecrypt.gnu.types.h"
 # define BEECRYPTAPI
+#endif
+
+#if HAVE_INTTYPES_H
+# include <inttypes.h>
+#else
+# if HAVE_STDINT_H
+# include <stdint.h>
+# endif
 #endif
 
 #ifndef ROTL32
@@ -49,14 +56,13 @@
 # define ROTR32(x, s) (((x) >> (s)) | ((x) << (32 - (s))))
 #endif
 
-typedef int8	javabyte;
-typedef int16	javashort;
-typedef int32	javaint;
-typedef int64	javalong;
+typedef uint8_t		byte;
 
-typedef uint16	javachar;
+typedef int8_t		javabyte;
+typedef int16_t		javashort;
+typedef int32_t		javaint;
+typedef int64_t		javalong;
 
-typedef float4	javafloat;
-typedef double8	javadouble;
+typedef uint16_t	javachar;
 
 #endif
