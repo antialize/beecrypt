@@ -488,6 +488,10 @@ AC_DEFUN([BEECRYPT_GNU_CC],[
         BEECRYPT_CFLAGS_REM([-O2])
         CFLAGS="$CFLAGS -O3 -mcpu=$bc_target_arch"
         ;;
+      powerpc*)
+        BEECRYPT_CFLAGS_REM([-O3])
+        CFLAGS="$CFLAGS -O3"
+        ;;
       esac
       # Architecture-specific optimizations
       case $bc_target_arch in
