@@ -85,6 +85,9 @@ AC_ARG_WITH(arch,[  --with-arch             optimize for specific architecture (
     i[[3456]]86 | \
     pentium | pentium-mmx | pentiumpro | pentium[[234]] | \
     athlon | athlon-tbird | athlon-4 | athlon-xp | athlon-mp)
+      if test "$ac_with_cpu" != yes; then
+        bc_target_cpu=$withval
+      fi
       ;;
     esac
     ;;
