@@ -130,6 +130,15 @@ namespace beecrypt {
 				return _size;
 			}
 
+			void replace(T* data, size_t size) throw ()
+			{
+				if (_data)
+					free(_data);
+
+				_data = data;
+				_size = size;
+			}
+
 			void resize(size_t _newsize) throw (std::bad_alloc)
 			{
 				if (_newsize)
