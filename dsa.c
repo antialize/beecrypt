@@ -163,3 +163,16 @@ int dsavrfy(const mpbarrett* p, const mpbarrett* q, const mpnumber* g, const mpn
 
 	return rc;
 }
+
+int dsaparamMake(dsaparam* dp, randomGeneratorContext* rgc, size_t psize)
+{
+	/* psize must be >= 512 and <= 1024 */
+	if ((psize < 512) || (psize > 1024))
+		return -1;
+
+	/* psize must be a multiple of 64 */
+	if ((psize & 0x3f) != 0)
+		return -1;
+
+	return dldp_pgoqMake(dp, rgc, psize, 160, 1);
+}
