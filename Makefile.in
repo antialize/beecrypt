@@ -164,12 +164,12 @@ HEADERS =  $(pkginclude_HEADERS)
 DIST_COMMON =  README ./stamp-h.in AUTHORS COPYING COPYING.LIB ChangeLog \
 INSTALL Makefile.am Makefile.in NEWS acconfig.h aclocal.m4 \
 beecrypt.gnu.h.in config.guess config.sub configure configure.in \
-install-sh missing mkinstalldirs
+install-sh ltconfig ltmain.sh missing mkinstalldirs
 
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
-TAR = gtar
+TAR = tar
 GZIP_ENV = --best
 SOURCES = $(libbeecrypt_la_SOURCES)
 OBJECTS = $(libbeecrypt_la_OBJECTS)
@@ -432,7 +432,7 @@ distdir: $(DISTFILES)
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
-	    cp -pr $$/$$file $(distdir)/$$file; \
+	    cp -pr $$d/$$file $(distdir)/$$file; \
 	  else \
 	    test -f $(distdir)/$$file \
 	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \

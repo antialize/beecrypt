@@ -46,6 +46,10 @@ extern "C" {
 #  define ASM_AESENCRYPT
 #  define ASM_AESDECRYPT
 # endif
+# if defined(OPTIMIZE_POWERPC)
+#  define ASM_AESENCRYPT
+#  define ASM_AESDECRYPT
+# endif
 #endif
 
 #if defined(__SUNPRO_C) || defined(__SUNPRO_CC)

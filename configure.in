@@ -727,6 +727,9 @@ EOF
 EOF
       ;;
     powerpc)
+      cat > $srcdir/aesopt.S << EOF
+#include "gas/aesopt.powerpc.S"
+EOF
       cat > $srcdir/mp32opt.S << EOF
 #include "gas/mp32opt.powerpc.S"
 EOF

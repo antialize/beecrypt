@@ -1920,7 +1920,7 @@ for ac_kw in inline __inline__ __inline; do
 #include "confdefs.h"
 
 int main() {
-} $ac_kw foo() {
+} int $ac_kw foo() {
 ; return 0; }
 EOF
 if { (eval echo configure:1927: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
@@ -2248,7 +2248,7 @@ else
 int main() {
 
 /* Ultrix mips cc rejects this.  */
-typedef int charset[2]; const charset x;
+typedef int charset[2]; const charset x = {0,0};
 /* SunOS 4.1.1 cc rejects this.  */
 char const *const *ccp;
 char **p;
@@ -4305,6 +4305,9 @@ EOF
 EOF
       ;;
     powerpc)
+      cat > $srcdir/aesopt.S << EOF
+#include "gas/aesopt.powerpc.S"
+EOF
       cat > $srcdir/mp32opt.S << EOF
 #include "gas/mp32opt.powerpc.S"
 EOF
