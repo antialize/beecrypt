@@ -93,6 +93,7 @@
 #define HAVE_SYS_STAT_H			0
 
 #define HAVE_LONG_LONG			1
+#define HAVE_UNSIGNED_LONG_LONG	1
 
 typedef char		int8;
 typedef short		int16;
@@ -110,7 +111,8 @@ typedef unsigned long long	uint64;
 
 #define HAVE_SYS_STAT_H			1
 
-#define HAVE_LONG_LONG			0
+#define HAVE_LONG_LONG			1 /* cheated */
+#define HAVE_UNSIGNED_LONG_LONG	1 /* cheated */
 
 typedef __int8	int8;
 typedef __int16	int16;
