@@ -38,7 +38,6 @@ static const char* rsa_c  = "b06c4fdabb6301198d265bdbae9423b380f271f734538850930
 
 static const char* rsa_m  = "d436e99569fd32a7c8a05bbc90d32c49";
 
-#if 1
 int main()
 {
 	int failures = 0;
@@ -83,23 +82,3 @@ int main()
 
 	return failures;
 }
-#else
-int main()
-{
-	int carry;
-	mpw x[4] = { 0, 0, 0, 0};
-	mpw y[4] = { 0, 0, 0, 1};
-	mpw r[8];
-
-	carry = mpadd(4, x, y);
-	printf("c %d ", carry); mpprintln(4, x);
-	carry = mpsubw(4, x, 1);
-	printf("c %d ", carry); mpprintln(4, x);
-	carry = mpsub(4, x, y);
-	printf("c %d ", carry); mpprintln(4, x);
-	mpmul(r, 4, x, 4, x);
-	mpprintln(8, r);
-	mpsqr(r, 4, x);
-	mpprintln(8, r);
-}
-#endif
