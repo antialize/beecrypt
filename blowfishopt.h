@@ -49,10 +49,8 @@ extern "C" {
 #  define ASM_BLOWFISHDECRYPT
 # endif
 # if defined(OPTIMIZE_POWERPC)
-#  define ASM_BLOWFISHENCRYPT
-#  define ASM_BLOWFISHDECRYPT
-#  define ASM_BLOWFISHECBENCRYPT
-#  define ASM_BLOWFISHECBDECRYPT
+#  undef ASM_BLOWFISHENCRYPT
+#  undef ASM_BLOWFISHDECRYPT
 # endif
 #endif
 
