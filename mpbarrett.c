@@ -441,8 +441,8 @@ void mpbmulmod_w(const mpbarrett* b, size_t xsize, const mpw* xdata, size_t ysiz
 {
 	/* xsize and ysize must be <= b->size */
 	register size_t  size = b->size;
+	register size_t  fill = size*2-xsize-ysize;
 	register mpw* temp = wksp + size*2+2;
-	register mpw  fill = size*2-xsize-ysize;
 
 	if (fill)
 		mpzero(fill, temp);
@@ -460,8 +460,8 @@ void mpbsqrmod_w(const mpbarrett* b, size_t xsize, const mpw* xdata, mpw* result
 {
 	/* xsize must be <= b->size */
 	register size_t  size = b->size;
+	register size_t  fill = 2*(size-xsize);
 	register mpw* temp = wksp + size*2+2;
-	register mpw  fill = 2*(size-xsize);
 
 	if (fill)
 		mpzero(fill, temp);
