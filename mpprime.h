@@ -44,6 +44,8 @@ int  mppmilrab_w   (const mpbarrett*, randomGeneratorContext*, int, mpw*);
 BEECRYPTAPI
 void mpprnd_w      (mpbarrett*, randomGeneratorContext*, size_t, int, const mpnumber*, mpw*);
 BEECRYPTAPI
+int	 mpprndr_w     (mpbarrett*, randomGeneratorContext*, size_t, int, const mpnumber*, const mpnumber*, const mpnumber*, mpw*);
+BEECRYPTAPI
 void mpprndsafe_w  (mpbarrett*, randomGeneratorContext*, size_t, int, mpw*);
 BEECRYPTAPI
 void mpprndcon_w   (mpbarrett*, randomGeneratorContext*, size_t, int, const mpnumber*, const mpnumber*, const mpnumber*, mpnumber*, mpw*);
