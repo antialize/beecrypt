@@ -52,7 +52,7 @@ Included in the library are:
   </ul>
  <li>multi-precision integer library, with assembler-optimized routines
      for a range of processors; optimized to perform well on both 32-bit
-     and 64-bit machines; uses Barrettt modular reduction instead of the
+     and 64-bit machines; uses Barrett modular reduction instead of the
      more common usual Montgomery algorithm; also implements sliding
      windows.
  <li>probabilistic primality testing, with optimized small prime trial
