@@ -23,11 +23,13 @@
 #include "beecrypt/c++/provider/AESCipher.h"
 #include "beecrypt/c++/provider/BeeCertificateFactory.h"
 #include "beecrypt/c++/provider/BeeCertPathValidator.h"
-#include "beecrypt/c++/provider/BeeCryptProvider.h"
+#include "beecrypt/c++/provider/BaseProvider.h"
 #include "beecrypt/c++/provider/BeeKeyFactory.h"
 #include "beecrypt/c++/provider/BeeKeyStore.h"
 #include "beecrypt/c++/provider/BeeSecureRandom.h"
 #include "beecrypt/c++/provider/BlowfishCipher.h"
+#include "beecrypt/c++/provider/DHAESCipher.h"
+#include "beecrypt/c++/provider/DHAESParameters.h"
 #include "beecrypt/c++/provider/DHKeyAgreement.h"
 #include "beecrypt/c++/provider/DHKeyFactory.h"
 #include "beecrypt/c++/provider/DHKeyPairGenerator.h"
@@ -38,7 +40,10 @@
 #include "beecrypt/c++/provider/DSAParameterGenerator.h"
 #include "beecrypt/c++/provider/DSAParameters.h"
 #include "beecrypt/c++/provider/HMACMD5.h"
+#include "beecrypt/c++/provider/HMACSHA1.h"
 #include "beecrypt/c++/provider/HMACSHA256.h"
+#include "beecrypt/c++/provider/HMACSHA384.h"
+#include "beecrypt/c++/provider/HMACSHA512.h"
 #include "beecrypt/c++/provider/MD5Digest.h"
 #include "beecrypt/c++/provider/MD5withRSASignature.h"
 #include "beecrypt/c++/provider/PKCS12KeyFactory.h"
@@ -111,6 +116,18 @@ void* beecrypt_BlowfishCipher_create()
 }
 
 PROVAPI
+void* beecrypt_DHAESCipher_create()
+{
+	return new beecrypt::provider::DHAESCipher();
+}
+
+PROVAPI
+void* beecrypt_DHAESParameters_create()
+{
+	return new beecrypt::provider::DHAESParameters();
+}
+
+PROVAPI
 void* beecrypt_DHKeyAgreement_create()
 {
 	return new beecrypt::provider::DHKeyAgreement();
@@ -171,9 +188,27 @@ void* beecrypt_HMACMD5_create()
 }
 
 PROVAPI
+void* beecrypt_HMACSHA1_create()
+{
+	return new beecrypt::provider::HMACSHA1();
+}
+
+PROVAPI
 void* beecrypt_HMACSHA256_create()
 {
 	return new beecrypt::provider::HMACSHA256();
+}
+
+PROVAPI
+void* beecrypt_HMACSHA384_create()
+{
+	return new beecrypt::provider::HMACSHA384();
+}
+
+PROVAPI
+void* beecrypt_HMACSHA512_create()
+{
+	return new beecrypt::provider::HMACSHA512();
 }
 
 PROVAPI
@@ -264,34 +299,36 @@ void* beecrypt_SHA512withRSASignature_create()
 
 using namespace beecrypt::provider;
 
-BeeCryptProvider::BeeCryptProvider() : Provider(PROVIDER_NAME, PROVIDER_VERSION, PROVIDER_INFO)
+BaseProvider::BaseProvider() : Provider(PROVIDER_NAME, PROVIDER_VERSION, PROVIDER_INFO)
 {
 	_dlhandle = 0;
 
 	putall();
 }
 
-BeeCryptProvider::BeeCryptProvider(void* dlhandle) : Provider(PROVIDER_NAME, PROVIDER_VERSION, PROVIDER_INFO)
+BaseProvider::BaseProvider(void* dlhandle) : Provider(PROVIDER_NAME, PROVIDER_VERSION, PROVIDER_INFO)
 {
 	_dlhandle = dlhandle;
 
 	putall();
 }
 
-BeeCryptProvider::~BeeCryptProvider()
+BaseProvider::~BaseProvider()
 {
 }
 
-void BeeCryptProvider::putall()
+void BaseProvider::putall()
 {
 	put("AlgorithmParameterGenerator.DH"           , "beecrypt_DHParameterGenerator_create");
 	put("AlgorithmParameterGenerator.DSA"          , "beecrypt_DSAParameterGenerator_create");
 	put("AlgorithmParameters.DH"                   , "beecrypt_DHParameters_create");
+	put("AlgorithmParameters.DHAES"                , "beecrypt_DHAESParameters_create");
 	put("AlgorithmParameters.DSA"                  , "beecrypt_DSAParameters_create");
 	put("CertificateFactory.BEE"                   , "beecrypt_BeeCertificateFactory_create");
 	put("CertPathValidator.BEE"                    , "beecrypt_BeeCertificateFactory_create");
 	put("Cipher.AES"                               , "beecrypt_AESCipher_create");
 	put("Cipher.Blowfish"                          , "beecrypt_BlowfishCipher_create");
+	put("Cipher.DHAES"                             , "beecrypt_DHAESCipher_create");
 	put("KeyAgreement.DH"                          , "beecrypt_DHKeyAgreement_create");
 	put("KeyFactory.BEE"                           , "beecrypt_BeeKeyFactory_create");
 	put("KeyFactory.DH"                            , "beecrypt_DHKeyFactory_create");
@@ -304,6 +341,8 @@ void BeeCryptProvider::putall()
 	put("Mac.HMAC-MD5"                             , "beecrypt_HMACMD5_create");
 	put("Mac.HMAC-SHA-1"                           , "beecrypt_HMACSHA1_create");
 	put("Mac.HMAC-SHA-256"                         , "beecrypt_HMACSHA256_create");
+	put("Mac.HMAC-SHA-384"                         , "beecrypt_HMACSHA384_create");
+	put("Mac.HMAC-SHA-512"                         , "beecrypt_HMACSHA512_create");
 	put("MessageDigest.MD5"                        , "beecrypt_MD5Digest_create");
 	put("MessageDigest.SHA-1"                      , "beecrypt_SHA1Digest_create");
 	put("MessageDigest.SHA-256"                    , "beecrypt_SHA256Digest_create");
@@ -322,7 +361,7 @@ void BeeCryptProvider::putall()
 	put("Signature.SHA512withRSA"                  , "beecrypt_SHA512withRSASignature_create");
 	put("Alg.Alias.KeyAgreement.DiffieHellman"     , "KeyAgreement.DH");
 	put("Alg.Alias.KeyFactory.DiffieHellman"       , "KeyFactory.DH");
-	put("Alg.Alias.KeyPairGenerator.DiffieHellman" , "KeyFactory.DH");
+	put("Alg.Alias.KeyPairGenerator.DiffieHellman" , "KeyPairGenerator.DH");
 	put("Alg.Alias.Signature.DSS"                  , "Signature.SHA1withDSA");
 	put("Alg.Alias.Signature.SHAwithDSA"           , "Signature.SHA1withDSA");
 	put("Alg.Alias.Signature.SHA/DSA"              , "Signature.SHA1withDSA");
@@ -331,7 +370,7 @@ void BeeCryptProvider::putall()
 
 namespace {
 	bool init = false;
-	BeeCryptProvider* singleton;
+	BaseProvider* singleton;
 }
 
 extern "C" {
@@ -356,7 +395,7 @@ const Provider& provider_const_ref(void *dlhandle)
 {
 	if (!init)
 	{
-		singleton = new BeeCryptProvider(dlhandle);
+		singleton = new BaseProvider(dlhandle);
 		init = true;
 	}
 	return *singleton;

@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-/*!\file BeeCryptProvider.h
+/*!\file BaseProvider.h
  * \ingroup CXX_PROVIDER_m
  */
 
@@ -32,15 +32,15 @@ namespace beecrypt {
 	namespace provider {
 		/*!\ingroup CXX_PROVIDER_m
 		 */
-		class BeeCryptProvider : public Provider
+		class BaseProvider : public Provider
 		{
 		private:
 			void putall();
 
 		public:
-			BeeCryptProvider();
-			BeeCryptProvider(void*);
-			virtual ~BeeCryptProvider();
+			BaseProvider();
+			BaseProvider(void*);
+			virtual ~BaseProvider();
 		};
 	}
 }
