@@ -33,8 +33,6 @@
 
 #include <iomanip>
 
-#if CPPGLUE
-
 const mpnumber mpnumber::ZERO;
 const mpnumber mpnumber::ONE(1);
 
@@ -295,5 +293,3 @@ randomGeneratorContext::~randomGeneratorContext()
 {
 	randomGeneratorContextFree(this);
 }
-
-#endif
