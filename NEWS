@@ -3,13 +3,14 @@
         - Added the AES algorithm, with assembler routines for i586 and powerpc.
 	- Added the DSA signature algorithm.
 	- Added PowerPC assembler routines for blowfish.
-	- Added 
+	- Added Pentium4 SSE2 assembler multiplication routines.
 	- Fixed the RSA CRT algorithm.
 	- Fixed the gas/i386 mp32even and mp32odd routines.
 	- Fixed a bug in modular inverse computation; thanks to Jeff Johnson of RedHat for pointing this out.
 	- Fixed a bug in testing the result of a gcd operation in the mp32prndconone routine.
 	- Fixed an ugly bug in base64 decoding.
 	- Fixed compatibility with the latest automake & autoconf versions.
+	- Replaces CPU optimization mechanism in configure script.
 
 2.1.0:
 	- Added support for automake, autoheader and libtool, which should make compiling the library even easier.
