@@ -62,9 +62,9 @@
 
 int dhaes_pUsable(const dhaes_pParameters* params)
 {
-	int keybits = (params->hash->digestsize << 3); /* digestsize in bytes times 8 bits */
-	int cipherkeybits = params->cipherkeybits;
-	int mackeybits = params->mackeybits;
+	size_t keybits = (params->hash->digestsize << 3); /* digestsize in bytes times 8 bits */
+	size_t cipherkeybits = params->cipherkeybits;
+	size_t mackeybits = params->mackeybits;
 
 	/* test if keybits is a multiple of 32 */
 	if ((keybits & 31) != 0)
