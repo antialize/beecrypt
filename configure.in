@@ -4,6 +4,12 @@ AC_CANONICAL_SYSTEM
 
 dnl Check system type
 case $target_os in
+  cygwin*)
+    AC_DEFINE(CYGWIN)
+    ;;
+  darwin*)
+    AC_DEFINE(DARWIN)
+    ;;
   freebsd*)
     AC_DEFINE(FREEBSD)
     ;;
@@ -16,9 +22,6 @@ case $target_os in
   solaris*)
     AC_DEFINE(SOLARIS)
     ;;
-  cygwin*)
-	AC_DEFINE(WIN32)
-	;;
   *)
     AC_MSG_WARN([Operating system type $target_os currently not supported and/or tested])
     ;;
@@ -131,9 +134,11 @@ AC_DEFINE(JNIFLAGS, $JNIFLAGS)
 AC_SUBST(PRODUCT)
 AC_SUBST(VERSION)
 AC_SUBST(CC)
-AC_SUBST(CFLAGS)
-AC_SUBST(LDFLAGS)
-AC_SUBST(ASFLAGS)
+AC_SUBST(CPP)
+AC_SUBST(CONFASFLAGS)
+AC_SUBST(CONFCFLAGS)
+AC_SUBST(CONFCPPFLAGS)
+AC_SUBST(CONFLDFLAGS)
 AC_SUBST(JAVAGLUE)
 AC_SUBST(JNIFLAGS)
 
@@ -192,72 +197,85 @@ dnl Checks for endianness
 AC_C_BIGENDIAN
 
 dnl Checks for compiler flags
+CONFCFLAGS=""
+CONFCPPFLAGS=""
 if test "$ac_enable_debug" = yes; then
   if test "$ac_cv_prog_gcc" = yes; then
-    CFLAGS="-g -shared"
+    CONFCFLAGS="$CONFCFLAGS -g -shared"
   elif test "$ac_cv_prog_SUNPRO_CC" = yes; then
-    CFLAGS="-g -mt -KPIC"
+    CONFCFLAGS="$CONFCFLAGS -g -mt -KPIC"
   else
-    CFLAGS="-g -shared"
+    CONFCFLAGS="$CONFCFLAGS -g -shared"
   fi
 else
   if test "$ac_cv_prog_gcc" = yes; then
-    CFLAGS="-O3 -shared"
+    CONFCFLAGS="$CONFCFLAGS -O3 -shared"
     case $target_cpu in
     i386)
+      CONFCPPFLAGS="$CONFCPPFLAGS -Di386"
       ;;
     i486)
-      CFLAGS="$CFLAGS -m486 -Di486"
+      CONFCFLAGS="$CONFCFLAGS -m486"
+      CONFCPPFLAGS="$CONFCPPFLAGS -Di486"
       ;;
     i586)
-      CFLAGS="$CFLAGS -mpentium -Di586"
+      CONFCFLAGS="$CONFCFLAGS -mpentium"
+      CONFCPPFLAGS="$CONFCPPFLAGS -Di586"
       ;;
     i686)
-      CFLAGS="$CFLAGS -mpentiumpro -Di686"
+      CONFCFLAGS="$CONFCFLAGS -mpentiumpro"
+      CONFCPPFLAGS="$CONFCPPFLAGS -Di686"
       ;;
     ia64)
-      CFLAGS="$CFLAGS -Dia64"
+      CONFCPPFLAGS="$CONFCPPFLAGS -Dia64"
       ;;
     powerpc)
+      CONFCPPFLAGS="$CONFCPPFLAGS -Dpowerpc"
       ;;
     *)
       AC_MSG_WARN([Don't know how to optimize for $target_cpu])
       ;;
     esac
   elif test "$ac_cv_prog_SUNPRO_CC" = yes; then
-    CFLAGS="-fast -mt -KPIC"
+    CONFCFLAGS="$CONFCFLAGS -fast -mt -KPIC"
     case $target_cpu in
     sparcv8plus)
-      CFLAGS="$CFLAGS -Dsparcv8plus -xchip=ultra -xarch=v8plus"
+      CONFCFLAGS="$CONFCFLAGS -xchip=ultra -xarch=v8plus"
+      CONFCPPFLAGS="$CONFCPPFLAGS -Dsparcv8plus"
       ;;
     sparcv9)
-      CFLAGS="$CFLAGS -Dsparcv9 -xchip=ultra -xarch=v9"
+      CONFCFLAGS="$CONFCFLAGS -xchip=ultra -xarch=v9"
+      CONFCPPFLAGS="$CONFCPPFLAGS -Dsparcv9"
       ;;
     *)
-      AC_MSG_WARN([Using general optimization for $target_cpu])
+      AC_MSG_WARN([Using generic optimization for $target_cpu])
       ;;
     esac
   else
-    CFLAGS="-O2 -shared"
+    CONFCFLAGS="$CONFCFLAGS -O2 -shared"
   fi
 fi
 case $target_os in
+  cygwin*)
+    CONFCPPFLAGS="$CONFCPPFLAGS -DCYGWIN"
+    ;;
+  darwin*)
+    CONFCPPFLAGS="$CONFCPPFLAGS -DDARWIN"
+    ;;
   freebsd*)
-    CFLAGS="$CFLAGS -pthread"
-    LDFLAGS="$LDFLAGS -pthread"
+    CONFCFLAGS="$CONFCFLAGS -pthread"
+    CONFLDFLAGS="$CONFLDFLAGS -pthread"
     ;;
 esac
 
 dnl Checks for assembler flags
+CONFASFLAGS=""
 case $target_cpu in
 sparcv8plus)
-  ASFLAGS="-Av8plus"
+  CONFASFLAGS="-Av8plus"
   ;;
 sparcv9)
-  ASFLAGS="-Av9"
-  ;;
-*)
-  ASFLAGS=""
+  CONFASFLAGS="-Av9"
   ;;
 esac
 
@@ -265,6 +283,10 @@ dnl Checks for devices
 AC_MSG_CHECKING(for entropy device)
 case $target_os in
   cygwin*)
+    ;;
+  darwin*)
+    AC_DEFINE(HAVE_DEV_TTY,1)
+    ac_cv_entropy_device="tty"
     ;;
   freebsd*)
     AC_DEFINE(HAVE_DEV_RANDOM,1)
@@ -294,39 +316,35 @@ AC_MSG_RESULT($ac_cv_entropy_device)
 
 dnl Generate the assembler optimizations
 BLOWFISHOPTDEP=""
-BLOWFISHMAKERULE=""
+BLOWFISHOPTRULE=""
 FIPS180OPTDEP=""
 FIPS180OPTRULE=""
 MP32OPTDEP=""
 MP32OPTRULE=""
 case $target_cpu in
-  i[[3]]86)
-    MP32OPTDEP="mp32opt.o: gnu/mp32opt.gas.i386.s"
-    MP32OPTRULE="\$(COMPILE.s)"
+  i386)
+    MP32OPTDEP="mp32opt.o: gnu/mp32opt.gas.i386.S"
+    MP32OPTRULE="	\$(CPP) \$(CPPFLAGS) gnu/mp32opt.gas.i386.S | \$(AS) \$(ASFLAGS) -o mp32opt.o"
     ;;
   i[[56]]86)
-	BLOWFISHOPTDEP="blowfishopt.o: gnu/blowfishopt.gas.i586.s"
-    BLOWFISHOPTRULE="\$(COMPILE.s)"
-	FIPS180OPTDEP="fips180opt.o: gnu/fips180opt.gas.i586.s"
-    FIPS180OPTRULE="\$(COMPILE.s)"
-    MP32OPTDEP="mp32opt.o: gnu/mp32opt.gas.i386.s"
-    MP32OPTRULE="\$(COMPILE.s)"
+    BLOWFISHOPTDEP="blowfishopt.o: gnu/blowfishopt.gas.i586.S"
+    BLOWFISHOPTRULE="	\$(CPP) \$(CPPFLAGS) gnu/blowfishopt.gas.i586.S | \$(AS) \$(ASFLAGS) -o blowfishopt.o"
+    FIPS180OPTDEP="fips180opt.o: gnu/fips180opt.gas.i586.S"
+    FIPS180OPTRULE="	\$(CPP) \$(CPPFLAGS) gnu/fips180opt.gas.i586.S | \$(AS) \$(ASFLAGS) -o fips180opt.o"
+    MP32OPTDEP="mp32opt.o: gnu/mp32opt.gas.i386.S"
+    MP32OPTRULE="	\$(CPP) \$(CPPFLAGS) gnu/mp32opt.gas.i386.S | \$(AS) \$(ASFLAGS) -o mp32opt.o"
     ;;
   ia64)
-    MP32OPTDEP="mp32opt.o: gnu/mp32opt.gas.ia64.s"
-    MP32OPTRULE="\$(COMPILE.s)"
+    MP32OPTDEP="mp32opt.o: gnu/mp32opt.gas.ia64.S"
+    MP32OPTRULE="	\$(CPP) \$(CPPFLAGS) gnu/mp32opt.gas.ia64.S | \$(AS) \$(ASFLAGS) -o mp32opt.o"
     ;;
   powerpc)
-    MP32OPTDEP="mp32opt.o: gnu/mp32opt.gas.powerpc.s"
-    MP32OPTRULE="\$(COMPILE.s)"
+    MP32OPTDEP="mp32opt.o: gnu/mp32opt.gas.powerpc.S"
+    MP32OPTRULE="	\$(CPP) \$(CPPFLAGS) gnu/mp32opt.gas.powerpc.S | \$(AS) \$(ASFLAGS) -o mp32opt.o"
     ;;
-  sparcv8plus)
-    MP32OPTDEP="mp32opt.o: gnu/mp32opt.gas.sparcv9.s"
-    MP32OPTRULE="\$(COMPILE.s)"
-    ;;
-  sparcv9)
-    MP32OPTDEP="mp32opt.o: mp32opt.gas.sparcv9.s"
-    MP32OPTRULE="\$(COMPILE.s)"
+  sparcv8plus | sparcv9)
+    MP32OPTDEP="mp32opt.o: gnu/mp32opt.gas.sparcv9.S"
+    MP32OPTRULE="	\$(CPP) \$(CPPFLAGS) gnu/mp32opt.gas.sparcv9.S | \$(AS) \$(ASFLAGS) -o mp32opt.o"
     ;;
 esac
 AC_SUBST(BLOWFISHOPTDEP)

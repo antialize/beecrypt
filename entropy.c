@@ -367,6 +367,65 @@ int entropy_wavein(uint32* data, int size)
 	}
 }
 
+int entropy_console(uint32* data, int size)
+{
+	register uint32 randombits = size << 5;
+	register uint32 temp = 0;
+
+	HANDLE hStdin;
+	DWORD inRet;
+	INPUT_RECORD inEvent;
+	LARGE_INTEGER hrtsample;
+
+	hStdin = GetStdHandle(STD_INPUT_HANDLE);
+	if (hStdin == INVALID_HANDLE_VALUE)
+	{
+		fprintf(stderr, "GetStdHandle error %d\n", GetLastError());
+		return -1;
+	}
+
+	printf("please press random keys on your keyboard\n"); fflush(stdout);
+
+	while (randombits)
+	{
+		if (!ReadConsoleInput(hStdin, &inEvent, 1, &inRet))
+		{
+			fprintf(stderr, "ReadConsoleInput failed\n"); fflush(stderr);
+			return -1;
+		}
+		if (inRet == 1 && inEvent.EventType == KEY_EVENT)
+		{
+			printf("."); fflush(stdout);
+			if (!QueryPerformanceCounter(&hrtsample))
+			{
+				fprintf(stderr, "QueryPerformanceCounter failed\n"); fflush(stderr);
+				return -1;
+			}
+
+			/* get 8 bits from the sample */
+			temp <<= 8;
+			/* discard the 2 lowest bits */
+			temp |= (uint32)(hrtsample.LowPart >> 2);
+			randombits -= 8;
+
+			if (!(randombits & 0x1f))
+				*(data++) = temp;
+		}
+	}
+
+	printf("\nthanks\n");
+
+	sleep(1);
+	
+	if (!FlushConsoleInputBuffer(hStdin))
+	{
+		fprintf(stderr, "FlushConsoleInputBuffer failed\n"); fflush(stderr);
+		return -1;
+	}
+
+	return 0;
+}
+
 int entropy_wincrypt(uint32* data, int size)
 {
 	HCRYPTPROV hCrypt;

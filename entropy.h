@@ -41,6 +41,8 @@ int entropy_provider_cleanup();
 BEEDLLAPI
 int entropy_wavein(uint32*, int);
 BEEDLLAPI
+int entropy_console(uint32*, int);
+BEEDLLAPI
 int entropy_wincrypt(uint32*, int);
 #else
 #if HAVE_DEV_AUDIO

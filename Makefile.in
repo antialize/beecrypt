@@ -23,14 +23,14 @@
 SHELL=/bin/sh
 
 .SUFFIXES:
-.SUFFIXES: .s .c .o
+.SUFFIXES: .S .c .o
 
-COMPILE.s = $(AS) $(ASFLAGS) $< -o $@
+COMPILE.S = $(CPP) $(CPPFLAGS) $< | $(AS) $(ASFLAGS) -o $@
 
 COMPILE.c = $(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
-.s.o:
-	$(COMPILE.s)
+.S.o:
+	$(COMPILE.S)
 
 .c.o:
 	$(COMPILE.c)
@@ -42,10 +42,12 @@ INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 
 CC = @CC@
-CFLAGS = @CFLAGS@
-CPPFLAGS = @DEFS@ -I. -I${srcdir}
-LDFLAGS = @LDFLAGS@ @LIBS@
-ASFLAGS = @ASFLAGS@
+CPP = @CPP@
+
+ASFLAGS = @CONFASFLAGS@
+CFLAGS = @CONFCFLAGS@
+CPPFLAGS = @DEFS@ @CONFCPPFLAGS@ -I. -I${srcdir}
+LDFLAGS = @CONFLDFLAGS@ @LIBS@
 
 JAVAGLUE = @JAVAGLUE@
 JNIFLAGS = @JNIFLAGS@
@@ -90,7 +92,7 @@ OBJFILES = \
 	timestamp.o
 
 DISTFILES = \
-	LICENSE README README_FREEBSD DOCUMENTATION CHANGELOG BUGS BENCHMARKS \
+	LICENSE README DOCUMENTATION CHANGELOG BUGS BENCHMARKS \
 	config.guess config.sub install-sh \
 	configure.in configure Makefile.in \
 	config.h \
@@ -120,10 +122,10 @@ DISTFILES = \
 	sha1hmac.h sha1hmac.c \
 	timestamp.h timestamp.c \
 	gnu/config.gnu.h.in \
-	gnu/blowfishopt.gas.i586.s gnu/fips180opt.gas.i586.s gnu/mp32opt.gas.i386.s \
-	gnu/mp32opt.gas.ia64.s \
-	gnu/mp32opt.gas.powerpc.s \
-	gnu/mp32opt.gas.sparcv9.s \
+	gnu/blowfishopt.gas.i586.S gnu/fips180opt.gas.i586.S gnu/mp32opt.gas.i386.S \
+	gnu/mp32opt.gas.ia64.S \
+	gnu/mp32opt.gas.powerpc.S \
+	gnu/mp32opt.gas.sparcv9.S \
 	beecrypt.mcp \
 	win32/config.win.h \
 	win32/beecrypt.dll.c win32/beecrypt.rc win32/beecrypt.def \

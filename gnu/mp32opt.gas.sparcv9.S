@@ -1,41 +1,37 @@
-#
-# mp32opt.gas.sparcv9.s
-#
-# Assembler optimized multiprecision integer routines for UltraSparc (64 bits instructions, will run on 32 bit OS)
-#
-# Compile target is GNU AS
-#
-# Copyright (c) 1998-2000 Virtual Unlimited B.V.
-#
-# Author: Bob Deblier <bob@virtualunlimited.com>
-#
-# This library is free software; you can redistribute it and/or
-# modify it under the terms of the GNU Lesser General Public
-# License as published by the Free Software Foundation; either
-# version 2.1 of the License, or (at your option) any later version.
-#
-# This library is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public
-# License along with this library; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#
+/*
+ * mp32opt.gas.sparcv9.S
+ *
+ * Assembler optimized multiprecision integer routines for UltraSparc (64 bits instructions, will run on 32 bit OS)
+ *
+ * Compile target is GNU AS
+ *
+ * Copyright (c) 1998-2000 Virtual Unlimited B.V.
+ *
+ * Author: Bob Deblier <bob@virtualunlimited.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ */
 
-	.file "mp32opt.gas.sparcv9.s"
+	.file "mp32opt.gas.sparcv9.S"
 
 	.text
 
 	.align	8
 	.globl	mp32addw
 	.type	mp32addw,@function
-
-# INPUT PARAMETERS
-# size	%o0
-# data	%o1
-# addw	%o2
 
 mp32addw:
 	sll %o0,2,%g1
@@ -167,7 +163,7 @@ mp32addsqrtrc:
 	mov %g0,%o0
 
 .L60:
-	# load from o1 into g4 as xuint; simulate xuint carry by doing an xuint comparison; carry if result smaller than initial value
+	/* load from o1 into g4 as xuint; simulate xuint carry by doing an xuint comparison; carry if result smaller than initial value */
 	lduw [%o2+%g1],%g2
 	ldx [%o1],%g4
 	mulx %g2,%g2,%g2

@@ -1,3 +1,4 @@
+
 1.1.0:
 	- Added glue for interfacing from BeeCrypt Java Cryptography Provider.
 	- Changed blockcipher struct to support interfacing with Java.
@@ -6,9 +7,11 @@
 	- Updated config.sub and config.guess to latest version from sources.redhat.com
 	- Changed opening of entropy devices to blocking read-only mode instead of non-blocking read-write.
 	- Added win32 'wincrypt' entropy source.
-	- Added initial FreeBSD support.
+	- Added win32 'console' entropy source.
+	- Added FreeBSD support.
+	- Added PowerPC assembler optimized multiprecision subtraction routines.
 	- Added initial ia64 support.
-	- Added powerpc assembler optimized multiprecision subtraction routines.
+	- Added initial Darwin support (everything compiles, but the shared library doesn't build yet).
 
 1.0.2:
 	- Fixed Windows 2000 entropy bug; instead of using the first waveIn device, entropy now uses WAVE_MAPPER.

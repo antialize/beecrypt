@@ -50,6 +50,7 @@ static entropySource entropySourceList[] =
 {
 #if WIN32
 	{ "wavein", entropy_wavein },
+	{ "console", entropy_console },
 	{ "wincrypt", entropy_wincrypt },
 #else
 # if HAVE_DEV_AUDIO

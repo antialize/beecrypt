@@ -65,9 +65,8 @@ extern "C" {
 #if defined(powerpc)
 #define ASM_MP32ADDW
 #define ASM_MP32ADD
-/* there's still a problem to be fixed in the subtraction routines */
-#undef ASM_MP32SUBW
-#undef ASM_MP32SUB
+#define ASM_MP32SUBW
+#define ASM_MP32SUB
 #define ASM_MP32SETMUL
 #define ASM_MP32ADDMUL
 #define ASM_MP32ADDSQRTRC

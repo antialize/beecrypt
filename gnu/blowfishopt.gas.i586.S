@@ -1,30 +1,31 @@
-#
-# blowfishopt.gas.i586.s
-#
-# Assembler optimized blowfish routines for Intel Pentium processors
-#
-# Compile target is GNU Assembler
-#
-# Copyright (c) 2000 Virtual Unlimited B.V.
-#
-# Author: Bob Deblier <bob@virtualunlimited.com>
-#
-# This library is free software; you can redistribute it and/or
-# modify it under the terms of the GNU Lesser General Public
-# License as published by the Free Software Foundation; either
-# version 2.1 of the License, or (at your option) any later version.
-#
-# This library is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public
-# License along with this library; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#
+/*
+ * blowfishopt.gas.i586.S
+ *
+ * Assembler optimized blowfish routines for Intel Pentium processors
+ *
+ * Compile target is GNU Assembler
+ *
+ * Copyright (c) 2000 Virtual Unlimited B.V.
+ *
+ * Author: Bob Deblier <bob@virtualunlimited.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ */
 
-	.file "blowfishopt.gas.i586.s"
+	.file "blowfishopt.gas.i586.S"
 
 	.text
 
@@ -83,11 +84,21 @@
 	.endm
 
 	.align	4
+#if defined(CYGWIN)
+	.globl	_blowfishEncrypt
+	.def	_blowfishEncrypt
+	.scl	2
+	.type	32
+	.endef
+
+_blowfishEncrypt:
+#else
 	.global	blowfishEncrypt
 	.type	blowfishEncrypt,@function
 
 blowfishEncrypt:
-	# parameter one is the blowfish parameters; need to extract bp and set it up in esi
+#endif
+	/* parameter one is the blowfish parameters; need to extract bp and set it up in esi */
 	pushl %edi
 	pushl %esi
 	pushl %ebx
@@ -130,11 +141,21 @@ blowfishEncrypt:
 	ret
 
 	.align	4
+#if defined(CYGWIN)
+	.globl	_blowfishDecrypt
+	.def	_blowfishDecrypt
+	.scl	2
+	.type	32
+	.endef
+
+_blowfishDecrypt:
+#else
 	.global	blowfishDecrypt
 	.type	blowfishDecrypt,@function
 
 blowfishDecrypt:
-	# parameter one is the blowfish parameters; need to extract bp and set it up in ebp
+#endif
+	/* parameter one is the blowfish parameters; need to extract bp and set it up in ebp */
 	pushl %edi
 	pushl %esi
 	pushl %ebx
