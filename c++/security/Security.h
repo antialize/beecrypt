@@ -81,9 +81,9 @@ namespace beecrypt {
 			{
 				void* cspi;
 				String name;
-				const Provider& prov;
+				const Provider* prov;
 
-				spi(void* cspi, const String&, const Provider&);
+				spi(void* cspi, const Provider*, const String&);
 			};
 
 			static spi* getSpi(const String& name, const String& type) throw (NoSuchAlgorithmException);
