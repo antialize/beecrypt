@@ -15,6 +15,7 @@ BeeCertPathValidatorResult.cxx \
 BeeEncodedKeySpec.cxx \
 BeeInputStream.cxx \
 BeeOutputStream.cxx \
+DHAESParameterSpec.cxx \
 PKCS12PBEKey.cxx
 
 noinst_HEADERS = \
@@ -26,6 +27,7 @@ BeeCertPathValidatorResult.h \
 BeeEncodedKeySpec.h \
 BeeInputStream.h \
 BeeOutputStream.h \
+DHAESParameterSpec.h \
 PKCS12PBEKey.h
 
 TESTS = testcert
