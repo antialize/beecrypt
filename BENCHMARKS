@@ -7,21 +7,21 @@ The tests:
 
 Modular exponentiations, (1024 bits ^ 1024 bits) mod 1024 bits, 100 times, sorted according to speed (less is better)
  
-BeeCrypt 1.2.0 | Alpha C 6.3.9.126   | Tru64 Unix 5.0a      | Alpha EV6   500 |   2 GB:  3.1 sec
-BeeCrypt 1.2.0 | gcc-2.95.3          | Mandrake Linux 7.1   | Pentium III 800 |   4 GB:  3.3 sec
-BeeCrypt 1.2.0 | egcs-2.91.66        | RedHat Linux 6.2     | Alpha EV6.7 667 |   2 GB:  3.4 sec
+BeeCrypt 2.0.0 | Alpha C 6.3.9.126   | Tru64 Unix 5.0a      | Alpha EV6   500 |   2 GB:  3.1 sec
+BeeCrypt 2.0.0 | gcc-2.95.3          | Mandrake Linux 7.1   | Pentium III 800 |   4 GB:  3.3 sec
+BeeCrypt 2.0.0 | egcs-2.91.66        | RedHat Linux 6.2     | Alpha EV6.7 667 |   2 GB:  3.4 sec
 BeeCrypt 1.1.1 | gcc-2.95.2          | FreeBSD 4.1          | Alpha EV6   667 |   2 GB:  3.5 sec
 BeeCrypt 1.0.1 | egcs-2.91.66        | RedHat Linux 6.1     | Pentium III 600 | 256 MB:  4.4 sec
 BeeCrypt 1.1.1 | egcs-2.91.66        | RedHat Linux 6.2     | Alpha EV6   500 |   2 GB:  4.6 sec
 BeeCrypt 1.1.2 | Visual C 6.0        | Windows 2000         | Pentium III 450 | 128 MB:  5.7 sec
-BeeCrypt 1.2.0 | gcc-2.96            | RedHat Linux 7.0     | Pentium III 450 | 128 MB:  5.8 sec
+BeeCrypt 2.0.0 | gcc-2.96            | RedHat Linux 7.0     | Pentium III 450 | 128 MB:  5.8 sec
 BeeCrypt 1.0.1 | CodeWarrior Pro 5.3 | Windows NT 4.0       | Pentium III 450 | 128 MB:  5.8 sec
 BeeCrypt 1.0.1 | CodeWarrior Pro 5.3 | Windows 98           | Pentium III 450 | 128 MB:  5.8 sec
 BeeCrypt 1.0.1 | egcs-2.91.66        | RedHat Linux 6.2     | Pentium III 450 | 128 MB:  5.8 sec
-BeeCrypt 1.2.0 | gcc-2.95.2          | Solaris 8            | Pentium III 450 | 128 MB:  5.9 sec
-BeeCrypt 1.2.0 | Forte C 6.0         | Solaris 8            | Pentium III 450 | 128 MB:  5.9 sec
-BeeCrypt 1.2.0 | gcc-2.9-ia64-000216 | Linux64              | Itanium     666 |   2 GB:  9.7 sec
-BeeCrypt 1.2.0 | gcc-2.95.2          | Yellow Dog Linux 1.2 | PowerPC 604 166 |  96 MB: 10.5 sec
+BeeCrypt 2.0.0 | gcc-2.95.2          | Solaris 8            | Pentium III 450 | 128 MB:  5.9 sec
+BeeCrypt 2.0.0 | Forte C 6.0         | Solaris 8            | Pentium III 450 | 128 MB:  5.9 sec
+BeeCrypt 2.0.0 | gcc-2.9-ia64-000216 | Linux64              | Itanium     666 |   2 GB:  9.7 sec
+BeeCrypt 2.0.0 | gcc-2.95.2          | Yellow Dog Linux 1.2 | PowerPC 604 166 |  96 MB: 10.5 sec
 BeeCrypt 1.1.0 |                     | Darwin 1.0.2         | PowerPC 604 166 |  96 MB: 10.7 sec
 Java 1.2.2     |                     | RedHat Linux 6.2     | Pentium III 450 | 128 MB: 11.6 sec
 Java 1.3       | Sun Server VM       | Windows 2000         | Pentium III 450 | 128 MB: 11.7 sec
@@ -33,8 +33,8 @@ Java 1.2.2     | Sun Classic VM      | Windows 2000         | Pentium III 450 | 
 Java 1.3       | Sun Client VM       | Windows 2000         | Pentium III 450 | 128 MB: 23.5 sec
 Java 1.2.2     | Sun Classic VM      | Windows NT 4.0       | Pentium II  333 | 128 MB: 29.8 sec
 Java 1.2.2     | Sun Classic VM      | Windows 98           | Pentium II  333 |  64 MB: 32.7 sec
-BeeCrypt 1.2.0 | Forte C++ 6.1 (64)  | Solaris 8            | UltraSparc  143 | 128 MB: 40.7 sec
-BeeCrypt 1.2.0 | Forte C++ 6.1 (32)  | Solaris 8            | UltraSparc  143 | 128 MB: 42.2 sec
+BeeCrypt 2.0.0 | Forte C++ 6.1 (64)  | Solaris 8            | UltraSparc  143 | 128 MB: 40.7 sec
+BeeCrypt 2.0.0 | Forte C++ 6.1 (32)  | Solaris 8            | UltraSparc  143 | 128 MB: 42.2 sec
 Java 1.2.2     | Sun Classic VM      | Windows NT 4.0       | Pentium Pro 200 | 128 MB: 48.8 sec
 Java 1.2.2     | Sun Classic VM      | Solaris 7            | UltraSparc  143 | 128 MB: 51.1 sec
 Java 1.3       | Blackdown Client VM | RedHat Linux 6.2     | Pentium Pro 200 | 128 MB: 60.0 sec
@@ -58,89 +58,89 @@ Since this operation is where servers really hurt (i.e. in SSL), it pays to make
 Block cipher encryption (more is better)
 
 Blowfish ECB:
-BeeCrypt 1.2.0 | gcc-2.95.3          | Mandrake Linux 7.1   | Pentium III 800 |   4 GB: 25.00 MB/sec
+BeeCrypt 2.0.0 | gcc-2.95.3          | Mandrake Linux 7.1   | Pentium III 800 |   4 GB: 25.00 MB/sec
 BeeCrypt 1.0.1 | egcs-2.91.66        | RedHat Linux 6.1     | Pentium III 600 | 256 MB: 19.75 MB/sec
 BeeCrypt 1.0.0 | CodeWarrior Pro 5.3 | Windows 2000         | Pentium III 600 | 256 MB: 19.70 MB/sec
-BeeCrypt 1.2.0 | Alpha C 6.3.9.126   | Tru64 Unix 5.0a      | Alpha EV6   500 |   2 GB: 18.43 MB/sec
-BeeCrypt 1.2.0 | gcc-2.95.2          | FreeBSD 4.1          | Alpha EV6   667 |   2 GB: 18.18 MB/sec
-BeeCrypt 1.2.0 | Visual C 6.0        | Windows 2000         | Pentium III 450 | 128 MB: 14.60 MB/sec
+BeeCrypt 2.0.0 | Alpha C 6.3.9.126   | Tru64 Unix 5.0a      | Alpha EV6   500 |   2 GB: 18.43 MB/sec
+BeeCrypt 2.0.0 | gcc-2.95.2          | FreeBSD 4.1          | Alpha EV6   667 |   2 GB: 18.18 MB/sec
+BeeCrypt 2.0.0 | Visual C 6.0        | Windows 2000         | Pentium III 450 | 128 MB: 14.60 MB/sec
 BeeCrypt 1.0.1 | gcc-2.95.2          | LinuxPPC 2000        | PowerPC G3  400 |       : 14.41 MB/sec
 BeeCrypt 1.1.1 | egcs-2.91.66        | RedHat Linux 6.2     | Alpha EV6   500 |   2 GB: 13.78 MB/sec
-BeeCrypt 1.2.0 | gcc-2.9-ia64-00216  | Linux64              | Itanium     666 |   2 GB: 12.00 MB/sec
+BeeCrypt 2.0.0 | gcc-2.9-ia64-00216  | Linux64              | Itanium     666 |   2 GB: 12.00 MB/sec
 BeeCrypt 1.0.0 | CodeWarrior Pro 5.3 | Windows 98           | Pentium III 350 | 128 MB: 11.25 MB/sec
 BeeCrypt 1.0.1 | gcc-2.95.2          | LinuxPPC 2000        | PowerPC G3  250 |  96 MB:  8.88 MB/sec
 BeeCrypt 1.1.0 |                     | Darwin 1.0.2         | PowerPC 604 166 |  96 MB:  6.78 MB/sec
 BeeCrypt 1.0.0 | egcs                | RedHat Linux 6.1     | Pentium Pro 200 | 128 MB:  6.77 MB/sec
 BeeCrypt 1.0.0 | CodeWarrior Pro 5.3 | Windows NT 4.0       | Pentium Pro 200 | 128 MB:  6.71 MB/sec
-BeeCrypt 1.2.0 | Forte C++ 6.1 (32)  | Solaris 8            | UltraSparc  143 | 128 MB:  4.97 MB/sec
-BeeCrypt 1.2.0 | Forte C++ 6.1 (64)  | Solaris 8            | UltraSparc  143 | 128 MB:  3.57 MB/sec
+BeeCrypt 2.0.0 | Forte C++ 6.1 (32)  | Solaris 8            | UltraSparc  143 | 128 MB:  4.97 MB/sec
+BeeCrypt 2.0.0 | Forte C++ 6.1 (64)  | Solaris 8            | UltraSparc  143 | 128 MB:  3.57 MB/sec
 
 Blowfish CBC:
 BeeCrypt 1.1.1 | gcc-2.95.3          | Mandrake Linux 7.1   | Pentium III 800 |   4 GB: 25.00 MB/sec
 BeeCrypt 1.0.0 | CodeWarrior Pro 5.3 | Windows 2000         | Pentium III 600 | 256 MB: 19.70 MB/sec
 BeeCrypt 1.0.1 | egcs-2.91.66        | RedHat Linux 6.1     | Pentium III 600 | 256 MB: 19.05 MB/sec
-BeeCrypt 1.2.0 | gcc-2.95.2          | FreeBSD 4.1          | Alpha EV6   667 |   2 GB: 18.18 MB/sec
-BeeCrypt 1.2.0 | Alpha C 6.3.9.126   | Tru64 Unix 5.0a      | Alpha EV6   500 |   2 GB: 18.00 MB/sec
-BeeCrypt 1.2.0 | Visual C 6.0        | Windows 2000         | Pentium III 450 | 128 MB: 14.65 MB/sec
+BeeCrypt 2.0.0 | gcc-2.95.2          | FreeBSD 4.1          | Alpha EV6   667 |   2 GB: 18.18 MB/sec
+BeeCrypt 2.0.0 | Alpha C 6.3.9.126   | Tru64 Unix 5.0a      | Alpha EV6   500 |   2 GB: 18.00 MB/sec
+BeeCrypt 2.0.0 | Visual C 6.0        | Windows 2000         | Pentium III 450 | 128 MB: 14.65 MB/sec
 BeeCrypt 1.0.0 |                     | Windows 98           | Pentium III 450 | 128 MB: 14.50 MB/sec
 BeeCrypt 1.0.1 | gcc-2.95.2          | LinuxPPC 2000        | PowerPC G3  400 |       : 14.29 MB/sec
 BeeCrypt 1.1.1 | egcs-2.91.66        | RedHat Linux 6.2     | Alpha EV6   500 |   2 GB: 13.56 MB/sec
-BeeCrypt 1.2.0 | gcc-2.9-ia64-00216  | Linux64              | Itanium     666 |   2 GB: 11.50 MB/sec
+BeeCrypt 2.0.0 | gcc-2.9-ia64-00216  | Linux64              | Itanium     666 |   2 GB: 11.50 MB/sec
 BeeCrypt 1.0.0 | CodeWarrior Pro 5.3 | Windows 98           | Pentium III 350 | 128 MB: 11.25 MB/sec
 BeeCrypt 1.0.1 | gcc-2.95.2          | LinuxPPC 2000        | PowerPC G3  250 |  96 MB:  8.79 MB/sec
 BeeCrypt 1.0.0 | egcs-2.91.66        | RedHat Linux 6.1     | Pentium Pro 200 | 128 MB:  6.72 MB/sec
 BeeCrypt 1.0.0 | CodeWarrior Pro 5.3 | Windows NT 4.0       | Pentium Pro 200 | 128 MB:  6.71 MB/sec
 BeeCrypt 1.1.0 |                     | Darwin 1.0.2         | PowerPC 604 166 |  96 MB:  6.35 MB/sec
-BeeCrypt 1.2.0 | Forte C++ 6.1 (32)  | Solaris 8            | UltraSparc  143 | 128 MB:  4.82 MB/sec
-BeeCrypt 1.2.0 | Forte C++ 6.1 (64)  | Solaris 8            | UltraSparc  143 | 128 MB:  3.56 MB/sec
+BeeCrypt 2.0.0 | Forte C++ 6.1 (32)  | Solaris 8            | UltraSparc  143 | 128 MB:  4.82 MB/sec
+BeeCrypt 2.0.0 | Forte C++ 6.1 (64)  | Solaris 8            | UltraSparc  143 | 128 MB:  3.56 MB/sec
 
 Hash functions (more is better)
 
 MD5:
-BeeCrypt 1.2.0 | gcc-2.95.3          | Mandrake Linux 7.1   | Pentium III 800 |   4 GB: 66.67 MB/sec
-BeeCrypt 1.2.0 | egcs-2.91.66        | RedHat Linux 6.2     | Alpha EV6.7 667 |   2 GB: 52.50 MB/sec
-BeeCrypt 1.2.0 | gcc-2.95.2          | FreeBSD 4.1          | Alpha EV6   667 |   2 GB: 48.00 MB/sec
-BeeCrypt 1.2.0 | Visual C 6.0        | Windows 2000         | Pentium III 450 | 128 MB: 39.50 MB/sec
-BeeCrypt 1.2.0 | Alpha C 6.3.9.126   | Tru64 Unix 5.0a      | Alpha EV6   500 |   2 GB: 37.00 MB/sec
-BeeCrypt 1.2.0 | gcc-2.95.2          | Solaris 8            | Pentium III 450 | 128 MB: 31.00 MB/sec
-BeeCrypt 1.2.0 | Forte C 6.0         | Solaris 8            | Pentium III 450 | 128 MB: 29.60 MB/sec
-BeeCrypt 1.2.0 | gcc-2.9-ia64-000216 | Linux64              | Itanium     666 |   2 GB: 22.70 MB/sec
-BeeCrypt 1.2.0 | gcc-2.95.2          | YellowDog Linux 1.2  | PowerPC 604 166 |  96 MB: 14.60 MB/sec
-BeeCrypt 1.2.0 | Forte C++ 6.1 (64)  | Solaris 8            | UltraSparc  143 | 128 MB:  7.62 MB/sec
-BeeCrypt 1.2.0 | Forte C++ 6.1 (32)  | Solaris 8            | UltraSparc  143 | 128 MB:  7.00 MB/sec
+BeeCrypt 2.0.0 | gcc-2.95.3          | Mandrake Linux 7.1   | Pentium III 800 |   4 GB: 66.67 MB/sec
+BeeCrypt 2.0.0 | egcs-2.91.66        | RedHat Linux 6.2     | Alpha EV6.7 667 |   2 GB: 52.50 MB/sec
+BeeCrypt 2.0.0 | gcc-2.95.2          | FreeBSD 4.1          | Alpha EV6   667 |   2 GB: 48.00 MB/sec
+BeeCrypt 2.0.0 | Visual C 6.0        | Windows 2000         | Pentium III 450 | 128 MB: 39.50 MB/sec
+BeeCrypt 2.0.0 | Alpha C 6.3.9.126   | Tru64 Unix 5.0a      | Alpha EV6   500 |   2 GB: 37.00 MB/sec
+BeeCrypt 2.0.0 | gcc-2.95.2          | Solaris 8            | Pentium III 450 | 128 MB: 31.00 MB/sec
+BeeCrypt 2.0.0 | Forte C 6.0         | Solaris 8            | Pentium III 450 | 128 MB: 29.60 MB/sec
+BeeCrypt 2.0.0 | gcc-2.9-ia64-000216 | Linux64              | Itanium     666 |   2 GB: 22.70 MB/sec
+BeeCrypt 2.0.0 | gcc-2.95.2          | YellowDog Linux 1.2  | PowerPC 604 166 |  96 MB: 14.60 MB/sec
+BeeCrypt 2.0.0 | Forte C++ 6.1 (64)  | Solaris 8            | UltraSparc  143 | 128 MB:  7.62 MB/sec
+BeeCrypt 2.0.0 | Forte C++ 6.1 (32)  | Solaris 8            | UltraSparc  143 | 128 MB:  7.00 MB/sec
 
 SHA-1:
-BeeCrypt 1.2.0 | gcc-2.95.3          | Mandrake Linux 7.1   | Pentium III 800 |   4 GB: 39.00 MB/sec
+BeeCrypt 2.0.0 | gcc-2.95.3          | Mandrake Linux 7.1   | Pentium III 800 |   4 GB: 39.00 MB/sec
 BeeCrypt 1.0.1 | egcs-2.91.66        | RedHat Linux 6.1     | Pentium III 600 | 256 MB: 28.83 MB/sec
 BeeCrypt 1.0.0 | CodeWarrior Pro 5.3 | Windows 2000         | Pentium III 600 | 256 MB: 26.66 MB/sec
-BeeCrypt 1.2.0 | gcc-2.95.2          | FreeBSD 4.1          | Alpha EV6   667 |   2 GB: 24.80 MB/sec
-BeeCrypt 1.2.0 | egcs-2.91.66        | RedHat Linux 6.2     | Alpha EV6.7 667 |   2 GB  24.80 MB/sec
+BeeCrypt 2.0.0 | gcc-2.95.2          | FreeBSD 4.1          | Alpha EV6   667 |   2 GB: 24.80 MB/sec
+BeeCrypt 2.0.0 | egcs-2.91.66        | RedHat Linux 6.2     | Alpha EV6.7 667 |   2 GB  24.80 MB/sec
 BeeCrypt 1.0.0 | egcs-2.91.66        | RedHat Linux 6.2     | Pentium III 450 | 128 MB: 21.33 MB/sec
 BeeCrypt 1.0.1 | gcc-2.95.2          | LinuxPPC 2000        | PowerPC G3  400 |       : 20.78 MB/sec
-BeeCrypt 1.2.0 | Alpha C 6.3.9.126   | Tru64 Unix 5.0a      | Alpha EV6   500 |   2 GB: 20.28 MB/sec
-BeeCrypt 1.2.0 | Visual C 6.0        | Windows 2000         | Pentium III 450 | 128 MB: 20.15 MB/sec
-BeeCrypt 1.2.0 | Forte C 6.0         | Solaris 8            | Pentium III 450 | 128 MB: 19.50 MB/sec
-BeeCrypt 1.2.0 | gcc-2.95.2          | Solaris 8            | Pentium III 450 | 128 MB: 19.50 MB/sec
+BeeCrypt 2.0.0 | Alpha C 6.3.9.126   | Tru64 Unix 5.0a      | Alpha EV6   500 |   2 GB: 20.28 MB/sec
+BeeCrypt 2.0.0 | Visual C 6.0        | Windows 2000         | Pentium III 450 | 128 MB: 20.15 MB/sec
+BeeCrypt 2.0.0 | Forte C 6.0         | Solaris 8            | Pentium III 450 | 128 MB: 19.50 MB/sec
+BeeCrypt 2.0.0 | gcc-2.95.2          | Solaris 8            | Pentium III 450 | 128 MB: 19.50 MB/sec
 BeeCrypt 1.0.1 | CodeWarrior Pro 5.3 | Windows NT 4.0       | Pentium III 450 | 128 MB: 19.50 MB/sec
 BeeCrypt 1.0.0 | CodeWarrior Pro 5.3 | Windows 98           | Pentium III 450 | 128 MB: 19.50 MB/sec
 BeeCrypt 1.0.0 | CodeWarrior Pro 5.3 | Windows 98           | Pentium III 350 | 128 MB: 15.30 MB/sec
 BeeCrypt 1.0.1 | gcc-2.95.2          | LinuxPPC 2000        | PowerPC G3  250 |  96 MB: 12.60 MB/sec
-BeeCrypt 1.2.0 | gcc-2.9-ia64-000216 | Linux64              | Itanium     666 |   2 GB:  9.60 MB/sec
-BeeCrypt 1.2.0 | gcc-2.95.2          | Yellow Dog Linux 1.2 | PowerPC 604 166 |  96 MB:  9.50 MB/sec
+BeeCrypt 2.0.0 | gcc-2.9-ia64-000216 | Linux64              | Itanium     666 |   2 GB:  9.60 MB/sec
+BeeCrypt 2.0.0 | gcc-2.95.2          | Yellow Dog Linux 1.2 | PowerPC 604 166 |  96 MB:  9.50 MB/sec
 BeeCrypt 1.0.0 |                     | RedHat Linux 6.1     | Pentium Pro 200 | 128 MB:  9.38 MB/sec
 BeeCrypt 1.0.0 | CodeWarrior Pro 5.3 | Windows NT 4.0       | Pentium Pro 200 | 128 MB:  9.24 MB/sec
 BeeCrypt 1.1.0 | egcs-2.91.66        | Darwin 1.0.2         | PowerPC 604 166 |  96 MB:  7.64 MB/sec
-BeeCrypt 1.2.0 | Forte C++ 6.1 (64)  | Solaris 8            | UltraSparc  143 | 128 MB:  5.75 MB/sec
-BeeCrypt 1.2.0 | Forte C++ 6.1 (32)  | Solaris 8            | UltraSparc  143 | 128 MB:  5.71 MB/sec
+BeeCrypt 2.0.0 | Forte C++ 6.1 (64)  | Solaris 8            | UltraSparc  143 | 128 MB:  5.75 MB/sec
+BeeCrypt 2.0.0 | Forte C++ 6.1 (32)  | Solaris 8            | UltraSparc  143 | 128 MB:  5.71 MB/sec
 
 SHA-256:
-BeeCrypt 1.2.0 | egcs-2.91.66        | RedHat Linux 6.2     | Alpha EV6.7 667 |   2 GB: 19.27 MB/sec
-BeeCrypt 1.2.0 | gcc-2.95.3          | Mandrake Linux 7.1   | Pentium III 800 |   4 GB: 18.60 MB/sec
-BeeCrypt 1.2.0 | gcc-2.95.2          | FreeBSD 4.1          | Alpha EV6   667 |   2 GB: 17.20 MB/sec
-BeeCrypt 1.2.0 | Alpha C 6.3.9.126   | Tru64 Unix 5.0a      | Alpha EV6   500 |   2 GB: 13.27 MB/sec
-BeeCrypt 1.2.0 | Visual C 6.0        | Windows 2000         | Pentium III 450 | 128 MB: 10.90 MB/sec
-BeeCrypt 1.2.0 | gcc-2.95.2          | Solaris 8            | Pentium III 450 | 128 MB:  9.55 MB/sec
-BeeCrypt 1.2.0 | Forte C 6.0         | Solaris 8            | Pentium III 450 | 128 MB:  7.66 MB/sec
-BeeCrypt 1.2.0 | gcc-2.9-ia64-000216 | Linux64              | Itanium     666 |   2 GB:  7.12 MB/sec
-BeeCrypt 1.2.0 | Forte C++ 6.1 (32)  | Solaris 8            | UltraSparc  143 | 128 MB:  3.66 MB/sec
-BeeCrypt 1.2.0 | Forte C++ 6.1 (64)  | Solaris 8            | UltraSparc  143 | 128 MB:  3.39 MB/sec
+BeeCrypt 2.0.0 | egcs-2.91.66        | RedHat Linux 6.2     | Alpha EV6.7 667 |   2 GB: 19.27 MB/sec
+BeeCrypt 2.0.0 | gcc-2.95.3          | Mandrake Linux 7.1   | Pentium III 800 |   4 GB: 18.60 MB/sec
+BeeCrypt 2.0.0 | gcc-2.95.2          | FreeBSD 4.1          | Alpha EV6   667 |   2 GB: 17.20 MB/sec
+BeeCrypt 2.0.0 | Alpha C 6.3.9.126   | Tru64 Unix 5.0a      | Alpha EV6   500 |   2 GB: 13.27 MB/sec
+BeeCrypt 2.0.0 | Visual C 6.0        | Windows 2000         | Pentium III 450 | 128 MB: 10.90 MB/sec
+BeeCrypt 2.0.0 | gcc-2.95.2          | Solaris 8            | Pentium III 450 | 128 MB:  9.55 MB/sec
+BeeCrypt 2.0.0 | Forte C 6.0         | Solaris 8            | Pentium III 450 | 128 MB:  7.66 MB/sec
+BeeCrypt 2.0.0 | gcc-2.9-ia64-000216 | Linux64              | Itanium     666 |   2 GB:  7.12 MB/sec
+BeeCrypt 2.0.0 | Forte C++ 6.1 (32)  | Solaris 8            | UltraSparc  143 | 128 MB:  3.66 MB/sec
+BeeCrypt 2.0.0 | Forte C++ 6.1 (64)  | Solaris 8            | UltraSparc  143 | 128 MB:  3.39 MB/sec

@@ -5,7 +5,7 @@
  *
  * <conformance statement for IEEE P1363 needed here>
  *
- * Copyright (c) 2000 Virtual Unlimited B.V.
+ * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -29,23 +29,29 @@
 
 #include "rsapk.h"
 
-void rsapkInit(rsapk* pk)
+int rsapkInit(rsapk* pk)
 {
 	memset(pk, 0, sizeof(rsapk));
 	/* or
 	mp32bzero(&pk->n);
 	mp32nzero(&pk->e);
 	*/
+
+	return 0;
 }
 
-void rsapkFree(rsapk* pk)
+int rsapkFree(rsapk* pk)
 {
 	mp32bfree(&pk->n);
 	mp32nfree(&pk->e);
+
+	return 0;
 }
 
-void rsapkCopy(rsapk* dst, const rsapk* src)
+int rsapkCopy(rsapk* dst, const rsapk* src)
 {
 	mp32bcopy(&dst->n, &src->n);
 	mp32ncopy(&dst->e, &src->e);
+
+	return 0;
 }

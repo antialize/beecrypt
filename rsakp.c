@@ -28,8 +28,14 @@
 #define BEECRYPT_DLL_EXPORT
 
 #include "rsakp.h"
+#include "mp32prime.h"
+#include "mp32.h"
 
-void rsakpMake(rsakp* kp, randomGeneratorContext* rc, int nsize)
+#if HAVE_STDLIB_H
+# include <stdlib.h>
+#endif
+
+int rsakpMake(rsakp* kp, randomGeneratorContext* rgc, int nsize)
 {
 	/* 
 	 * Generates an RSA Keypair for use with the Chinese Remainder Theorem
@@ -39,97 +45,103 @@ void rsakpMake(rsakp* kp, randomGeneratorContext* rc, int nsize)
 	register uint32* temp = (uint32*) malloc((16*pqsize+6)*sizeof(uint32));
 	register uint32  newn = 1;
 
-	mp32barrett r, psubone, qsubone, phi;
-
-	nsize = pqsize << 1;
-
-	/* set e */
-	mp32nsetw(&kp->e, 65535);
-
-	/* generate a random prime p and q */
-	mp32prnd_w(&kp->p, rc, pqsize, mp32ptrials(pqsize << 5), &kp->e, temp);
-	mp32prnd_w(&kp->q, rc, pqsize, mp32ptrials(pqsize << 5), &kp->e, temp);
-
-	/* if p <= q, perform a swap to make p larger than q */
-	if (mp32le(pqsize, kp->p.modl, kp->q.modl))
+	if (temp)
 	{
-		memcpy(&r, &kp->q, sizeof(mp32barrett));
-		memcpy(&kp->q, &kp->p, sizeof(mp32barrett));
-		memcpy(&kp->p, &r, sizeof(mp32barrett));
-	}
+		mp32barrett r, psubone, qsubone, phi;
 
-	mp32bzero(&r);
-	mp32bzero(&psubone);
-	mp32bzero(&qsubone);
-	mp32bzero(&phi);
+		nsize = pqsize << 1;
 
-	while (1)
-	{
-		mp32mul(temp, pqsize, kp->p.modl, pqsize, kp->q.modl);
+		/* set e */
+		mp32nsetw(&kp->e, 65535);
 
-		if (newn && mp32msbset(nsize, temp))
-			break;
+		/* generate a random prime p and q */
+		mp32prnd_w(&kp->p, rgc, pqsize, mp32ptrials(pqsize << 5), &kp->e, temp);
+		mp32prnd_w(&kp->q, rgc, pqsize, mp32ptrials(pqsize << 5), &kp->e, temp);
 
-		/* product of p and q doesn't have the required size (one bit short) */
-
-		mp32prnd_w(&r, rc, pqsize, mp32ptrials(pqsize << 5), &kp->e, temp);
-
-		if (mp32le(pqsize, kp->p.modl, r.modl))
+		/* if p <= q, perform a swap to make p larger than q */
+		if (mp32le(pqsize, kp->p.modl, kp->q.modl))
 		{
-			mp32bfree(&kp->q);
+			memcpy(&r, &kp->q, sizeof(mp32barrett));
 			memcpy(&kp->q, &kp->p, sizeof(mp32barrett));
 			memcpy(&kp->p, &r, sizeof(mp32barrett));
-			mp32bzero(&r);
-			newn = 1;
 		}
-		else if (mp32le(pqsize, kp->q.modl, r.modl))
+
+		mp32bzero(&r);
+		mp32bzero(&psubone);
+		mp32bzero(&qsubone);
+		mp32bzero(&phi);
+
+		while (1)
 		{
-			mp32bfree(&kp->q);
-			memcpy(&kp->q, &r, sizeof(mp32barrett));
-			mp32bzero(&r);
-			newn = 1;
+			mp32mul(temp, pqsize, kp->p.modl, pqsize, kp->q.modl);
+
+			if (newn && mp32msbset(nsize, temp))
+				break;
+
+			/* product of p and q doesn't have the required size (one bit short) */
+
+			mp32prnd_w(&r, rgc, pqsize, mp32ptrials(pqsize << 5), &kp->e, temp);
+
+			if (mp32le(pqsize, kp->p.modl, r.modl))
+			{
+				mp32bfree(&kp->q);
+				memcpy(&kp->q, &kp->p, sizeof(mp32barrett));
+				memcpy(&kp->p, &r, sizeof(mp32barrett));
+				mp32bzero(&r);
+				newn = 1;
+			}
+			else if (mp32le(pqsize, kp->q.modl, r.modl))
+			{
+				mp32bfree(&kp->q);
+				memcpy(&kp->q, &r, sizeof(mp32barrett));
+				mp32bzero(&r);
+				newn = 1;
+			}
+			else
+			{
+				mp32bfree(&r);
+				newn = 0;
+			}
 		}
-		else
-		{
-			mp32bfree(&r);
-			newn = 0;
-		}
+
+		mp32bset(&kp->n, nsize, temp);
+
+		/* compute p-1 */
+		mp32bsubone(&kp->p, temp);
+		mp32bset(&psubone, pqsize, temp);
+
+		/* compute q-1 */
+		mp32bsubone(&kp->q, temp);
+		mp32bset(&qsubone, pqsize, temp);
+
+		/* compute phi = (p-1)*(q-1) */
+		mp32mul(temp, pqsize, psubone.modl, pqsize, qsubone.modl);
+		mp32bset(&phi, nsize, temp);
+
+		/* compute d = inv(e) mod phi */
+		mp32nsize(&kp->d, nsize);
+		mp32binv_w(&phi, kp->e.size, kp->e.data, kp->d.data, temp);
+
+		/* compute d1 = d mod (p-1) */
+		mp32nsize(&kp->d1, pqsize);
+		mp32bmod_w(&psubone, kp->d.data, kp->d1.data, temp);
+
+		/* compute d2 = d mod (q-1) */
+		mp32nsize(&kp->d2, pqsize);
+		mp32bmod_w(&qsubone, kp->d.data, kp->d2.data, temp);
+
+		/* compute c = inv(q) mod p */
+		mp32nsize(&kp->c, pqsize);
+		mp32binv_w(&kp->p, pqsize, kp->q.modl, kp->c.data, temp);
+
+		free(temp);
+
+		return 0;
 	}
-
-	mp32bset(&kp->n, nsize, temp);
-
-	/* compute p-1 */
-	mp32bsubone(&kp->p, temp);
-	mp32bset(&psubone, pqsize, temp);
-
-	/* compute q-1 */
-	mp32bsubone(&kp->q, temp);
-	mp32bset(&qsubone, pqsize, temp);
-
-	/* compute phi = (p-1)*(q-1) */
-	mp32mul(temp, pqsize, psubone.modl, pqsize, qsubone.modl);
-	mp32bset(&phi, nsize, temp);
-
-	/* compute d = inv(e) mod phi */
-	mp32nsize(&kp->d, nsize);
-	mp32binv_w(&phi, kp->e.size, kp->e.data, kp->d.data, temp);
-
-	/* compute d1 = d mod (p-1) */
-	mp32nsize(&kp->d1, pqsize);
-	mp32bmod_w(&psubone, kp->d.data, kp->d1.data, temp);
-
-	/* compute d2 = d mod (q-1) */
-	mp32nsize(&kp->d2, pqsize);
-	mp32bmod_w(&qsubone, kp->d.data, kp->d2.data, temp);
-
-	/* compute c = inv(q) mod p */
-	mp32nsize(&kp->c, pqsize);
-	mp32binv_w(&kp->p, pqsize, kp->q.modl, kp->c.data, temp);
-
-	free(temp);
+	return -1;
 }
 
-void rsakpInit(rsakp* kp)
+int rsakpInit(rsakp* kp)
 {
 	memset(kp, 0, sizeof(rsakp));
 	/* or
@@ -142,9 +154,11 @@ void rsakpInit(rsakp* kp)
 	mp32nzero(&kp->d2);
 	mp32nzero(&kp->c);
 	*/
+
+	return 0;
 }
 
-void rsakpFree(rsakp* kp)
+int rsakpFree(rsakp* kp)
 {
 	mp32bfree(&kp->n);
 	mp32nfree(&kp->e);
@@ -154,9 +168,11 @@ void rsakpFree(rsakp* kp)
 	mp32nfree(&kp->d1);
 	mp32nfree(&kp->d2);
 	mp32nfree(&kp->c);
+
+	return 0;
 }
 
-void rsakpCopy(rsakp* dst, const rsakp* src)
+int rsakpCopy(rsakp* dst, const rsakp* src)
 {
 	mp32bcopy(&dst->n, &src->n);
 	mp32ncopy(&dst->e, &src->e);
@@ -166,4 +182,6 @@ void rsakpCopy(rsakp* dst, const rsakp* src)
 	mp32ncopy(&dst->d1, &src->d1);
 	mp32ncopy(&dst->d2, &src->d2);
 	mp32ncopy(&dst->c, &src->c);
+
+	return 0;
 }

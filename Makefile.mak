@@ -4,7 +4,7 @@
 # To be used with Microsoft's nmake utility;
 # Will need the Visual C Processor Pack installed.
 #
-# Copyright (c) 2000, Virtual Unlimited B.V.
+# Copyright (c) 2000, 2001, Virtual Unlimited B.V.
 #
 # Author: Bob Deblier <bob@virtualunlimited.com>
 #
@@ -52,8 +52,10 @@ OBJECTS= \
 	base64.obj \
 	beecrypt.obj \
 	blockmode.obj \
+	blockpad.obj \
 	blowfish.obj \
 	blowfishopt.obj \
+	dhaes.obj \
 	dldp.obj \
 	dlkp.obj \
 	dlpk.obj \

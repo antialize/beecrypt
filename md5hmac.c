@@ -27,7 +27,7 @@
 
 #include "md5hmac.h"
 
-const keyedHashFunction md5hmac = { "MD5/HMAC", sizeof(md5hmacParam), 5 * sizeof(uint32), 64, 512, 32, (const keyedHashFunctionSetup) md5hmacSetup, (const keyedHashFunctionReset) md5hmacReset, (const keyedHashFunctionUpdate) md5hmacUpdate, (const keyedHashFunctionDigest) md5hmacDigest };
+const keyedHashFunction md5hmac = { "MD5/HMAC", sizeof(md5hmacParam), 64, 4 * sizeof(uint32), 64, 512, 32, (const keyedHashFunctionSetup) md5hmacSetup, (const keyedHashFunctionReset) md5hmacReset, (const keyedHashFunctionUpdate) md5hmacUpdate, (const keyedHashFunctionDigest) md5hmacDigest };
 
 int md5hmacSetup (md5hmacParam* sp, const uint32* key, int keybits)
 {

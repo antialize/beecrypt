@@ -5,7 +5,7 @@
  *
  * <conformance statement for IEEE P1363 needed here>
  *
- * Copyright (c) 2000 Virtual Unlimited B.V.
+ * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -31,8 +31,6 @@
 #include "mp32.h"
 #include "mp32prime.h"
 
-#include <stdio.h>
-
 #if HAVE_STDLIB_H
 # include <stdlib.h>
 #endif
@@ -40,10 +38,10 @@
 # include <malloc.h>
 #endif
 
-static void dldp_pgoqGenerator_w(dldp_p*, randomGeneratorContext*, uint32*);
-static void dldp_pgonGenerator_w(dldp_p*, randomGeneratorContext*, uint32*);
+static int dldp_pgoqGenerator_w(dldp_p*, randomGeneratorContext*, uint32*);
+static int dldp_pgonGenerator_w(dldp_p*, randomGeneratorContext*, uint32*);
 
-void dldp_pPrivate(const dldp_p* dp, randomGeneratorContext* rc, mp32number* x)
+int dldp_pPrivate(const dldp_p* dp, randomGeneratorContext* rgc, mp32number* x)
 {
 	/*
 	 * Note: the private key is randomly selected to be smaller than q
@@ -51,26 +49,32 @@ void dldp_pPrivate(const dldp_p* dp, randomGeneratorContext* rc, mp32number* x)
 	 * This is the variant of Diffie-Hellman as described in IEEE P1363
 	 */
 
-	mp32bnrnd(&dp->q, rc, x);
+	mp32bnrnd(&dp->q, rgc, x);
+
+	return 0;
 }
 
-void dldp_pPublic(const dldp_p* dp, const mp32number* x, mp32number* y)
+int dldp_pPublic(const dldp_p* dp, const mp32number* x, mp32number* y)
 {
 	/*
 	 * Public key y is computed as g^x mod p
 	 */
 
 	mp32bnpowmod(&dp->p, &dp->g, x, y);
+
+	return 0;
 }
 
-void dldp_pPair(const dldp_p* dp, randomGeneratorContext* rc, mp32number* x, mp32number* y)
+int dldp_pPair(const dldp_p* dp, randomGeneratorContext* rgc, mp32number* x, mp32number* y)
 {
 	/*
 	 * Combination of the two previous functions
 	 */
 
-	mp32bnrnd(&dp->q, rc, x);
+	mp32bnrnd(&dp->q, rgc, x);
 	mp32bnpowmod(&dp->p, &dp->g, x, y);
+
+	return 0;
 }
 
 int dldp_pEqual(const dldp_p* a, const dldp_p* b)
@@ -83,77 +87,87 @@ int dldp_pEqual(const dldp_p* a, const dldp_p* b)
 /**
  * needs to make workspace of 8*size+2
  */
-int dldp_pValidate(const dldp_p* dp, randomGeneratorContext* rc)
+int dldp_pValidate(const dldp_p* dp, randomGeneratorContext* rgc)
 {
 	register uint32  size = dp->p.size;
 	register uint32* temp = (uint32*) malloc((8*size+2) * sizeof(uint32));
 
-	/* check that p > 2 and p odd, then run miller-rabin test with t 50 */
-	if (mp32even(dp->p.size, dp->p.modl))
+	if (temp)
 	{
+		/* check that p > 2 and p odd, then run miller-rabin test with t 50 */
+		if (mp32even(dp->p.size, dp->p.modl))
+		{
+			free(temp);
+			return 0;
+		}
+
+		if (mp32pmilrab_w(&dp->p, rgc, 50, temp) == 0)
+		{
+			free(temp);
+			return 0;
+		}
+
+		/* check that q > 2 and q odd, then run miller-rabin test with t 50 */
+		if (mp32even(dp->q.size, dp->q.modl))
+		{
+			free(temp);
+			return 0;
+		}
+
+		if (mp32pmilrab_w(&dp->q, rgc, 50, temp) == 0)
+		{
+			free(temp);
+			return 0;
+		}
+
 		free(temp);
-		return 0;
+
+		/* check that 1 < g < p */
+		if (mp32leone(dp->g.size, dp->g.data))
+			return 0;
+
+		if (mp32gex(dp->g.size, dp->g.data, dp->p.size, dp->p.modl))
+			return 0;
+
+		return 1;
 	}
-
-	if (mp32pmilrab_w(&dp->p, rc, 50, temp) == 0)
-	{
-		free(temp);
-		return 0;
-	}
-
-	/* check that q > 2 and q odd, then run miller-rabin test with t 50 */
-	if (mp32even(dp->q.size, dp->q.modl))
-	{
-		free(temp);
-		return 0;
-	}
-
-	if (mp32pmilrab_w(&dp->q, rc, 50, temp) == 0)
-	{
-		free(temp);
-		return 0;
-	}
-
-	free(temp);
-
-	/* check that 1 < g < p */
-	if (mp32leone(dp->g.size, dp->g.data))
-		return 0;
-
-	if (mp32gex(dp->g.size, dp->g.data, dp->p.size, dp->p.modl))
-		return 0;
-
-	return 1;
+	return -1;
 }
 
-void dldp_pInit(dldp_p* dp)
+int dldp_pInit(dldp_p* dp)
 {
 	mp32bzero(&dp->p);
 	mp32bzero(&dp->q);
 	mp32nzero(&dp->g);
 	mp32nzero(&dp->r);
 	mp32bzero(&dp->n);
+
+	return 0;
 }
 
-void dldp_pFree(dldp_p* dp)
+int dldp_pFree(dldp_p* dp)
 {
 	mp32bfree(&dp->p);
 	mp32bfree(&dp->q);
 	mp32nfree(&dp->g);
 	mp32nfree(&dp->r);
 	mp32bfree(&dp->n);
+
+	return 0;
 }
 
-void dldp_pCopy(dldp_p* dst, const dldp_p* src)
+int dldp_pCopy(dldp_p* dst, const dldp_p* src)
 {
 	mp32bcopy(&dst->p, &src->p);
 	mp32bcopy(&dst->q, &src->q);
 	mp32ncopy(&dst->r, &src->r);
 	mp32ncopy(&dst->g, &src->g);
 	mp32bcopy(&dst->n, &src->n);
+
+	return 0;
 }
 
-void dldp_pgoqMake(dldp_p* dp, randomGeneratorContext* rc, uint32 psize, uint32 qsize, int cofactor)
+int dldp_pgoqMake(dldp_p* dp, randomGeneratorContext* rgc, uint32 psize, uint32 qsize, int cofactor)
 {
 	/*
 	 * Generate parameters as described by IEEE P1363, A.16.1
@@ -161,24 +175,30 @@ void dldp_pgoqMake(dldp_p* dp, randomGeneratorContext* rc, uint32 psize, uint32 
 
 	register uint32* temp = (uint32*) malloc((8*psize+2) * sizeof(uint32));
 
-	/* first generate q */
-	mp32prnd_w(&dp->q, rc, qsize, mp32ptrials(qsize << 5), (const mp32number*) 0, temp);
+	if (temp)
+	{
+		/* first generate q */
+		mp32prnd_w(&dp->q, rgc, qsize, mp32ptrials(qsize << 5), (const mp32number*) 0, temp);
 
-	/* generate p with the appropriate congruences */
-	mp32prndconone_w(&dp->p, rc, psize, mp32ptrials(psize << 5), &dp->q, (const mp32number*) 0, &dp->r, cofactor, temp);
+		/* generate p with the appropriate congruences */
+		mp32prndconone_w(&dp->p, rgc, psize, mp32ptrials(psize << 5), &dp->q, (const mp32number*) 0, &dp->r, cofactor, temp);
 
-	/* clear n */
-	mp32bzero(&dp->n);
+		/* clear n */
+		mp32bzero(&dp->n);
 
-	/* clear g */
-	mp32nzero(&dp->g);
+		/* clear g */
+		mp32nzero(&dp->g);
 
-	dldp_pgoqGenerator_w(dp, rc, temp);
+		dldp_pgoqGenerator_w(dp, rgc, temp);
 
-	free(temp);
+		free(temp);
+
+		return 0;
+	}
+	return -1;
 }
 
-void dldp_pgoqMakeSafe(dldp_p* dp, randomGeneratorContext* rc, uint32 psize)
+int dldp_pgoqMakeSafe(dldp_p* dp, randomGeneratorContext* rgc, uint32 psize)
 {
 	/*
 	 * Generate parameters with a safe prime; p = 2q+1 i.e. r=2
@@ -187,26 +207,32 @@ void dldp_pgoqMakeSafe(dldp_p* dp, randomGeneratorContext* rc, uint32 psize)
 
 	register uint32* temp = (uint32*) malloc((8*psize+2) * sizeof(uint32));
 
-	/* generate p */
-	mp32prndsafe_w(&dp->p, rc, psize, mp32ptrials(psize << 5), temp);
+	if (temp)
+	{
+		/* generate p */
+		mp32prndsafe_w(&dp->p, rgc, psize, mp32ptrials(psize << 5), temp);
 
-	/* set q */
-	mp32copy(psize, temp, dp->p.modl);
-	mp32divtwo(psize, temp);
-	mp32bset(&dp->q, psize, temp);
+		/* set q */
+		mp32copy(psize, temp, dp->p.modl);
+		mp32divtwo(psize, temp);
+		mp32bset(&dp->q, psize, temp);
 
-	/* set r = 2 */
-	mp32nsetw(&dp->r, 2);
+		/* set r = 2 */
+		mp32nsetw(&dp->r, 2);
 
-	/* clear n */
-	mp32bzero(&dp->n);
+		/* clear n */
+		mp32bzero(&dp->n);
 
-	dldp_pgoqGenerator_w(dp, rc, temp);
+		dldp_pgoqGenerator_w(dp, rgc, temp);
 
-	free(temp);
+		free(temp);
+
+		return 0;
+	}
+	return -1;
 }
 
-void dldp_pgoqGenerator_w(dldp_p* dp, randomGeneratorContext* rc, uint32* wksp)
+int dldp_pgoqGenerator_w(dldp_p* dp, randomGeneratorContext* rgc, uint32* wksp)
 {
 	/*
 	 * Randomly determine a generator over the subgroup with order q
@@ -220,7 +246,7 @@ void dldp_pgoqGenerator_w(dldp_p* dp, randomGeneratorContext* rc, uint32* wksp)
 	while (1)
 	{
 		/* get a random value h (stored into g) */
-		mp32brnd_w(&dp->p, rc, dp->g.data, wksp);
+		mp32brnd_w(&dp->p, rgc, dp->g.data, wksp);
 
 		/* first compute h^r mod p (stored in g) */
 		mp32bpowmod_w(&dp->p, size, dp->g.data, dp->r.size, dp->r.data, dp->g.data, wksp);
@@ -228,24 +254,33 @@ void dldp_pgoqGenerator_w(dldp_p* dp, randomGeneratorContext* rc, uint32* wksp)
 		if (mp32isone(size, dp->g.data))
 			continue;
 
-		return;
+		return 0;
 	}
+	return -1;
 }
 
-void dldp_pgoqGenerator(dldp_p* dp, randomGeneratorContext* rc)
+int dldp_pgoqGenerator(dldp_p* dp, randomGeneratorContext* rgc)
 {
 	register uint32  size = dp->p.size;
 	register uint32* temp = (uint32*) malloc((4*size+2)*sizeof(uint32));
 
-	dldp_pgoqGenerator_w(dp, rc, temp);
+	if (temp)
+	{
+		dldp_pgoqGenerator_w(dp, rgc, temp);
 
-	free(temp);
+		free(temp);
+
+		return 0;
+	}
+	return -1;
 }
 
-int dldp_pgoqValidate(const dldp_p* dp, randomGeneratorContext* rc, int cofactor)
+int dldp_pgoqValidate(const dldp_p* dp, randomGeneratorContext* rgc, int cofactor)
 {
-	if (dldp_pValidate(dp, rc) == 0)
-		return 0;
+	register int rc = dldp_pValidate(dp, rgc);
+
+	if (rc <= 0)
+		return rc;
 
 	/* check that g^q mod p = 1 */
 
@@ -256,7 +291,7 @@ int dldp_pgoqValidate(const dldp_p* dp, randomGeneratorContext* rc, int cofactor
 	return 1;
 }
 
-void dldp_pgonMake(dldp_p* dp, randomGeneratorContext* rc, uint32 psize, uint32 qsize)
+int dldp_pgonMake(dldp_p* dp, randomGeneratorContext* rgc, uint32 psize, uint32 qsize)
 {
 	/*
 	 * Generate parameters with a prime p such that p = qr+1, with q prime, and r = 2s, with s prime
@@ -264,22 +299,28 @@ void dldp_pgonMake(dldp_p* dp, randomGeneratorContext* rc, uint32 psize, uint32 
 
 	register uint32* temp = (uint32*) malloc((8*psize+2) * sizeof(uint32));
 
-	/* generate q */
-	mp32prnd_w(&dp->q, rc, qsize, mp32ptrials(qsize << 5), (const mp32number*) 0, temp);
+	if (temp)
+	{
+		/* generate q */
+		mp32prnd_w(&dp->q, rgc, qsize, mp32ptrials(qsize << 5), (const mp32number*) 0, temp);
 
-	/* generate p with the appropriate congruences */
-	mp32prndconone_w(&dp->p, rc, psize, mp32ptrials(psize << 5), &dp->q, (const mp32number*) 0, &dp->r, 2, temp);
+		/* generate p with the appropriate congruences */
+		mp32prndconone_w(&dp->p, rgc, psize, mp32ptrials(psize << 5), &dp->q, (const mp32number*) 0, &dp->r, 2, temp);
 
-	/* set n */
-	mp32bsubone(&dp->p, temp);
-	mp32bset(&dp->n, psize, temp);
+		/* set n */
+		mp32bsubone(&dp->p, temp);
+		mp32bset(&dp->n, psize, temp);
 
-	dldp_pgonGenerator_w(dp, rc, temp);
+		dldp_pgonGenerator_w(dp, rgc, temp);
 
-	free(temp);
+		free(temp);
+
+		return 0;
+	}
+	return -1;
 }
 
-void dldp_pgonMakeSafe(dldp_p* dp, randomGeneratorContext* rc, uint32 psize)
+int dldp_pgonMakeSafe(dldp_p* dp, randomGeneratorContext* rgc, uint32 psize)
 {
 	/*
 	 * Generate parameters with a safe prime; i.e. p = 2q+1, where q is prime
@@ -287,27 +328,33 @@ void dldp_pgonMakeSafe(dldp_p* dp, randomGeneratorContext* rc, uint32 psize)
 
 	register uint32* temp = (uint32*) malloc((8*psize+2) * sizeof(uint32));
 
-	/* generate safe p */
-	mp32prndsafe_w(&dp->p, rc, psize, mp32ptrials(psize << 5), temp);
+	if (temp)
+	{
+		/* generate safe p */
+		mp32prndsafe_w(&dp->p, rgc, psize, mp32ptrials(psize << 5), temp);
 
-	/* set n */
-	mp32bsubone(&dp->p, temp);
-	mp32bset(&dp->n, psize, temp);
+		/* set n */
+		mp32bsubone(&dp->p, temp);
+		mp32bset(&dp->n, psize, temp);
 
-	/* set q */
-	mp32copy(psize, temp, dp->p.modl);
-	mp32divtwo(psize, temp);
-	mp32bset(&dp->q, psize, temp);
+		/* set q */
+		mp32copy(psize, temp, dp->p.modl);
+		mp32divtwo(psize, temp);
+		mp32bset(&dp->q, psize, temp);
 
-	/* set r = 2 */
-	mp32nsetw(&dp->r, 2);
+		/* set r = 2 */
+		mp32nsetw(&dp->r, 2);
 
-	dldp_pgonGenerator_w(dp, rc, temp);
+		dldp_pgonGenerator_w(dp, rgc, temp);
 
-	free(temp);
+		free(temp);
+
+		return 0;
+	}
+	return -1;
 }
 
-void dldp_pgonGenerator_w(dldp_p* dp, randomGeneratorContext* rc, uint32* wksp)
+int dldp_pgonGenerator_w(dldp_p* dp, randomGeneratorContext* rgc, uint32* wksp)
 {
 	register uint32  size = dp->p.size;
 
@@ -316,7 +363,7 @@ void dldp_pgonGenerator_w(dldp_p* dp, randomGeneratorContext* rc, uint32* wksp)
 
 	while (1)
 	{
-		mp32brnd_w(&dp->p, rc, dp->g.data, wksp);
+		mp32brnd_w(&dp->p, rgc, dp->g.data, wksp);
 
 		if (mp32istwo(dp->r.size, dp->r.data))
 		{
@@ -366,24 +413,29 @@ void dldp_pgonGenerator_w(dldp_p* dp, randomGeneratorContext* rc, uint32* wksp)
 				continue;
 		}
 
-		return;
+		return 0;
 	}
+
+	return -1;
 }
 
-void dldp_pgonGenerator(dldp_p* dp, randomGeneratorContext* rc)
+int dldp_pgonGenerator(dldp_p* dp, randomGeneratorContext* rgc)
 {
 	register uint32  psize = dp->p.size;
 	register uint32* temp = (uint32*) malloc((8*psize+2) * sizeof(uint32));
 
-	dldp_pgonGenerator_w(dp, rc, temp);
+	if (temp)
+	{
+		dldp_pgonGenerator_w(dp, rgc, temp);
 
-	free(temp);
+		free(temp);
+
+		return 0;
+	}
+	return -1;
 }
 
-int dldp_pgonValidate(const dldp_p* dp, randomGeneratorContext* rc)
+int dldp_pgonValidate(const dldp_p* dp, randomGeneratorContext* rgc)
 {
-	if (dldp_pValidate((const dldp_p*) dp, rc) == 0)
-		return 0;
-
-	return 1;
+	return dldp_pValidate((const dldp_p*) dp, rgc);
 }

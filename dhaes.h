@@ -1,9 +1,9 @@
 /*
- * fips180.h
+ * dhaes.h
  *
- * SHA-1 hash function, header
+ * DHAES, header
  *
- * Copyright (c) 1997, 1998, 1999, 2000, 2001 Virtual Unlimited B.V.
+ * Copyright (c) 2000, 2001 Virtual Unlimited, B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -22,38 +22,33 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
-#ifndef _FIPS180_H
-#define _FIPS180_H
-
+ 
+#ifndef _DHAES_H
+#define _DHAES_H
+ 
 #include "beecrypt.h"
-#include "fips180opt.h"
+#include "dldp.h"
 
 typedef struct
 {
-	uint32 h[5];
-	uint32 data[80];
-	uint64 length;
-	uint8  offset;
-} sha1Param;
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-extern BEEDLLAPI const hashFunction sha1;
+	dldp_p param;
+	blockCipherContext cipher;
+	keyedHashFunctionContext mac;
+	hashFunctionContext hash;
+	randomGeneratorContext rng;
+} dhaes_p;
 
 BEEDLLAPI
-void sha1Process(sha1Param*);
-BEEDLLAPI
-int  sha1Reset  (sha1Param*);
-BEEDLLAPI
-int  sha1Update (sha1Param*, const byte*, int);
-BEEDLLAPI
-int  sha1Digest (sha1Param*, uint32*);
+int dhaes_usable(const blockCipher*, const keyedHashFunction*, const hashFunction*);
 
-#ifdef __cplusplus
-}
-#endif
+BEEDLLAPI
+int dhaes_pInit(dhaes_p*, const dldp_p*, const blockCipher*, const keyedHashFunction*, const hashFunction*, const randomGenerator*);
+BEEDLLAPI
+int dhaes_pFree(dhaes_p*);
+
+BEEDLLAPI
+memchunk* dhaes_pEncrypt(dhaes_p*, const mp32number*,       mp32number*,       mp32number*, const memchunk*);
+BEEDLLAPI
+memchunk* dhaes_pDecrypt(dhaes_p*, const mp32number*, const mp32number*, const mp32number*, const memchunk*);
 
 #endif

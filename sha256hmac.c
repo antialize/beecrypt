@@ -3,7 +3,7 @@
  *
  * SHA-256/HMAC message authentication code, code
  *
- * Copyright (c) 2000 Virtual Unlimited B.V.
+ * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -27,7 +27,7 @@
 
 #include "sha256hmac.h"
 
-const keyedHashFunction sha256hmac = { "SHA-256/HMAC", sizeof(sha256hmacParam), 5 * sizeof(uint32), 64, 512, 32, (const keyedHashFunctionSetup) sha256hmacSetup, (const keyedHashFunctionReset) sha256hmacReset, (const keyedHashFunctionUpdate) sha256hmacUpdate, (const keyedHashFunctionDigest) sha256hmacDigest };
+const keyedHashFunction sha256hmac = { "SHA-256/HMAC", sizeof(sha256hmacParam), 64, 8 * sizeof(uint32), 64, 512, 32, (const keyedHashFunctionSetup) sha256hmacSetup, (const keyedHashFunctionReset) sha256hmacReset, (const keyedHashFunctionUpdate) sha256hmacUpdate, (const keyedHashFunctionDigest) sha256hmacDigest };
 
 int sha256hmacSetup (sha256hmacParam* sp, const uint32* key, int keybits)
 {

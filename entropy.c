@@ -3,7 +3,7 @@
  *
  * entropy gathering routine for pseudo-random generator initialization
  *
- * Copyright (c) 1998, 1999, 2000 Virtual Unlimited B.V.
+ * Copyright (c) 1998, 1999, 2000, 2001 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -487,7 +487,7 @@ static pthread_mutex_t dev_dsp_lock = PTHREAD_MUTEX_INITIALIZER;
 static const char* name_dev_random = "/dev/random";
 static int dev_random_fd = -1;
 #ifdef _REENTRANT
-#if HAVE_SYNC_H
+#if HAVE_SYNCH_H
 static mutex_t dev_random_lock = DEFAULTMUTEX;
 #elif HAVE_PTHREAD_H
 static pthread_mutex_t dev_random_lock = PTHREAD_MUTEX_INITIALIZER;
@@ -501,7 +501,7 @@ static pthread_mutex_t dev_random_lock = PTHREAD_MUTEX_INITIALIZER;
 static const char* name_dev_urandom = "/dev/urandom";
 static int dev_urandom_fd = -1;
 #ifdef _REENTRANT
-#if HAVE_SYNC_H
+#if HAVE_SYNCH_H
 static mutex_t dev_urandom_lock = DEFAULTMUTEX;
 #elif HAVE_PTHREAD_H
 static pthread_mutex_t dev_urandom_lock = PTHREAD_MUTEX_INITIALIZER;

@@ -3,7 +3,7 @@
  *
  * Discrete Logarithm Public Key, code
  *
- * Copyright (c) 2000 Virtual Unlimited B.V.
+ * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -28,22 +28,34 @@
 #include "dlpk.h"
 #include "mp32.h"
 
-void dlpk_pInit(dlpk_p* pk)
+int dlpk_pInit(dlpk_p* pk)
 {
-	dldp_pInit(&pk->param);
+	if (dldp_pInit(&pk->param) < 0)
+		return -1;
+
 	mp32nzero(&pk->y);
+
+	return 0;
 }
 
-void dlpk_pFree(dlpk_p* pk)
+int dlpk_pFree(dlpk_p* pk)
 {
-	dldp_pFree(&pk->param);
+	if (dldp_pFree(&pk->param) < 0)
+		return -1;
+
 	mp32nfree(&pk->y);
+
+	return 0;
 }
 
-void dlpk_pCopy(dlpk_p* dst, const dlpk_p* src)
+int dlpk_pCopy(dlpk_p* dst, const dlpk_p* src)
 {
-	dldp_pCopy(&dst->param, &src->param);
+	if (dldp_pCopy(&dst->param, &src->param) < 0)
+		return -1;
+
 	mp32ncopy(&dst->y, &src->y);
+
+	return 0;
 }
 
 int dlpk_pEqual(const dlpk_p* a, const dlpk_p* b)
@@ -52,10 +64,12 @@ int dlpk_pEqual(const dlpk_p* a, const dlpk_p* b)
 		mp32eqx(a->y.size, a->y.data, b->y.size, b->y.data);
 }
 
-int dlpk_pgoqValidate(const dlpk_p* pk, randomGeneratorContext* rc, int cofactor)
+int dlpk_pgoqValidate(const dlpk_p* pk, randomGeneratorContext* rgc, int cofactor)
 {
-	if (dldp_pgoqValidate(&pk->param, rc, cofactor) == 0)
-		return 0;
+	register int rc = dldp_pgoqValidate(&pk->param, rgc, cofactor);
+
+	if (rc <= 0)
+		return rc;
 
 	if (mp32leone(pk->y.size, pk->y.data))
 		return 0;
@@ -66,10 +80,12 @@ int dlpk_pgoqValidate(const dlpk_p* pk, randomGeneratorContext* rc, int cofactor
 	return 1;
 }
 
-int dlpk_pgonValidate(const dlpk_p* pk, randomGeneratorContext* rc)
+int dlpk_pgonValidate(const dlpk_p* pk, randomGeneratorContext* rgc)
 {
-	if (dldp_pgonValidate(&pk->param, rc) == 0)
-		return 0;
+	register int rc = dldp_pgonValidate(&pk->param, rgc);
+
+	if (rc <= 0)
+		return rc;
 
 	if (mp32leone(pk->y.size, pk->y.data))
 		return 0;

@@ -3,7 +3,7 @@
 ;
 ; BeeCrypt DLL exports
 ;
-; Copyright (c) 2000 Virtual Unlimited B.V.
+; Copyright (c) 2000, 2001 Virtual Unlimited B.V.
 ;
 ; Author: Bob Deblier <bob@virtualunlimited.com>
 ;
@@ -55,6 +55,11 @@ EXPORTS
  decodeInts
  decodeLong
  decodeShort
+ dhaes_pDecrypt
+ dhaes_pEncrypt
+ dhaes_pFree
+ dhaes_pInit
+ dhaes_usable
  dldp_pCopy
  dldp_pEqual
  dldp_pFree
@@ -92,6 +97,7 @@ EXPORTS
  encodeFloat
  encodeInt
  encodeInts
+ encodeIntsPartial
  encodeLong
  encodeShort
  entropySourceCount
@@ -103,8 +109,13 @@ EXPORTS
  fips186Seed
  fips186Setup
  fips186prng data
+ hashFunctionContextDigest
+ hashFunctionContextDigestMatch
  hashFunctionContextFree
  hashFunctionContextInit
+ hashFunctionContextUpdate
+ hashFunctionContextUpdateMC
+ hashFunctionContextUpdateMP32
  hashFunctionCount
  hashFunctionDefault
  hashFunctionFind
@@ -113,8 +124,14 @@ EXPORTS
  hmacReset
  hmacSetup
  hmacUpdate
+ keyedHashFunctionContextDigest
+ keyedHashFunctionContextDigestMatch
  keyedHashFunctionContextFree
  keyedHashFunctionContextInit
+ keyedHashFunctionContextSetup
+ keyedHashFunctionContextUpdate
+ keyedHashFunctionContextUpdateMC
+ keyedHashFunctionContextUpdateMP32
  keyedHashFunctionCount
  keyedHashFunctionDefault
  keyedHashFunctionFind
@@ -233,11 +250,16 @@ EXPORTS
  mp32nset
  mp32nsetw
  mp32nsethex
+ mp32nwipe
  mtprng data
  mtprngCleanup
  mtprngNext
  mtprngSeed
  mtprngSetup
+ pkcs5Pad
+ pkcs5PadInline
+ pkcs5Unpad
+ pkcs5UnpadInline
  randomGeneratorCount
  randomGeneratorGet
  randomGeneratorFind

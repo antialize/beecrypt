@@ -3,7 +3,7 @@
  *
  * BeeCrypt test and benchmark application
  *
- * Copyright (c) 1999, 2000 Virtual Unlimited B.V.
+ * Copyright (c) 1999, 2000, 2001 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -25,13 +25,16 @@
 
 #include "beecrypt.h"
 #include "blockmode.h"
+#include "blowfish.h"
 #include "mp32barrett.h"
+#include "dhaes.h"
 #include "dlkp.h"
 #include "elgamal.h"
 #include "fips180.h"
 #include "rsa.h"
 #include "sha256.h"
 #include "md5.h"
+#include "md5hmac.h"
 
 #if HAVE_STDLIB_H
 #include <stdlib.h>
@@ -71,10 +74,10 @@ int testVectorInvMod(const dlkp_p* keypair)
 
 		free(temp);
 
-	if (randomGeneratorContextFree(&rngc))
-		return -1;
-	}
+		randomGeneratorContextFree(&rngc);
 
+		return rc;
+	}
 	return -1;
 }
 
@@ -100,34 +103,28 @@ int testVectorElGamalV1(const dlkp_p* keypair)
 
 	randomGeneratorContext rngc;
 
-	randomGeneratorContextInit(&rngc, randomGeneratorDefault());
-
-	if (rngc.rng && rngc.param)
+	if (randomGeneratorContextInit(&rngc, randomGeneratorDefault()) == 0)
 	{
-		if (rngc.rng->setup(rngc.param) == 0)
-		{
-			mp32number digest, r, s;
+		mp32number digest, r, s;
 
-			mp32nzero(&digest);
-			mp32nzero(&r);
-			mp32nzero(&s);
+		mp32nzero(&digest);
+		mp32nzero(&r);
+		mp32nzero(&s);
 
-			mp32nsize(&digest, 5);
+		mp32nsize(&digest, 5);
 
-			rngc.rng->next(rngc.param, digest.data, digest.size);
+		rngc.rng->next(rngc.param, digest.data, digest.size);
 
-			elgv1sign(&keypair->param.p, &keypair->param.n, &keypair->param.g, &rngc, &digest, &keypair->x, &r, &s);
+		elgv1sign(&keypair->param.p, &keypair->param.n, &keypair->param.g, &rngc, &digest, &keypair->x, &r, &s);
 
-			rc = elgv1vrfy(&keypair->param.p, &keypair->param.n, &keypair->param.g, &digest, &keypair->y, &r, &s);
+		rc = elgv1vrfy(&keypair->param.p, &keypair->param.n, &keypair->param.g, &digest, &keypair->y, &r, &s);
 
-			mp32nfree(&digest);
-			mp32nfree(&r);
-			mp32nfree(&s);
-		}
+		mp32nfree(&digest);
+		mp32nfree(&r);
+		mp32nfree(&s);
+
+		randomGeneratorContextFree(&rngc);
 	}
-
-	randomGeneratorContextFree(&rngc);
-
 	return rc;
 }
 
@@ -137,35 +134,82 @@ int testVectorElGamalV3(const dlkp_p* keypair)
 
 	randomGeneratorContext rngc;
 
-	randomGeneratorContextInit(&rngc, randomGeneratorDefault());
-
-	if (rngc.rng && rngc.param)
+	if (randomGeneratorContextInit(&rngc, randomGeneratorDefault()) == 0)
 	{
-		if (rngc.rng->setup(rngc.param) == 0)
+		mp32number digest, r, s;
+
+		mp32nzero(&digest);
+		mp32nzero(&r);
+		mp32nzero(&s);
+
+		mp32nsize(&digest, 5);
+
+		rngc.rng->next(rngc.param, digest.data, digest.size);
+
+		elgv3sign(&keypair->param.p, &keypair->param.n, &keypair->param.g, &rngc, &digest, &keypair->x, &r, &s);
+
+		rc = elgv3vrfy(&keypair->param.p, &keypair->param.n, &keypair->param.g, &digest, &keypair->y, &r, &s);
+
+		mp32nfree(&digest);
+		mp32nfree(&r);
+		mp32nfree(&s);
+
+		randomGeneratorContextFree(&rngc);
+	}
+	return rc;
+}
+
+int testVectorDHAES(const dlkp_p* keypair)
+{
+	/* try encrypting and decrypting a randomly generated message */
+
+	int rc = 0;
+
+	dhaes_p dh;
+
+	/* incomplete */
+	if (dhaes_pInit(&dh, &keypair->param, &blowfish, &md5hmac, &md5, randomGeneratorDefault()) == 0)
+	{
+		mp32number mkey, mac;
+
+		memchunk src, *dst, *cmp;
+
+		/* make a random message of 2K size */
+		src.size = 2048;
+		src.data = (byte*) malloc(src.size);
+		memset(src.data, 1, src.size);
+
+		/* initialize the message key and mac */
+		mp32nzero(&mkey);
+		mp32nzero(&mac);
+
+		/* encrypt the message */
+		dst = dhaes_pEncrypt(&dh, &keypair->y, &mkey, &mac, &src);
+		/* decrypt the message */
+		cmp = dhaes_pDecrypt(&dh, &keypair->x, &mkey, &mac, dst);
+
+		if (cmp != (memchunk*) 0)
 		{
-			mp32number digest, r, s;
+			if (src.size == cmp->size)
+			{
+				if (memcmp(src.data, cmp->data, src.size) == 0)
+					rc = 1;
+			}
 
-			mp32nzero(&digest);
-			mp32nzero(&r);
-			mp32nzero(&s);
-
-			mp32nsize(&digest, 5);
-
-			rngc.rng->next(rngc.param, digest.data, digest.size);
-
-			elgv3sign(&keypair->param.p, &keypair->param.n, &keypair->param.g, &rngc, &digest, &keypair->x, &r, &s);
-
-			rc = elgv3vrfy(&keypair->param.p, &keypair->param.n, &keypair->param.g, &digest, &keypair->y, &r, &s);
-
-			mp32nfree(&digest);
-			mp32nfree(&r);
-			mp32nfree(&s);
+			free(cmp->data);
+			free(cmp);
 		}
+
+		free(dst->data);
+		free(dst);
+		free(src.data);
+
+		dhaes_pFree(&dh);
+
+		return rc;
 	}
 
-	randomGeneratorContextFree(&rngc);
-
-	return rc;
+	return -1;
 }
 
 int testVectorRSA()
@@ -174,39 +218,35 @@ int testVectorRSA()
 
 	randomGeneratorContext rngc;
 
-	randomGeneratorContextInit(&rngc, randomGeneratorDefault());
-
-	if (rngc.rng && rngc.param)
+	if (randomGeneratorContextInit(&rngc, randomGeneratorDefault()) == 0)
 	{
-		if (rngc.rng->setup(rngc.param) == 0)
-		{
-			rsakp kp;
-			mp32number digest, s;
+		rsakp kp;
+		mp32number digest, s;
 
-			rsakpInit(&kp);
-			printf("making RSA CRT keypair\n");
-			rsakpMake(&kp, &rngc, 32);
-			printf("RSA CRT keypair generated\n");
+		rsakpInit(&kp);
+		printf("making RSA CRT keypair\n");
+		rsakpMake(&kp, &rngc, 32);
+		printf("RSA CRT keypair generated\n");
 
-			mp32nzero(&digest);
-			mp32nzero(&s);
+		mp32nzero(&digest);
+		mp32nzero(&s);
 
-			mp32bnrnd(&kp.n, &rngc, &digest);
+		mp32bnrnd(&kp.n, &rngc, &digest);
 
-			rsapri(&kp, &digest, &s);
+		rsapri(&kp, &digest, &s);
 
-			rc = rsavrfy((rsapk*) &kp, &digest, &s);
+		rc = rsavrfy((rsapk*) &kp, &digest, &s);
 
-			mp32nfree(&digest);
-			mp32nfree(&s);
+		mp32nfree(&digest);
+		mp32nfree(&s);
 
-			rsakpFree(&kp);
-		}
+		rsakpFree(&kp);
+
+		randomGeneratorContextFree(&rngc);
+
+		return rc;
 	}
-
-	randomGeneratorContextFree(&rngc);
-
-	return rc;
+	return -1;
 }
 
 int testVectorDLDP()
@@ -217,28 +257,25 @@ int testVectorDLDP()
 
 	memset(&dp, 0, sizeof(dldp_p));
 
-	randomGeneratorContextInit(&rc, randomGeneratorDefault());
-
-	if (rc.rng && rc.param)
+	if (randomGeneratorContextInit(&rc, randomGeneratorDefault()) == 0)
 	{
-		if (rc.rng->setup(rc.param) == 0)
-		{
-			register int result;
-			mp32number gq;
+		register int result;
+		mp32number gq;
 
-			mp32nzero(&gq);
-	
-			dldp_pgoqMake(&dp, &rc, 768 >> 5, 512 >> 5, 1);
+		mp32nzero(&gq);
 
-			/* we have the parameters, now see if g^q == 1 */
-			mp32bnpowmod(&dp.p, &dp.g, (mp32number*) &dp.q, &gq);
-			result = mp32isone(gq.size, gq.data);
+		dldp_pgoqMake(&dp, &rc, 768 >> 5, 512 >> 5, 1);
 
-			mp32nfree(&gq);
-			dldp_pFree(&dp);
+		/* we have the parameters, now see if g^q == 1 */
+		mp32bnpowmod(&dp.p, &dp.g, (mp32number*) &dp.q, &gq);
+		result = mp32isone(gq.size, gq.data);
 
-			return result;
-		}
+		mp32nfree(&gq);
+		dldp_pFree(&dp);
+
+		randomGeneratorContextFree(&rc);
+
+		return result;
 	}
 	return 0;
 }
@@ -561,7 +598,7 @@ void testExpMods()
 		#if HAVE_TIME_H
 		tstart = clock();
 		#endif
-		for (i = 0; i < 1 /* 100 */; i++)
+		for (i = 0; i < 100; i++)
 			mp32bnpowmod(&p, &g, &x, &y);
 		#if HAVE_TIME_H
 		tstop = clock();
@@ -587,53 +624,48 @@ void testDLParams()
 
 	memset(&dp, 0, sizeof(dldp_p));
 
-	randomGeneratorContextInit(&rc, randomGeneratorDefault());
-
-	if (rc.rng && rc.param)
+	if (randomGeneratorContextInit(&rc, randomGeneratorDefault()) == 0)
 	{
-		if (rc.rng->setup(rc.param) == 0)
-		{
-			#if HAVE_TIME_H
-			double ttime;
-			clock_t tstart, tstop;
-			#endif
-			printf("Generating P (768 bits) Q (512 bits) G with order Q\n");
-			#if HAVE_TIME_H
-			tstart = clock();
-			#endif
-			dldp_pgoqMake(&dp, &rc, 768 >> 5, 512 >> 5, 1);
-			#if HAVE_TIME_H
-			tstop = clock();
-			ttime = ((double)(tstop - tstart)) / CLOCKS_PER_SEC;
-			printf("\tdone in %.3f seconds\n", ttime);
-			#endif
-			printf("P = "); fflush(stdout); mp32println(dp.p.size, dp.p.modl);
-			printf("Q = "); fflush(stdout); mp32println(dp.q.size, dp.q.modl);
-			printf("G = "); fflush(stdout); mp32println(dp.g.size, dp.g.data);
-			dldp_pFree(&dp);
+		#if HAVE_TIME_H
+		double ttime;
+		clock_t tstart, tstop;
+		#endif
+		printf("Generating P (768 bits) Q (512 bits) G with order Q\n");
+		#if HAVE_TIME_H
+		tstart = clock();
+		#endif
+		dldp_pgoqMake(&dp, &rc, 768 >> 5, 512 >> 5, 1);
+		#if HAVE_TIME_H
+		tstop = clock();
+		ttime = ((double)(tstop - tstart)) / CLOCKS_PER_SEC;
+		printf("\tdone in %.3f seconds\n", ttime);
+		#endif
+		printf("P = "); fflush(stdout); mp32println(dp.p.size, dp.p.modl);
+		printf("Q = "); fflush(stdout); mp32println(dp.q.size, dp.q.modl);
+		printf("G = "); fflush(stdout); mp32println(dp.g.size, dp.g.data);
+		dldp_pFree(&dp);
 
-			printf("Generating P (768 bits) Q (512 bits) G with order (P-1)\n");
-			#if HAVE_TIME_H
-			tstart = clock();
-			#endif
-			dldp_pgonMake(&dp, &rc, 768 >> 5, 512 >> 5);
-			#if HAVE_TIME_H
-			tstop = clock();
-			ttime = ((double)(tstop - tstart)) / CLOCKS_PER_SEC;
-			printf("\tdone in %.3f seconds\n", ttime);
-			#endif
-			printf("P = "); fflush(stdout); mp32println(dp.p.size, dp.p.modl);
-			printf("Q = "); fflush(stdout); mp32println(dp.q.size, dp.q.modl);
-			printf("G = "); fflush(stdout); mp32println(dp.g.size, dp.g.data);
-			printf("N = "); fflush(stdout); mp32println(dp.n.size, dp.n.modl);
-			dldp_pFree(&dp);
-		}
+		printf("Generating P (768 bits) Q (512 bits) G with order (P-1)\n");
+		#if HAVE_TIME_H
+		tstart = clock();
+		#endif
+		dldp_pgonMake(&dp, &rc, 768 >> 5, 512 >> 5);
+		#if HAVE_TIME_H
+		tstop = clock();
+		ttime = ((double)(tstop - tstart)) / CLOCKS_PER_SEC;
+		printf("\tdone in %.3f seconds\n", ttime);
+		#endif
+		printf("P = "); fflush(stdout); mp32println(dp.p.size, dp.p.modl);
+		printf("Q = "); fflush(stdout); mp32println(dp.q.size, dp.q.modl);
+		printf("G = "); fflush(stdout); mp32println(dp.g.size, dp.g.data);
+		printf("N = "); fflush(stdout); mp32println(dp.n.size, dp.n.modl);
+		dldp_pFree(&dp);
+
+		randomGeneratorContextFree(&rc);
 	}
-
-	randomGeneratorContextFree(&rc);
 }
 
-#if 0
+#if 1
 int main()
 {
 	dlkp_p keypair;
@@ -679,6 +711,11 @@ int main()
 
 	if (testVectorElGamalV3(&keypair))
 		printf("ElGamal v3 works!\n");
+	else
+		exit(1);
+
+	if (testVectorDHAES(&keypair))
+		printf("DHAES works!\n");
 	else
 		exit(1);
 

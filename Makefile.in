@@ -1,7 +1,7 @@
 #
 # Makefile.in for the beecrypt library
 #
-# Copyright (c) 1999-2000, Virtual Unlimited B.V.
+# Copyright (c) 1999, 2000, 2001, Virtual Unlimited B.V.
 #
 # Author: Bob Deblier <bob@virtualunlimited.com>
 #
@@ -38,6 +38,8 @@ COMPILE.c = $(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 PRODUCT = @PRODUCT@
 VERSION = @VERSION@
 MAJOR = @MAJOR@
+MINOR = @MINOR@
+SUFFIX = $(MAJOR).$(MINOR)
 
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
@@ -75,8 +77,10 @@ OBJFILES = \
 	base64.o \
 	beecrypt.o \
 	blockmode.o \
+	blockpad.o \
 	blowfish.o \
 	blowfishopt.o \
+	dhaes.o \
 	dldp.o \
 	dlkp.o \
 	dlpk.o \
@@ -106,15 +110,18 @@ OBJFILES = \
 	timestamp.o
 
 DISTFILES = \
-	COPYING INSTALL NEWS README DOCUMENTATION BUGS BENCHMARKS ChangeLog \
+	COPYING INSTALL NEWS README README.WIN32 DOCUMENTATION BUGS BENCHMARKS ChangeLog \
 	config.guess config.sub install-sh \
 	configure.in configure Makefile.in Makefile.mak \
+	beecrypt.mcp \
 	config.h \
 	base64.h base64.c \
 	beecrypt.h beecrypt.c \
 	blockmode.h blockmode.c \
+	blockpad.h blockpad.c \
 	blowfish.h blowfish.c \
 	blowfishopt.h blowfishopt.c  \
+	dhaes.h dhaes.c \
 	dldp.h dldp.c \
 	dlkp.h dlkp.c \
 	dlpk.h dlpk.c \
@@ -148,7 +155,6 @@ DISTFILES = \
 	gnu/mp32opt.gas.ia64.S \
 	gnu/mp32opt.gas.powerpc.S \
 	gnu/mp32opt.gas.sparcv9.S \
-	beecrypt.mcp \
 	win32/config.win.h \
 	win32/beecrypt.dll.c win32/beecrypt.rc win32/beecrypt.def \
 	win32/masm/blowfishopt.i586.asm win32/masm/fips180opt.i586.asm win32/masm/mp32opt.i386.asm \
@@ -158,7 +164,7 @@ DISTFILES = \
 
 LIBBEECRYPT = libbeecrypt.so
 
-all: $(LIBBEECRYPT) $(LIBBEECRYPT).$(MAJOR)
+all: $(LIBBEECRYPT) $(LIBBEECRYPT).$(MAJOR) $(LIBBEECRYPT).$(VERSION)
 
 base64.o: base64.c
 	$(COMPILE.c) $(CLIBFLAGS)
@@ -169,11 +175,17 @@ beecrypt.o: beecrypt.c
 blockmode.o: blockmode.c
 	$(COMPILE.c) $(CLIBFLAGS)
 
+blockpad.o: blockpad.c
+	$(COMPILE.c) $(CLIBFLAGS)
+
 blowfish.o: blowfish.c
 	$(COMPILE.c) $(CLIBFLAGS)
 
 @BLOWFISHOPTDEP@
 	@BLOWFISHOPTRULE@
+
+dhaes.o: dhaes.c
+	$(COMPILE.c) $(CLIBFLAGS)
 
 dldp.o: dldp.c
 	$(COMPILE.c) $(CLIBFLAGS)
@@ -256,28 +268,34 @@ sha256hmac.o: sha256hmac.c
 timestamp.o: timestamp.c
 	$(COMPILE.c) $(CLIBFLAGS)
 
-$(LIBBEECRYPT): $(LIBBEECRYPT).$(MAJOR)
-	$(LN_S) $(LIBBEECRYPT).$(MAJOR) $(LIBBEECRYPT)
+$(LIBBEECRYPT): $(LIBBEECRYPT).$(VERSION)
+	$(LN_S) $(LIBBEECRYPT).$(VERSION) $@
 
-$(LIBBEECRYPT).$(MAJOR): $(OBJFILES)
+$(LIBBEECRYPT).$(MAJOR): $(LIBBEECRYPT).$(VERSION)
+	$(LN_S) $(LIBBEECRYPT).$(VERSION) $@
+
+$(LIBBEECRYPT).$(VERSION): $(OBJFILES)
 	$(LD) $(LDFLAGS) $(LDLIBFLAGS) -o $@ $(OBJFILES)
 
 java-header:
-	javah -o javaglue.h javax.crypto.Cipher com.beeyond.security.NativeMessageDigest com.beeyond.security.NativeSecureRandom com.beeyond.crypto.NativeBlockCipher
+	javah -o javaglue.h javax.crypto.Cipher beecrypt.security.NativeMessageDigest beecrypt.security.NativeSecureRandom beecrypt.crypto.NativeBlockCipher
 
-install: $(LIBBEECRYPT).$(MAJOR)
+install: $(LIBBEECRYPT).$(VERSION)
 	$(INSTALL) -d ${libdir}
-	$(INSTALL) $(LIBBEECRYPT).$(MAJOR) ${libdir}
-	$(RM) -f ${libdir}/$(LIBBEECRYPT)
-	$(LN_S) ${libdir}/$(LIBBEECRYPT).$(MAJOR) ${libdir}/$(LIBBEECRYPT)
+	$(INSTALL) $(LIBBEECRYPT).$(VERSION) ${libdir}
+	$(RM) -f ${libdir}/$(LIBBEECRYPT) ${libdir}/$(LIBBEECRYPT).$(MAJOR)
+	$(LN_S) ${libdir}/$(LIBBEECRYPT).$(VERSION) ${libdir}/$(LIBBEECRYPT)
+	$(LN_S) ${libdir}/$(LIBBEECRYPT).$(VERSION) ${libdir}/$(LIBBEECRYPT).$(MAJOR)
 	
 install-headers:
 	$(INSTALL) -d ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/base64.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/beecrypt.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/blockmode.h ${includedir}/beecrypt
+	$(INSTALL_DATA) ${srcdir}/blockpad.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/blowfish.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/blowfishopt.h ${includedir}/beecrypt
+	$(INSTALL_DATA) ${srcdir}/dhaes.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/dldp.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/dlkp.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/dlpk.h ${includedir}/beecrypt
@@ -309,10 +327,10 @@ beetest: beetest.o
 	$(CC) $(CFLAGS) -o $@ beetest.o -L. -lbeecrypt
 
 clean:
-	rm -f *.so *.so.$(MAJOR) *.o beetest
+	rm -f *.so *.so.$(MAJOR) *.so.$(VERSION) *.o beetest
 
 distclean:
-	rm -f *.so *.o beetest ${srcdir}/config.log ${srcdir}/config.cache ${srcdir}/config.status conftest.c ${srcdir}/Makefile ${srcdir}/gnu/config.gnu.h
+	rm -f *.so *.so.$(MAJOR) *.so.$(VERSION) *.o beetest ${srcdir}/config.log ${srcdir}/config.cache ${srcdir}/config.status conftest.c ${srcdir}/Makefile ${srcdir}/gnu/config.gnu.h
 
 dist: $(DISTFILES)
 	@rm -rf $(PRODUCT)-$(VERSION)

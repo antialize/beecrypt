@@ -5,7 +5,7 @@
  *
  * <conformance statement for IEEE P1363 needed here>
  *
- * Copyright (c) 2000 Virtual Unlimited B.V.
+ * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -47,13 +47,13 @@ extern "C" {
 #endif
 
 BEEDLLAPI
-void rsakpMake(rsakp*, randomGeneratorContext*, int);
+int rsakpMake(rsakp*, randomGeneratorContext*, int);
 BEEDLLAPI
-void rsakpInit(rsakp*);
+int rsakpInit(rsakp*);
 BEEDLLAPI
-void rsakpFree(rsakp*);
+int rsakpFree(rsakp*);
 BEEDLLAPI
-void rsakpCopy(rsakp*, const rsakp*);
+int rsakpCopy(rsakp*, const rsakp*);
 
 #ifdef __cplusplus
 }

@@ -55,7 +55,7 @@ extern "C" {
 #endif
 
 #if defined(__GNUC__)
-# if defined(i386) || defined(i486) || defined(i586) || defined(i686)
+# if defined(OPTIMIZE_I386) || defined(OPTIMIZE_I486) || defined(OPTIMIZED_I586) || defined(OPTIMIZE_I686)
 #  define ASM_MP32ADDW
 #  define ASM_MP32ADD
 #  define ASM_MP32SUBW
@@ -65,7 +65,7 @@ extern "C" {
 #  define ASM_MP32ADDMUL
 #  define ASM_MP32ADDSQRTRC
 # endif
-# if defined(ia64)
+# if defined(OPTIMIZE_IA64)
 #  define ASM_MP32ZERO
 #  define ASM_MP32COPY
 #  define ASM_MP32ADD
@@ -73,7 +73,7 @@ extern "C" {
 #  undef ASM_MP32SETMUL
 #  undef ASM_MP32ADDMUL
 # endif
-# if defined(powerpc)
+# if defined(OPTIMIZE_POWERPC)
 #  define ASM_MP32ADDW
 #  define ASM_MP32ADD
 #  define ASM_MP32SUBW
@@ -82,7 +82,7 @@ extern "C" {
 #  define ASM_MP32ADDMUL
 #  define ASM_MP32ADDSQRTRC
 # endif
-# if defined(sparcv8plus) || defined(sparcv9)
+# if defined(OPTIMIZE_SPARCV8PLUS) || defined(OPTIMIZE_SPARCV9)
 #  define ASM_MP32ADDW
 #  define ASM_MP32ADD
 #  define ASM_MP32SUBW
@@ -94,7 +94,7 @@ extern "C" {
 #endif
 
 #if defined(__SUNPRO_C) || defined(__SUNPRO_CC)
-# if defined(sparcv8plus) /* || defined(sparcv9) */
+# if defined(OPTIMIZE_SPARCV8PLUS) /* || defined(OPTIMIZE_SPARCV9) */
 #  define ASM_MP32ADDW
 #  define ASM_MP32ADD
 #  define ASM_MP32SUBW
@@ -103,7 +103,7 @@ extern "C" {
 #  define ASM_MP32ADDMUL
 #  define ASM_MP32ADDSQRTRC
 #  endif
-# if defined(i386) || defined(i486) || defined(i586) || defined(i686)
+# if defined(OPTIMIZE_I386) || defined(OPTIMIZE_I486) || defined(OPTIMIZE_I586) || defined(OPTIMIZE_I686)
 #  define ASM_MP32ADDW
 #  define ASM_MP32ADD
 #  define ASM_MP32SUBW

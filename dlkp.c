@@ -5,7 +5,7 @@
  *
  * <conformance statement for IEEE P1363 needed here>
  *
- * Copyright (c) 2000 Virtual Unlimited B.V.
+ * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -29,33 +29,46 @@
 
 #include "dlkp.h"
 
-void dlkp_pPair(dlkp_p* kp, randomGeneratorContext* rc, const dldp_p* param)
+int dlkp_pPair(dlkp_p* kp, randomGeneratorContext* rgc, const dldp_p* param)
 {
 	/* copy the parameters */
-	dldp_pCopy(&kp->param, param);
+	if (dldp_pCopy(&kp->param, param) < 0)
+		return -1;
 
-	dldp_pPair(param, rc, &kp->x, &kp->y);
+	if (dldp_pPair(param, rgc, &kp->x, &kp->y) < 0)
+		return -1;
+
+	return 0;
 }
 
-void dlkp_pInit(dlkp_p* kp)
+int dlkp_pInit(dlkp_p* kp)
 {
-	dldp_pInit(&kp->param);
+	if (dldp_pInit(&kp->param) < 0)
+		return -1;
+
 	mp32nzero(&kp->y);
 	mp32nzero(&kp->x);
+
+	return 0;
 }
 
-void dlkp_pFree(dlkp_p* kp)
+int dlkp_pFree(dlkp_p* kp)
 {
-	dldp_pFree(&kp->param);
+	if (dldp_pFree(&kp->param) < 0)
 
 	mp32nfree(&kp->y);
 	mp32nfree(&kp->x);
+
+	return 0;
 }
 
-void dlkp_pCopy(dlkp_p* dst, const dlkp_p* src)
+int dlkp_pCopy(dlkp_p* dst, const dlkp_p* src)
 {
-	dldp_pCopy(&dst->param, &src->param);
+	if (dldp_pCopy(&dst->param, &src->param) < 0)
+		return -1;
 
 	mp32ncopy(&dst->y, &src->y);
 	mp32ncopy(&dst->x, &src->x);
+
+	return 0;
 }

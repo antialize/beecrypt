@@ -3,7 +3,7 @@
  *
  * SHA-256 hash function, code
  *
- * Copyright (c) 2000 Virtual Unlimited B.V.
+ * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -44,7 +44,7 @@ static const uint32 hinit[8] = {
 	0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
 };
 
-const hashFunction sha256 = { "SHA-256", sizeof(sha256Param), 8 * sizeof(uint32), (hashFunctionReset) sha256Reset, (hashFunctionUpdate) sha256Update, (hashFunctionDigest) sha256Digest };
+const hashFunction sha256 = { "SHA-256", sizeof(sha256Param), 64, 8 * sizeof(uint32), (hashFunctionReset) sha256Reset, (hashFunctionUpdate) sha256Update, (hashFunctionDigest) sha256Digest };
 
 int sha256Reset(register sha256Param *p)
 {

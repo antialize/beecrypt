@@ -3,7 +3,7 @@
  *
  * Multiple precision numbers, code
  *
- * Copyright (c) 1997, 1998, 1999, 2000 Virtual Unlimited B.V.
+ * Copyright (c) 1997, 1998, 1999, 2000, 2001 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -86,6 +86,11 @@ void mp32nfree(mp32number* n)
 void mp32ncopy(mp32number* n, const mp32number* copy)
 {
 	mp32nset(n, copy->size, copy->data);
+}
+
+void mp32nwipe(mp32number* n)
+{
+	mp32zero(n->size, n->data);
 }
 
 void mp32nset(mp32number* n, uint32 size, const uint32* data)

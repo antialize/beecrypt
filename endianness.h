@@ -3,7 +3,7 @@
  *
  * Endian-dependant encoding/decoding, header
  *
- * Copyright (c) 1998, 1999, 2000 Virtual Unlimited B.V.
+ * Copyright (c) 1998, 1999, 2000, 2001 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -125,6 +125,8 @@ int encodeDouble(javadouble, byte*);
 
 BEEDLLAPI
 int encodeInts(const javaint*, byte*, int);
+BEEDLLAPI
+int encodeIntsPartial(const javaint*, byte*, int);
 BEEDLLAPI
 int encodeChars(const javachar*, byte*, int);
 

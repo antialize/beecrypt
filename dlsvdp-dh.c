@@ -3,7 +3,7 @@
  *
  * Discrete Logarithm Secret Value Derivation Primite - Diffie Hellman, code
  *
- * Copyright (c) 1999, 2000 Virtual Unlimited B.V.
+ * Copyright (c) 1999, 2000, 2001 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -27,7 +27,9 @@
 
 #include "dlsvdp-dh.h"
 
-void dlsvdp_pDHSecret(const dldp_p* dp, const mp32number* x, const mp32number* y, mp32number* s)
+int dlsvdp_pDHSecret(const dldp_p* dp, const mp32number* x, const mp32number* y, mp32number* s)
 {
 	mp32bnpowmod(&dp->p, y, x, s);
+
+	return 0;
 }

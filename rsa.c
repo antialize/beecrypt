@@ -1,8 +1,9 @@
 /*
  * rsa.c
+ *
  * RSA Encryption & signature scheme, code
  *
- * Copyright (c) 2000 Virtual Unlimited B.V.
+ * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -25,20 +26,30 @@
 #define BEECRYPT_DLL_EXPORT
 
 #include "rsa.h"
+#include "mp32.h"
 
-void rsapri(const rsakp* kp, const mp32number* m, mp32number* c)
+#if HAVE_STDLIB_H
+# include "stdlib.h"
+#endif
+int rsapri(const rsakp* kp, const mp32number* m, mp32number* c)
 {
 	register uint32  size = kp->n.size;
 	register uint32* temp = (uint32*) malloc((4*size+2)*sizeof(uint32));
-	
-	mp32nsize(c, size);
-	mp32bpowmod_w(&kp->n, m->size, m->data, kp->d.size, kp->d.data, c->data, temp);
 
-	free(temp);
+	if (temp)
+	{
+		mp32nsize(c, size);
+		mp32bpowmod_w(&kp->n, m->size, m->data, kp->d.size, kp->d.data, c->data, temp);
+
+		free(temp);
+
+		return 0;
+	}
+	return -1;
 }
 
-/* needs debugging! */
-void rsapricrt(const rsakp* kp, const mp32number* m, mp32number* c)
+/* this routine doesn't work yet: needs debugging! */
+int rsapricrt(const rsakp* kp, const mp32number* m, mp32number* c)
 {
 	register uint32  nsize = kp->n.size;
 	register uint32  psize = kp->p.size;
@@ -82,19 +93,29 @@ void rsapricrt(const rsakp* kp, const mp32number* m, mp32number* c)
 	mp32addx(nsize, c->data, qsize, temp+psize);
 
 	free(temp);
+
+	return -1;
 }
 
+/**
+ * returns: 0 if signature verifies
+ *          -1 otherwise, can also indicate errors
+ */
 int rsavrfy(const rsapk* pk, const mp32number* m, const mp32number* c)
 {
 	int rc;
 	register uint32  size = pk->n.size;
 	register uint32* temp = (uint32*) malloc((5*size+2)*sizeof(uint32));
-	
-	mp32bpowmod_w(&pk->n, c->size, c->data, pk->e.size, pk->e.data, temp, temp+size);
 
-	rc = mp32eqx(size, temp, m->size, m->data);
+	if (temp)
+	{
+		mp32bpowmod_w(&pk->n, c->size, c->data, pk->e.size, pk->e.data, temp, temp+size);
 
-	free(temp);
+		rc = mp32eqx(size, temp, m->size, m->data);
 
-	return rc;
+		free(temp);
+
+		return rc;
+	}
+	return 0;
 }
