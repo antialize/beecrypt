@@ -11,6 +11,7 @@ Error.cxx \
 Exception.cxx \
 IllegalArgumentException.cxx \
 IllegalStateException.cxx \
+Long.cxx \
 NullPointerException.cxx \
 OutOfMemoryError.cxx \
 RuntimeException.cxx \
@@ -21,6 +22,7 @@ Error.h \
 Exception.h \
 IllegalArgumentException.h \
 IllegalStateException.h \
+Long.h \
 NullPointerException.h \
 OutOfMemoryError.h \
 RuntimeException.h \
