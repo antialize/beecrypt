@@ -39,9 +39,12 @@ RSAPrivateCrtKeyImpl.cxx \
 RSAPrivateKeyImpl.cxx \
 RSAPublicKeyImpl.cxx \
 SHA1Digest.cxx \
+SHA256Digest.cxx \
+SHA512Digest.cxx \
 SHA1withDSASignature.cxx \
 SHA1withRSASignature.cxx \
-SHA256withRSASignature.cxx
+SHA256withRSASignature.cxx \
+SHA512withRSASignature.cxx
 
 base_la_LDFLAGS = -module
 base_la_LIBADD = $(top_builddir)/c++/libbeecrypt_cxx.la
@@ -78,6 +81,9 @@ RSAPrivateCrtKeyImpl.h \
 RSAPrivateKeyImpl.h \
 RSAPublicKeyImpl.h \
 SHA1Digest.h \
+SHA256Digest.h \
+SHA512Digest.h \
 SHA1withDSASignature.h \
 SHA1withRSASignature.h \
+SHA256withRSASignature.h \
 SHA256withRSASignature.h
