@@ -66,6 +66,7 @@ extern "C" {
 # if defined(OPTIMIZE_ARM)
 #  define ASM_MP32SETMUL
 #  define ASM_MP32ADDMUL
+#  define ASM_MP32ADDSQRTRC
 # endif
 # if defined(OPTIMIZE_I386) || defined(OPTIMIZE_I486) || defined(OPTIMIZE_I586) || defined(OPTIMIZE_I686)
 #  define ASM_MP32ZERO
