@@ -129,6 +129,9 @@ AC_ARG_WITH(arch,[  --with-arch             optimize for specific architecture (
   sparc*)
     bc_target_arch=sparc
     ;;
+  x86_64)
+    bc_target_arch=x86_64
+    ;;
   esac
   ])
 
