@@ -174,8 +174,7 @@ AC_AIX
 # Checks for C compiler and preprocessor
 AC_PROG_CC
 AC_PROG_CPP
-test -n "$CCAS" || CCAS="$CC -c"
-AC_SUBST(CCAS)
+AM_PROG_AS
 
 # Checks for compiler characteristics and flags
 if test "$ac_cv_c_compiler_gnu" = yes; then
@@ -591,6 +590,9 @@ if test "$ac_enable_debug" != yes; then
   sparcv9*)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_SPARCV9"
     CFLAGS="$CFLAGS -Wa,-xarch=v9"
+    ;;
+  x86_64)
+    CPPFLAGS="$CPPFLAGS -DOPTIMIZE_X86_64"
     ;;
   esac
 fi
