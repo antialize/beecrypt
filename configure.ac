@@ -435,7 +435,7 @@ EOF
       if test X"$java_home" = X; then
         java_home=/usr
       fi
-      if test -d "$java_home" -a -d "$java_home/include" -a -f "$java_home/include/jni.h"; then
+      if test -d "$java_home" -a -d "$java_home/include"; then
         ac_cv_java_headers=yes
         ac_cv_java_include="-I$java_home/include"
         gcjpath="$java_home/lib/gcc-lib/`gcj -dumpmachine`/`gcj -dumpversion`"
@@ -477,7 +477,7 @@ EOF
             *)
               java_include="$java_home"/../include ;;
             esac
-            if test -d "$java_include" -a -f "$java_include/jni.h"; then
+            if test -d "$java_include"; then
               ac_cv_java_headers=yes
               ac_cv_java_include="-I$java_include"
               case $target_os in
