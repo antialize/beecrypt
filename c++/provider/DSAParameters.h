@@ -34,8 +34,6 @@ namespace beecrypt {
 	namespace provider {
 		class DSAParameters : public AlgorithmParametersSpi
 		{
-		//	friend class DSAParameterGenerator;
-
 		private:
 			DSAParameterSpec* _spec;
 

@@ -32,38 +32,38 @@ namespace beecrypt {
 	namespace provider {
 		class RSAPrivateCrtKeyImpl : public RSAPrivateCrtKey
 		{
-			private:
-				mpbarrett _n;
-				mpnumber _e;
-				mpnumber _d;
-				mpbarrett _p;
-				mpbarrett _q;
-				mpnumber _dp;
-				mpnumber _dq;
-				mpnumber _qi;
-				mutable bytearray* _enc;
+		private:
+			mpbarrett _n;
+			mpnumber _e;
+			mpnumber _d;
+			mpbarrett _p;
+			mpbarrett _q;
+			mpnumber _dp;
+			mpnumber _dq;
+			mpnumber _qi;
+			mutable bytearray* _enc;
 
-			public:
-				RSAPrivateCrtKeyImpl(const RSAPrivateCrtKey&);
-				RSAPrivateCrtKeyImpl(const mpbarrett& modulus, const mpnumber& publicExponent, const mpnumber& privateExponent, const mpbarrett& primeP, const mpbarrett& primeQ, const mpnumber& primeExponentP, const mpnumber& primeExponentQ, const mpnumber& crtCoefficient);
-				virtual ~RSAPrivateCrtKeyImpl();
+		public:
+			RSAPrivateCrtKeyImpl(const RSAPrivateCrtKey&);
+			RSAPrivateCrtKeyImpl(const mpbarrett& modulus, const mpnumber& publicExponent, const mpnumber& privateExponent, const mpbarrett& primeP, const mpbarrett& primeQ, const mpnumber& primeExponentP, const mpnumber& primeExponentQ, const mpnumber& crtCoefficient);
+			virtual ~RSAPrivateCrtKeyImpl();
 
-				virtual bool operator==(const Key& compare) const throw ();
+			virtual bool operator==(const Key& compare) const throw ();
 
-				virtual RSAPrivateCrtKey* clone() const;
+			virtual RSAPrivateCrtKey* clone() const;
 
-				virtual const mpbarrett& getModulus() const throw ();
-				virtual const mpnumber& getPrivateExponent() const throw ();
-				virtual const mpnumber& getPublicExponent() const throw ();
-				virtual const mpbarrett& getPrimeP() const throw ();
-				virtual const mpbarrett& getPrimeQ() const throw ();
-				virtual const mpnumber& getPrimeExponentP() const throw ();
-				virtual const mpnumber& getPrimeExponentQ() const throw ();
-				virtual const mpnumber& getCrtCoefficient() const throw ();
+			virtual const mpbarrett& getModulus() const throw ();
+			virtual const mpnumber& getPrivateExponent() const throw ();
+			virtual const mpnumber& getPublicExponent() const throw ();
+			virtual const mpbarrett& getPrimeP() const throw ();
+			virtual const mpbarrett& getPrimeQ() const throw ();
+			virtual const mpnumber& getPrimeExponentP() const throw ();
+			virtual const mpnumber& getPrimeExponentQ() const throw ();
+			virtual const mpnumber& getCrtCoefficient() const throw ();
 
-				virtual const bytearray* getEncoded() const;
-				virtual const String& getAlgorithm() const throw ();
-				virtual const String* getFormat() const throw ();
+			virtual const bytearray* getEncoded() const;
+			virtual const String& getAlgorithm() const throw ();
+			virtual const String* getFormat() const throw ();
 		};
 	}
 }

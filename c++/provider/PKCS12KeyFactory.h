@@ -32,14 +32,14 @@ namespace beecrypt {
 	namespace provider {
 		class PKCS12KeyFactory : public SecretKeyFactorySpi
 		{
-			protected:
-				virtual SecretKey* engineGenerateSecret(const KeySpec&) throw (InvalidKeySpecException);
-				virtual KeySpec* engineGetKeySpec(const SecretKey&, const type_info&) throw (InvalidKeySpecException);
-				virtual SecretKey* engineTranslateKey(const SecretKey&) throw (InvalidKeyException);
+		protected:
+			virtual SecretKey* engineGenerateSecret(const KeySpec&) throw (InvalidKeySpecException);
+			virtual KeySpec* engineGetKeySpec(const SecretKey&, const type_info&) throw (InvalidKeySpecException);
+			virtual SecretKey* engineTranslateKey(const SecretKey&) throw (InvalidKeyException);
 
-			public:
-				PKCS12KeyFactory();
-				virtual ~PKCS12KeyFactory();
+		public:
+			PKCS12KeyFactory();
+			virtual ~PKCS12KeyFactory();
 		};
 	}
 }

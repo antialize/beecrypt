@@ -40,22 +40,22 @@ namespace beecrypt {
 	namespace provider {
 		class RSAKeyPairGenerator : public KeyPairGeneratorSpi
 		{
-			private:
-				size_t _size;
-				RSAKeyGenParameterSpec* _spec;
-				SecureRandom* _srng;
+		private:
+			size_t _size;
+			RSAKeyGenParameterSpec* _spec;
+			SecureRandom* _srng;
 
-				KeyPair* genpair(randomGeneratorContext*);
+			KeyPair* genpair(randomGeneratorContext*);
 
-			protected:
-				virtual KeyPair* engineGenerateKeyPair();
+		protected:
+			virtual KeyPair* engineGenerateKeyPair();
 
-				virtual void engineInitialize(const AlgorithmParameterSpec&, SecureRandom*) throw (InvalidAlgorithmParameterException);
-				virtual void engineInitialize(size_t, SecureRandom*) throw (InvalidParameterException);
+			virtual void engineInitialize(const AlgorithmParameterSpec&, SecureRandom*) throw (InvalidAlgorithmParameterException);
+			virtual void engineInitialize(size_t, SecureRandom*) throw (InvalidParameterException);
 
-			public:
-				RSAKeyPairGenerator();
-				virtual ~RSAKeyPairGenerator();
+		public:
+			RSAKeyPairGenerator();
+			virtual ~RSAKeyPairGenerator();
 		};
 	}
 }

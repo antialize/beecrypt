@@ -34,29 +34,29 @@ namespace beecrypt {
 	namespace provider {
 		class DSAPrivateKeyImpl : public DSAPrivateKey
 		{
-			private:
-				DSAParameterSpec* _params;
-				mpnumber _x;
-				mutable bytearray* _enc;
+		private:
+			DSAParameterSpec* _params;
+			mpnumber _x;
+			mutable bytearray* _enc;
 
-			public:
-				DSAPrivateKeyImpl(const DSAPrivateKey&);
-				DSAPrivateKeyImpl(const DSAParams&, const mpnumber&);
-				DSAPrivateKeyImpl(const dsaparam&, const mpnumber&);
-				DSAPrivateKeyImpl(const mpbarrett&, const mpbarrett&, const mpnumber&, const mpnumber&);
+		public:
+			DSAPrivateKeyImpl(const DSAPrivateKey&);
+			DSAPrivateKeyImpl(const DSAParams&, const mpnumber&);
+			DSAPrivateKeyImpl(const dsaparam&, const mpnumber&);
+			DSAPrivateKeyImpl(const mpbarrett&, const mpbarrett&, const mpnumber&, const mpnumber&);
 
-				virtual ~DSAPrivateKeyImpl();
+			virtual ~DSAPrivateKeyImpl();
 
-				virtual bool operator==(const Key& compare) const throw ();
+			virtual bool operator==(const Key& compare) const throw ();
 
-				virtual DSAPrivateKey* clone() const;
+			virtual DSAPrivateKey* clone() const;
 
-				virtual const DSAParams& getParams() const throw ();
-				virtual const mpnumber& getX() const throw ();
+			virtual const DSAParams& getParams() const throw ();
+			virtual const mpnumber& getX() const throw ();
 
-				virtual const bytearray* getEncoded() const;
-				virtual const String& getAlgorithm() const throw ();
-				virtual const String* getFormat() const throw ();
+			virtual const bytearray* getEncoded() const;
+			virtual const String& getAlgorithm() const throw ();
+			virtual const String* getFormat() const throw ();
 		};
 	}
 }

@@ -32,26 +32,26 @@ namespace beecrypt {
 	namespace provider {
 		class RSAPrivateKeyImpl : public RSAPrivateKey
 		{
-			protected:
-				mpbarrett _n;
-				mpnumber _d;
-				mutable bytearray* _enc;
+		protected:
+			mpbarrett _n;
+			mpnumber _d;
+			mutable bytearray* _enc;
 
-			public:
-				RSAPrivateKeyImpl(const RSAPrivateKey&);
-				RSAPrivateKeyImpl(const mpbarrett&, const mpnumber&);
-				virtual ~RSAPrivateKeyImpl();
+		public:
+			RSAPrivateKeyImpl(const RSAPrivateKey&);
+			RSAPrivateKeyImpl(const mpbarrett&, const mpnumber&);
+			virtual ~RSAPrivateKeyImpl();
 
-				virtual bool operator==(const Key& compare) const throw ();
+			virtual bool operator==(const Key& compare) const throw ();
 
-				virtual RSAPrivateKey* clone() const;
+			virtual RSAPrivateKey* clone() const;
 
-				virtual const mpbarrett& getModulus() const throw ();
-				virtual const mpnumber& getPrivateExponent() const throw ();
+			virtual const mpbarrett& getModulus() const throw ();
+			virtual const mpnumber& getPrivateExponent() const throw ();
 
-				virtual const bytearray* getEncoded() const;
-				virtual const String& getAlgorithm() const throw ();
-				virtual const String* getFormat() const throw ();
+			virtual const bytearray* getEncoded() const;
+			virtual const String& getAlgorithm() const throw ();
+			virtual const String* getFormat() const throw ();
 		};
 	}
 }

@@ -31,9 +31,9 @@ namespace beecrypt {
 	namespace provider {
 		class SHA256withRSASignature : public PKCS1RSASignature
 		{
-			public:
-				SHA256withRSASignature();
-				~SHA256withRSASignature();
+		public:
+			SHA256withRSASignature();
+			~SHA256withRSASignature();
 		};
 	}
 }

@@ -35,24 +35,23 @@ namespace beecrypt {
 	namespace provider {
 		class SHA1Digest : public MessageDigestSpi
 		{
-			private:
-				sha1Param _param;
-				bytearray _digest;
+		private:
+			sha1Param _param;
+			bytearray _digest;
 
-			protected:
-				virtual const bytearray& engineDigest();
-				virtual size_t engineDigest(byte*, size_t, size_t) throw (ShortBufferException);
-				virtual size_t engineGetDigestLength();
-				virtual void engineReset();
-				virtual void engineUpdate(byte);
-				virtual void engineUpdate(const byte*, size_t, size_t);
+		protected:
+			virtual const bytearray& engineDigest();
+			virtual size_t engineDigest(byte*, size_t, size_t) throw (ShortBufferException);
+			virtual size_t engineGetDigestLength();
+			virtual void engineReset();
+			virtual void engineUpdate(byte);
+			virtual void engineUpdate(const byte*, size_t, size_t);
 
-			public:
-				SHA1Digest();
-				virtual ~SHA1Digest();
+		public:
+			SHA1Digest();
+			virtual ~SHA1Digest();
 
-				virtual SHA1Digest* clone() const;
-
+			virtual SHA1Digest* clone() const;
 		};
 	}
 }

@@ -35,24 +35,23 @@ namespace beecrypt {
 	namespace provider {
 		class MD5Digest : public MessageDigestSpi
 		{
-			private:
-				md5Param _param;
-				bytearray _digest;
+		private:
+			md5Param _param;
+			bytearray _digest;
 
-			protected:
-				virtual const bytearray& engineDigest();
-				virtual size_t engineDigest(byte*, size_t, size_t) throw (ShortBufferException);
-				virtual size_t engineGetDigestLength();
-				virtual void engineReset();
-				virtual void engineUpdate(byte);
-				virtual void engineUpdate(const byte*, size_t, size_t);
+		protected:
+			virtual const bytearray& engineDigest();
+			virtual size_t engineDigest(byte*, size_t, size_t) throw (ShortBufferException);
+			virtual size_t engineGetDigestLength();
+			virtual void engineReset();
+			virtual void engineUpdate(byte);
+			virtual void engineUpdate(const byte*, size_t, size_t);
 
-			public:
-				MD5Digest();
-				virtual ~MD5Digest();
+		public:
+			MD5Digest();
+			virtual ~MD5Digest();
 
-				virtual MD5Digest* clone() const;
-
+			virtual MD5Digest* clone() const;
 		};
 	}
 }

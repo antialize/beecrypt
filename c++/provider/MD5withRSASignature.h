@@ -31,9 +31,9 @@ namespace beecrypt {
 	namespace provider {
 		class MD5withRSASignature : public PKCS1RSASignature
 		{
-			public:
-				MD5withRSASignature();
-				~MD5withRSASignature();
+		public:
+			MD5withRSASignature();
+			~MD5withRSASignature();
 		};
 	}
 }

@@ -47,34 +47,34 @@ namespace beecrypt {
 		{
 			friend class BeeCryptProvider;
 
-			private:
-				dsaparam _params;
-				mpnumber _x;
-				mpnumber _y;
-				sha1Param _sp;
-				SecureRandom* _srng;
+		private:
+			dsaparam _params;
+			mpnumber _x;
+			mpnumber _y;
+			sha1Param _sp;
+			SecureRandom* _srng;
 
-				void rawsign(mpnumber &r, mpnumber&s) throw (SignatureException);
-				bool rawvrfy(const mpnumber &r, const mpnumber&s) throw ();
+			void rawsign(mpnumber &r, mpnumber&s) throw (SignatureException);
+			bool rawvrfy(const mpnumber &r, const mpnumber&s) throw ();
 
-			protected:
-				virtual AlgorithmParameters* engineGetParameters() const;
-				virtual void engineSetParameter(const AlgorithmParameterSpec&) throw (InvalidAlgorithmParameterException);
+		protected:
+			virtual AlgorithmParameters* engineGetParameters() const;
+			virtual void engineSetParameter(const AlgorithmParameterSpec&) throw (InvalidAlgorithmParameterException);
 
-				virtual void engineInitSign(const PrivateKey&, SecureRandom*) throw (InvalidKeyException);
-				virtual void engineInitVerify(const PublicKey&) throw (InvalidKeyException);
+			virtual void engineInitSign(const PrivateKey&, SecureRandom*) throw (InvalidKeyException);
+			virtual void engineInitVerify(const PublicKey&) throw (InvalidKeyException);
 
-				virtual bytearray* engineSign() throw (SignatureException);
-				virtual size_t engineSign(byte*, size_t, size_t) throw (ShortBufferException, SignatureException);
-				virtual size_t engineSign(bytearray&) throw (SignatureException);
-				virtual bool engineVerify(const byte*, size_t, size_t) throw (SignatureException);
+			virtual bytearray* engineSign() throw (SignatureException);
+			virtual size_t engineSign(byte*, size_t, size_t) throw (ShortBufferException, SignatureException);
+			virtual size_t engineSign(bytearray&) throw (SignatureException);
+			virtual bool engineVerify(const byte*, size_t, size_t) throw (SignatureException);
 
-				virtual void engineUpdate(byte);
-				virtual void engineUpdate(const byte*, size_t, size_t);
+			virtual void engineUpdate(byte);
+			virtual void engineUpdate(const byte*, size_t, size_t);
 
-			public:
-				SHA1withDSASignature();
-				virtual ~SHA1withDSASignature();
+		public:
+			SHA1withDSASignature();
+			virtual ~SHA1withDSASignature();
 		};
 	}
 }

@@ -44,31 +44,31 @@ namespace beecrypt {
 	namespace provider {
 		class PKCS1RSASignature : public SignatureSpi
 		{
-			private:
-				rsakp _pair;
-				bool _crt;
-				hashFunctionContext _hfc;
-				SecureRandom* _srng;
+		private:
+			rsakp _pair;
+			bool _crt;
+			hashFunctionContext _hfc;
+			SecureRandom* _srng;
 
-			protected:
-				PKCS1RSASignature(const hashFunction*);
+		protected:
+			PKCS1RSASignature(const hashFunction*);
 
-				virtual AlgorithmParameters* engineGetParameters() const;
-				virtual void engineSetParameter(const AlgorithmParameterSpec&) throw (InvalidAlgorithmParameterException);
+			virtual AlgorithmParameters* engineGetParameters() const;
+			virtual void engineSetParameter(const AlgorithmParameterSpec&) throw (InvalidAlgorithmParameterException);
 
-				virtual void engineInitSign(const PrivateKey&, SecureRandom*) throw (InvalidKeyException);
-				virtual void engineInitVerify(const PublicKey&) throw (InvalidKeyException);
+			virtual void engineInitSign(const PrivateKey&, SecureRandom*) throw (InvalidKeyException);
+			virtual void engineInitVerify(const PublicKey&) throw (InvalidKeyException);
 
-				virtual bytearray* engineSign() throw (SignatureException);
-				virtual size_t engineSign(byte*, size_t, size_t) throw (ShortBufferException, SignatureException);
-				virtual size_t engineSign(bytearray&) throw (SignatureException);
-				virtual bool engineVerify(const byte*, size_t, size_t) throw (SignatureException);
+			virtual bytearray* engineSign() throw (SignatureException);
+			virtual size_t engineSign(byte*, size_t, size_t) throw (ShortBufferException, SignatureException);
+			virtual size_t engineSign(bytearray&) throw (SignatureException);
+			virtual bool engineVerify(const byte*, size_t, size_t) throw (SignatureException);
 
-				virtual void engineUpdate(byte);
-				virtual void engineUpdate(const byte*, size_t, size_t);
+			virtual void engineUpdate(byte);
+			virtual void engineUpdate(const byte*, size_t, size_t);
 
-			public:
-				virtual ~PKCS1RSASignature();
+		public:
+			virtual ~PKCS1RSASignature();
 		};
 	}
 }
