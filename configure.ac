@@ -132,21 +132,6 @@ AH_TEMPLATE([HAVE_DEV_RANDOM],[Define to 1 if your system has device /dev/random
 AH_TEMPLATE([HAVE_DEV_URANDOM],[Define to 1 if your system has device /dev/urandom])
 AH_TEMPLATE([HAVE_DEV_TTY],[Define to 1 if your system has device /dev/tty])
 
-AH_BOTTOM([
-#if ENABLE_THREADS
-# ifndef _REENTRANT
-#  define _REENTRANT
-# endif
-# if LINUX
-#  define _LIBC_REENTRANT
-# endif
-#else
-# ifdef _REENTRANT
-#  undef _REENTRANT
-# endif
-#endif
-])
-
 # Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS([time.h sys/time.h])
