@@ -333,29 +333,28 @@ const blockCipher blowfish = { "Blowfish", sizeof(blowfishParam), 8, 64, 448, 32
  */
 int blowfishSetup(blowfishParam* bp, const byte* key, size_t keybits, cipherOperation op)
 {
-	if (((keybits & 7) == 0) && (keybits >= 64) && (keybits <= 448))
+	if (((keybits & 7) == 0) && (keybits >= 32) && (keybits <= 448))
 	{
 		register uint32_t* p = bp->p;
 		register uint32_t* s = bp->s;
-		register int i;
+		register int i, j, k;
 
-		uint32_t work[2];
+		uint32_t tmp, work[2];
 
-		memcpy(p, _bf_p, BLOWFISHPSIZE * sizeof(uint32_t));
 		memcpy(s, _bf_s, 1024 * sizeof(uint32_t));
 
-		if ((keybits & 31) == 0)
+		for (i = 0, k = 0; i < BLOWFISHPSIZE; i++)
 		{
-			register int keywords = (keybits >> 5); /* i.e. in 32 bit words */
-
-			for (i = 0; i < BLOWFISHPSIZE; i++)
+			tmp = 0;
+			for (j = 0; j < 4; j++)
 			{
-				/* key is stored in 32 bit words in host-endian format; no swap necessary */
-				p[i] ^= key[i % keywords];
+				tmp <<= 8;
+				tmp |= key[k++];
+				if (k >= (keybits >> 3))
+					k = 0;
 			}
+			p[i] = _bf_p[i] ^ tmp;
 		}
-		else
-			return -1;
 
 		work[0] = work[1] = 0;
 
