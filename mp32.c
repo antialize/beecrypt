@@ -3,7 +3,7 @@
  *
  * Multiprecision 2's complement integer routines for 32 bit cpu, code
  *
- * Copyright (c) 1997, 1998, 1999, 2000 Virtual Unlimited B.V.
+ * Copyright (c) 1997, 1998, 1999, 2000, 2003 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -461,6 +461,7 @@ uint32 mp32addw(register uint32 xsize, register uint32* xdata, register uint32 y
 #ifndef ASM_MP32ADD
 uint32 mp32add(register uint32 size, register uint32* xdata, register const uint32* ydata)
 {
+# if HAVE_UNSIGNED_LONG_LONG
 	register uint64 temp;
 	register uint32 carry = 0;
 
@@ -476,6 +477,22 @@ uint32 mp32add(register uint32 size, register uint32* xdata, register const uint
 		carry = (uint32) (temp >> 32);
 	}
 	return carry;
+# else
+	register uint32 load, temp, carry = 0;
+
+	xdata += count-1;
+	ydata += count-1;
+
+	while (count--)
+	{
+		temp = *(ydata--);
+		load = *xdata;
+		temp = carry ? (load + temp + 1) : (load + temp);
+		*(xdata--) = temp;
+		carry = carry ? (load >= temp) : (load > temp);
+	}
+	return carry;
+# endif
 }
 #endif
 
@@ -521,6 +538,7 @@ uint32 mp32subw(register uint32 xsize, register uint32* xdata, register uint32 y
 #ifndef ASM_MP32SUB
 uint32 mp32sub(register uint32 size, register uint32* xdata, register const uint32* ydata)
 {
+# if HAVE_UNSIGNED_LONG_LONG
 	register uint64 temp;
 	register uint32 carry = 0;
 
@@ -536,6 +554,22 @@ uint32 mp32sub(register uint32 size, register uint32* xdata, register const uint
 		carry = (temp >> 32) != 0;
 	}
 	return carry;
+# else
+	register uint32 load, temp, carry = 0;
+
+	xdata += count-1;
+	ydata += count-1;
+
+	while (count--)
+	{
+		temp = *(ydata--);
+		load = *xdata;
+		temp = carry ? (load - temp - 1) : (load - temp);
+		*(xdata--) = temp;
+		carry = carry ? (load <= temp) : (load < temp);
+	}
+	return carry;
+# endif
 }
 #endif
 
