@@ -45,8 +45,10 @@
 
 #define N	624
 #define M	397
-#define K	0x9908B0DF
+#define K	0x9908B0DFU
 
+/*
+ */
 typedef struct
 {
 	#ifdef _REENTRANT
@@ -62,25 +64,38 @@ typedef struct
 	#  endif
 	# endif
 	#endif
-	uint32	state[N+1];
-	uint32	left;
-	uint32*	nextw;
+	uint32_t  state[N+1];
+	uint32_t  left;
+	uint32_t* nextw;
 } mtprngParam;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+/*
+ */
 extern BEECRYPTAPI const randomGenerator mtprng;
 
+/*
+ */
 BEECRYPTAPI
-int mtprngSetup  (mtprngParam*);
+int mtprngSetup  (mtprngParam* mp);
+
+/*
+ */
 BEECRYPTAPI
-int mtprngSeed   (mtprngParam*, const uint32*, int);
+int mtprngSeed   (mtprngParam* mp, const byte* data, size_t size);
+
+/*
+ */
 BEECRYPTAPI
-int mtprngNext   (mtprngParam*, uint32*, int);
+int mtprngNext   (mtprngParam* mp, byte* data, size_t size);
+
+/*
+ */
 BEECRYPTAPI
-int mtprngCleanup(mtprngParam*);
+int mtprngCleanup(mtprngParam* mp);
 
 #ifdef __cplusplus
 }
