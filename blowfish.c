@@ -322,7 +322,7 @@ static uint32_t _bf_s[1024] = {
  */
 const blockCipher blowfish = { "Blowfish", sizeof(blowfishParam), 8, 64, 448, 32, (blockCipherSetup) blowfishSetup, (blockCipherSetIV) blowfishSetIV, (blockCipherEncrypt) blowfishEncrypt, (blockCipherDecrypt) blowfishDecrypt, (blockCipherFeedback) blowfishFeedback };
 
-/*!\fn int blowfishSetup(blowfishParam* bp, const byte* key, int keybits, cipherOperation op)
+/*!\fn int blowfishSetup(blowfishParam* bp, const byte* key, size_t keybits, cipherOperation op)
  * \brief The cipher's setup function.
  *
  * This function expands the key depending on whether the ENCRYPT or DECRYPT
