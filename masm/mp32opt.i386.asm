@@ -5,7 +5,7 @@
 ;
 ; Compile target is Microsoft Macro Assembler
 ;
-; Copyright (c) 1998, 1999, 2000, 2001 Virtual Unlimited B.V.
+; Copyright (c) 1998, 1999, 2000, 2001, 2003 Virtual Unlimited B.V.
 ;
 ; Author: Bob Deblier <bob@virtualunlimited.com>
 ;
@@ -156,7 +156,9 @@ mp32add proc
 	align 4
 @mp32add_loop:
 	mov eax,dword ptr [esi+ecx*4]
-	adc dword ptr [edi+ecx*4],eax
+	mov edx,dword ptr [edi+ecx*4]
+	adc edx,eax
+	mov dword ptr [edi+ecx*4],edx
 	dec ecx
 	jns @mp32add_loop
 	
@@ -183,7 +185,9 @@ mp32sub proc
 	align 4
 @mp32sub_loop:
 	mov eax,dword ptr [esi+ecx*4]
-	sbb dword ptr [edi+ecx*4],eax
+	mov edx,dword ptr [edi+ecx*4]
+	sbb edx,eax
+	mov dword ptr [edi+ecx*4],edx
 	dec ecx
 	jns @mp32sub_loop
 	
@@ -229,7 +233,9 @@ mp32multwo proc
 
 	align 4
 @mp32multwo_loop:
-	rcl dword ptr [edi+ecx*4],1
+        mov eax,dword ptr [edi+ecx*4]
+        adc eax,eax
+        mov dword ptr [edi+ecx*4],eax
 	dec ecx
 	jns @mp32multwo_loop
 	
@@ -323,8 +329,8 @@ mp32addmul proc
 
 @mp32addmul_loop:
 	movd mm2,dword ptr [esi+ecx*4]
-	movd mm3,dword ptr [edi+ecx*4]
 	pmuludq mm2,mm1
+	movd mm3,dword ptr [edi+ecx*4]
 	paddq mm3,mm2
 	paddq mm0,mm3
 	movd dword ptr [edi+ecx*4],mm0
@@ -377,6 +383,36 @@ mp32addmul endp
 mp32addsqrtrc proc
 	push edi
 	push esi
+
+	ifdef OPTIMIZE_SSE2
+	mov ecx,dword ptr [esp+12]
+	mov edi,dword ptr [esp+16]
+	mov esi,dword ptr [esp+20]
+
+	pxor mm0,mm0
+	dec ecx
+
+	align 4
+@mp32addsqrtrc_loop:
+	movd mm2,dword ptr [esi+ecx*4]
+	pmuludq mm2,mm2
+	movd mm3,dword ptr [edi+ecx*8+4]
+	paddq mm3,mm2
+	movd mm4,dword ptr [edi+ecx*8+0]
+	paddq mm0,mm3
+	movd dword ptr [edi+ecx*8+4],mm0
+	psrlq mm0,32
+	paddq mm0,mm4
+	movd dword ptr [edi+ecx*8+0],mm0
+	psrlq mm0,32
+	dec ecx
+	jns @mp32addsqrtrc_loop
+
+	movd eax,mm0
+	emms
+
+	else
+	
 	push ebx
 
 	mov ecx,dword ptr [esp+16]
@@ -402,9 +438,35 @@ mp32addsqrtrc proc
 	mov eax,ebx
 
 	pop ebx
+	
+	endif
+
 	pop esi
 	pop edi
 	ret
 mp32addsqrtrc endp
 
+;	ifdef OPTIMIZE_SSE2
+;
+;	align 8
+;mp32mul proc ; 5 params: result, xsize, xdata, ysize, ydata
+;	push ebp
+;	push edi
+;	push esi
+;
+;	mov ebp,dword ptr [esp+16]
+;	mov edx,dword ptr [esp+20]
+;	mov edi,dword ptr [esp+24]
+;	mov esi,dword ptr [esp+32]
+;
+;	mov 	
+;	emms
+;
+;	pop esi
+;	pop edi
+;	pop ebp
+;mp32mul endp
+;
+;	endif
+	
 	end
