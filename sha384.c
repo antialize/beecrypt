@@ -32,7 +32,7 @@
 #include "beecrypt/sha384.h"
 #include "beecrypt/endianness.h"
 
-#ifdef OPTIMIZE_SSE
+#ifdef OPTIMIZE_SSE2
 # include <xmmintrin.h>
 #endif
 
@@ -165,7 +165,7 @@ int sha384Reset(register sha384Param* sp)
 	return 0;
 }
 
-#ifdef OPTIMIZE_SSE
+#ifdef OPTIMIZE_SSE2
 
 # define R(x,s) _mm_srli_si64(x,s)
 # define S(x,s) _m_pxor(_mm_srli_si64(x,s),_mm_slli_si64(x,64-(s)))
@@ -202,7 +202,7 @@ int sha384Reset(register sha384Param* sp)
 #ifndef ASM_SHA384PROCESS
 void sha384Process(register sha384Param* sp)
 {
-	#ifdef OPTIMIZE_SSE
+	#ifdef OPTIMIZE_SSE2
 	# if HAVE_UNSIGNED_LONG_LONG
 	static const uint64_t MASK = 0x00FF00FF00FF00FFULL;
 	# else
@@ -348,7 +348,7 @@ void sha384Process(register sha384Param* sp)
 	ROUND(c,d,e,f,g,h,a,b,w[78],k[78]);
 	ROUND(b,c,d,e,f,g,h,a,w[79],k[79]);
 
-	#ifdef OPTIMIZE_SSE
+	#ifdef OPTIMIZE_SSE2
 	sp->h[0] = (uint64_t) _mm_add_si64((__m64) sp->h[0], a);
 	sp->h[1] = (uint64_t) _mm_add_si64((__m64) sp->h[1], b);
 	sp->h[2] = (uint64_t) _mm_add_si64((__m64) sp->h[2], c);
