@@ -25,7 +25,7 @@ define(C_FUNCTION_BEGIN,`
 	.globl $1
 	.ent $1
 $1:
-	.frame $30,0,$26,0
+	.frame `$'sp, 0, `$'26
 	.prologue 0
 ')
 undefine(`C_FUNCTION_END')
