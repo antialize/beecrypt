@@ -171,6 +171,8 @@ AC_AIX
 # Checks for C compiler and preprocessor
 AC_PROG_CC
 AC_PROG_CPP
+test -n "$CCAS" || CCAS="$CC -c"
+AC_SUBST(CCAS)
 
 # Checks for compiler characteristics and flags
 if test "$ac_cv_c_compiler_gnu" = yes; then
@@ -571,6 +573,9 @@ if test "$ac_enable_debug" != yes; then
     ;;
   powerpc64)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_POWERPC64"
+    ;;
+  s390x)
+    CPPFLAGS="$CPPFLAGS -DOPTIMIZE_S390X"
     ;;
   sparcv8)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_SPARCV8"
