@@ -22,10 +22,6 @@
  * \author Bob Deblier <bob.deblier@pandora.be>
  */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
-
 #include "beecrypt.h"
 #include "dldp.h"
 #include "timestamp.h"
