@@ -79,11 +79,11 @@ namespace beecrypt {
 		private:
 			struct spi
 			{
-				void* cspi;
+				Object* cspi;
 				String name;
 				const Provider* prov;
 
-				spi(void* cspi, const Provider*, const String&);
+				spi(Object* cspi, const Provider*, const String&);
 			};
 
 			static spi* getSpi(const String& name, const String& type) throw (NoSuchAlgorithmException);

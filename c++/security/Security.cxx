@@ -153,7 +153,7 @@ void Security::initialize()
 	}
 }
 
-Security::spi::spi(void* cspi, const Provider* prov, const String& name) : cspi(cspi), name(name), prov(prov)
+Security::spi::spi(Object* cspi, const Provider* prov, const String& name) : cspi(cspi), name(name), prov(prov)
 {
 }
 
