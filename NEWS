@@ -1,6 +1,6 @@
 2.2.0:
 	- Modified the header files so that the library now uses self-contained autoconf-generated configuration files; a program employing BeeCrypt can now use the symbols already tested and defined instead of having to regenerate them (thus also eliminating the risk of inconsistencies).
-        - Added the AES algorithm.
+        - Added the AES algorithm, with assembler versions for Pentium and PowerPC.
 	- Added the DSA signature algorithm.
 	- Fixed the RSA CRT algorithm.
 	- Fixed the gas/i386 mp32even and mp32odd routines.
