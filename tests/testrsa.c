@@ -60,8 +60,6 @@ int main()
 	mp32nzero(&cipher);
 	mp32nzero(&decipher);
 
-	mp32nsethex(&cipher, rsa_ciph);
-
 	mp32nsethex(&m, rsa_m);
 
 	/* it's safe to cast the keypair to a public key */
