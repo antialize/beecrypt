@@ -432,29 +432,21 @@ public class conftest
 }
 EOF
       java_home="`gcj --main=conftest -o conftest conftest.java; ./conftest`"
-      if test -d "$ac_cv_java_include" ; then
+      if test X"$java_home" = X; then
+        java_home=/usr
+      fi
+      if test -d "$java_home" -a -d "$java_home/include" -a -f "$java_home/include/jni.h"; then
         ac_cv_java_headers=yes
-      else
-        ac_cv_java_include=$java_home/include
-        case $target_os in
-        linux*)
-          if test -f $java_home/include/jni.h; then
-            ac_cv_java_include="$java_home/include"
-          else
-            gcjpath="/usr/lib/gcc-lib/`gcj -dumpmachine`/`gcj -dumpversion`"
-            if test -f $gcjpath/include/jni.h; then
-              ac_cv_java_include="$gcjpath/include"
-            fi
-          fi
-          ;;
-        esac
-        if test "X$ac_cv_java_include" != X -a -d "$ac_cv_java_include" ; then
-          ac_cv_java_headers=yes
-        else
-          AC_MSG_WARN([java headers not found, disabling javaglue])
-          ac_cv_java_headers=no
-          ac_with_javaglue=no
+        ac_cv_java_include="-I$java_home/include"
+        gcjpath="$java_home/lib/gcc-lib/`gcj -dumpmachine`/`gcj -dumpversion`"
+        if test -d "$gcjpath" -a -d "$gcjpath/include"; then
+          ac_cv_java_include="$ac_cv_java_include -I$gcjpath/include"
         fi
+      else
+        AC_MSG_WARN([java headers not found, disabling javaglue])
+        ac_cv_java_headers=no
+        ac_cv_java_include=
+        ac_with_javaglue=no
       fi
       rm -fr conftest*
     ])
@@ -478,20 +470,36 @@ EOF
           cygwin*)
             java_home=`cygpath -u -p "$java_home"` ;;
           esac
-          if test -d "$ac_cv_java_include" ; then
-            ac_cv_java_headers=yes
-          else
+          if test -d "$java_home"; then
             case $target_os in
             darwin*)
-              ac_cv_java_include="$java_home"/../../../Headers ;;
+              java_include="$java_home/../../../Headers" ;;
             *)
-              ac_cv_java_include="$java_home"/../include ;;
+              java_include="$java_home"/../include ;;
             esac
-            if test -d "$ac_cv_java_include" ; then
+            if test -d "$java_include" -a -f "$java_include/jni.h"; then
               ac_cv_java_headers=yes
+              ac_cv_java_include="-I$java_include"
+              case $target_os in
+              aix*)
+                ac_cv_java_include="-I$java_include -I$java_include/aix" ;;
+              cygwin*)
+                ac_cv_java_include="-I$java_include -I$java_include/win32" ;;
+              darwin*) ;;
+              linux*)
+                ac_cv_java_include="-I$java_include -I$java_include/linux" ;;
+              osf*)
+                ac_cv_java_include="-I$java_include -I$java_include/osf" ;;
+              solaris*)
+                ac_cv_java_include="-I$java_include -I$java_include/solaris" ;;
+              *)
+                AC_MSG_WARN([please add appropriate -I$java_include/<operating system> flag])
+                ac_cv_java_include="-I$java_include" ;;
+              esac
             else
               AC_MSG_WARN([java headers not found, disabling javaglue])
               ac_cv_java_headers=no
+              ac_cv_java_include=
               ac_with_javaglue=no
             fi
           fi
@@ -500,6 +508,7 @@ EOF
       else
         AC_MSG_WARN([javac not found, disabling javaglue])
         ac_cv_java_headers=no
+        ac_cv_java_include=
         ac_with_javaglue=no
       fi
     else
@@ -655,9 +664,7 @@ if test "$ac_enable_debug" != yes; then
   esac
 fi
 
-if test "$ac_enable_debug" = yes; then
-  CFLAGS="$CFLAGS -g"
-else
+if test "$ac_enable_debug" != yes; then
   # find out how to use assembler
   BEECRYPT_ASM_DEFS
   BEECRYPT_ASM_TEXTSEG
@@ -665,40 +672,17 @@ else
   BEECRYPT_ASM_GSYM_PREFIX
   BEECRYPT_ASM_LSYM_PREFIX
   BEECRYPT_ASM_ALIGN
-  # generate assembler source files from m4 files
-  BEECRYPT_ASM_SOURCES
 fi
+
+# generate assembler source files from m4 files
+BEECRYPT_ASM_SOURCES
 
 # Check for standard types and integers of specific sizes
 BEECRYPT_INT_TYPES
 BEECRYPT_CPU_BITS
 
 if test "$ac_with_javaglue" = yes ; then
-  CFLAGS="$CFLAGS -I$ac_cv_java_include"
-  if test "$ac_cv_have_gcj" != yes; then
-    case $target_os in
-    aix*)
-      CFLAGS="$CFLAGS -I$ac_cv_java_include"/aix
-      ;;
-    cygwin*)
-      CFLAGS="$CFLAGS -I$ac_cv_java_include"/win32
-      ;;
-    darwin*)
-      ;;
-    linux*)
-      CFLAGS="$CFLAGS -I$ac_cv_java_include"/linux
-      ;;
-    osf*)
-      CFLAGS="$CFLAGS -I$ac_cv_java_include"/osf
-      ;;
-    solaris*)
-      CFLAGS="$CFLAGS -I$ac_cv_java_include"/solaris
-      ;;
-    *)
-      AC_MSG_WARN([please add appropriate -I$ac_cv_java_include/<operating system> flag])
-      ;;
-    esac
-  fi
+  CFLAGS="$CFLAGS $ac_cv_java_include"
 fi
 
 # Generate output files.
