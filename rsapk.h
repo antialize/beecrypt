@@ -19,19 +19,19 @@
 
 /*!\file rsapk.h
  * \brief RSA public key, headers.
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup IF_m IF_rsa_m
  */
 
 #ifndef _RSAPK_H
 #define _RSAPK_H
 
-#include "mp32barrett.h"
+#include "mpbarrett.h"
 
 typedef struct
 {
-	mp32barrett n;
-	mp32number e;
+	mpbarrett n;
+	mpnumber e;
 } rsapk;
 
 #ifdef __cplusplus

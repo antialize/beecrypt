@@ -19,7 +19,7 @@
 
 /*!\file dlkp.c
  * \brief Discrete Logarithm keypair.
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup DL_m
  */
 
@@ -48,8 +48,8 @@ int dlkp_pInit(dlkp_p* kp)
 	if (dldp_pInit(&kp->param) < 0)
 		return -1;
 
-	mp32nzero(&kp->y);
-	mp32nzero(&kp->x);
+	mpnzero(&kp->y);
+	mpnzero(&kp->x);
 
 	return 0;
 }
@@ -58,8 +58,8 @@ int dlkp_pFree(dlkp_p* kp)
 {
 	if (dldp_pFree(&kp->param) < 0)
 
-	mp32nfree(&kp->y);
-	mp32nfree(&kp->x);
+	mpnfree(&kp->y);
+	mpnfree(&kp->x);
 
 	return 0;
 }
@@ -69,8 +69,8 @@ int dlkp_pCopy(dlkp_p* dst, const dlkp_p* src)
 	if (dldp_pCopy(&dst->param, &src->param) < 0)
 		return -1;
 
-	mp32ncopy(&dst->y, &src->y);
-	mp32ncopy(&dst->x, &src->x);
+	mpncopy(&dst->y, &src->y);
+	mpncopy(&dst->x, &src->x);
 
 	return 0;
 }

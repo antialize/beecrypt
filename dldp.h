@@ -26,8 +26,7 @@
 #ifndef _DLDP_H
 #define _DLDP_H
 
-#include "beecrypt.h"
-#include "mp32barrett.h"
+#include "mpbarrett.h"
 
 /*
  * Discrete Logarithm Domain Parameters - Prime
@@ -57,30 +56,30 @@ typedef struct
 	 * \brief The prime.
 	 *
 	 */
-	mp32barrett p;
+	mpbarrett p;
 	/*!\var q
 	 * \brief The cofactor.
 	 *
 	 * \f$q\f$ is a prime divisor of \f$p-1\f$.
 	 */
-	mp32barrett q;
+	mpbarrett q;
 	/*!\var r
 	 *
 	 * \f$p=qr+1\f$
 	 */
-	mp32number  r;
+	mpnumber r;
 	/*!\var g
 	 * \brief The generator.
 	 *
  	 * \f$g\f$ is either a generator of \f$\mathds{Z}^{*}_p\f$, or a generator
 	 * of a cyclic subgroup \f$G\f$ of \f$\mathds{Z}^{*}_p\f$ of order \f$q\f$.
 	 */
-	mp32number  g;
+	mpnumber g;
 	/*!\var n
 	 *
 	 * \f$n=p-1=qr\f$
 	 */
-	mp32barrett n;
+	mpbarrett n;
 } dldp_p;
 
 #ifdef __cplusplus
@@ -103,12 +102,11 @@ int dldp_pCopy(dldp_p*, const dldp_p*);
  */
 
 BEECRYPTAPI
-int dldp_pPrivate(const dldp_p*, randomGeneratorContext*, mp32number*);
+int dldp_pPrivate(const dldp_p*, randomGeneratorContext*, mpnumber*);
 BEECRYPTAPI
-int dldp_pPublic (const dldp_p*, const mp32number*, mp32number*);
+int dldp_pPublic (const dldp_p*, const mpnumber*, mpnumber*);
 BEECRYPTAPI
-int dldp_pPair   (const dldp_p*, randomGeneratorContext*, mp32number*, mp32number*);
-
+int dldp_pPair   (const dldp_p*, randomGeneratorContext*, mpnumber*, mpnumber*);
 /*
  * Function for comparing domain parameters
  */
@@ -121,9 +119,9 @@ int  dldp_pEqual  (const dldp_p*, const dldp_p*);
  */
 
 BEECRYPTAPI
-int dldp_pgoqMake     (dldp_p*, randomGeneratorContext*, uint32, uint32, int);
+int dldp_pgoqMake     (dldp_p*, randomGeneratorContext*, size_t, size_t, int);
 BEECRYPTAPI
-int dldp_pgoqMakeSafe (dldp_p*, randomGeneratorContext*, uint32);
+int dldp_pgoqMakeSafe (dldp_p*, randomGeneratorContext*, size_t);
 BEECRYPTAPI
 int dldp_pgoqGenerator(dldp_p*, randomGeneratorContext*);
 BEECRYPTAPI
@@ -134,13 +132,13 @@ int  dldp_pgoqValidate (const dldp_p*, randomGeneratorContext*, int);
  */
 
 BEECRYPTAPI
-int dldp_pgonMake     (dldp_p*, randomGeneratorContext*, uint32, uint32);
+int dldp_pgonMake     (dldp_p*, randomGeneratorContext*, size_t, size_t);
 BEECRYPTAPI
-int dldp_pgonMakeSafe (dldp_p*, randomGeneratorContext*, uint32);
+int dldp_pgonMakeSafe (dldp_p*, randomGeneratorContext*, size_t);
 BEECRYPTAPI
 int dldp_pgonGenerator(dldp_p*, randomGeneratorContext*);
 BEECRYPTAPI
-int  dldp_pgonValidate (const dldp_p*, randomGeneratorContext*);
+int dldp_pgonValidate (const dldp_p*, randomGeneratorContext*);
 
 #ifdef __cplusplus
 }

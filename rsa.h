@@ -19,7 +19,7 @@
 
 /*!\file rsa.h
  * \brief RSA algorithm, headers.
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup IF_m IF_rsa_m
  */
 
@@ -33,14 +33,14 @@ extern "C" {
 #endif
 
 BEECRYPTAPI
-int rsapub   (const rsapk* pk, const mp32number* m, mp32number* c);
+int rsapub   (const rsapk* pk, const mpnumber* m, mpnumber* c);
 BEECRYPTAPI
-int rsapri   (const rsakp* kp, const mp32number* c, mp32number* m);
+int rsapri   (const rsakp* kp, const mpnumber* c, mpnumber* m);
 BEECRYPTAPI
-int rsapricrt(const rsakp* kp, const mp32number* c, mp32number* m);
+int rsapricrt(const rsakp* kp, const mpnumber* c, mpnumber* m);
 
 BEECRYPTAPI
-int rsavrfy  (const rsapk* pk, const mp32number* m, const mp32number* c);
+int rsavrfy  (const rsapk* pk, const mpnumber* m, const mpnumber* c);
 
 #ifdef __cplusplus
 }

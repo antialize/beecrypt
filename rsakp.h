@@ -19,7 +19,7 @@
 
 /*!\file rsakp.h
  * \brief RSA keypair, headers.
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup IF_m IF_rsa_m
  */
 
@@ -38,38 +38,38 @@ typedef struct
 	 *
 	 * \f$n=pq\f$
 	 */
-	mp32barrett n;
+	mpbarrett n;
 	/*!\var e
 	 * \brief The public exponent.
 	 */
-	mp32number e;
+	mpnumber e;
 	/*!\var d
 	 * \brief The private exponent.
 	 */
-	mp32number d;
+	mpnumber d;
 	/*!\var p
 	 * \brief The first prime factor of the modulus.
 	 */
-	mp32barrett p;
+	mpbarrett p;
 	/*!\var q
 	 * \brief The second prime factor of the modulus.
 	 */
-	mp32barrett q;
+	mpbarrett q;
 	/*!\var d1
 	 *
 	 * \f$d_1=d\ \textrm{mod}\ (p-1)\f$
 	 */
-	mp32number d1;
+	mpnumber d1;
 	/*!\var d2
 	 *
 	 * \f$d_2=d\ \textrm{mod}\ (q-1)\f$
 	 */
-	mp32number d2;
+	mpnumber d2;
 	/*!\var q
 	 *
 	 * \f$c=q^{-1}\ \textrm{mod}\ p\f$
 	 */
-	mp32number c;
+	mpnumber c;
 } rsakp;
 
 #ifdef __cplusplus

@@ -23,7 +23,7 @@
  * The IEEE P.1363 designation is:
  * Discrete Logarithm Secret Value Derivation Primitive, Diffie-Hellman style.
  *
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup DL_m DL_dh_m
  */
 
@@ -35,7 +35,7 @@
  * \{
  */
 
-/*!\fn dlsvdp_pDHSecret(const dldp_p* dp, const mp32number* x, const mp32number* y, mp32number* s)
+/*!\fn dlsvdp_pDHSecret(const dldp_p* dp, const mpnumber* x, const mpnumber* y, mpnumber* s)
  * \brief Computes the shared secret.
  *
  * Equation:
@@ -50,9 +50,9 @@
  * \retval 0 on success.
  * \retval -1 on failure.
  */
-int dlsvdp_pDHSecret(const dldp_p* dp, const mp32number* x, const mp32number* y, mp32number* s)
+int dlsvdp_pDHSecret(const dldp_p* dp, const mpnumber* x, const mpnumber* y, mpnumber* s)
 {
-	mp32bnpowmod(&dp->p, y, x, s);
+	mpbnpowmod(&dp->p, y, x, s);
 
 	return 0;
 }

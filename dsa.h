@@ -19,24 +19,24 @@
 
 /*!\file dsa.h
  * \brief Digital Signature Algorithm, headers.
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup DL_m DL_dsa_m
  */
 
 #ifndef _DSA_H
 #define _DSA_H
 
-#include "mp32barrett.h"
+#include "mpbarrett.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 BEECRYPTAPI
-int dsasign(const mp32barrett* p, const mp32barrett* q, const mp32number* g, randomGeneratorContext*, const mp32number* hm, const mp32number* x, mp32number* r, mp32number* s);
+int dsasign(const mpbarrett* p, const mpbarrett* q, const mpnumber* g, randomGeneratorContext*, const mpnumber* hm, const mpnumber* x, mpnumber* r, mpnumber* s);
 
 BEECRYPTAPI
-int dsavrfy(const mp32barrett* p, const mp32barrett* q, const mp32number* g, const mp32number* hm, const mp32number* y, const mp32number* r, const mp32number* s);
+int dsavrfy(const mpbarrett* p, const mpbarrett* q, const mpnumber* g, const mpnumber* hm, const mpnumber* y, const mpnumber* r, const mpnumber* s);
 
 #ifdef __cplusplus
 }

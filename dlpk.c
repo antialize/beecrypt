@@ -19,14 +19,13 @@
 
 /*!\file dlpk.h
  * \brief Discrete Logarithm public key.
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup DL_m
  */
 
 #define BEECRYPT_DLL_EXPORT
 
 #include "dlpk.h"
-#include "mp32.h"
 
 /*!\addtogroup DL_m
  * \{
@@ -37,7 +36,7 @@ int dlpk_pInit(dlpk_p* pk)
 	if (dldp_pInit(&pk->param) < 0)
 		return -1;
 
-	mp32nzero(&pk->y);
+	mpnzero(&pk->y);
 
 	return 0;
 }
@@ -47,7 +46,7 @@ int dlpk_pFree(dlpk_p* pk)
 	if (dldp_pFree(&pk->param) < 0)
 		return -1;
 
-	mp32nfree(&pk->y);
+	mpnfree(&pk->y);
 
 	return 0;
 }
@@ -57,7 +56,7 @@ int dlpk_pCopy(dlpk_p* dst, const dlpk_p* src)
 	if (dldp_pCopy(&dst->param, &src->param) < 0)
 		return -1;
 
-	mp32ncopy(&dst->y, &src->y);
+	mpncopy(&dst->y, &src->y);
 
 	return 0;
 }
@@ -65,7 +64,7 @@ int dlpk_pCopy(dlpk_p* dst, const dlpk_p* src)
 int dlpk_pEqual(const dlpk_p* a, const dlpk_p* b)
 {
 	return dldp_pEqual(&a->param, &b->param) &&
-		mp32eqx(a->y.size, a->y.data, b->y.size, b->y.data);
+		mpeqx(a->y.size, a->y.data, b->y.size, b->y.data);
 }
 
 int dlpk_pgoqValidate(const dlpk_p* pk, randomGeneratorContext* rgc, int cofactor)
@@ -75,10 +74,10 @@ int dlpk_pgoqValidate(const dlpk_p* pk, randomGeneratorContext* rgc, int cofacto
 	if (rc <= 0)
 		return rc;
 
-	if (mp32leone(pk->y.size, pk->y.data))
+	if (mpleone(pk->y.size, pk->y.data))
 		return 0;
 
-	if (mp32gex(pk->y.size, pk->y.data, pk->param.p.size, pk->param.p.modl))
+	if (mpgex(pk->y.size, pk->y.data, pk->param.p.size, pk->param.p.modl))
 		return 0;
 
 	return 1;
@@ -91,10 +90,10 @@ int dlpk_pgonValidate(const dlpk_p* pk, randomGeneratorContext* rgc)
 	if (rc <= 0)
 		return rc;
 
-	if (mp32leone(pk->y.size, pk->y.data))
+	if (mpleone(pk->y.size, pk->y.data))
 		return 0;
 
-	if (mp32gex(pk->y.size, pk->y.data, pk->param.p.size, pk->param.p.modl))
+	if (mpgex(pk->y.size, pk->y.data, pk->param.p.size, pk->param.p.modl))
 		return 0;
 
 	return 1;

@@ -19,7 +19,7 @@
 
 /*!\file dlsvdp-dh.h
  * \brief Diffie-Hellman algorithm, headers.
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup DL_m DL_dh_m 
  */
 
@@ -33,7 +33,7 @@ extern "C" {
 #endif
 
 BEECRYPTAPI
-int dlsvdp_pDHSecret(const dldp_p*, const mp32number*, const mp32number*, mp32number*);
+int dlsvdp_pDHSecret(const dldp_p*, const mpnumber*, const mpnumber*, mpnumber*);
 
 #ifdef __cplusplus
 }

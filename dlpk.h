@@ -19,7 +19,7 @@
 
 /*!\file dlpk.h
  * \brief Discrete Logarithm public key, headers.
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup DL_m
  */
 
@@ -33,7 +33,7 @@
 typedef struct
 {
 	dldp_p param;
-	mp32number y;
+	mpnumber y;
 } dlpk_p;
 
 #ifdef __cplusplus

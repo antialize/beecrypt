@@ -25,7 +25,7 @@
  * \f$\mathds{Z}^{*}_p\f$ with order \f$q\f$. The private and public key
  * values are \f$x\f$ and \f$y\f$ respectively.
  *
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup DL_m DL_dsa_m
  */
  
@@ -33,7 +33,7 @@
 
 #include "dsa.h"
 #include "dldp.h"
-#include "mp32.h"
+/* #include "mp32.h" */
 
 #if HAVE_STDLIB_H
 # include <stdlib.h>
@@ -46,7 +46,7 @@
  * \{
  */
 
-/*!\fn int dsasign(const mp32barrett* p, const mp32barrett* q, const mp32number* g, randomGeneratorContext* rgc, const mp32number* hm, const mp32number* x, mp32number* r, mp32number* s)
+/*!\fn int dsasign(const mpbarrett* p, const mpbarrett* q, const mpnumber* g, randomGeneratorContext* rgc, const mpnumber* hm, const mpnumber* x, mpnumber* r, mpnumber* s)
  * \brief The raw DSA signing function.
  *
  * Signing equations:
@@ -66,25 +66,25 @@
  * \retval 0 on success.
  * \retval -1 on failure.
  */
-int dsasign(const mp32barrett* p, const mp32barrett* q, const mp32number* g, randomGeneratorContext* rgc, const mp32number* hm, const mp32number* x, mp32number* r, mp32number* s)
+int dsasign(const mpbarrett* p, const mpbarrett* q, const mpnumber* g, randomGeneratorContext* rgc, const mpnumber* hm, const mpnumber* x, mpnumber* r, mpnumber* s)
 {
-	register uint32  psize = p->size;
-	register uint32  qsize = q->size;
+	register size_t psize = p->size;
+	register size_t qsize = q->size;
 
-	register uint32* ptemp;
-	register uint32* qtemp;
+	register mpw* ptemp;
+	register mpw* qtemp;
 
-	register uint32* pwksp;
-	register uint32* qwksp;
+	register mpw* pwksp;
+	register mpw* qwksp;
 
 	register int rc = -1;
 
-	ptemp = (uint32*) malloc((5*psize+2)*sizeof(uint32));
-	if (ptemp == (uint32*) 0)
+	ptemp = (mpw*) malloc((5*psize+2)*sizeof(mpw));
+	if (ptemp == (mpw*) 0)
 		return rc;
 
-	qtemp = (uint32*) malloc((9*qsize+6)*sizeof(uint32));
-	if (qtemp == (uint32*) 0)
+	qtemp = (mpw*) malloc((9*qsize+6)*sizeof(mpw));
+	if (qtemp == (mpw*) 0)
 	{
 		free(ptemp);
 		return rc;
@@ -94,31 +94,31 @@ int dsasign(const mp32barrett* p, const mp32barrett* q, const mp32number* g, ran
 	qwksp = qtemp+3*qsize;
 
 	/* allocate r */
-	mp32nfree(r);
-	mp32nsize(r, qsize);
+	mpnfree(r);
+	mpnsize(r, qsize);
 
 	/* get a random k, invertible modulo q */
-	mp32brndinv_w(q, rgc, qtemp, qtemp+qsize, qwksp);
+	mpbrndinv_w(q, rgc, qtemp, qtemp+qsize, qwksp);
 
 	/* g^k mod p */
-	mp32bpowmod_w(p, g->size, g->data, qsize, qtemp, ptemp, pwksp);
+	mpbpowmod_w(p, g->size, g->data, qsize, qtemp, ptemp, pwksp);
 
 	/* (g^k mod p) mod q - simple modulo */
-	mp32nmod(qtemp+2*qsize, psize, ptemp, qsize, q->modl, pwksp);
-	mp32copy(qsize, r->data, qtemp+psize+qsize);
+	mpnmod(qtemp+2*qsize, psize, ptemp, qsize, q->modl, pwksp);
+	mpcopy(qsize, r->data, qtemp+psize+qsize);
 
 	/* allocate s */
-	mp32nfree(s);
-	mp32nsize(s, qsize);
+	mpnfree(s);
+	mpnsize(s, qsize);
 
 	/* x*r mod q */
-	mp32bmulmod_w(q, x->size, x->data, r->size, r->data, qtemp, qwksp);
+	mpbmulmod_w(q, x->size, x->data, r->size, r->data, qtemp, qwksp);
 
 	/* add h(m) mod q */
-	mp32baddmod_w(q, qsize, qtemp, hm->size, hm->data, qtemp+2*qsize, qwksp);
+	mpbaddmod_w(q, qsize, qtemp, hm->size, hm->data, qtemp+2*qsize, qwksp);
 
 	/* multiply inv(k) mod q */
-	mp32bmulmod_w(q, qsize, qtemp+qsize, qsize, qtemp+2*qsize, s->data, qwksp);
+	mpbmulmod_w(q, qsize, qtemp+qsize, qsize, qtemp+2*qsize, s->data, qwksp);
 
 	rc = 0;
 
@@ -128,7 +128,7 @@ int dsasign(const mp32barrett* p, const mp32barrett* q, const mp32number* g, ran
 	return rc;
 }
 
-/*!\fn int dsavrfy(const mp32barrett* p, const mp32barrett* q, const mp32number* g, const mp32number* hm, const mp32number* y, const mp32number* r, const mp32number* s)
+/*!\fn int dsavrfy(const mpbarrett* p, const mpbarrett* q, const mpnumber* g, const mpnumber* hm, const mpnumber* y, const mpnumber* r, const mpnumber* s)
  * \brief The raw DSA verification function.
  *
  * Verifying equations:
@@ -153,37 +153,37 @@ int dsasign(const mp32barrett* p, const mp32barrett* q, const mp32number* g, ran
  * \retval 0 on failure.
  * \retval 1 on success.
  */
-int dsavrfy(const mp32barrett* p, const mp32barrett* q, const mp32number* g, const mp32number* hm, const mp32number* y, const mp32number* r, const mp32number* s)
+int dsavrfy(const mpbarrett* p, const mpbarrett* q, const mpnumber* g, const mpnumber* hm, const mpnumber* y, const mpnumber* r, const mpnumber* s)
 {
-	register uint32  psize = p->size;
-	register uint32  qsize = q->size;
+	register size_t psize = p->size;
+	register size_t qsize = q->size;
 
-	register uint32* ptemp;
-	register uint32* qtemp;
+	register mpw* ptemp;
+	register mpw* qtemp;
 
-	register uint32* pwksp;
-	register uint32* qwksp;
+	register mpw* pwksp;
+	register mpw* qwksp;
 
 	register int rc = 0;
 
-	if (mp32z(r->size, r->data))
+	if (mpz(r->size, r->data))
 		return rc;
 
-	if (mp32gex(r->size, r->data, qsize, q->modl))
+	if (mpgex(r->size, r->data, qsize, q->modl))
 		return rc;
 
-	if (mp32z(s->size, s->data))
+	if (mpz(s->size, s->data))
 		return rc;
 
-	if (mp32gex(s->size, s->data, qsize, q->modl))
+	if (mpgex(s->size, s->data, qsize, q->modl))
 		return rc;
 
-	ptemp = (uint32*) malloc((6*psize+2)*sizeof(uint32));
-	if (ptemp == (uint32*) 0)
+	ptemp = (mpw*) malloc((6*psize+2)*sizeof(mpw));
+	if (ptemp == (mpw*) 0)
 		return rc;
 
-	qtemp = (uint32*) malloc((8*qsize+6)*sizeof(uint32));
-	if (qtemp == (uint32*) 0)
+	qtemp = (mpw*) malloc((8*qsize+6)*sizeof(mpw));
+	if (qtemp == (mpw*) 0)
 	{
 		free(ptemp);
 		return rc;
@@ -193,27 +193,27 @@ int dsavrfy(const mp32barrett* p, const mp32barrett* q, const mp32number* g, con
 	qwksp = qtemp+2*qsize;
 
 	/* compute w = inv(s) mod q */
-	if (mp32binv_w(q, s->size, s->data, qtemp, qwksp))
+	if (mpbinv_w(q, s->size, s->data, qtemp, qwksp))
 	{
 		/* compute u1 = h(m)*w mod q */
-		mp32bmulmod_w(q, hm->size, hm->data, qsize, qtemp, qtemp+qsize, qwksp);
+		mpbmulmod_w(q, hm->size, hm->data, qsize, qtemp, qtemp+qsize, qwksp);
 
 		/* compute u2 = r*w mod q */
-		mp32bmulmod_w(q, r->size, r->data, qsize, qtemp, qtemp, qwksp);
+		mpbmulmod_w(q, r->size, r->data, qsize, qtemp, qtemp, qwksp);
 
 		/* compute g^u1 mod p */
-		mp32bpowmod_w(p, g->size, g->data, qsize, qtemp+qsize, ptemp, pwksp);
+		mpbpowmod_w(p, g->size, g->data, qsize, qtemp+qsize, ptemp, pwksp);
 
 		/* compute y^u2 mod p */
-		mp32bpowmod_w(p, y->size, y->data, qsize, qtemp, ptemp+psize, pwksp);
+		mpbpowmod_w(p, y->size, y->data, qsize, qtemp, ptemp+psize, pwksp);
 
 		/* multiply mod p */
-		mp32bmulmod_w(p, psize, ptemp, psize, ptemp+psize, ptemp, pwksp);
+		mpbmulmod_w(p, psize, ptemp, psize, ptemp+psize, ptemp, pwksp);
 
 		/* modulo q */
-		mp32nmod(ptemp+psize, psize, ptemp, qsize, q->modl, pwksp);
+		mpnmod(ptemp+psize, psize, ptemp, qsize, q->modl, pwksp);
 
-		rc = mp32eqx(r->size, r->data, psize, ptemp+psize);
+		rc = mpeqx(r->size, r->data, psize, ptemp+psize);
 	}
 
 	free(qtemp);

@@ -19,14 +19,13 @@
 
 /*!\file rsa.c
  * \brief RSA algorithm.
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup IF_m IF_rsa_m
  */
 
 #define BEECRYPT_DLL_EXPORT
 
 #include "rsa.h"
-#include "mp32.h"
 
 #if HAVE_STDLIB_H
 # include <stdlib.h>
@@ -39,28 +38,43 @@
  * \{
  */
 
-int rsapub(const rsapk* pk, const mp32number* m, mp32number* c)
+/*!\fn int rsapub(const rsapk* pk, const mpnumber* m, mpnumber* c)
+ * \brief The raw RSA public key operation.
+ *
+ * This function can be used for encryption and verifying.
+ *
+ * It performs the following operation:
+ * \li \f$c=m^{e}\ \testrm{mod}\ \nf$
+ *
+ * \param pk The RSA public key.
+ * \param m The message.
+ * \param c The ciphertext.
+ * \retval 0 on success.
+ * \retval -1 on failure.
+ */ 
+int rsapub(const rsapk* pk, const mpnumber* m, mpnumber* c)
 {
-	register uint32  size = pk->n.size;
-	register uint32* temp;
+	register size_t size = pk->n.size;
+	register mpw* temp;
 
-	if (mp32gex(m->size, m->data, pk->n.size, pk->n.modl))
+	if (mpgex(m->size, m->data, pk->n.size, pk->n.modl))
 		return -1;
 
-	temp = (uint32*) malloc((5*size+2)*sizeof(uint32));
+	temp = (mpw*) malloc((4*size+2)*sizeof(mpw));
 
 	if (temp)
 	{
-		mp32nsize(c, size);
+		mpnsize(c, size);
 
-		mp32bpowmod_w(&pk->n, m->size, m->data, pk->e.size, pk->e.data, c->data, temp);
+		mpbpowmod_w(&pk->n, m->size, m->data, pk->e.size, pk->e.data, c->data, temp);
 
 		return 0;
 	}
 	return -1;
 }
 
-/*!\fn int rsapri(const rsakp* kp, const mp32number* c, mp32number* m)
+
+/*!\fn int rsapri(const rsakp* kp, const mpnumber* c, mpnumber* m)
  * \brief The raw RSA private key operation.
  *
  * This function can be used for decryption and signing.
@@ -74,20 +88,20 @@ int rsapub(const rsapk* pk, const mp32number* m, mp32number* c)
  * \retval 0 on success.
  * \retval -1 on failure.
  */
-int rsapri(const rsakp* kp, const mp32number* c, mp32number* m)
+int rsapri(const rsakp* kp, const mpnumber* c, mpnumber* m)
 {
-	register uint32  size = kp->n.size;
-	register uint32* temp;
+	register size_t size = kp->n.size;
+	register mpw* temp;
 
-	if (mp32gex(c->size, c->data, kp->n.size, kp->n.modl))
+	if (mpgex(c->size, c->data, kp->n.size, kp->n.modl))
 		return -1;
 
-	temp = (uint32*) malloc((4*size+2)*sizeof(uint32));
+	temp = (mpw*) malloc((4*size+2)*sizeof(mpw));
 
 	if (temp)
 	{
-		mp32nsize(m, size);
-		mp32bpowmod_w(&kp->n, c->size, c->data, kp->d.size, kp->d.data, m->data, temp);
+		mpnsize(m, size);
+		mpbpowmod_w(&kp->n, c->size, c->data, kp->d.size, kp->d.data, m->data, temp);
 
 		free(temp);
 
@@ -96,7 +110,7 @@ int rsapri(const rsakp* kp, const mp32number* c, mp32number* m)
 	return -1;
 }
 
-/*!\fn int rsapricrt(const rsakp* kp, const mp32number* c, mp32number* m)
+/*!\fn int rsapricrt(const rsakp* kp, const mpnumber* c, mpnumber* m)
  * \brief The raw RSA private key operation, with Chinese Remainder Theorem.
  *
  * It performs the operation:
@@ -111,61 +125,59 @@ int rsapri(const rsakp* kp, const mp32number* c, mp32number* m)
  * \retval 0 on success.
  * \retval -1 on failure.
  */
-int rsapricrt(const rsakp* kp, const mp32number* c, mp32number* m)
+int rsapricrt(const rsakp* kp, const mpnumber* c, mpnumber* m)
 {
-	register uint32  nsize = kp->n.size;
-	register uint32  psize = kp->p.size;
-	register uint32  qsize = kp->q.size;
+	register size_t nsize = kp->n.size;
+	register size_t psize = kp->p.size;
+	register size_t qsize = kp->q.size;
 
-	register uint32* ptemp;
-	register uint32* qtemp;
+	register mpw* ptemp;
+	register mpw* qtemp;
 
-	if (mp32gex(c->size, c->data, kp->n.size, kp->n.modl))
+	if (mpgex(c->size, c->data, kp->n.size, kp->n.modl))
 		return -1;
 
-	ptemp = (uint32*) malloc((6*psize+2)*sizeof(uint32));
-	if (ptemp == (uint32*) 0)
+	ptemp = (mpw*) malloc((6*psize+2)*sizeof(mpw));
+	if (ptemp == (mpw*) 0)
 		return -1;
 
-	qtemp = (uint32*) malloc((6*qsize+2)*sizeof(uint32));
-	if (qtemp == (uint32*) 0)
+	qtemp = (mpw*) malloc((6*qsize+2)*sizeof(mpw));
+	if (qtemp == (mpw*) 0)
 	{
 		free(ptemp);
 		return -1;
 	}
 
-	/* c must be small enough to be exponentiated modulo p and q */
-
 	/* resize c for powmod p */
-	mp32setx(psize*2, ptemp, c->size, c->data);
+	mpsetx(psize*2, ptemp, c->size, c->data);
 
-	/* reduce modulo p before we start */
-	mp32bmod_w(&kp->p, ptemp, ptemp+psize, ptemp+2*psize);
+	/* reduce modulo p before we powmod */
+	mpbmod_w(&kp->p, ptemp, ptemp+psize, ptemp+2*psize);
 
 	/* compute j1 = c^d1 mod p, store @ ptemp */
-	mp32bpowmod_w(&kp->p, psize, ptemp+psize, kp->d1.size, kp->d1.data, ptemp, ptemp+2*psize);
+	mpbpowmod_w(&kp->p, psize, ptemp+psize, kp->d1.size, kp->d1.data, ptemp, ptemp+2*psize);
 
 	/* resize c for powmod p */
-	mp32setx(qsize*2, qtemp, c->size, c->data);
+	mpsetx(qsize*2, qtemp, c->size, c->data);
 
-	/* reduce modulo q before we start */
-	mp32bmod_w(&kp->q, qtemp, qtemp+qsize, qtemp+2*qsize);
+	/* reduce modulo q before we powmod */
+	mpbmod_w(&kp->q, qtemp, qtemp+qsize, qtemp+2*qsize);
 
 	/* compute j2 = c^d2 mod q, store @ qtemp */
-	mp32bpowmod_w(&kp->q, qsize, qtemp+qsize, kp->d2.size, kp->d2.data, qtemp, qtemp+2*qsize);
+	mpbpowmod_w(&kp->q, qsize, qtemp+qsize, kp->d2.size, kp->d2.data, qtemp, qtemp+2*qsize);
 
 	/* compute j1-j2 mod p, store @ ptemp */
-	mp32bsubmod_w(&kp->p, psize, ptemp, qsize, qtemp, ptemp, ptemp+2*psize);
+	mpbsubmod_w(&kp->p, psize, ptemp, qsize, qtemp, ptemp, ptemp+2*psize);
 
 	/* compute h = c*(j1-j2) mod p, store @ ptemp */
-	mp32bmulmod_w(&kp->p, psize, ptemp, psize, kp->c.data, ptemp, ptemp+2*psize);
+	mpbmulmod_w(&kp->p, psize, ptemp, psize, kp->c.data, ptemp, ptemp+2*psize);
 
 	/* make sure the message gets the proper size */
-	mp32nsize(m, nsize);
+	mpnsize(m, nsize);
 
 	/* compute m = h*q + j2 */
-	mp32mul(m->data, psize, ptemp, qsize, kp->q.modl);
-	mp32addx(nsize, m->data, qsize, qtemp);
+	mpmul(m->data, psize, ptemp, qsize, kp->q.modl);
+	mpaddx(nsize, m->data, qsize, qtemp);
 
 	free(ptemp);
 	free(qtemp);
@@ -173,7 +185,7 @@ int rsapricrt(const rsakp* kp, const mp32number* c, mp32number* m)
 	return 0;
 }
 
-/*!\fn int rsavrfy(const rsapk* pk, const mp32number* m, const mp32number* c)
+/*!\fn int rsavrfy(const rsapk* pk, const mpnumber* m, const mpnumber* c)
  *
  * This function verifies if ciphertext \e c was encrypted from cleartext \e m
  * with the private key matching the given public key \e pk.
@@ -188,25 +200,25 @@ int rsapricrt(const rsakp* kp, const mp32number* c, mp32number* m)
  * \retval 1 on success.
  * \retval 0 on failure.
  */
-int rsavrfy(const rsapk* pk, const mp32number* m, const mp32number* c)
+int rsavrfy(const rsapk* pk, const mpnumber* m, const mpnumber* c)
 {
 	int rc;
-	register uint32  size = pk->n.size;
-	register uint32* temp;
+	register size_t size = pk->n.size;
+	register mpw* temp;
 
-	if (mp32gex(c->size, c->data, pk->n.size, pk->n.modl))
+	if (mpgex(m->size, m->data, pk->n.size, pk->n.modl))
+		return -1;
+
+	if (mpgex(c->size, c->data, pk->n.size, pk->n.modl))
 		return 0;
 
-	if (mp32gex(m->size, m->data, pk->n.size, pk->n.modl))
-		return 0;
-
-	temp = (uint32*) malloc((5*size+2)*sizeof(uint32));
+	temp = (mpw*) malloc((5*size+2)*sizeof(mpw));
 
 	if (temp)
 	{
-		mp32bpowmod_w(&pk->n, m->size, m->data, pk->e.size, pk->e.data, temp, temp+size);
+		mpbpowmod_w(&pk->n, c->size, c->data, pk->e.size, pk->e.data, temp, temp+size);
 
-		rc = mp32eqx(size, temp, c->size, c->data);
+		rc = mpeqx(size, temp, m->size, m->data);
 
 		free(temp);
 
