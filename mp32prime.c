@@ -982,7 +982,7 @@ int mp32pmilrab_w(const mp32barrett* p, randomGeneratorContext* rc, int t, uint3
 	mp32subw(size, ndata, 1);
 	mp32copy(size, rdata, ndata);
 
-	s = mp32divpowtwo(size, rdata); /* we've split p-1 into (2^s)*r */
+	s = mp32rshiftlsz(size, rdata); /* we've split p-1 into (2^s)*r */
 
 	/* should do an assert that s != 0 */
 

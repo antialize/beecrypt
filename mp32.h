@@ -158,6 +158,9 @@ BEECRYPTAPI
 void mp32rshift(uint32, uint32*, uint32);
 
 BEECRYPTAPI
+uint32 mp32rshiftlsz(uint32, uint32*);
+
+BEECRYPTAPI
 uint32 mp32norm(uint32, uint32*);
 BEECRYPTAPI
 uint32 mp32divpowtwo(uint32, uint32*);
