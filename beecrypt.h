@@ -24,6 +24,7 @@
  * the various algorithms implemented by the library.
  *
  * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup ES_m PRNG_m HASH_m HMAC_m BC_m
  */
 
 #ifndef _BEECRYPT_H

@@ -1,11 +1,5 @@
 /*
- * hmac.h
- *
- * HMAC message authentication code, header
- *
  * Copyright (c) 1999, 2000, 2002 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,11 +17,22 @@
  *
  */
 
+/*!\file hmac.h
+ * \brief HMAC algorithm, headers.
+ * \todo Up to now the algorithm only works for hashes that have a block size
+ *       of 64 bytes. It would be good to change this so that the initializer
+ *       uses the block size from the hash function's descriptor.
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup HMAC_m
+ */
+
 #ifndef _HMAC_H
 #define _HMAC_H
 
 #include "beecrypt.h"
 
+/*!\ingroup HMAC_m
+ */
 typedef struct
 {
 	byte kxi[64];

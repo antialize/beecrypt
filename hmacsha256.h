@@ -1,11 +1,5 @@
 /*
- * hmacsha256.h
- *
- * HMAC-SHA-256 message authentication code, header
- *
  * Copyright (c) 2000, 2001, 2002 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,12 +17,20 @@
  *
  */
 
+/*!\file hmacsha256.h
+ * \brief HMAC-SHA-256 message authentication code, headers.
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup HMAC_m HMAC_sha256_m
+ */
+
 #ifndef _HMACSHA256_H
 #define _HMACSHA256_H
 
 #include "hmac.h"
 #include "sha256.h"
 
+/*!\ingroup HMAC_sha256_m
+ */
 typedef struct
 {
 	hmacParam hparam;

@@ -1,11 +1,5 @@
 /*
- * sha1.h
- *
- * SHA-1 hash function, header
- *
- * Copyright (c) 1997, 1998, 1999, 2000, 2001 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
+ * Copyright (c) 1997, 1998, 1999, 2000, 2002 Virtual Unlimited B.V.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,12 +17,20 @@
  *
  */
 
+/*!\file sha1.h
+ * \brief SHA-1 hash function, headers.
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup HASH_m HASH_sha1_m
+ */
+
 #ifndef _SHA1_H
 #define _SHA1_H
 
 #include "beecrypt.h"
 #include "sha1opt.h"
 
+/*!\ingroup HASH_sha1_m
+ */
 typedef struct
 {
 	uint32 h[5];

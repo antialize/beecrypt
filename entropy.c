@@ -19,7 +19,7 @@
 
 /*!\file entropy.c
  * \author Bob Deblier <bob@virtualunlimited.com>
- * \ingroup ES_m
+ * \ingroup ES_m ES_audio_m ES_dsp_m ES_random_m ES_urandom_m ES_tty_m
  */
 
 #define BEECRYPT_DLL_EXPORT

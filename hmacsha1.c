@@ -1,11 +1,5 @@
 /*
- * hmacsha1.c
- *
- * HMAC-SHA-1 message authentication code, code
- *
  * Copyright (c) 1999, 2000, 2001, 2002 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,9 +17,23 @@
  *
  */
 
+/*!\file hmacsha1.c
+ * \brief HMAC-SHA-1 message authentication code.
+ *
+ * \see RFC2202 - Test Cases for HMAC-MD5 and HMAC-SHA-1.
+ *                P. Cheng, R. Glenn.
+ *
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup HMAC_m HMAC_sha1_m
+ */
+
 #define BEECRYPT_DLL_EXPORT
 
 #include "hmacsha1.h"
+
+/*!\addtogroup HMAC_sha1_m
+ * \{
+ */
 
 const keyedHashFunction hmacsha1 = { "HMAC-SHA-1", sizeof(hmacsha1Param), 64, 5 * sizeof(uint32), 64, 512, 32, (keyedHashFunctionSetup) hmacsha1Setup, (keyedHashFunctionReset) hmacsha1Reset, (keyedHashFunctionUpdate) hmacsha1Update, (keyedHashFunctionDigest) hmacsha1Digest };
 
@@ -48,3 +56,6 @@ int hmacsha1Digest(hmacsha1Param* sp, uint32* data)
 {
 	return hmacDigest(&sp->hparam, &sha1, &sp->sparam, data);
 }
+
+/*!\}
+ */

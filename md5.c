@@ -1,11 +1,5 @@
 /*
- * md5.c
- *
- * MD5 hash function, code
- *
- * Copyright (c) 2000 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
+ * Copyright (c) 2000, 2002 Virtual Unlimited B.V.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,11 +17,21 @@
  *
  */
 
+/*!\file md5.c
+ * \brief MD5 hash function
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup HASH_m HASH_md5_m
+ */
+
 #define BEECRYPT_DLL_EXPORT
 
 #include "md5.h"
 #include "mp32.h"
 #include "endianness.h"
+
+/*!\addtogroup HASH_md5_m
+ * \{
+ */
 
 static uint32 md5hinit[4] = { 0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476 };
 
@@ -226,3 +230,6 @@ int md5Digest(md5Param* p, uint32* data)
 	md5Reset(p);
 	return 0;
 }
+
+/*!\}
+ */

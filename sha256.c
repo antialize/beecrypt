@@ -1,11 +1,5 @@
 /*
- * sha256.c
- *
- * SHA-256 hash function, code
- *
  * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,12 +16,22 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
+
+/*!\file sha256.c
+ * \brief SHA-256 hash function, as specified by NIST DFIPS 180-2.
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup HASH_m HASH_sha256_m
+ */
  
 #define BEECRYPT_DLL_EXPORT
 
 #include "sha256.h"
 #include "mp32.h"
 #include "endianness.h"
+
+/*!\addtogroup HASH_sha256_m
+ * \{
+ */
 
 static const uint32 k[64] = {
 	0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
@@ -237,3 +241,6 @@ int sha256Digest(register sha256Param *p, uint32 *data)
 	sha256Reset(p);
 	return 0;
 }
+
+/*!\}
+ */

@@ -1,11 +1,5 @@
 /*
- * hmacmd5.h
- *
- * HMAC-MD5 message authentication code, header
- *
  * Copyright (c) 2000, 2001, 2002 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,12 +17,20 @@
  *
  */
 
+/*!\file hmacmd5.h
+ * \brief HMAC-MD5 message authentication code, headers.
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup HMAC_m HMAC_md5_m
+ */
+
 #ifndef _HMACMD5_H
 #define _HMACMD5_H
 
 #include "hmac.h"
 #include "md5.h"
 
+/*!\ingroup HMAC_md5_m
+ */
 typedef struct
 {
 	hmacParam hparam;

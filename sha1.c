@@ -1,14 +1,5 @@
 /*
- * sha1.c
- *
- * SHA-1 hash function, code
- *
- * For more information on this algorithm, see:
- * NIST FIPS PUB 180-1
- *
  * Copyright (c) 1997, 1998, 1999, 2000, 2001 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,12 +16,22 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
+
+/*!\file sha1.c
+ * \brief SHA-1 hash function, as specified by NIST FIPS 180-1.
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup HASH_m HASH_sha1_m
+ */
  
 #define BEECRYPT_DLL_EXPORT
 
 #include "sha1.h"
 #include "mp32.h"
 #include "endianness.h"
+
+/*!\addtogroup HASH_sha1_m
+ * \{
+ */
 
 static const uint32 k[4] = { 0x5a827999, 0x6ed9eba1, 0x8f1bbcdc, 0xca62c1d6 };
 
@@ -242,3 +243,6 @@ int sha1Digest(register sha1Param *p, uint32 *data)
 	sha1Reset(p);
 	return 0;
 }
+
+/*!\}
+ */

@@ -19,6 +19,7 @@
 /*!\file beecrypt.c
  * \brief BeeCrypt API.
  * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup ES_m PRNG_m HASH_m HMAC_m BC_m
  */
 
 #define BEECRYPT_DLL_EXPORT

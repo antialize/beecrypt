@@ -1,11 +1,5 @@
 /*
- * hmacmd5.c
- *
- * HMAC-MD5 message authentication code, code
- *
- * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
+ * Copyright (c) 2000, 2001, 2002 Virtual Unlimited B.V.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,9 +17,23 @@
  *
  */
 
+/*!\file hmacmd5.c
+ * \brief HMAC-MD5 message authentication code.
+ * 
+ * \see RFC2202 - Test Cases for HMAC-MD5 and HMAC-SHA-1.
+ *                P. Cheng, R. Glenn.
+ *
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup HMAC_m HMAC_md5_m
+ */
+
 #define BEECRYPT_DLL_EXPORT
 
 #include "hmacmd5.h"
+
+/*!\addtogroup HMAC_md5_m
+ * \{
+ */
 
 const keyedHashFunction hmacmd5 = { "HMAC-MD5", sizeof(hmacmd5Param), 64, 4 * sizeof(uint32), 64, 512, 32, (const keyedHashFunctionSetup) hmacmd5Setup, (const keyedHashFunctionReset) hmacmd5Reset, (const keyedHashFunctionUpdate) hmacmd5Update, (const keyedHashFunctionDigest) hmacmd5Digest };
 
@@ -48,3 +56,6 @@ int hmacmd5Digest(hmacmd5Param* sp, uint32* data)
 {
 	return hmacDigest(&sp->hparam, &md5, &sp->mparam, data);
 }
+
+/*!\}
+ */

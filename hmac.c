@@ -1,11 +1,5 @@
 /*
- * hmac.c
- *
- * HMAC message authentication code, code
- *
  * Copyright (c) 1999, 2000, 2002 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,11 +17,25 @@
  *
  */
 
+/*!\file hmac.c
+ * \brief HMAC algorithm.
+ *
+ * \see RFC2104 HMAC: Keyed-Hashing for Message Authentication.
+ *                    H. Krawczyk, M. Bellare, R. Canetti.
+ *
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup HMAC_m
+ */
+
 #define BEECRYPT_DLL_EXPORT
 
 #include "hmac.h"
 #include "mp32.h"
 #include "endianness.h"
+
+/*!\addtogroup HMAC_m
+ * \{
+ */
 
 #define HMAC_IPAD	0x36
 #define HMAC_OPAD	0x5c
@@ -133,3 +141,6 @@ int hmacDigest(hmacParam* hp, const hashFunction* hash, hashFunctionParam* param
 
 	return 0;
 }
+
+/*!\}
+ */
