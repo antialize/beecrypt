@@ -313,6 +313,7 @@ INPUT = \
 	@top_srcdir@/base64.h \
 	@top_srcdir@/beecrypt.c \
 	@top_srcdir@/beecrypt.h \
+	@top_srcdir@/beecrypt.api.h \
 	@top_srcdir@/beecrypt.gas.h \
 	@top_srcdir@/beecrypt.gnu.h \
 	@top_srcdir@/beecrypt.win.h \
