@@ -690,20 +690,20 @@ if test "$ac_enable_optimized" = yes; then
   athlon*)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I686"
     ;;
-  ia64)
-    CPPFLAGS="$CPPFLAGS -DOPTIMIZE_IA64"
-    ;;
   i386)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I386"
     ;;
   i486)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I486"
     ;;
-  i586 | pentium)
+  i586 | pentium | pentium-mmx)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I586"
     ;;
   i686 | pentiumpro | pentium[[23]])
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I686"
+    ;;
+  ia64)
+    CPPFLAGS="$CPPFLAGS -DOPTIMIZE_IA64"
     ;;
   pentium4)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I686 -DOPTIMIZE_SSE2"
@@ -751,22 +751,19 @@ else
         CFLAGS="$CFLAGS -fomit-frame-pointer"
         ;;
       athlon*)
-        CFLAGS="$CFLAGS -mcpu=$ac_with_cpu -fomit-frame-pointer"
+        CFLAGS="$CFLAGS -march=$ac_with_cpu -fomit-frame-pointer"
         ;;
-      i386)
-        CFLAGS="$CFLAGS -mcpu=i386 -fomit-frame-pointer"
+      i[[34]]86)
+        CFLAGS="$CFLAGS -march=$ac_with_cpu -fomit-frame-pointer"
         ;;
-      i486)
-        CFLAGS="$CFLAGS -mcpu=i486 -fomit-frame-pointer"
+      i586)
+        CFLAGS="$CFLAGS -march=pentium -fomit-frame-pointer"
         ;;
-      i586 | pentium)
-        CFLAGS="$CFLAGS -mcpu=pentium -fomit-frame-pointer"
+      i686)
+        CFLAGS="$CFLAGS -march=pentiumpro -fomit-frame-pointer"
         ;;
-      i686 | pentiumpro)
-        CFLAGS="$CFLAGS -mcpu=pentiumpro -fomit-frame-pointer"
-        ;;
-      pentium[[234]])
-        CFLAGS="$CFLAGS -mcpu=$ac_with_cpu -fomit-frame-pointer"
+      pentium*)
+        CFLAGS="$CFLAGS -march=$ac_with_cpu -fomit-frame-pointer"
         ;;
       sparcv8)
         CFLAGS="$CFLAGS -mv8"
@@ -784,12 +781,6 @@ else
   elif test "$ac_cv_prog_INTEL_ICC" = yes; then
     CFLAGS="$CFLAGS -O3"
     case $ac_with_cpu in
-      i386)
-        CFLAGS="$CFLAGS"
-        ;;
-      i486)
-        CFLAGS="$CFLAGS"
-        ;;
       i586 | pentium)
         CFLAGS="$CFLAGS -mcpu=pentium -tpp5"
         ;;
