@@ -18,10 +18,10 @@ dnl  You should have received a copy of the GNU Lesser General Public
 dnl  License along with this library; if not, write to the Free Software
 dnl  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-include(config.m4)
-include(x86.m4)
-
 	.file "aesopt.s"
+
+include(config.m4)
+include(gas/x86.m4)
 
 define(`sxrk',`
 	movl   (%esi),%eax
