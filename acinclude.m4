@@ -431,11 +431,17 @@ AC_DEFUN(BEECRYPT_INTEL_CC,[
       i586 | pentium | pentium-mmx)
         CFLAGS="$CFLAGS -tpp5"
         ;;
-      i686 | pentiumpro | pentium[[23]])
-        CFLAGS="$CFLAGS -tpp6"
+      i686 | pentiumpro)
+        CFLAGS="$CFLAGS -tpp6 -march=pentiumpro"
+        ;;
+      pentium2)
+        CFLAGS="$CFLAGS -tpp6 -march=pentiumii"
+        ;;
+      pentium3)
+        CFLAGS="$CFLAGS -tpp6 -march=pentiumiii"
         ;;
       pentium4)
-        CFLAGS="$CFLAGS -tpp7"
+        CFLAGS="$CFLAGS -tpp7 -march=pentium4"
         ;;
       esac
     fi
