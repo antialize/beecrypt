@@ -33,7 +33,7 @@
 extern "C" {
 #endif
 
-/*!\fn int blockEncryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, int nblocks)
+/*!\fn int blockEncryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, unsigned int nblocks)
  * \brief This function encrypts a number of data blocks in Electronic Code
  *  Book mode.
  * \param bc The blockcipher.
@@ -44,9 +44,9 @@ extern "C" {
  * \retval 0 on success.
  */
 BEECRYPTAPI
-int blockEncryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, int nblocks);
+int blockEncryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, unsigned int nblocks);
 
-/*!\fn int blockDecryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, int nblocks)
+/*!\fn int blockDecryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, unsigned int nblocks)
  * \brief This function decrypts a number of data blocks in Electronic Code
  *  Book mode.
  * \param bc The blockcipher.
@@ -57,9 +57,9 @@ int blockEncryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, 
  * \retval 0 on success.
  */
 BEECRYPTAPI
-int blockDecryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, int nblocks);
+int blockDecryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, unsigned int nblocks);
 
-/*!\fn int blockEncryptCBC(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, int nblocks)
+/*!\fn int blockEncryptCBC(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, unsigned int nblocks)
  * \brief This function encrypts a number of data blocks in Cipher Block
  *  Chaining mode.
  * \param bc The blockcipher.
@@ -70,9 +70,9 @@ int blockDecryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, 
  * \retval 0 on success.
  */
 BEECRYPTAPI
-int blockEncryptCBC(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, int nblocks);
+int blockEncryptCBC(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, unsigned int nblocks);
 
-/*!\fn int blockDecryptCBC(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, int nblocks)
+/*!\fn int blockDecryptCBC(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, unsigned int nblocks)
  * \brief This function decrypts a number of data blocks in Cipher Block
  *  Chaining mode.
  * \param bc The blockcipher.
@@ -83,7 +83,7 @@ int blockEncryptCBC(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, 
  * \retval 0 on success.
  */
 BEECRYPTAPI
-int blockDecryptCBC(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, int nblocks);
+int blockDecryptCBC(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, unsigned int nblocks);
 
 #ifdef __cplusplus
 }
