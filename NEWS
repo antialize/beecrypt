@@ -1,3 +1,6 @@
+4.1.1:
+	- Fixed shared library version info.
+
 4.1.0:
 	- Added SHA-384 and SHA-512 algorithms.
 	- Added HMAC-SHA-384 and HMAC-SHA-512 algorithms.
