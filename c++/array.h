@@ -152,6 +152,18 @@ namespace beecrypt {
 				_size = size;
 			}
 
+			void swap(array& _swp) throw ()
+			{
+				T* tmp_data = _swp._data;
+				size_t tmp_size = _swp._size;
+
+				_swp._data = _data;
+				_swp._size = _size;
+
+				_data = tmp_data;
+				_size = tmp_size;
+			}
+
 			void resize(size_t _newsize) throw (std::bad_alloc)
 			{
 				if (_newsize)
