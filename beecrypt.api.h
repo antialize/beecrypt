@@ -68,28 +68,6 @@ static inline uint32_t ROTR32(uint32_t x, const unsigned char n)
 
 	return x;
 }
-# elif defined(__powerpc__)
-static inline uint32_t ROTL32(uint32_t x, const unsigned char n)
-{
-	register uint32_t r;
-
-	__asm__("rotlwi %0,%1,%2"
-		:	"=r" (r)
-		:	"r" (x), "I" (n));
-
-	return r;
-}
-
-static inline uint32_t ROTR32(uint32_t x, const unsigned char n)
-{
-	register uint32_t r;
-
-	__asm__("rotrwi %0,%1,%2"
-		:	"=r" (r)
-		:	"r" (x), "I" (n));
-
-	return r;
-}
 # endif
 #endif
 
