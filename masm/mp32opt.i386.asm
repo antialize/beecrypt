@@ -26,6 +26,7 @@
 
 	.586
 	.model flat,C
+	.xmm
 
 	.code
 
@@ -244,6 +245,32 @@ mp32multwo endp
 mp32setmul proc
 	push edi
 	push esi
+
+	ifdef OPTIMIZE_SSE2
+
+	mov ecx,dword ptr [esp+12]
+	mov edi,dword ptr [esp+16]
+	mov esi,dword ptr [esp+20]
+	movd mm1,dword ptr [esp+24]
+
+	pxor mm0,mm0
+	dec ecx
+
+	align 4
+@mp32setmul_loop:
+	movd mm2,dword ptr [esi+ecx*4]
+	pmuludq mm2,mm1
+	paddq mm0,mm2
+	movd dword ptr [edi+ecx*4],mm0
+	dec ecx
+	psrlq mm0,32
+	jns @mp32setmul_loop
+
+	movd eax,mm0
+	emms
+
+	else
+
 	push ebx
 	push ebp
 
@@ -270,6 +297,9 @@ mp32setmul proc
 
 	pop ebp
 	pop ebx
+
+	endif
+
 	pop esi
 	pop edi
 	ret
@@ -280,6 +310,33 @@ mp32setmul endp
 mp32addmul proc
 	push edi
 	push esi
+
+	ifdef OPTIMIZE_SSE2
+
+	mov ecx,dword ptr [esp+12]
+	mov edi,dword ptr [esp+16]
+	mov esi,dword ptr [esp+20]
+	movd mm1,dword ptr [esp+24]
+
+	pxor mm0,mm0
+	dec ecx
+
+@mp32addmul_loop:
+	movd mm2,dword ptr [esi+ecx*4]
+	movd mm3,dword ptr [edi+ecx*4]
+	pmuludq mm2,mm1
+	paddq mm3,mm2
+	paddq mm0,mm3
+	movd dword ptr [edi+ecx*4],mm0
+	dec ecx
+	psrlq mm0,32
+	jns @mp32addmul_loop
+
+	movd eax,mm0
+	emms
+
+	else
+
 	push ebx
 	push ebp
 
@@ -307,6 +364,9 @@ mp32addmul proc
 
 	pop ebp
 	pop ebx
+
+	endif
+
 	pop esi
 	pop edi
 	ret
