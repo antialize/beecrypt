@@ -57,6 +57,7 @@
  *    <li>HMAC-MD5
  *    <li>HMAC-SHA-1
  *    <li>HMAC-SHA-256
+ *    <li>HMAC-SHA-384
  *    <li>HMAC-SHA-512
  *   </ul>
  *  <li>multi-precision integer library, with assembler-optimized routines
@@ -78,6 +79,62 @@
  * A new feature in version 4.x is the C++ API, built to resemble Java's security
  * and cryptography API. At this moment the number of classes provided is just
  * enough to build CSPs. If there is enough interest, we may expand this library.
+ * 
+ * Included in the base provider are broad spectrum of algorithms:
+ * <ul>
+ *  <li>AlgorithmParameterGenerator
+ *   <ul>
+ *    <li>DH
+ *    <li>DSA
+ *   </ul>
+ *  <li>AlgorithmParameters
+ *   <ul>
+ *    <li>DH
+ *    <li>DHAES
+ *    <li>DSA
+ *   </ul>
+ *  <li>Cipher
+ *   <ul>
+ *    <li>AES
+ *    <li>Blowfish
+ *    <li>DHAES
+ *   </ul>
+ *  <li>KeyAgreement
+ *   <ul>
+ *    <li>DH
+ *   </ul>
+ *  <li>KeyPairGenerator
+ *   <ul>
+ *    <li>DH
+ *    <li>DSA
+ *    <li>RSA
+ *   </ul>
+ *  <li>Mac
+ *   <ul>
+ *    <li>HMAC-MD5
+ *    <li>HMAC-SHA-1
+ *    <li>HMAC-SHA-256
+ *    <li>HMAC-SHA-384
+ *    <li>HMAC-SHA-512
+ *   </ul>
+ *  <li>MessageDigest
+ *   <ul>
+ *    <li>MD5
+ *    <li>SHA-1
+ *    <li>SHA-256
+ *    <li>SHA-384
+ *    <li>SHA-512
+ *   </ul>
+ *  <li>Signature
+ *   <ul>
+ *    <li>MD5withRSA
+ *    <li>SHA1withDSA
+ *    <li>SHA1withRSA
+ *    <li>SHA256withRSA
+ *    <li>SHA384withRSA
+ *    <li>SHA512withRSA
+ *   </ul>
+ * </ul>
  *
  * \section testing_sec Testing
  *
@@ -106,7 +163,6 @@
  * The library is currently in the process of being ported to:
  * <ul>
  *  <li>AIX (shared libraries don't seem to work in 64-bit mode)
- *  <li>Cygwin (the DLL builds now, but needs to be tested)
  * </ul>
  * 
  * The structures in the library are geared towards exchange with Java
@@ -165,6 +221,10 @@
 /*!\defgroup	HMAC_sha1_m	Keyed Hash Functions: HMAC-SHA-1
  */
 /*!\defgroup	HMAC_sha256_m	Keyed Hash Functions: HMAC-SHA-256
+ */
+/*!\defgroup	HMAC_sha384_m	Keyed Hash Functions: HMAC-SHA-384
+ */
+/*!\defgroup	HMAC_sha512_m	Keyed Hash Functions: HMAC-SHA-512
  */
 /*!\defgroup	BC_m	Block ciphers
  */
