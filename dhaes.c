@@ -19,13 +19,6 @@
 
 /*!\file dhaes.c
  * \brief DHAES encryption scheme.
- *
- * This code implements the encryption scheme from the paper:
- *
- * "DHAES: An Encryption Scheme Based on the Diffie-Hellman Problem"
- * Michel Abdalla, Mihir Bellare, Phillip Rogaway
- * September 1998
- *
  * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup DL_m DL_dh_m
  */
@@ -272,7 +265,7 @@ memchunk* dhaes_pContextEncrypt(dhaes_pContext* ctxt, mpnumber* ephemeralPublicK
 	paddedtext = pkcs5PadCopy(ctxt->cipher.algo->blocksize, cleartext);
 
 	/* encrypt the memchunk in CBC mode */
-	if (blockEncryptCBC(ctxt->cipher.algo, ctxt->cipher.param, paddedtext->size / ctxt->cipher.algo->blocksize, (uint32_t*) paddedtext->data, (const uint32_t*) paddedtext->data))
+	if (blockEncryptCBC(ctxt->cipher.algo, ctxt->cipher.param, (uint32_t*) paddedtext->data, (const uint32_t*) paddedtext->data, paddedtext->size / ctxt->cipher.algo->blocksize))
 	{
 		free(paddedtext->data);
 		free(paddedtext);
@@ -334,7 +327,7 @@ memchunk* dhaes_pContextDecrypt(dhaes_pContext* ctxt, const mpnumber* ephemeralP
 		goto decrypt_end;
 	}
 
-	if (blockDecryptCBC(ctxt->cipher.algo, ctxt->cipher.param, paddedtext->size / ctxt->cipher.algo->blocksize, (uint32_t*) paddedtext->data, (const uint32_t*) ciphertext->data))
+	if (blockDecryptCBC(ctxt->cipher.algo, ctxt->cipher.param, (uint32_t*) paddedtext->data, (const uint32_t*) ciphertext->data, paddedtext->size / ctxt->cipher.algo->blocksize))
 	{
 		free(paddedtext->data);
 		free(paddedtext);
