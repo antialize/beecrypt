@@ -1,5 +1,5 @@
 /*
- * fips180opt.i586.S
+ * sha1opt.i586.S
  *
  * Assembler optimized SHA-1 routines for Intel Pentium processors
  *
@@ -25,9 +25,9 @@
  *
  */
 
-#include "config.gas.h"
+#include "beecrypt.gas.h"
 
-	.file "fips180opt.i586.S"
+	.file "sha1opt.i586.S"
 
 	.text
 

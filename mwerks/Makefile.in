@@ -94,6 +94,7 @@ LIBTOOL = @LIBTOOL@
 LIBTOOL_DEPS = @LIBTOOL_DEPS@
 LN_S = @LN_S@
 MAKEINFO = @MAKEINFO@
+NM = @NM@
 OBJDUMP = @OBJDUMP@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
@@ -103,9 +104,9 @@ ac_cv_have_javac = @ac_cv_have_javac@
 
 AUTOMAKE_OPTIONS = gnu no-dependencies
 
-EXTRA_DIST = beecrypt.pch blowfishopt.i586.asm fips180opt.i586.asm mp32opt.i386.asm
+EXTRA_DIST = beecrypt.pch blowfishopt.i586.asm mp32opt.i386.asm sha1opt.i586.asm
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
-CONFIG_HEADER = ../config.gnu.h
+CONFIG_HEADER = ../beecrypt.gnu.h
 CONFIG_CLEAN_FILES = 
 DIST_COMMON =  Makefile.am Makefile.in
 
@@ -135,7 +136,7 @@ distdir: $(DISTFILES)
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
-	    cp -pr $$d/$$file $(distdir)/$$file; \
+	    cp -pr $$/$$file $(distdir)/$$file; \
 	  else \
 	    test -f $(distdir)/$$file \
 	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \

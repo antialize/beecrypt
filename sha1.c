@@ -1,5 +1,5 @@
 /*
- * fips180.c
+ * sha1.c
  *
  * SHA-1 hash function, code
  *
@@ -28,7 +28,7 @@
  
 #define BEECRYPT_DLL_EXPORT
 
-#include "fips180.h"
+#include "sha1.h"
 #include "mp32.h"
 #include "endianness.h"
 

@@ -27,7 +27,7 @@
 #define _HMACSHA1_H
 
 #include "hmac.h"
-#include "fips180.h"
+#include "sha1.h"
 
 typedef struct
 {

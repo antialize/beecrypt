@@ -39,14 +39,14 @@ extern "C" {
 #endif
 
 #ifndef ASM_MP32COPY
-#define mp32copy(size, dst, src) memcpy(dst, src, (size) << 2)
+# define mp32copy(size, dst, src) memcpy(dst, src, (size) << 2)
 #else
 BEECRYPTAPI
 void mp32copy(uint32, uint32*, const uint32*);
 #endif
 
 #ifndef ASM_MP32MOVE
-#define mp32move(size, dst, src) memmove(dst, src, (size) << 2)
+# define mp32move(size, dst, src) memmove(dst, src, (size) << 2)
 #else
 BEECRYPTAPI
 void mp32move(uint32, uint32*, const uint32*);

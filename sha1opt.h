@@ -1,9 +1,9 @@
 /*
- * fips180.h
+ * sha1opt.h
  *
- * SHA-1 hash function, header
+ * SHA-1 assembler-optimized routines, header
  *
- * Copyright (c) 1997, 1998, 1999, 2000, 2001 Virtual Unlimited B.V.
+ * Copyright (c) 2000 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -23,34 +23,35 @@
  *
  */
 
-#ifndef _FIPS180_H
-#define _FIPS180_H
+#ifndef _SHA1OPT_H
+#define _SHA1OPT_H
 
 #include "beecrypt.h"
-#include "fips180opt.h"
-
-typedef struct
-{
-	uint32 h[5];
-	uint32 data[80];
-	uint64 length;
-	uint8  offset;
-} sha1Param;
+#include "sha1.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-extern BEECRYPTAPI const hashFunction sha1;
+#if WIN32
+# if defined(_MSC_VER) && defined(_M_IX86)
+#  define ASM_SHA1PROCESS
+# elif __INTEL__ && __MWERKS__
+#  define ASM_SHA1PROCESS
+# endif
+#endif
 
-BEECRYPTAPI
-void sha1Process(sha1Param*);
-BEECRYPTAPI
-int  sha1Reset  (sha1Param*);
-BEECRYPTAPI
-int  sha1Update (sha1Param*, const byte*, int);
-BEECRYPTAPI
-int  sha1Digest (sha1Param*, uint32*);
+#ifdef __GNUC__
+# if defined(OPTIMIZE_I586) || defined(OPTIMIZE_I686)
+#  define ASM_SHA1PROCESS
+# endif
+#endif
+
+#if defined(__SUNPRO_C) || defined(__SUNPRO_CC)
+# if defined(OPTIMIZE_I586) || defined(OPTIMIZE_I686)
+#  define ASM_SHA1PROCESS
+# endif
+#endif
 
 #ifdef __cplusplus
 }

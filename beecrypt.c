@@ -3,7 +3,7 @@
  *
  * BeeCrypt library hooks & stubs, code
  *
- * Copyright (c) 1999, 2000, 2001 Virtual Unlimited B.V.
+ * Copyright (c) 1999, 2000, 2001, 2002 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -42,7 +42,6 @@
 
 #include "endianness.h"
 #include "entropy.h"
-#include "fips180.h"
 #include "fips186.h"
 #include "hmacmd5.h"
 #include "hmacsha1.h"
@@ -50,8 +49,10 @@
 #include "md5.h"
 #include "mp32.h"
 #include "mtprng.h"
+#include "sha1.h"
 #include "sha256.h"
 
+#include "aes.h"
 #include "blowfish.h"
 #include "blockmode.h"
 
@@ -647,6 +648,7 @@ int keyedHashFunctionContextDigestMatch(keyedHashFunctionContext* ctxt, const mp
 
 static const blockCipher* blockCipherList[] =
 {
+	&aes,
 	&blowfish
 };
 

@@ -3,7 +3,7 @@
  *
  * BeeCrypt test and benchmark application
  *
- * Copyright (c) 1999, 2000, 2001 Virtual Unlimited B.V.
+ * Copyright (c) 1999, 2000, 2001, 2002 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -25,16 +25,17 @@
 
 #include "beecrypt.h"
 #include "blockmode.h"
+#include "aes.h"
 #include "blowfish.h"
 #include "mp32barrett.h"
 #include "dhaes.h"
 #include "dlkp.h"
 #include "dsa.h"
 #include "elgamal.h"
-#include "fips180.h"
 #include "hmacmd5.h"
 #include "md5.h"
 #include "rsa.h"
+#include "sha1.h"
 #include "sha256.h"
 #include "mp32.h"
 
@@ -59,6 +60,19 @@ static const char* dsa_g = "626d027839ea0a13413163a55b4cb500299d5522956cefcb3bff
 static const char* dsa_x = "2070b3223dba372fde1c0ffc7b2e3b498b260614";
 static const char* dsa_y = "19131871d75b1612a819f29d78d1b0d7346f7aa77bb62a859bfd6c5675da9d212d3a36ef1672ef660b8c7c255cc0ec74858fba33f44c06699630a76b030ee333";
 static const char* elg_n = "8df2a494492276aa3d25759bb06869cbeac0d83afb8d0cf7cbb8324f0d7882e5d0762fc5b7210eafc2e9adac32ab7aac49693dfbf83724c2ec0736ee31c80290";
+
+int testVectorMul()
+{
+	uint32 a[4] = { 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff };
+	uint32 r[8];
+
+	mp32zero(8, r);
+	mp32sqr(r, 4, a);
+
+	printf("done\n");
+
+	return 0;
+}
 
 int testVectorInvMod(const dlkp_p* keypair)
 {
@@ -259,21 +273,36 @@ int testVectorRSA()
 	if (randomGeneratorContextInit(&rngc, randomGeneratorDefault()) == 0)
 	{
 		rsakp kp;
-		mp32number digest, s;
+		mp32number digest, s, scrt;
 
 		rsakpInit(&kp);
 		printf("making RSA CRT keypair\n");
-		rsakpMake(&kp, &rngc, 32);
+		rsakpMake(&kp, &rngc, 8);
 		printf("RSA CRT keypair generated\n");
 
 		mp32nzero(&digest);
 		mp32nzero(&s);
+		mp32nzero(&scrt);
 
-		mp32bnrnd(&kp.n, &rngc, &digest);
+		mp32bnrnd(&kp.p, &rngc, &digest);
 
-		rsapri(&kp, &digest, &s);
+		if (rsapri(&kp, &digest, &s) == 0)
+		{
+			printf("RSA sig is ");
+			mp32println(s.size, s.data);
+		}
 
-		rc = rsavrfy((rsapk*) &kp, &digest, &s);
+		if (rsapricrt(&kp, &digest, &scrt) == 0)
+		{
+			printf("RSA crt sig is ");
+			mp32println(s.size, s.data);
+		}
+
+		if (mp32eqx(s.size, s.data, scrt.size, scrt.data) == 0)
+		{
+			printf("sig and crt sig are identical\n");
+			rc = rsavrfy((rsapk*) &kp, &digest, &s);
+		}
 
 		mp32nfree(&digest);
 		mp32nfree(&s);
@@ -315,6 +344,51 @@ int testVectorDLDP()
 
 		return result;
 	}
+	return 0;
+}
+
+int testVectorAES()
+{
+	uint8 k[24] = {
+		0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+		0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
+		0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17
+	};
+
+	uint8 src[16] = {
+		0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+		0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff
+	};
+
+	uint8 dst[16];
+
+	uint32 key[6];
+
+	aesParam param;
+
+	decodeInts(key, k, 4);
+
+	aesSetup(&param, key, 128, ENCRYPT);
+
+	aesEncrypt(&param, (uint32*) dst, (const uint32*) src);
+
+	decodeInts(key, src, 4);
+	printf("src: "); mp32println(4, key);
+	decodeInts(key, dst, 4);
+	printf("dst: "); mp32println(4, key);
+
+	printf("\n");
+
+	decodeInts(key, k, 4);
+	mp32println(4, key);
+
+	aesSetup(&param, key, 128, DECRYPT);
+	mp32println(4, (const uint32*) dst);
+	aesDecrypt(&param, (uint32*) src, (const uint32*) dst);
+
+	decodeInts(key, src, 4);
+	mp32println(4, key);
+
 	return 0;
 }
 
@@ -388,7 +462,7 @@ void testBlockCiphers()
 {
 	int i, k;
 
-	printf("  Testing the blockciphers:\n");
+	printf("Timing the blockciphers:\n");
 
 	for (i = 0; i < blockCipherCount(); i++)
 	{
@@ -433,7 +507,7 @@ void testBlockCiphers()
 				if (memcmp(dec_block, src_block, tmp->blocksize >> 2))
 				{
 					printf("failed\n");
-					continue;
+					// continue;
 				}
 				printf("ok\n");
 				printf("    speed measurement:\n");
@@ -501,7 +575,7 @@ void testHashFunctions()
 	{
 		hashFunctionContext hfc;
 
-		printf("  Testing the hash functions:\n");
+		printf("Timing the hash functions:\n");
 
 		for (i = 0; i < hashFunctionCount(); i++)
 		{
@@ -576,7 +650,7 @@ void testExpMods()
 		clock_t tstart, tstop;
 		#endif
 		
-		printf("Timing modular exponentiations\n");
+		printf("Timing modular exponentiations:\n");
 		printf("  (512 bits ^ 512 bits) mod 512 bits:");
 		mp32nsethex(&tmp, p_512);
 		mp32bset(&p, tmp.size, tmp.data);
@@ -592,7 +666,7 @@ void testExpMods()
 		#if HAVE_TIME_H
 		tstop = clock();
 		ttime = ((double)(tstop - tstart)) / CLOCKS_PER_SEC;
-		printf("   100x in %.3f seconds\n", ttime);
+		printf("    100x in %.3f seconds\n", ttime);
 		#endif
 		printf("  (768 bits ^ 768 bits) mod 768 bits:");
 		mp32nsethex(&tmp, p_768);
@@ -609,7 +683,7 @@ void testExpMods()
 		#if HAVE_TIME_H
 		tstop = clock();
 		ttime = ((double)(tstop - tstart)) / CLOCKS_PER_SEC;
-		printf("   100x in %.3f seconds\n", ttime);
+		printf("    100x in %.3f seconds\n", ttime);
 		#endif
 		printf("  (1024 bits ^ 1024 bits) mod 1024 bits:");
 		mp32nsethex(&tmp, p_1024);
@@ -626,7 +700,7 @@ void testExpMods()
 		#if HAVE_TIME_H
 		tstop = clock();
 		ttime = ((double)(tstop - tstart)) / CLOCKS_PER_SEC;
-		printf("   100x in %.3f seconds\n", ttime);
+		printf(" 100x in %.3f seconds\n", ttime);
 		#endif
 		/* now run a test with x having 160 bits */
 		mp32nsize(&x, 5);
@@ -640,7 +714,7 @@ void testExpMods()
 		#if HAVE_TIME_H
 		tstop = clock();
 		ttime = ((double)(tstop - tstart)) / CLOCKS_PER_SEC;
-		printf("   100x in %.3f seconds\n", ttime);
+		printf("  100x in %.3f seconds\n", ttime);
 		#endif
 		mp32bfree(&p);
 		mp32nfree(&g);
@@ -652,6 +726,76 @@ void testExpMods()
 	}
 	else
 		printf("random generator setup problem\n");
+}
+
+void testRSA()
+{
+	randomGeneratorContext rngc;
+	mp32number hm, s;
+	rsakp kp;
+
+	mp32nzero(&hm);
+	mp32nzero(&s);
+
+	printf("Timing RSA:\n");
+
+	rsakpInit(&kp);
+
+	if (randomGeneratorContextInit(&rngc, randomGeneratorDefault()) == 0)
+	{
+		int i;
+
+		#if HAVE_TIME_H
+		double ttime;
+		clock_t tstart, tstop;
+		#endif
+
+		printf("  generating 1024 bit crt keypair\n");
+
+		#if HAVE_TIME_H
+		tstart = clock();
+		#endif
+		rsakpMake(&kp, &rngc, (1024 >> 5));
+		#if HAVE_TIME_H
+		tstop = clock();
+		ttime = ((double)(tstop - tstart)) / CLOCKS_PER_SEC;
+		printf("    done in %.3f seconds\n", ttime);
+		#endif
+
+		mp32nsize(&hm, 4);
+		rngc.rng->next(rngc.param, hm.data, hm.size);
+
+		printf("  RSA sign:");
+		#if HAVE_TIME_H
+		tstart = clock();
+		#endif
+		for (i = 0; i < 100; i++)
+		{
+			rsapricrt(&kp, &hm, &s);
+		}
+		#if HAVE_TIME_H
+		tstop = clock();
+		ttime = ((double)(tstop - tstart)) / CLOCKS_PER_SEC;
+		printf("   100x in %.3f seconds\n", ttime);
+		#endif
+
+		printf("  RSA verify:");
+		#if HAVE_TIME_H
+		tstart = clock();
+		#endif
+		for (i = 0; i < 100; i++)
+		{
+			rsavrfy((rsapk*) &kp, &hm, &s);
+		}
+		#if HAVE_TIME_H
+		tstop = clock();
+		ttime = ((double)(tstop - tstart)) / CLOCKS_PER_SEC;
+		printf(" 100x in %.3f seconds\n", ttime);
+		#endif
+
+		rsakpFree(&kp);
+		randomGeneratorContextFree(&rngc);
+	}
 }
 
 void testDLAlgorithms()
@@ -668,6 +812,8 @@ void testDLAlgorithms()
 	dldp_pInit(&dp);
 	dlkp_pInit(&kp);
 
+	printf("Timing Discrete Logarithm algorithms:\n");
+
 	if (randomGeneratorContextInit(&rngc, randomGeneratorDefault()) == 0)
 	{
 		int i;
@@ -676,7 +822,7 @@ void testDLAlgorithms()
 		double ttime;
 		clock_t tstart, tstop;
 		#endif
-		printf("Generating P (1024 bits) Q (160 bits) G with order Q\n");
+		printf("  generating P (1024 bits) Q (160 bits) G with order Q\n");
 		#if HAVE_TIME_H
 		tstart = clock();
 		#endif
@@ -684,11 +830,11 @@ void testDLAlgorithms()
 		#if HAVE_TIME_H
 		tstop = clock();
 		ttime = ((double)(tstop - tstart)) / CLOCKS_PER_SEC;
-		printf("  done in %.3f seconds\n", ttime);
+		printf("    done in %.3f seconds\n", ttime);
 		#endif
 
 		dlkp_pInit(&kp);
-		printf("Generating keypair\n");
+		printf("  generating keypair\n");
 		#if HAVE_TIME_H
 		tstart = clock();
 		#endif
@@ -696,13 +842,13 @@ void testDLAlgorithms()
 		#if HAVE_TIME_H
 		tstop = clock();
 		ttime = ((double)(tstop - tstart)) / CLOCKS_PER_SEC;
-		printf("  done in %.3f seconds\n", ttime);
+		printf("    done in %.3f seconds\n", ttime);
 		#endif
 
 		mp32nsize(&hm, 5);
 		rngc.rng->next(rngc.param, hm.data, hm.size);
 		
-		printf("DSA signing (%d bits)\n", kp.param.p.size << 5);
+		printf("  DSA sign:");
 		#if HAVE_TIME_H
 		tstart = clock();
 		#endif
@@ -713,10 +859,10 @@ void testDLAlgorithms()
         #if HAVE_TIME_H
         tstop = clock();
         ttime = ((double)(tstop - tstart)) / CLOCKS_PER_SEC;
-        printf("  100x in %.3f seconds\n", ttime);
+        printf("   100x in %.3f seconds\n", ttime);
         #endif
 
-		printf("DSA verification (%d bits)\n", kp.param.p.size << 5);
+		printf("  DSA verify:");
 		#if HAVE_TIME_H
 		tstart = clock();
 		#endif
@@ -727,12 +873,12 @@ void testDLAlgorithms()
 		#if HAVE_TIME_H
 		tstop = clock();
 		ttime = ((double)(tstop - tstart)) / CLOCKS_PER_SEC;
-		printf("  100x in %.3f seconds\n", ttime);
+		printf(" 100x in %.3f seconds\n", ttime);
 		#endif
 		dlkp_pFree(&kp);
 		dldp_pFree(&dp);
 
-		printf("Generating P (1024 bits) Q (768 bits) G with order (P-1)\n");
+		printf("  generating P (1024 bits) Q (768 bits) G with order (P-1)\n");
 		#if HAVE_TIME_H
 		tstart = clock();
 		#endif
@@ -740,7 +886,7 @@ void testDLAlgorithms()
 		#if HAVE_TIME_H
 		tstop = clock();
 		ttime = ((double)(tstop - tstart)) / CLOCKS_PER_SEC;
-		printf("  done in %.3f seconds\n", ttime);
+		printf("    done in %.3f seconds\n", ttime);
 		#endif
 		dldp_pFree(&dp);
 
@@ -765,6 +911,11 @@ int main()
 
 	if (testVectorSHA256())
 		printf("SHA-256 works!\n");
+	else
+		exit(1);
+
+	if (testVectorAES())
+		printf("AES works!\n");
 	else
 		exit(1);
 
@@ -888,6 +1039,7 @@ int main()
 	testBlockCiphers();
 	testHashFunctions();
 	testExpMods();
+	testRSA();
 	testDLAlgorithms();
 
 	printf("done\n");

@@ -26,9 +26,7 @@
 #ifndef _BEECRYPT_H
 #define _BEECRYPT_H
 
-#ifdef HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "beecrypt.api.h"
 
 #include "memchunk.h"
 #include "mp32number.h"
