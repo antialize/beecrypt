@@ -569,7 +569,7 @@ void mp32neg(register uint32 xsize, register uint32* xdata)
 #ifndef ASM_MP32SETMUL
 uint32 mp32setmul(register uint32 size, register uint32* result, register const uint32* xdata, register uint32 y)
 {
-# if HAVE_UNSIGNED_LONG_LONG
+# if HAVE_64_BIT_UINT
 	register uint64 temp;
 	register uint32 carry = 0;
 
@@ -626,7 +626,7 @@ uint32 mp32setmul(register uint32 size, register uint32* result, register const 
 #ifndef ASM_MP32ADDMUL
 uint32 mp32addmul(register uint32 size, register uint32* result, register const uint32* xdata, register uint32 y)
 {
-# if HAVE_UNSIGNED_LONG_LONG
+# if HAVE_64_BIT_UINT
 	register uint64 temp;
 	register uint32 carry = 0;
 
@@ -729,7 +729,7 @@ void mp32mul(uint32* result, uint32 xsize, const uint32* xdata, uint32 ysize, co
 #ifndef ASM_MP32ADDSQRTRC
 uint32 mp32addsqrtrc(register uint32 size, register uint32* result, register const uint32* xdata)
 {
-# if HAVE_UNSIGNED_LONG_LONG
+# if HAVE_64_BIT_UINT
 	register uint64 temp;
 	register uint32 n, carry = 0;
 
@@ -1128,7 +1128,7 @@ void mp32gcd_w(uint32 size, const uint32* xdata, const uint32* ydata, uint32* re
 }
 #endif
 
-#if !HAVE_UNSIGNED_LONG_LONG
+#if !HAVE_64_BIT_UINT
 # ifndef ASM_MP32PNDIV
 uint32 mp32pndiv(uint32 xhi, uint32 xlo, uint32 y)
 {
@@ -1163,7 +1163,7 @@ uint32 mp32pndiv(uint32 xhi, uint32 xlo, uint32 y)
 uint32 mp32nmodw(uint32* result, uint32 xsize, const uint32* xdata, uint32 y, uint32* workspace)
 {
 	/* result size xsize, workspace size xsize+1 */
-	#if HAVE_UNSIGNED_LONG_LONG
+	#if HAVE_64_BIT_UINT
 	register uint64 temp;
 	#endif
 	register uint32 q;
@@ -1180,7 +1180,7 @@ uint32 mp32nmodw(uint32* result, uint32 xsize, const uint32* xdata, uint32 y, ui
 
 	while (qsize--)
 	{
-		#if HAVE_UNSIGNED_LONG_LONG
+		#if HAVE_64_BIT_UINT
 		/* get the two high words of r into temp */
 		temp = rdata[0];
 		temp <<= 32;
@@ -1210,7 +1210,7 @@ uint32 mp32nmodw(uint32* result, uint32 xsize, const uint32* xdata, uint32 y, ui
 void mp32nmod(uint32* result, uint32 xsize, const uint32* xdata, uint32 ysize, const uint32* ydata, uint32* workspace)
 {
 	/* result size xsize, workspace size xsize+1 */
-	#if HAVE_UNSIGNED_LONG_LONG
+	#if HAVE_64_BIT_UINT
 	register uint64 temp;
 	#endif
 	register uint32 q;
@@ -1225,7 +1225,7 @@ void mp32nmod(uint32* result, uint32 xsize, const uint32* xdata, uint32 ysize, c
 	while (qsize--)
 	{
 		/* get the two high words of r into temp */
-		#if HAVE_UNSIGNED_LONG_LONG
+		#if HAVE_64_BIT_UINT
 		temp = rdata[0];
 		temp <<= 32;
 		temp += rdata[1];
@@ -1254,7 +1254,7 @@ void mp32ndivmod(uint32* result, uint32 xsize, const uint32* xdata, uint32 ysize
 	/* result must be xsize+1 in length */
 	/* workspace must be ysize+1 in length */
 	/* expect ydata to be normalized */
-	#if HAVE_UNSIGNED_LONG_LONG
+	#if HAVE_64_BIT_UINT
 	register uint64 temp;
 	#endif
 	register uint32 q;
@@ -1272,7 +1272,7 @@ void mp32ndivmod(uint32* result, uint32 xsize, const uint32* xdata, uint32 ysize
 
 	while (qsize--)
 	{
-		#if HAVE_UNSIGNED_LONG_LONG
+		#if HAVE_64_BIT_UINT
 		/* get the two high words of r into temp */
 		temp = result[0];
 		temp <<= 32;

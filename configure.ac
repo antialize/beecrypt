@@ -262,6 +262,9 @@ AH_TEMPLATE([HAVE_DEV_TTY],[Define to 1 if your system has device /dev/tty])
 AH_TEMPLATE([HAVE_LONG_LONG],[Define to 1 if your compiler knows the 'long long' type])
 AH_TEMPLATE([HAVE_UNSIGNED_LONG_LONG],[Define to 1 if your compiler knows the 'unsigned long long' type])
 
+AH_TEMPLATE([HAVE_64_BIT_INT], [Define to 1 if your compiler has a 64-bit signed integer type])
+AH_TEMPLATE([HAVE_64_BIT_UINT],[Define to 1 if your compiler has a 64-bit unsigned integer type])
+
 AH_BOTTOM([
 #if LINUX
 #define _LIBC_REENTRANT
@@ -484,24 +487,28 @@ fi
 
 if test "$ac_cv_sizeof_long" -eq 8; then
   AC_SUBST(int64_type,"long")
+  AC_DEFINE([HAVE_64_BIT_INT])
 else
   AC_CHECK_SIZEOF(long long)
   if test "$ac_cv_sizeof_long_long" -eq 8; then
     AC_DEFINE([HAVE_LONG_LONG])
     AC_SUBST(int64_type,"long long")
+    AC_DEFINE([HAVE_64_BIT_INT])
   else
-    AC_MSG_ERROR([compiler has no 8 byte integer])
+    AC_MSG_WARN([compiler has no 64-bit integer; library may not compile without modifications])
   fi
 fi
 if test "$ac_cv_sizeof_unsigned_long" -eq 8; then
   AC_SUBST(uint64_type,"unsigned long")
+  AC_DEFINE([HAVE_64_BIT_UINT])
 else
   AC_CHECK_SIZEOF(unsigned long long)
   if test "$ac_cv_sizeof_unsigned_long_long" -eq 8; then
     AC_DEFINE([HAVE_UNSIGNED_LONG_LONG])
     AC_SUBST(uint64_type,"unsigned long long")
+   AC_DEFINE([HAVE_64_BIT_UINT])
   else
-    AC_MSG_ERROR([compiler has no 8 byte unsigned integer])
+    AC_MSG_WARN([compiler has no 64-bit unsigned integer; library may not compile without modifications])
   fi
 fi
 

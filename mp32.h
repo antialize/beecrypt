@@ -185,7 +185,7 @@ void mp32sqr(uint32*, uint32, const uint32*);
 BEECRYPTAPI
 void mp32gcd_w(uint32, const uint32*, const uint32*, uint32*, uint32*);
 
-#if !HAVE_UNSIGNED_LONG_LONG
+#if !HAVE_64_BIT_UINT
 BEECRYPTAPI
 uint32 mp32pndiv(uint32, uint32, uint32);
 #endif
