@@ -1131,14 +1131,14 @@ void mpgcd_w(size_t size, const mpw* xdata, const mpw* ydata, mpw* result, mpw* 
 #ifndef ASM_MPEXTGCD_W
 /* needs workspace of (6*size+6) words */
 /* used to compute the modular inverse */
-int mpextgcd_w(size_t size, const mpw* xdata, const mpw* ndata, mpw* result, mpw* wksp)
+int mpextgcd_w(size_t size, const mpw* xdata, const mpw* ydata, mpw* result, mpw* wksp)
 {
 	/*
-	 * For computing a modular inverse, pass the modulus as ndata and the number
-	 * to be inverted as xdata.
+	 * For computing a modular inverse, pass the modulus as xdata and the number
+	 * to be inverted as ydata.
 	 *
 	 * Fact: if a element of Zn, then a is invertible if and only if gcd(a,n) = 1
-	 * Hence: if ndata is even, then x must be odd, otherwise the gcd(x,n) >= 2
+	 * Hence: if n is even, then a must be odd, otherwise the gcd(a,n) >= 2
 	 *
 	 * The calling routine must guarantee this condition.
 	 */
@@ -1153,8 +1153,8 @@ int mpextgcd_w(size_t size, const mpw* xdata, const mpw* ndata, mpw* result, mpw
 	mpw* cdata = bdata+sizep;
 	mpw* ddata = cdata+sizep;
 
-	mpsetx(sizep, udata, size, ndata);
-	mpsetx(sizep, vdata, size, xdata);
+	mpsetx(sizep, udata, size, xdata);
+	mpsetx(sizep, vdata, size, ydata);
 	mpzero(sizep, bdata);
 	mpsetw(sizep, ddata, 1);
 
@@ -1172,8 +1172,8 @@ int mpextgcd_w(size_t size, const mpw* xdata, const mpw* ndata, mpw* result, mpw
 
 			if (mpodd(sizep, bdata) || (full && mpodd(sizep, adata)))
 			{
-				if (full) mpaddx(sizep, adata, size, xdata);
-				mpsubx(sizep, bdata, size, ndata);
+				if (full) mpaddx(sizep, adata, size, ydata);
+				mpsubx(sizep, bdata, size, xdata);
 			}
 
 			if (full) mpsdivtwo(sizep, adata);
@@ -1185,8 +1185,8 @@ int mpextgcd_w(size_t size, const mpw* xdata, const mpw* ndata, mpw* result, mpw
 
 			if (mpodd(sizep, ddata) || (full && mpodd(sizep, cdata)))
 			{
-				if (full) mpaddx(sizep, cdata, size, xdata);
-				mpsubx(sizep, ddata, size, ndata);
+				if (full) mpaddx(sizep, cdata, size, ydata);
+				mpsubx(sizep, ddata, size, xdata);
 			}
 
 			if (full) mpsdivtwo(sizep, cdata);
@@ -1213,15 +1213,15 @@ int mpextgcd_w(size_t size, const mpw* xdata, const mpw* ndata, mpw* result, mpw
 					if (*ddata & MP_MSBMASK)
 					{
 						/* keep adding the modulus until we get a carry */
-						while (!mpaddx(sizep, ddata, size, ndata));
+						while (!mpaddx(sizep, ddata, size, xdata));
 					} 
 					else
 					{
-						/* in some computations, d ends up > n, hence:
-						 * keep subtracting n from d until d < n
+						/* in some computations, d ends up > x, hence:
+						 * keep subtracting n from d until d < x
 						 */
-						while (mpgtx(sizep, ddata, size, ndata))
-							mpsubx(sizep, ddata, size, ndata);
+						while (mpgtx(sizep, ddata, size, xdata))
+							mpsubx(sizep, ddata, size, xdata);
 					}
 					mpsetx(size, result, sizep, ddata);
 				}
