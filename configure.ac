@@ -171,7 +171,6 @@ AC_AIX
 # Checks for C compiler and preprocessor
 AC_PROG_CC
 AC_PROG_CPP
-AM_PROG_AS
 
 # Checks for compiler characteristics and flags
 if test "$ac_cv_c_compiler_gnu" = yes; then
