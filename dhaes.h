@@ -19,7 +19,7 @@
 
 /*!\file dhaes.h
  * \brief DHAES encryption scheme, headers.
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup DL_m DL_dh_m
  */
 
@@ -42,8 +42,8 @@ typedef struct
 typedef struct
 {
 	dldp_p						param;
-	mp32number					pub;
-	mp32number					pri;
+	mpnumber					pub;
+	mpnumber					pri;
 	hashFunctionContext			hash;
 	blockCipherContext			cipher;
 	keyedHashFunctionContext	mac;
@@ -61,16 +61,16 @@ int dhaes_pUsable(const dhaes_pParameters*);
 BEECRYPTAPI
 int dhaes_pContextInit       (dhaes_pContext*, const dhaes_pParameters*);
 BEECRYPTAPI
-int dhaes_pContextInitDecrypt(dhaes_pContext*, const dhaes_pParameters*, const mp32number*);
+int dhaes_pContextInitDecrypt(dhaes_pContext*, const dhaes_pParameters*, const mpnumber*);
 BEECRYPTAPI
-int dhaes_pContextInitEncrypt(dhaes_pContext*, const dhaes_pParameters*, const mp32number*);
+int dhaes_pContextInitEncrypt(dhaes_pContext*, const dhaes_pParameters*, const mpnumber*);
 BEECRYPTAPI
 int dhaes_pContextFree       (dhaes_pContext*);
 
 BEECRYPTAPI
-memchunk* dhaes_pContextEncrypt(dhaes_pContext*,       mp32number*,       mp32number*, const memchunk*, randomGeneratorContext*);
+memchunk* dhaes_pContextEncrypt(dhaes_pContext*,       mpnumber*,       mpnumber*, const memchunk*, randomGeneratorContext*);
 BEECRYPTAPI
-memchunk* dhaes_pContextDecrypt(dhaes_pContext*, const mp32number*, const mp32number*, const memchunk*);
+memchunk* dhaes_pContextDecrypt(dhaes_pContext*, const mpnumber*, const mpnumber*, const memchunk*);
 
 #ifdef __cplusplus
 }
