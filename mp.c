@@ -945,32 +945,6 @@ size_t mplszcnt(size_t size, const mpw* data)
 }
 #endif
 
-#ifndef ASM_MPPOPCNT
-size_t mppopcnt(size_t size, const mpw* data)
-{
-	register mpw xmask = (mpw)((*data & MP_MSBMASK) ? -1 : 0);
-	register size_t nbits = MP_WBITS * size;
-	register size_t i = 0;
-
-	while (i < size)
-	{
-		register mpw temp = (data[i++] ^ xmask);
-		if (temp)
-		{
-			while (!(temp & MP_MSBMASK))
-			{
-				nbits--;
-				temp <<= 1;
-			}
-			break;
-		}
-		else
-			nbits -= MP_WBITS;
-	}
-	return nbits;
-}
-#endif
-
 #ifndef ASM_MPLSHIFT
 void mplshift(size_t size, mpw* data, size_t count)
 {

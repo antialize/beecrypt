@@ -533,9 +533,6 @@ BEECRYPTAPI
 size_t mplszcnt(size_t size, const mpw* data);
 
 BEECRYPTAPI
-size_t mppopcnt(size_t size, const mpw* data);
-
-BEECRYPTAPI
 void mplshift(size_t size, mpw* data, size_t count);
 
 BEECRYPTAPI
