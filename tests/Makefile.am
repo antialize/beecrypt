@@ -3,7 +3,7 @@
 #
 # Copyright (c) 2001, 2002, 2003 Virtual Unlimited B.V.
 #
-# Author: Bob Deblier <bob@virtualunlimited.com>
+# Author: Bob Deblier <bob.deblier@pandora.be>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -25,9 +25,9 @@ AUTOMAKE_OPTIONS = gnu no-dependencies
 INCLUDES = -I$(top_srcdir)
 LDADD = $(top_builddir)/libbeecrypt.la
 
-TESTS = testmd5 testsha1 testsha256 testhmacmd5 testhmacsha1 testdldp testdsa
+TESTS = testmd5 testsha1 testsha256 testhmacmd5 testhmacsha1 testdsa testrsa testdldp
 
-check_PROGRAMS = testmd5 testsha1 testsha256 testhmacmd5 testhmacsha1 testdldp testdsa  
+check_PROGRAMS = testmd5 testsha1 testsha256 testhmacmd5 testhmacsha1 testdsa testrsa testdldp
 
 testmd5_SOURCES = testmd5.c
 
@@ -39,12 +39,12 @@ testhmacmd5_SOURCES = testhmacmd5.c
 
 testhmacsha1_SOURCES = testhmacsha1.c
 
-testdldp_SOURCES = testdldp.c
-
 testdsa_SOURCES = testdsa.c
 
-EXTRA_PROGRAMS = benchme beetest
+testrsa_SOURCES = testrsa.c
+
+testdldp_SOURCES = testdldp.c
+
+EXTRA_PROGRAMS = benchme
 
 benchme_SOURCES = benchme.c
-
-beetest_SOURCES = beetest.c
