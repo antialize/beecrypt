@@ -182,19 +182,26 @@ testrsa_SOURCES = testrsa.c
 
 testdldp_SOURCES = testdldp.c
 
-EXTRA_PROGRAMS = benchme benchhf
+EXTRA_PROGRAMS = benchme benchhf benchbc
 
 benchme_SOURCES = benchme.c
 
 benchhf_SOURCES = benchhf.c
+
+benchbc_SOURCES = benchbc.c
 subdir = tests
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/beecrypt.gnu.h
 CONFIG_CLEAN_FILES =
-EXTRA_PROGRAMS = benchme$(EXEEXT) benchhf$(EXEEXT)
+EXTRA_PROGRAMS = benchme$(EXEEXT) benchhf$(EXEEXT) benchbc$(EXEEXT)
 check_PROGRAMS = testmd5$(EXEEXT) testsha1$(EXEEXT) testsha256$(EXEEXT) \
 	testhmacmd5$(EXEEXT) testhmacsha1$(EXEEXT) testaes$(EXEEXT) \
 	testblowfish$(EXEEXT) testrsa$(EXEEXT) testdldp$(EXEEXT)
+am_benchbc_OBJECTS = benchbc.$(OBJEXT)
+benchbc_OBJECTS = $(am_benchbc_OBJECTS)
+benchbc_LDADD = $(LDADD)
+benchbc_DEPENDENCIES = $(top_builddir)/libbeecrypt.la
+benchbc_LDFLAGS =
 am_benchhf_OBJECTS = benchhf.$(OBJEXT)
 benchhf_OBJECTS = $(am_benchhf_OBJECTS)
 benchhf_LDADD = $(LDADD)
@@ -261,13 +268,13 @@ LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES = $(benchhf_SOURCES) $(benchme_SOURCES) $(testaes_SOURCES) \
-	$(testblowfish_SOURCES) $(testdldp_SOURCES) \
+DIST_SOURCES = $(benchbc_SOURCES) $(benchhf_SOURCES) $(benchme_SOURCES) \
+	$(testaes_SOURCES) $(testblowfish_SOURCES) $(testdldp_SOURCES) \
 	$(testhmacmd5_SOURCES) $(testhmacsha1_SOURCES) \
 	$(testmd5_SOURCES) $(testrsa_SOURCES) $(testsha1_SOURCES) \
 	$(testsha256_SOURCES)
 DIST_COMMON = Makefile.am Makefile.in
-SOURCES = $(benchhf_SOURCES) $(benchme_SOURCES) $(testaes_SOURCES) $(testblowfish_SOURCES) $(testdldp_SOURCES) $(testhmacmd5_SOURCES) $(testhmacsha1_SOURCES) $(testmd5_SOURCES) $(testrsa_SOURCES) $(testsha1_SOURCES) $(testsha256_SOURCES)
+SOURCES = $(benchbc_SOURCES) $(benchhf_SOURCES) $(benchme_SOURCES) $(testaes_SOURCES) $(testblowfish_SOURCES) $(testdldp_SOURCES) $(testhmacmd5_SOURCES) $(testhmacsha1_SOURCES) $(testmd5_SOURCES) $(testrsa_SOURCES) $(testsha1_SOURCES) $(testsha256_SOURCES)
 
 all: all-am
 
@@ -285,6 +292,9 @@ clean-checkPROGRAMS:
 	  echo " rm -f $$p $$f"; \
 	  rm -f $$p $$f ; \
 	done
+benchbc$(EXEEXT): $(benchbc_OBJECTS) $(benchbc_DEPENDENCIES) 
+	@rm -f benchbc$(EXEEXT)
+	$(LINK) $(benchbc_LDFLAGS) $(benchbc_OBJECTS) $(benchbc_LDADD) $(LIBS)
 benchhf$(EXEEXT): $(benchhf_OBJECTS) $(benchhf_DEPENDENCIES) 
 	@rm -f benchhf$(EXEEXT)
 	$(LINK) $(benchhf_LDFLAGS) $(benchhf_OBJECTS) $(benchhf_LDADD) $(LIBS)

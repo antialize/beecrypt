@@ -47,8 +47,10 @@ testrsa_SOURCES = testrsa.c
 
 testdldp_SOURCES = testdldp.c
 
-EXTRA_PROGRAMS = benchme benchhf
+EXTRA_PROGRAMS = benchme benchhf benchbc
 
 benchme_SOURCES = benchme.c
 
 benchhf_SOURCES = benchhf.c
+
+benchbc_SOURCES = benchbc.c
