@@ -41,13 +41,16 @@
 #include "beecrypt/c++/provider/RSAKeyFactory.h"
 #include "beecrypt/c++/provider/RSAKeyPairGenerator.h"
 #include "beecrypt/c++/provider/SHA1Digest.h"
+#include "beecrypt/c++/provider/SHA256Digest.h"
+#include "beecrypt/c++/provider/SHA512Digest.h"
 #include "beecrypt/c++/provider/SHA1withDSASignature.h"
 #include "beecrypt/c++/provider/SHA1withRSASignature.h"
 #include "beecrypt/c++/provider/SHA256withRSASignature.h"
+#include "beecrypt/c++/provider/SHA512withRSASignature.h"
 
 namespace {
 	const String PROVIDER_NAME = UNICODE_STRING_SIMPLE("BeeCrypt++");
-	const String PROVIDER_INFO = UNICODE_STRING_SIMPLE("Copyright (c) 2004 Beeyond Software Holding");
+	const String PROVIDER_INFO = UNICODE_STRING_SIMPLE("Copyright (c) 2004 Beeyond Software Holding BV");
 	const double PROVIDER_VERSION = 0.1;
 }
 
@@ -180,6 +183,18 @@ void* beecrypt_SHA1Digest_create()
 }
 
 PROVAPI
+void* beecrypt_SHA256Digest_create()
+{
+	return new beecrypt::provider::SHA256Digest();
+}
+
+PROVAPI
+void* beecrypt_SHA512Digest_create()
+{
+	return new beecrypt::provider::SHA512Digest();
+}
+
+PROVAPI
 void* beecrypt_SHA1withDSASignature_create()
 {
 	return new beecrypt::provider::SHA1withDSASignature();
@@ -195,6 +210,12 @@ PROVAPI
 void* beecrypt_SHA256withRSASignature_create()
 {
 	return new beecrypt::provider::SHA256withRSASignature();
+}
+
+PROVAPI
+void* beecrypt_SHA512withRSASignature_create()
+{
+	return new beecrypt::provider::SHA512withRSASignature();
 }
 
 }
@@ -239,12 +260,15 @@ void BeeCryptProvider::putall()
 	put("Mac.HMAC-SHA-256"                         , "beecrypt_HMACSHA256_create");
 	put("MessageDigest.MD5"                        , "beecrypt_MD5Digest_create");
 	put("MessageDigest.SHA-1"                      , "beecrypt_SHA1Digest_create");
+	put("MessageDigest.SHA-256"                    , "beecrypt_SHA256Digest_create");
+	put("MessageDigest.SHA-512"                    , "beecrypt_SHA512Digest_create");
 	put("SecretKeyFactory.PKCS#12/PBE"             , "beecrypt_PKCS12KeyFactory_create");
 	put("SecureRandom.BEE"                         , "beecrypt_BeeSecureRandom_create");
 	put("Signature.MD5withRSA"                     , "beecrypt_MD5withRSASignature_create");
 	put("Signature.SHA1withDSA"                    , "beecrypt_SHA1withDSASignature_create");
 	put("Signature.SHA1withRSA"                    , "beecrypt_SHA1withRSASignature_create");
 	put("Signature.SHA256withRSA"                  , "beecrypt_SHA256withRSASignature_create");
+	put("Signature.SHA512withRSA"                  , "beecrypt_SHA512withRSASignature_create");
 	put("Alg.Alias.KeyFactory.DiffieHellman"       , "KeyFactory.DH");
 	put("Alg.Alias.KeyPairGenerator.DiffieHellman" , "KeyFactory.DH");
 	put("Alg.Alias.Signature.DSS"                  , "Signature.SHA1withDSA");
