@@ -110,7 +110,7 @@ OBJFILES = \
 	timestamp.o
 
 DISTFILES = \
-	COPYING INSTALL NEWS README README.WIN32 DOCUMENTATION BUGS BENCHMARKS ChangeLog \
+	COPYING INSTALL NEWS README README.WIN32 AUTHORS DOCUMENTATION BUGS BENCHMARKS ChangeLog \
 	config.guess config.sub install-sh \
 	configure.in configure Makefile.in Makefile.mak \
 	beecrypt.mcp \

@@ -665,7 +665,7 @@ void testDLParams()
 	}
 }
 
-#if 1
+#if 0
 int main()
 {
 	dlkp_p keypair;
