@@ -369,7 +369,7 @@ INPUT                  = @top_srcdir@/Doxyheader \
                          @top_srcdir@/c++/crypto/spec \
                          @top_srcdir@/c++/io \
                          @top_srcdir@/c++/lang \
-                         @top_srcdir@/c++/provider \
+                         @top_srcdir@/c++/nio \
                          @top_srcdir@/c++/security \
                          @top_srcdir@/c++/security/cert \
                          @top_srcdir@/c++/security/interfaces \
