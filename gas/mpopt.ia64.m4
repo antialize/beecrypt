@@ -45,9 +45,11 @@ dnl	prepare modulo-scheduled loop
 LOCAL(mpadd_loop):
 	(p16) ld8 r32 = [alt],-8
 	(p16) ld8 r35 = [src],-8
+	.pred.rel.mutex p20,p22
 	(p20) add r36 = r33,r36
 	(p22) add r36 = r33,r36,1
 	;;
+	.pred.rel.mutex p20,p22
 	(p20) cmp.leu p19,p21 = r33,r36
 	(p22) cmp.ltu p19,p21 = r33,r36
 	(p18) st8 [dst] = r37,-8
@@ -57,6 +59,7 @@ dnl	loop epilogue: final store
 	(p18) st8 [dst] = r37,-8
 
 dnl	return carry
+	.pred.rel.mutex p20,p22
 	(p20) add ret0 = r0,r0
 	(p22) add ret0 = r0,r0,1
 	;;
@@ -84,9 +87,11 @@ dnl	prepare modulo-scheduled loop
 LOCAL(mpsub_loop):
 	(p16) ld8 r32 = [alt],-8
 	(p16) ld8 r35 = [src],-8
+	.pred.rel.mutex p20,p22
 	(p20) sub r36 = r33,r36
 	(p22) sub r36 = r33,r36,1
 	;;
+	.pred.rel.mutex p20,p22
 	(p20) cmp.geu p19,p21 = r33,r36
 	(p22) cmp.gtu p19,p21 = r33,r36
 	(p18) st8 [dst] = r37,-8
@@ -96,6 +101,7 @@ dnl	loop epilogue: final store
 	(p18) st8 [dst] = r37,-8
 
 dnl	return carry
+	.pred.rel.mutex p20,p22
 	(p20) add ret0 = r0,r0
 	(p22) add ret0 = r0,r0,1
 	;;
@@ -126,7 +132,7 @@ LOCAL(mpsetmul_loop):
 	(p16) ldf8 f32 = [src],-8
 	(p18) stf8 [dst] = f35,-8
 	(p17) xma.lu f34 = f6,f33,f7
-	(p17) xma.hu f7  = f6,f33,f7;;
+	(p17) xma.hu f7  = f6,f33,f7
 	br.ctop.dptk LOCAL(mpsetmul_loop);;
 
 dnl	return carry
@@ -156,9 +162,10 @@ dnl	prepare the rotate-in carry
 dnl	prepare modulo-scheduled loop
 	mov ar.lc = sze
 	mov ar.ec = 4
-	mov pr.rot = ((1 << 16) | (1 << 21));
+	mov pr.rot = ((1 << 16) | (1 << 21));;
 
 LOCAL(mpaddmul_loop):
+	.pred.rel.mutex p24,p26
 	(p18) getf.sig r37 = f35
 	(p24) add r35 = r38,r35
 	(p17) xma.lu f34 = f6,f33,f37
@@ -169,6 +176,7 @@ LOCAL(mpaddmul_loop):
 	(p16) ldf8 f36 = [alt],-8
 	;;
 dnl	set carry from this operation
+	.pred.rel.mutex p24,p26
 	(p24) cmp.leu p23,p25 = r38,r35
 	(p26) cmp.ltu p23,p25 = r38,r35
 	(p20) st8 [dst] = r36,-8
@@ -178,6 +186,7 @@ dnl	loop epilogue: final store
 	(p20) st8 [dst] = r36,-8
 
 dnl	return carry
+	.pred.rel.mutex p24,p26
 	(p24) add ret0 = r35,r0
 	(p26) add ret0 = r35,r0,1
 
@@ -206,7 +215,7 @@ dnl	prepare the rotate-in carry
 dnl	prepare modulo-scheduled loop
 	mov ar.lc = sze
 	mov ar.ec = 5
-	mov pr.rot = ((1 << 16) | (1 << 21));
+	mov pr.rot = ((1 << 16) | (1 << 21));;
 
 LOCAL(mpaddsqrtrc_loop):
 	(p16) ldf8 f32 = [src],-8

@@ -22,6 +22,17 @@ dnl  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 define(`saved_pfs',`r14')
 define(`saved_lc',`r15')
 
+ifelse(substr(ASM_OS,0,5),linux,`
+undefine(`C_FUNCTION_BEGIN')
+define(C_FUNCTION_BEGIN,`
+        TEXTSEG
+        ALIGN
+        GLOBL SYMNAME($1)#
+        .proc SYMNAME($1)#
+SYMNAME($1):
+')
+')
+
 ifelse(substr(ASM_OS,0,4),hpux,`
 undefine(`C_FUNCTION_BEGIN')
 define(C_FUNCTION_BEGIN,`
