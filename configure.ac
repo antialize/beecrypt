@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([beecrypt],[3.0.1],[bob.deblier@pandora.be])
+AC_INIT([beecrypt],[3.1.0],[bob.deblier@pandora.be])
 AM_INIT_AUTOMAKE
 AC_CANONICAL_TARGET
 AC_CONFIG_SRCDIR(beecrypt.h)
