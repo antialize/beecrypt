@@ -1437,7 +1437,7 @@ int i2osp(byte *osdata, size_t ossize, const mpw* idata, size_t isize)
 
 int os2ip(mpw* idata, size_t isize, const byte* osdata, size_t ossize)
 {
-	size_t required = MP_BYTES_TO_WORDS(isize + MP_WBYTES - 1);
+	size_t required = MP_BYTES_TO_WORDS(ossize + MP_WBYTES - 1);
 
 	if (isize >= required)
 	{
