@@ -1,7 +1,7 @@
 #
 # Makefile.am's purpose is to build the beetest_ test_ program.
 #
-# Copyright (c) 2001, 2002 Virtual Unlimited B.V.
+# Copyright (c) 2001, 2002, 2003 Virtual Unlimited B.V.
 #
 # Author: Bob Deblier <bob@virtualunlimited.com>
 #
@@ -25,7 +25,7 @@ AUTOMAKE_OPTIONS = gnu no-dependencies
 INCLUDES = -I$(top_srcdir)
 LDADD = $(top_builddir)/libbeecrypt.la
 
-TESTS = testmd5 testsha1 testsha256 testhmacmd5 testhmacsha1 testdldp testdsa 
+TESTS = testmd5 testsha1 testsha256 testhmacmd5 testhmacsha1 testdldp testdsa
 
 check_PROGRAMS = testmd5 testsha1 testsha256 testhmacmd5 testhmacsha1 testdldp testdsa  
 
@@ -43,6 +43,8 @@ testdldp_SOURCES = testdldp.c
 
 testdsa_SOURCES = testdsa.c
 
-EXTRA_PROGRAMS = beetest
- 
+EXTRA_PROGRAMS = benchme beetest
+
+benchme_SOURCES = benchme.c
+
 beetest_SOURCES = beetest.c

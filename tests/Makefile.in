@@ -17,7 +17,7 @@
 #
 # Makefile.am's purpose is to build the beetest_ test_ program.
 #
-# Copyright (c) 2001, 2002 Virtual Unlimited B.V.
+# Copyright (c) 2001, 2002, 2003 Virtual Unlimited B.V.
 #
 # Author: Bob Deblier <bob@virtualunlimited.com>
 #
@@ -124,7 +124,7 @@ AUTOMAKE_OPTIONS = gnu no-dependencies
 INCLUDES = -I$(top_srcdir)
 LDADD = $(top_builddir)/libbeecrypt.la
 
-TESTS = testmd5 testsha1 testsha256 testhmacmd5 testhmacsha1 testdldp testdsa 
+TESTS = testmd5 testsha1 testsha256 testhmacmd5 testhmacsha1 testdldp testdsa
 
 check_PROGRAMS = testmd5 testsha1 testsha256 testhmacmd5 testhmacsha1 testdldp testdsa  
 
@@ -142,14 +142,16 @@ testdldp_SOURCES = testdldp.c
 
 testdsa_SOURCES = testdsa.c
 
-EXTRA_PROGRAMS = beetest
+EXTRA_PROGRAMS = benchme beetest
+
+benchme_SOURCES = benchme.c
 
 beetest_SOURCES = beetest.c
 subdir = tests
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/beecrypt.gnu.h
 CONFIG_CLEAN_FILES =
-EXTRA_PROGRAMS = beetest$(EXEEXT)
+EXTRA_PROGRAMS = benchme$(EXEEXT) beetest$(EXEEXT)
 check_PROGRAMS = testmd5$(EXEEXT) testsha1$(EXEEXT) testsha256$(EXEEXT) \
 	testhmacmd5$(EXEEXT) testhmacsha1$(EXEEXT) testdldp$(EXEEXT) \
 	testdsa$(EXEEXT)
@@ -158,6 +160,11 @@ beetest_OBJECTS = $(am_beetest_OBJECTS)
 beetest_LDADD = $(LDADD)
 beetest_DEPENDENCIES = $(top_builddir)/libbeecrypt.la
 beetest_LDFLAGS =
+am_benchme_OBJECTS = benchme.$(OBJEXT)
+benchme_OBJECTS = $(am_benchme_OBJECTS)
+benchme_LDADD = $(LDADD)
+benchme_DEPENDENCIES = $(top_builddir)/libbeecrypt.la
+benchme_LDFLAGS =
 am_testdldp_OBJECTS = testdldp.$(OBJEXT)
 testdldp_OBJECTS = $(am_testdldp_OBJECTS)
 testdldp_LDADD = $(LDADD)
@@ -209,11 +216,12 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 CFLAGS = @CFLAGS@
-DIST_SOURCES = $(beetest_SOURCES) $(testdldp_SOURCES) $(testdsa_SOURCES) \
-	$(testhmacmd5_SOURCES) $(testhmacsha1_SOURCES) \
-	$(testmd5_SOURCES) $(testsha1_SOURCES) $(testsha256_SOURCES)
+DIST_SOURCES = $(beetest_SOURCES) $(benchme_SOURCES) $(testdldp_SOURCES) \
+	$(testdsa_SOURCES) $(testhmacmd5_SOURCES) \
+	$(testhmacsha1_SOURCES) $(testmd5_SOURCES) $(testsha1_SOURCES) \
+	$(testsha256_SOURCES)
 DIST_COMMON = Makefile.am Makefile.in
-SOURCES = $(beetest_SOURCES) $(testdldp_SOURCES) $(testdsa_SOURCES) $(testhmacmd5_SOURCES) $(testhmacsha1_SOURCES) $(testmd5_SOURCES) $(testsha1_SOURCES) $(testsha256_SOURCES)
+SOURCES = $(beetest_SOURCES) $(benchme_SOURCES) $(testdldp_SOURCES) $(testdsa_SOURCES) $(testhmacmd5_SOURCES) $(testhmacsha1_SOURCES) $(testmd5_SOURCES) $(testsha1_SOURCES) $(testsha256_SOURCES)
 
 all: all-am
 
@@ -234,6 +242,9 @@ clean-checkPROGRAMS:
 beetest$(EXEEXT): $(beetest_OBJECTS) $(beetest_DEPENDENCIES) 
 	@rm -f beetest$(EXEEXT)
 	$(LINK) $(beetest_LDFLAGS) $(beetest_OBJECTS) $(beetest_LDADD) $(LIBS)
+benchme$(EXEEXT): $(benchme_OBJECTS) $(benchme_DEPENDENCIES) 
+	@rm -f benchme$(EXEEXT)
+	$(LINK) $(benchme_LDFLAGS) $(benchme_OBJECTS) $(benchme_LDADD) $(LIBS)
 testdldp$(EXEEXT): $(testdldp_OBJECTS) $(testdldp_DEPENDENCIES) 
 	@rm -f testdldp$(EXEEXT)
 	$(LINK) $(testdldp_LDFLAGS) $(testdldp_OBJECTS) $(testdldp_LDADD) $(LIBS)
