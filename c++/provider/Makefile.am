@@ -4,16 +4,22 @@ LIBS = -licuuc -licuio
 
 AUTOMAKE_OPTIONS = gnu no-dependencies
 
-pkgaltlibdir=$(prefix)/lib@LIBALT@
+pkgaltlibdir=$(prefix)/lib@LIBALT@/beecrypt
 pkgaltlib_LTLIBRARIES = base.la
 
+dist_sysconf_DATA = beecrypt.conf
+
 base_la_SOURCES = \
+AESCipher.cxx \
 BeeCertificateFactory.cxx \
 BeeCertPathValidator.cxx \
 BeeCryptProvider.cxx \
 BeeKeyFactory.cxx \
 BeeKeyStore.cxx \
 BeeSecureRandom.cxx \
+BlockCipher.cxx \
+BlowfishCipher.cxx \
+DHKeyAgreement.cxx \
 DHKeyFactory.cxx \
 DHKeyPairGenerator.cxx \
 DHParameterGenerator.cxx \
@@ -53,12 +59,16 @@ base_la_LDFLAGS = -module
 base_la_LIBADD = $(top_builddir)/c++/libbeecrypt_cxx.la
 
 noinst_HEADERS = \
+AESCipher.h \
 BeeCertificateFactory.h \
 BeeCertPathValidator.h \
 BeeCryptProvider.h \
 BeeKeyFactory.h \
 BeeKeyStore.h \
 BeeSecureRandom.h \
+BlockCipher.h \
+BlowfishCipher.h \
+DHKeyAgreement.h \
 DHKeyFactory.h \
 DHKeyPairGenerator.h \
 DHParameterGenerator.h \
@@ -93,3 +103,6 @@ SHA1withRSASignature.h \
 SHA256withRSASignature.h \
 SHA384withRSASignature.h \
 SHA512withRSASignature.h 
+
+beecrypt.conf:
+	@echo "provider.1=$(pkgaltlibdir)/base.so" > beecrypt.conf

@@ -20,12 +20,15 @@
 # include "config.h"
 #endif
 
+#include "beecrypt/c++/provider/AESCipher.h"
 #include "beecrypt/c++/provider/BeeCertificateFactory.h"
 #include "beecrypt/c++/provider/BeeCertPathValidator.h"
 #include "beecrypt/c++/provider/BeeCryptProvider.h"
 #include "beecrypt/c++/provider/BeeKeyFactory.h"
 #include "beecrypt/c++/provider/BeeKeyStore.h"
 #include "beecrypt/c++/provider/BeeSecureRandom.h"
+#include "beecrypt/c++/provider/BlowfishCipher.h"
+#include "beecrypt/c++/provider/DHKeyAgreement.h"
 #include "beecrypt/c++/provider/DHKeyFactory.h"
 #include "beecrypt/c++/provider/DHKeyPairGenerator.h"
 #include "beecrypt/c++/provider/DHParameterGenerator.h"
@@ -48,6 +51,7 @@
 #include "beecrypt/c++/provider/SHA1withDSASignature.h"
 #include "beecrypt/c++/provider/SHA1withRSASignature.h"
 #include "beecrypt/c++/provider/SHA256withRSASignature.h"
+#include "beecrypt/c++/provider/SHA384withRSASignature.h"
 #include "beecrypt/c++/provider/SHA512withRSASignature.h"
 
 namespace {
@@ -63,6 +67,12 @@ extern "C" {
 #else
 # define PROVAPI
 #endif
+
+PROVAPI
+void* beecrypt_AESCipher_create()
+{
+	return new beecrypt::provider::AESCipher();
+}
 
 PROVAPI
 void* beecrypt_BeeCertificateFactory_create()
@@ -92,6 +102,18 @@ PROVAPI
 void* beecrypt_BeeSecureRandom_create()
 {
 	return new beecrypt::provider::BeeSecureRandom();
+}
+
+PROVAPI
+void* beecrypt_BlowfishCipher_create()
+{
+	return new beecrypt::provider::BlowfishCipher();
+}
+
+PROVAPI
+void* beecrypt_DHKeyAgreement_create()
+{
+	return new beecrypt::provider::DHKeyAgreement();
 }
 
 PROVAPI
@@ -227,6 +249,12 @@ void* beecrypt_SHA256withRSASignature_create()
 }
 
 PROVAPI
+void* beecrypt_SHA384withRSASignature_create()
+{
+	return new beecrypt::provider::SHA384withRSASignature();
+}
+
+PROVAPI
 void* beecrypt_SHA512withRSASignature_create()
 {
 	return new beecrypt::provider::SHA512withRSASignature();
@@ -262,6 +290,9 @@ void BeeCryptProvider::putall()
 	put("AlgorithmParameters.DSA"                  , "beecrypt_DSAParameters_create");
 	put("CertificateFactory.BEE"                   , "beecrypt_BeeCertificateFactory_create");
 	put("CertPathValidator.BEE"                    , "beecrypt_BeeCertificateFactory_create");
+	put("Cipher.AES"                               , "beecrypt_AESCipher_create");
+	put("Cipher.Blowfish"                          , "beecrypt_BlowfishCipher_create");
+	put("KeyAgreement.DH"                          , "beecrypt_DHKeyAgreement_create");
 	put("KeyFactory.BEE"                           , "beecrypt_BeeKeyFactory_create");
 	put("KeyFactory.DH"                            , "beecrypt_DHKeyFactory_create");
 	put("KeyFactory.DSA"                           , "beecrypt_DSAKeyFactory_create");
@@ -279,12 +310,17 @@ void BeeCryptProvider::putall()
 	put("MessageDigest.SHA-384"                    , "beecrypt_SHA384Digest_create");
 	put("MessageDigest.SHA-512"                    , "beecrypt_SHA512Digest_create");
 	put("SecretKeyFactory.PKCS#12/PBE"             , "beecrypt_PKCS12KeyFactory_create");
+//  put("SecretKeyFactory.HMAC-MD5"                , "beecrypt_HMACMD5KeyFactory_create");
+//  put("SecretKeyFactory.HMAC-SHA1"               , "beecrypt_HMACMD5KeyFactory_create");
+//  put("SecretKeyFactory.HMAC-SHA256"             , "beecrypt_HMACMD5KeyFactory_create");
 	put("SecureRandom.BEE"                         , "beecrypt_BeeSecureRandom_create");
 	put("Signature.MD5withRSA"                     , "beecrypt_MD5withRSASignature_create");
 	put("Signature.SHA1withDSA"                    , "beecrypt_SHA1withDSASignature_create");
 	put("Signature.SHA1withRSA"                    , "beecrypt_SHA1withRSASignature_create");
 	put("Signature.SHA256withRSA"                  , "beecrypt_SHA256withRSASignature_create");
+	put("Signature.SHA384withRSA"                  , "beecrypt_SHA384withRSASignature_create");
 	put("Signature.SHA512withRSA"                  , "beecrypt_SHA512withRSASignature_create");
+	put("Alg.Alias.KeyAgreement.DiffieHellman"     , "KeyAgreement.DH");
 	put("Alg.Alias.KeyFactory.DiffieHellman"       , "KeyFactory.DH");
 	put("Alg.Alias.KeyPairGenerator.DiffieHellman" , "KeyFactory.DH");
 	put("Alg.Alias.Signature.DSS"                  , "Signature.SHA1withDSA");
