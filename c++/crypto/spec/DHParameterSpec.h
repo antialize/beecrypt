@@ -48,9 +48,10 @@ namespace beecrypt {
 
 			public:
 				DHParameterSpec(const DHParams&);
+				DHParameterSpec(const DHParameterSpec&);
 				DHParameterSpec(const mpbarrett& p, const mpnumber& g);
 				DHParameterSpec(const mpbarrett& p, const mpnumber& g, size_t l);
-				virtual ~DHParameterSpec();
+				virtual ~DHParameterSpec() {};
 
 				const mpbarrett& getP() const throw ();
 				const mpnumber& getG() const throw ();
