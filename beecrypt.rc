@@ -17,7 +17,7 @@ BEGIN
 			VALUE "FileDescription", "BeeCrypt Cryptography Library\0"
 			VALUE "FileVersion", "2.3.0\0"
 			VALUE "InternalName", "beecrypt\0"
-			VALUE "LegalCopyright", "Copyright (c) 1997-2002 Virtual Unlimited B.V.\0"
+			VALUE "LegalCopyright", "Copyright (c) 1997-2003 Virtual Unlimited B.V.\0"
 			VALUE "LegalTradeMarks", "BeeCrypt is a trademark of Virtual Unlimited B.V.\0"
 			VALUE "OriginalFileName", "BEECRYPT.DLL\0"
 			VALUE "ProductName", "BeeCrypt\0"
