@@ -138,6 +138,14 @@ const Certificate* KeyStore::getCertificate(const String& alias) throw (KeyStore
 	return _kspi->engineGetCertificate(alias);
 }
 
+const vector<Certificate*>* KeyStore::getCertificateChain(const String& alias) throw (KeyStoreException)
+{
+	if (!_init)
+		throw KeyStoreException("Uninitialized keystore");
+
+	return _kspi->engineGetCertificateChain(alias);
+}
+
 bool KeyStore::isCertificateEntry(const String& alias) throw (KeyStoreException)
 {
 	if (!_init)
