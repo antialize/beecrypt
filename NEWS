@@ -1,7 +1,6 @@
 3.0.1:
 	- Fixed bug in mpextgcd_w which sometimes returned incorrect result.
-	- Added function to generate DSA parameters, as a specific instance
-	  of generating discrete logarithm domain parameters.
+	- Fixed error in PowerPC 64-bit assembler symbol definitions.
 
 3.0.0:
 	- Cleaned up installed header files.
