@@ -192,7 +192,7 @@ void sha256Process(register sha256Param* sp)
 
 int sha256Update(register sha256Param* sp, const byte* data, size_t size)
 {
-	register unsigned short proclength;
+	register uint32_t proclength;
 
 	#if (MP_WBITS == 64)
 	mpw add[1];

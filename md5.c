@@ -38,7 +38,15 @@
 
 static uint32_t md5hinit[4] = { 0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476 };
 
-const hashFunction md5 = { "MD5", sizeof(md5Param), 64, 16, (hashFunctionReset) md5Reset, (hashFunctionUpdate) md5Update, (hashFunctionDigest) md5Digest };
+const hashFunction md5 = {
+	"MD5",
+	sizeof(md5Param),
+	64,
+	16,
+	(hashFunctionReset) md5Reset,
+	(hashFunctionUpdate) md5Update,
+	(hashFunctionDigest) md5Digest
+};
 
 int md5Reset(register md5Param* mp)
 {
@@ -174,7 +182,7 @@ void md5Process(md5Param* mp)
 
 int md5Update(md5Param* mp, const byte* data, size_t size)
 {
-	register unsigned short proclength;
+	register uint32_t proclength;
 
 	#if (MP_WBITS == 64)
 	mpw add[1];

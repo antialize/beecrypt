@@ -40,7 +40,15 @@ static const uint32_t k[4] = { 0x5a827999U, 0x6ed9eba1U, 0x8f1bbcdcU, 0xca62c1d6
 
 static const uint32_t hinit[5] = { 0x67452301U, 0xefcdab89U, 0x98badcfeU, 0x10325476U, 0xc3d2e1f0U };
 
-const hashFunction sha1 = { "SHA-1", sizeof(sha1Param), 64, 20, (hashFunctionReset) sha1Reset, (hashFunctionUpdate) sha1Update, (hashFunctionDigest) sha1Digest };
+const hashFunction sha1 = {
+	"SHA-1",
+	sizeof(sha1Param),
+	64,
+	20,
+	(hashFunctionReset) sha1Reset,
+	(hashFunctionUpdate) sha1Update,
+	(hashFunctionDigest) sha1Digest
+};
 
 int sha1Reset(register sha1Param* p)
 {
@@ -194,7 +202,7 @@ void sha1Process(sha1Param* sp)
 
 int sha1Update(sha1Param* sp, const byte* data, size_t size)
 {
-	register unsigned short proclength;
+	register uint32_t proclength;
 
 	#if (MP_WBITS == 64)
 	mpw add[1];

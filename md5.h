@@ -54,7 +54,7 @@ typedef struct
      * \brief Offset into \a data; points to the place where new data will be
      *  copied before it is processed.
      */
-	unsigned short offset;
+	uint32_t offset;
 } md5Param;
 
 #ifdef __cplusplus
