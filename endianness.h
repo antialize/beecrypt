@@ -45,55 +45,30 @@ inline uint16_t swapu16(uint16_t n)
 
 inline int32_t swap32(int32_t n)
 {
-	#if (SIZEOF_LONG == 4)
 	return (    ((n & 0xff) << 24) |
 				((n & 0xff00) << 8) |
 				((n & 0xff0000) >> 8) |
 				((n & 0xff000000) >> 24) );
-	#else
-	return (    ((n & 0xffL) << 24) |
-				((n & 0xff00L) << 8) |
-				((n & 0xff0000L) >> 8) |
-				((n & 0xff000000L) >> 24) );
-	#endif
 }
 
 inline uint32_t swapu32(uint32_t n)
 {
-	#if (SIZEOF_UNSIGNED_LONG == 4)
 	return (    ((n & 0xffU) << 24) |
 				((n & 0xff00U) << 8) |
 				((n & 0xff0000U) >> 8) |
 				((n & 0xff000000U) >> 24) );
-	#else
-	return (    ((n & 0xffUL) << 24) |
-				((n & 0xff00UL) << 8) |
-				((n & 0xff0000UL) >> 8) |
-				((n & 0xff000000UL) >> 24) );
-	#endif
 }
 
 inline int64_t swap64(int64_t n)
 {
-	#if HAVE_LONG_LONG
-	return (    ((n & 0xffLL) << 56) |
-				((n & 0xff00LL) << 40) |
-				((n & 0xff0000LL) << 24) |
-				((n & 0xff000000LL) << 8) |
-				((n & 0xff00000000LL) >> 8) |
-				((n & 0xff0000000000LL) >> 24) |
-				((n & 0xff000000000000LL) >> 40) |
-				((n & 0xff00000000000000LL) >> 56) );
-	#else
-	return (    ((n & 0xffL) << 56) |
-				((n & 0xff00L) << 40) |
-				((n & 0xff0000L) << 24) |
-				((n & 0xff000000L) << 8) |
-				((n & 0xff00000000L) >> 8) |
-				((n & 0xff0000000000L) >> 24) |
-				((n & 0xff000000000000L) >> 40) |
-				((n & 0xff00000000000000L) >> 56) );
-	#endif
+	return (    ((n & ((int64_t) 0xff)      ) << 56) |
+				((n & ((int64_t) 0xff) <<  8) << 40) |
+				((n & ((int64_t) 0xff) << 16) << 24) |
+				((n & ((int64_t) 0xff) << 24) <<  8) |
+				((n & ((int64_t) 0xff) << 32) >>  8) |
+				((n & ((int64_t) 0xff) << 40) >> 24) |
+				((n & ((int64_t) 0xff) << 48) >> 40) |
+				((n & ((int64_t) 0xff) << 56) >> 56) );
 }
 #else
  int16_t swap16 (int16_t);
@@ -106,77 +81,6 @@ uint32_t swapu32(uint32_t);
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-BEECRYPTAPI
-int encodeByte(javabyte, byte*);
-BEECRYPTAPI
-int encodeShort(javashort, byte*);
-BEECRYPTAPI
-int encodeInt(javaint, byte*);
-
-BEECRYPTAPI
-int encodeLong(javalong, byte*);
-BEECRYPTAPI
-int encodeChar(javachar, byte*);
-
-BEECRYPTAPI
-int encodeInts(const javaint*, byte*, int);
-BEECRYPTAPI
-int encodeIntsPartial(const javaint*, byte*, int);
-BEECRYPTAPI
-int encodeIntsPartialPad(const javaint*, byte*, int, byte);
-BEECRYPTAPI
-int encodeChars(const javachar*, byte*, int);
-
-BEECRYPTAPI
-int decodeByte(javabyte*, const byte*);
-BEECRYPTAPI
-int decodeShort(javashort*, const byte*);
-BEECRYPTAPI
-int decodeInt(javaint*, const byte*);
-BEECRYPTAPI
-int decodeLong(javalong*, const byte*);
-BEECRYPTAPI
-int decodeChar(javachar*, const byte*);
-
-BEECRYPTAPI
-int decodeInts(javaint*, const byte*, int);
-BEECRYPTAPI
-int decodeIntsPartial(javaint*, const byte*, int);
-BEECRYPTAPI
-int decodeChars(javachar*, const byte*, int);
-
-BEECRYPTAPI
-int writeByte(javabyte, FILE*);
-BEECRYPTAPI
-int writeShort(javashort, FILE*);
-BEECRYPTAPI
-int writeInt(javaint, FILE*);
-BEECRYPTAPI
-int writeLong(javalong, FILE*);
-BEECRYPTAPI
-int writeChar(javachar, FILE*);
-
-BEECRYPTAPI
-int writeInts(const javaint*, FILE*, int);
-BEECRYPTAPI
-int writeChars(const javachar*, FILE*, int);
-
-BEECRYPTAPI
-int readByte(javabyte*, FILE*);
-BEECRYPTAPI
-int readShort(javashort*, FILE*);
-BEECRYPTAPI
-int readInt(javaint*, FILE*);
-BEECRYPTAPI
-int readLong(javalong*, FILE*);
-BEECRYPTAPI
-int readChar(javachar*, FILE*);
-
-BEECRYPTAPI
-int readInts(javaint*, FILE*, int);
-BEECRYPTAPI
-int readChars(javachar*, FILE*, int);
 
 #ifdef __cplusplus
 }
