@@ -452,9 +452,9 @@ extern "C" {
 #endif
 
 BEEDLLAPI
-void keyedHashFunctionContextInit(keyedHashFunctionContext*, const keyedHashFunction*);
+int keyedHashFunctionContextInit(keyedHashFunctionContext*, const keyedHashFunction*);
 BEEDLLAPI
-void keyedHashFunctionContextFree(keyedHashFunctionContext*);
+int keyedHashFunctionContextFree(keyedHashFunctionContext*);
 BEEDLLAPI
 int keyedHashFunctionContextSetup(keyedHashFunctionContext*, const uint32*, int);
 BEEDLLAPI
@@ -606,13 +606,13 @@ extern "C" {
 #endif
 
 BEEDLLAPI
-void blockCipherContextInit(blockCipherContext*, const blockCipher*);
+int blockCipherContextInit(blockCipherContext*, const blockCipher*);
 BEEDLLAPI
-void blockCipherContextSetup(blockCipherContext*, const uint32*, int, cipherOperation);
+int blockCipherContextSetup(blockCipherContext*, const uint32*, int, cipherOperation);
 BEEDLLAPI
-void blockCipherContextSetIV(blockCipherContext*, const uint32*);
+int blockCipherContextSetIV(blockCipherContext*, const uint32*);
 BEEDLLAPI
-void blockCipherContextFree(blockCipherContext*);
+int blockCipherContextFree(blockCipherContext*);
 
 #ifdef __cplusplus
 }

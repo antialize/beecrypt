@@ -256,53 +256,45 @@ int hashFunctionContextFree(hashFunctionContext* ctxt)
 
 int hashFunctionContextReset(hashFunctionContext* ctxt)
 {
-	return (ctxt && ctxt->param) ? ctxt->hash->reset(ctxt->param) : -1;
+	return ctxt->hash->reset(ctxt->param);
 }
 
 int hashFunctionContextUpdate(hashFunctionContext* ctxt, const byte* data, int size)
 {
-	return (ctxt && ctxt->param) ? ctxt->hash->update(ctxt->param, data, size) : -1;
+	return ctxt->hash->update(ctxt->param, data, size);
 }
 
 int hashFunctionContextUpdateMC(hashFunctionContext* ctxt, const memchunk* m)
 {
-	return (ctxt && ctxt->param) ? ctxt->hash->update(ctxt->param, m->data, m->size) : -1;
+	return ctxt->hash->update(ctxt->param, m->data, m->size);
 }
 
 int hashFunctionContextUpdateMP32(hashFunctionContext* ctxt, const mp32number* n)
 {
 	register int rc = -1;
+	register byte* temp = (byte*) malloc((n->size << 2) + 1);
 
-	if (ctxt && ctxt->param)
+	if (mp32msbset(n->size, n->data))
 	{
-		register byte* temp = (byte*) malloc((n->size << 2) + 1);
-
-		if (mp32msbset(n->size, n->data))
-		{
-			temp[0] = 0;
-			encodeInts((javaint*) n->data, temp+1, n->size);
-			rc = ctxt->hash->update(ctxt->param, temp, (n->size << 2) + 1);
-		}
-		else
-		{
-			encodeInts((javaint*) n->data, temp, n->size);
-			rc = ctxt->hash->update(ctxt->param, temp, n->size << 2);
-		}
-		free(temp);
+		temp[0] = 0;
+		encodeInts((javaint*) n->data, temp+1, n->size);
+		rc = ctxt->hash->update(ctxt->param, temp, (n->size << 2) + 1);
 	}
+	else
+	{
+		encodeInts((javaint*) n->data, temp, n->size);
+		rc = ctxt->hash->update(ctxt->param, temp, n->size << 2);
+	}
+	free(temp);
 
 	return rc;
 }
 
 int hashFunctionContextDigest(hashFunctionContext* ctxt, mp32number* dig)
 {
-	if (ctxt && ctxt->param)
-	{
-		mp32nsize(dig, (ctxt->hash->digestsize + 3) >> 2);
+	mp32nsize(dig, (ctxt->hash->digestsize + 3) >> 2);
 
-		return ctxt->hash->digest(ctxt->param, dig->data);
-	}
-	return -1;
+	return ctxt->hash->digest(ctxt->param, dig->data);
 }
 
 
@@ -349,15 +341,27 @@ const keyedHashFunction* keyedHashFunctionFind(const char* name)
 	return (const keyedHashFunction*) 0;
 }
 
-void keyedHashFunctionContextInit(keyedHashFunctionContext* ctxt, const keyedHashFunction* hash)
+int keyedHashFunctionContextInit(keyedHashFunctionContext* ctxt, const keyedHashFunction* hash)
 {
-	ctxt->hash = hash;
-	ctxt->param = calloc(hash->paramsize, 1);
+	if (ctxt && hash)
+	{
+		ctxt->hash = hash;
+		ctxt->param = (keyedHashFunctionParam*) calloc(hash->paramsize, 1);
+		if (ctxt->param != (keyedHashFunctionParam*) 0)
+			return 0;
+	}
+	return -1;
 }
 
-void keyedHashFunctionContextFree(keyedHashFunctionContext* ctxt)
+int keyedHashFunctionContextFree(keyedHashFunctionContext* ctxt)
 {
-	free(ctxt->param);
+	if (ctxt && ctxt->param)
+	{
+		free(ctxt->param);
+		ctxt->param = (keyedHashFunctionParam*) 0;
+		return 0;
+	}
+	return -1;
 }
 
 int keyedHashFunctionContextReset(keyedHashFunctionContext* ctxt)
@@ -447,23 +451,35 @@ const blockCipher* blockCipherFind(const char* name)
 	return (const blockCipher*) 0;
 }
 
-void blockCipherContextInit(blockCipherContext* ctxt, const blockCipher* ciph)
+int blockCipherContextInit(blockCipherContext* ctxt, const blockCipher* ciph)
 {
-	ctxt->ciph = ciph;
-	ctxt->param = calloc(ciph->paramsize, 1);
+	if (ctxt && ciph)
+	{
+		ctxt->ciph = ciph;
+		ctxt->param = (blockCipherParam*) calloc(ciph->paramsize, 1);
+		if (ctxt->param != (blockCipherParam*) 0)
+			return 0;
+	}
+	return -1;
 }
 
-void blockCipherContextSetup(blockCipherContext* ctxt, const uint32* key, int keybits, cipherOperation op)
+int blockCipherContextSetup(blockCipherContext* ctxt, const uint32* key, int keybits, cipherOperation op)
 {
-	ctxt->ciph->setup(ctxt->param, key, keybits, op);
+	return ctxt->ciph->setup(ctxt->param, key, keybits, op);
 }
 
-void blockCipherContextSetIV(blockCipherContext* ctxt, const uint32* iv)
+int blockCipherContextSetIV(blockCipherContext* ctxt, const uint32* iv)
 {
-	ctxt->ciph->setiv(ctxt->param, iv);
+	return ctxt->ciph->setiv(ctxt->param, iv);
 }
 
-void blockCipherContextFree(blockCipherContext* ctxt)
+int blockCipherContextFree(blockCipherContext* ctxt)
 {
-	free(ctxt->param);
+	if (ctxt && ctxt->param)
+	{
+		free(ctxt->param);
+		ctxt->param = (blockCipherParam*) 0;
+		return 0;
+	}
+	return -1;
 }
