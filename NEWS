@@ -4,6 +4,7 @@
 	- Fixed inclusion of <asm/byteorder.h> to prevent problems with
 	  other header files.
 	- Fixed SHA-384 and SHA-512 code Visual C++ compatibility.
+	- Improved detection of IBM ICU library; has to be >= 2.8.
 
 4.1.1:
 	- Fixed shared library version info.
