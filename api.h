@@ -17,7 +17,7 @@
  *
  */
 
-/*!\file beecrypt.api.h
+/*!\file api.h
  * \brief BeeCrypt API, portability headers.
  * \author Bob Deblier <bob.deblier@pandora.be>
  */
@@ -30,15 +30,23 @@
 #endif
 
 #if WIN32 && !__CYGWIN32__
-# include "beecrypt.win.h"
+# include "beecrypt/win.h"
 # ifdef BEECRYPT_DLL_EXPORT
 #  define BEECRYPTAPI __declspec(dllexport)
 # else
 #  define BEECRYPTAPI __declspec(dllimport)
 # endif
+# ifdef BEECRYPT_CXX_DLL_EXPORT
+#  define BEECRYPTCXXAPI __declspec(dllexport)
+#  define BEECRYPTCXXTEMPLATE
+# else
+#  define BEECRYPTCXXAPI __declspec(dllimport)
+#  define BEECRYPTCXXTEMPLATE extern
+# endif
 #else
-# include "beecrypt.gnu.h"
+# include "beecrypt/gnu.h"
 # define BEECRYPTAPI
+# define BEECRYPTCXXAPI
 #endif
 
 #ifndef ROTL32
