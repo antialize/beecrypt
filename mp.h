@@ -502,7 +502,7 @@ int mpsubw(size_t size, mpw* xdata, mpw y);
 BEECRYPTAPI
 int mpsub (size_t size, mpw* xdata, const mpw* ydata);
 
-/*!\fn int mpaddx(size_t xsize, mpw* xdata, size_t ysize, const mpw* ydata)
+/*!\fn int mpsubx(size_t xsize, mpw* xdata, size_t ysize, const mpw* ydata)
  * \brief This function subtracts two multi-precision integers of different
  *  size. The performed operation in pseudocode: x -= y.
  * \param xsize The size of the first multi-precision integer.
@@ -588,18 +588,19 @@ mpw mpaddmul   (size_t size, mpw* result, const mpw* data, mpw y);
  * squaring.
  */
 BEECRYPTAPI
-void mpaddsqrtrc(size_t, mpw*, const mpw*);
+void mpaddsqrtrc(size_t size, mpw* result, const mpw* data);
 
 /*!\fn void mpmul(mpw* result, size_t xsize, const mpw* xdata, size_t ysize, const mpw* ydata)
  * \brief This function computes a full multi-precision product.
  */
 BEECRYPTAPI
-void mpmul(mpw*, size_t, const mpw*, size_t, const mpw*);
+void mpmul(mpw* result, size_t xsize, const mpw* xdata, size_t ysize, const mpw* ydata);
+
 /*!\fn void mpsqr(mpw* result, size_t size, const mpw* data)
  * \brief This function computes a full multi-precision square.
  */
 BEECRYPTAPI
-void mpsqr(mpw*, size_t, const mpw*);
+void mpsqr(mpw* result, size_t size, const mpw* data);
 
 BEECRYPTAPI
 void mpgcd_w(size_t, const mpw*, const mpw*, mpw*, mpw*);
