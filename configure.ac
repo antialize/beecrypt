@@ -34,7 +34,7 @@ AC_ARG_WITH(cpu,      [  --with-cpu              enable cpu-specific optimizatio
   [ case $target_cpu in
       i[[3456]]86)
         case $withval in
-          i[[3456]]86 | pentium | pentium | pentiumpro | pentium4)
+          i[[3456]]86 | pentium | pentiumpro | pentium4)
             ac_with_cpu=$withval
             ;;
           *)
