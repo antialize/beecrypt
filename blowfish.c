@@ -322,11 +322,16 @@ static uint32_t _bf_s[1024] = {
  */
 const blockCipher blowfish = { "Blowfish", sizeof(blowfishParam), 8, 64, 448, 32, (blockCipherSetup) blowfishSetup, (blockCipherSetIV) blowfishSetIV, (blockCipherEncrypt) blowfishEncrypt, (blockCipherDecrypt) blowfishDecrypt, (blockCipherFeedback) blowfishFeedback };
 
-/*!\fn int blowfishSetup(blowfishParam* bp, const uint32_t* key, int keybits, cipherOperation op)
- * \brief The Blowfish setup function.
+/*!\fn int blowfishSetup(blowfishParam* bp, const byte* key, int keybits, cipherOperation op)
+ * \brief The cipher's setup function.
+ *
+ * This function expands the key depending on whether the ENCRYPT or DECRYPT
+ * operation was selected.
+ *
  * \param bp The cipher's parameter block.
- * \param key Pointer to the key value; needs to be stored in host-endian format.
- * \param keybits The number of bits in the key; legal values are: 64, 96, 128, 160, 192, 224, 256, 288, 320, 352, 384, 416 and 448.
+ * \param key The key value.
+ * \param keybits The number of bits in the key; legal values are: 32 to 448,
+ *                in multiples of 8.
  * \param op ENCRYPT or DECRYPT.
  * \retval 0 on success.
  * \retval -1 on failure.
@@ -391,6 +396,15 @@ int blowfishSetup(blowfishParam* bp, const byte* key, size_t keybits, cipherOper
 	return -1;
 }
 
+/*!\fn int blowfishSetIV(blowfishParam* bp, const byte* iv)
+ * \brief The Initialization Vector setup function.
+ *
+ * This function is only necessary in block chaining or feedback modes.
+ *
+ * \param bp The cipher's parameter block.
+ * \param iv Te initialization vector; may be null.
+ * \retval 0 on success.
+ */
 #ifndef ASM_BLOWFISHSETIV
 int blowfishSetIV(blowfishParam* bp, const byte* iv)
 {
@@ -403,6 +417,16 @@ int blowfishSetIV(blowfishParam* bp, const byte* iv)
 }
 #endif
 
+/*!\fn int blowfishEncrypt(blowfishParam* bp, uint32_t* dst, const uint32_t* src)
+ * \brief The raw encryption function.
+ *
+ * This function encrypts one block of data; the size of a block is 64 bits.
+ *
+ * \param bp The cipher's parameter block.
+ * \param dst The ciphertext; should be aligned on 32-bit boundary.
+ * \param src The cleartext; should be aligned on 32-bit boundary.
+ * \retval 0 on success.
+ */
 #ifndef ASM_BLOWFISHENCRYPT
 int blowfishEncrypt(blowfishParam* bp, uint32_t* dst, const uint32_t* src)
 {
@@ -435,6 +459,16 @@ int blowfishEncrypt(blowfishParam* bp, uint32_t* dst, const uint32_t* src)
 }
 #endif
 
+/*!\fn int blowfishDecrypt(blowfishParam* bp, uint32_t* dst, const uint32_t* src)
+ * \brief The raw encryption function.
+ *
+ * This function encrypts one block of data; the size of a block is 64 bits.
+ *
+ * \param bp The cipher's parameter block.
+ * \param dst The cleartext; should be aligned on 32-bit boundary.
+ * \param src The ciphertext; should be aligned on 32-bit boundary.
+ * \retval 0 on success.
+ */
 #ifndef ASM_BLOWFISHDECRYPT
 int blowfishDecrypt(blowfishParam* bp, uint32_t* dst, const uint32_t* src)
 {

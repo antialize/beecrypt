@@ -746,14 +746,15 @@ static const uint32_t _arc[] = {
 const blockCipher aes = { "AES", sizeof(aesParam), 16, 128, 256, 64, (blockCipherSetup) aesSetup, (blockCipherSetIV) aesSetIV, (blockCipherEncrypt) aesEncrypt, (blockCipherDecrypt) aesDecrypt, (blockCipherFeedback) aesFeedback };
 
 /*!\fn int aesSetup(aesParam* ap, const byte* key, size_t keybits, cipherOperation op)
- * \brief The setup function.
+ * \brief The cipher's setup function.
  *
  * This function expands the key depending on whether the ENCRYPT or DECRYPT
  * operation was selected.
  *
  * \param ap The cipher's parameter block.
- * \param key The key value; needs to be stored in host-endian format.
- * \param keybits The number of bits in the key; legal values are: 128, 192 and 256.
+ * \param key The key value.
+ * \param keybits The number of bits in the key; legal values are:
+ *                128, 192 and 256.
  * \param op ENCRYPT or DECRYPT.
  * \retval 0 on success.
  * \retval -1 on failure.
@@ -897,14 +898,13 @@ int aesSetup(aesParam* ap, const byte* key, size_t keybits, cipherOperation op)
 }
 
 /*!\fn int aesSetIV(aesParam* ap, const byte* iv)
- * \brief The initialization vector setup function.
+ * \brief The Initialization Vector setup function.
  *
  * This function is only necessary in block chaining or feedback modes.
  *
  * \param ap The cipher's parameter block.
- * \param iv The initialization vector; needs to be stored in host-endian format.
+ * \param iv The initialization vector; may be null.
  * \retval 0 on success.
- * \retval -1 on failure.
  */
 #ifndef ASM_AESSETIV
 int aesSetIV(aesParam* ap, const byte* iv)
@@ -1002,12 +1002,9 @@ int aesSetIV(aesParam* ap, const byte* iv)
  * This function encrypts one block of data; the size of a block is 128 bits.
  *
  * \param ap The cipher's parameter block.
- * \param dst The destination (ciphertext data) address; the uint32_t pointer type
- *            is only used for memory alignment purposes.
- * \param src The source (cleartext data) address; the uint32_t pointer type
- *            is only used for memory alignment purposes.
+ * \param dst The ciphertext; should be aligned on 32-bit boundary.
+ * \param src The cleartext; should be aligned on 32-bit boundary.
  * \retval 0 on success.
- * \retval -1 on failure.
  */
 #ifndef ASM_AESENCRYPT
 int aesEncrypt(aesParam* ap, uint32_t* dst, const uint32_t* src)
@@ -1153,12 +1150,9 @@ int aesEncrypt(aesParam* ap, uint32_t* dst, const uint32_t* src)
  * This function decrypts one block of data; the size of a block is 128 bits.
  *
  * \param ap The cipher's parameter block.
- * \param dst The destination (cleartext data) address; the uint32_t pointer type
- *            is only used for memory alignment purposes.
- * \param src The source (ciphertext data) address; the uint32_t pointer type
- *            is only used for memory alignment purposes.
+ * \param dst The cleartext; should be aligned on 32-bit boundary.
+ * \param src The ciphertext; should be aligned on 32-bit boundary.
  * \retval 0 on success.
- * \retval -1 on failure.
  */
 #ifndef ASM_AESDECRYPT
 int aesDecrypt(aesParam* ap, uint32_t* dst, const uint32_t* src)
