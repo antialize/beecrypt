@@ -209,7 +209,7 @@ AC_DEFUN(BEECRYPT_CFLAGS_REM,[
     for flag in $CFLAGS
     do
       if test "$flag" != "$1"; then
-        CFLAGS_save="$cflags $flag"
+        CFLAGS_save="$CFLAGS_save $flag"
       fi
     done
     CFLAGS="$CFLAGS_save"
@@ -220,8 +220,16 @@ AC_DEFUN(BEECRYPT_CFLAGS_REM,[
 dnl  BEECRYPT_GNU_CC
 AC_DEFUN(BEECRYPT_GNU_CC,[
   AC_REQUIRE([AC_PROG_CC])
-  # PowerPC needs a signed char
   case $bc_target_arch in
+  ia64)
+    case $target_os in
+    # HP/UX on Itanium needs to be told that a long is 64-bit!
+    hpux*)
+      CFLAGS="$CFLAGS -mlp64"
+      ;;
+    esac
+    ;;
+  # PowerPC needs a signed char
   powerpc)
     CFLAGS="$CFLAGS -fsigned-char"
     ;;
@@ -321,6 +329,7 @@ AC_DEFUN(BEECRYPT_COMPAQ_CC,[
 dnl  BEECRYPT_HPUX_CC
 AC_DEFUN(BEECRYPT_HPUX_CC,[
   if test "$ac_enable_debug" != yes; then
+    BEECRYPT_CFLAGS_REM([-g])
     CFLAGS="$CFLAGS -fast"
   fi
   ])
@@ -454,9 +463,17 @@ AC_DEFUN(BEECRYPT_ASM_TEXTSEG,[
   AC_CACHE_CHECK([how to switch to text segment],
     bc_cv_asm_textseg,[
       case $target_os in
-      aix*)  bc_cv_asm_textseg=[".csect .text[PR]"] ;;
-      hpux*) bc_cv_asm_textseg=".code" ;;
-      *)     bc_cv_asm_textseg=".text" ;;
+      aix*)
+        bc_cv_asm_textseg=[".csect .text[PR]"] ;;
+      hpux*)
+        if test "$bc_target_arch" = ia64; then
+          bc_ bc_cv_asm_textseg=[".section .text"]
+        else
+          bc_ bc_cv_asm_textseg=".code"
+        fi
+        ;;
+      *)
+        bc_cv_asm_textseg=".text" ;;
       esac
     ])
   AC_SUBST(ASM_TEXTSEG,$bc_cv_asm_textseg)
@@ -468,8 +485,17 @@ AC_DEFUN(BEECRYPT_ASM_DATASEG,[
   AC_CACHE_CHECK([how to switch to data segment],
     bc_cv_asm_dataseg,[
       case $target_os in
-      aix*)  bc_cv_asm_dataseg=[".csect .text[RW]"] ;;
-      *)     bc_cv_asm_dataseg=".data" ;;
+      aix*)
+        bc_cv_asm_dataseg=[".csect .text[RW]"] ;;
+      hpux*)
+        if test "$bc_target_arch" = ia64; then
+          bc_ bc_cv_asm_textseg=[".section .data"]
+        else
+          bc_ bc_cv_asm_textseg=".data"
+        fi
+        ;;
+      *)
+        bc_cv_asm_dataseg=".data" ;;
       esac
     ])
   AC_SUBST(ASM_DATASEG,$bc_cv_asm_dataseg)
