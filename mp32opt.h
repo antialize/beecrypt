@@ -23,6 +23,12 @@
  *
  */
 
+/*!\file mp32opt.h
+ * \brief Multi-precision integer routines for 32-bit CPUs, optimization definitions.
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup MP32_m
+ */
+
 #ifndef _MP32OPT_H
 #define _MP32OPT_H
 

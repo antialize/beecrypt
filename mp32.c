@@ -1,11 +1,5 @@
 /*
- * mp32.c
- *
- * Multiprecision 2's complement integer routines for 32 bit cpu, code
- *
  * Copyright (c) 1997, 1998, 1999, 2000, 2003 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,6 +15,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ */
+
+/*!\file mp32.c
+ * \brief Multi-precision integer routines for 32-bit CPUs.
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup MP32_m
  */
 
 #define BEECRYPT_DLL_EXPORT
