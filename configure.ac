@@ -123,6 +123,7 @@ AH_TEMPLATE([HAVE_SYS_SOUNDCARD_H],[.])
 AH_TEMPLATE([HAVE_SYS_STAT_H],[.])
 AH_TEMPLATE([HAVE_SYS_TIME_H],[.])
 AH_TEMPLATE([HAVE_SYS_TYPES_H],[.])
+AH_TEMPLATE([HAVE_ASM_BYTEORDER_H],[.])
 
 AH_TEMPLATE([HAVE_AIO_H],[.])
 
@@ -138,6 +139,7 @@ AC_CHECK_HEADERS([time.h sys/time.h])
 AC_HEADER_TIME
 AC_CHECK_HEADERS([assert.h stdio.h ctype.h errno.h fcntl.h malloc.h termio.h termios.h])
 AC_CHECK_HEADERS([sys/ioctl.h sys/mman.h sys/audioio.h sys/soundcard.h])
+AC_CHECK_HEADERS([asm/byteorder.h])
 
 bc_include_stdio_h=
 bc_include_stdlib_h=
@@ -145,6 +147,7 @@ bc_include_malloc_h=
 bc_include_string_h=
 bc_include_unistd_h=
 bc_include_dlfcn_h=
+bc_include_asm_byteorder_h=
 if test "$ac_cv_header_stdio_h" = yes; then
   bc_include_stdio_h="#include <stdio.h>"
 fi
@@ -169,12 +172,16 @@ fi
 if test "$ac_cv_header_dlfcn_h" = yes; then
   bc_include_dlfcn_h="#include <dlfcn.h>"
 fi
+if test "$ac_cv_header_asm_byteorder_h" = yes; then
+  bc_include_asm_byteorder_h="#include <asm/byteorder.h>"
+fi
 AC_SUBST(INCLUDE_STDIO_H,$bc_include_stdio_h)
 AC_SUBST(INCLUDE_STDLIB_H,$bc_include_stdlib_h)
 AC_SUBST(INCLUDE_MALLOC_H,$bc_include_malloc_h)
 AC_SUBST(INCLUDE_STRING_H,$bc_include_string_h)
 AC_SUBST(INCLUDE_UNISTD_H,$bc_include_unistd_h)
 AC_SUBST(INCLUDE_DLFCN_H,$bc_include_dlfcn_h)
+AC_SUBST(INCLUDE_ASM_BYTEORDER_H,$bc_include_asm_byteorder_h)
 
 BEECRYPT_DLFCN
 BEECRYPT_MULTITHREAD
@@ -205,6 +212,11 @@ esac
 AC_C_BIGENDIAN
 AC_C_CONST
 AC_C_INLINE
+
+AH_TEMPLATE([HAVE_INLINE],[.])
+if test "$ac_cv_c_inline" != no; then
+  AC_DEFINE([HAVE_INLINE],1)
+fi
 
 # Checks for library functions.
 AC_PROG_GCC_TRADITIONAL
