@@ -820,9 +820,13 @@ int blockCipherContextECB(blockCipherContext* ctxt, uint32_t* dst, const uint32_
 		memcpy(dst, src, nblocks * ctxt->algo->blocksize);
 		return 0;
 	case ENCRYPT:
-		return blockEncryptECB(ctxt->algo, ctxt->param, dst, src, nblocks);
+		return (ctxt->algo->ecb.encrypt) ?
+			ctxt->algo->ecb.encrypt(ctxt->param, dst, src, nblocks) :
+			blockEncryptECB(ctxt->algo, ctxt->param, dst, src, nblocks);
 	case DECRYPT:
-		return blockDecryptECB(ctxt->algo, ctxt->param, dst, src, nblocks);
+		return (ctxt->algo->ecb.decrypt) ?
+			ctxt->algo->ecb.decrypt(ctxt->param, dst, src, nblocks) :
+			blockDecryptECB(ctxt->algo, ctxt->param, dst, src, nblocks);
 	}
 	return -1;
 }
@@ -835,9 +839,13 @@ int blockCipherContextCBC(blockCipherContext* ctxt, uint32_t* dst, const uint32_
 		memcpy(dst, src, nblocks * ctxt->algo->blocksize);
 		return 0;
 	case ENCRYPT:
-		return blockEncryptCBC(ctxt->algo, ctxt->param, dst, src, nblocks);
+		return (ctxt->algo->cbc.encrypt) ?
+			ctxt->algo->cbc.encrypt(ctxt->param, dst, src, nblocks) :
+			blockEncryptCBC(ctxt->algo, ctxt->param, dst, src, nblocks);
 	case DECRYPT:
-		return blockDecryptCBC(ctxt->algo, ctxt->param, dst, src, nblocks);
+		return (ctxt->algo->cbc.decrypt) ?
+			ctxt->algo->cbc.decrypt(ctxt->param, dst, src, nblocks) :
+			blockDecryptCBC(ctxt->algo, ctxt->param, dst, src, nblocks);
 	}
 	return -1;
 }
