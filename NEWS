@@ -8,6 +8,7 @@
 	- Added SHA-256 hash function.
 	- Added MD5/HMAC and SHA-256/HMAC keyed hash functions.
 	- Added Microsoft Visual C support, added Makefile.mak for this purpose.
+	- Renamed text files to match automake conventions.
 	- Fixed various minor bugs.
 
 1.1.2:
