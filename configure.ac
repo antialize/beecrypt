@@ -114,6 +114,9 @@ AC_ARG_WITH(arch,[  --with-arch             optimize for specific architecture (
   powerpc*)
     bc_target_arch=powerpc
     ;;
+  sparc*)
+    bc_target_arch=sparc
+    ;;
   esac
   ])
 
