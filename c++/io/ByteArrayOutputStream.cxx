@@ -74,6 +74,16 @@ void ByteArrayOutputStream::toByteArray(bytearray& b)
 	_lock.unlock();
 }
 
+void ByteArrayOutputStream::toByteArray(byte* data, size_t offset, size_t length)
+{
+	if (!data)
+		throw NullPointerException();
+
+	_lock.lock();
+	memcpy(data+offset, _buf.data(), length < _count ? length : _count);
+	_lock.unlock();
+}
+
 void ByteArrayOutputStream::close() throw (IOException)
 {
 }
@@ -124,4 +134,11 @@ void ByteArrayOutputStream::write(const byte* data, size_t offset, size_t length
 void ByteArrayOutputStream::write(const bytearray& b) throw (IOException)
 {
 	write(b.data(), 0, b.size());
+}
+
+void ByteArrayOutputStream::writeTo(OutputStream& out) throw (IOException)
+{
+	_lock.lock();
+	out.write(_buf.data(), 0, _count);
+	_lock.unlock();
 }

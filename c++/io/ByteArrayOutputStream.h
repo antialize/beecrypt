@@ -52,6 +52,7 @@ namespace beecrypt {
 			size_t size() throw ();
 			bytearray* toByteArray();
 			void toByteArray(bytearray& b);
+			void toByteArray(byte* data, size_t offset, size_t length);
 			void writeTo(OutputStream& out) throw (IOException);
 
 			virtual void close() throw (IOException);
