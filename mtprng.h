@@ -1,11 +1,5 @@
 /*
- * mtprng.h
- *
- * Mersenne twister pseudo-random number generator, header
- *
  * Copyright (c) 1998, 1999, 2000 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,6 +15,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ */
+
+/*!\file mtprng.h
+ * \brief Mersenne Twister pseudo-random number generator, headers.
+ * \author Bob Deblier <bob@virtualunlimited.com?
+ * \ingroup PRNG_m
  */
 
 #ifndef _MTPRNG_H
@@ -40,8 +40,6 @@
 #  error need locking mechanism
 # endif
 #endif
-
-#include "beecrypt.h"
 
 #define N	624
 #define M	397

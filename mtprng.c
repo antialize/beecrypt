@@ -1,18 +1,4 @@
 /*
- * mtprng.c
- *
- * Mersenne Twister pseudo-random number generator
- *
- * Developed by Makoto Matsumoto and Takuji Nishimura
- *
- * For more information, see:
- *  http://www.math.keio.ac.jp/~matumoto/emt.html
- *
- * Adapted from optimized code by Shawn J. Cokus <cokus@math.washington.edu>
- *
- * Note: this generator has a very long period, passes statistical test, but
- * needs more study to determine whether it is cryptographically strong enough.
- *
  * Copyright (c) 1998, 1999, 2000, 2001 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
@@ -31,6 +17,21 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ */
+
+/*!\mtprng.c
+ * \brief Mersenne Twister pseudo-random number generator.
+ *
+ * Developed by Makoto Matsumoto and Takuji Nishimura. For more information,
+ * see: http://www.math.keio.ac.jp/~matumoto/emt.html
+ *
+ * Adapted from optimized code by Shawn J. Cokus <cokus@math.washington.edu>
+ *
+ * \warning This generator has a very long period, passes statistical test and
+ &          is very fast, but is not recommended for use in cryptography.
+ * 
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup PRNG_m
  */
 
 #define BEECRYPT_DLL_EXPORT

@@ -19,6 +19,7 @@
 /*!\file beecrypt.c
  * \brief BeeCrypt API.
  * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup ES_m PRNG_m HASH_m HMAC_m BC_m
  */
 
 #define BEECRYPT_DLL_EXPORT
@@ -42,7 +43,6 @@
 #include "mp32.h"
 #include "entropy.h"
 
-#include "bbs.h"
 #include "fips186.h"
 #include "mtprng.h"
 
@@ -155,12 +155,16 @@ int entropyGatherNext(uint32* data, int size)
 	return -1;
 }
 
-/* \} */
+/* \}
+ */
+
+/*!\addtogroup PRNG_m
+ * \{
+ */
 
 static const randomGenerator* randomGeneratorList[] =
 {
 	&fips186prng,
-/*	&bbsprng, */
 	&mtprng
 };
 
@@ -244,6 +248,13 @@ int randomGeneratorContextNext(randomGeneratorContext* ctxt, uint32* data, int s
 {
 	return ctxt->rng->next(ctxt->param, data, size);
 }
+
+/* \}
+ */
+
+/*!\addtogroup HASH_m
+ * \{
+ */
 
 static const hashFunction* hashFunctionList[] =
 {
@@ -439,6 +450,13 @@ int hashFunctionContextDigestMatch(hashFunctionContext* ctxt, const mp32number* 
 
 	return rc;
 }
+
+/* \}
+ */
+
+/*!\addtogroup HMAC_m
+ * \{
+ */
 
 static const keyedHashFunction* keyedHashFunctionList[] =
 {
@@ -656,9 +674,12 @@ int keyedHashFunctionContextDigestMatch(keyedHashFunctionContext* ctxt, const mp
 	return rc;
 }
 
+/* \}
+ */
 
-/*!\addtogroup BC_m */
-/* \{ */
+/*!\addtogroup BC_m 
+ * \{
+ */
 
 static const blockCipher* blockCipherList[] =
 {
@@ -792,6 +813,9 @@ int blockCipherContextFree(blockCipherContext* ctxt)
 
 	return 0;
 }
+
+/* \}
+ */
 
 #if WIN32
 __declspec(dllexport)

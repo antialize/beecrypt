@@ -1,11 +1,5 @@
 /*
- * config.win.h
- *
- * Win32 config file
- *
- * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
+ * Copyright (c) 2000, 2001, 2002 Virtual Unlimited B.V.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,8 +17,13 @@
  *
  */
 
-#ifndef _CONFIG_WIN_H
-#define _CONFIG_WIN_H
+/*!\file beecrypt.win.h
+ * \brief BeeCrypt API, windows headers.
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ */
+
+#ifndef _BEECRYPT_WIN_H
+#define _BEECRYPT_WIN_H
 
 #define _REENTRANT
 
@@ -95,16 +94,15 @@
 
 #define HAVE_LONG_LONG			1
 
-#define INT8_TYPE		char
-#define INT16_TYPE		short
-#define INT32_TYPE		int
-#define INT64_TYPE		long long
-#define UINT8_TYPE		unsigned char
-#define UINT16_TYPE		unsigned short
-#define UINT32_TYPE		unsigned int
-#define UINT64_TYPE		unsigned long long
-#define FLOAT4_TYPE		float
-#define DOUBLE8_TYPE	double
+typedef char		int8;
+typedef short		int16;
+typedef int			int32;
+typedef long long	int64;
+
+typedef unsigned char		uint8;
+typedef unsigned short		uint16;
+typedef unsigned int		uint32;
+typedef unsigned long long	uint64;
 
 #elif defined(_MSC_VER)
 #define HAVE_UNISTD_H			0
@@ -114,16 +112,19 @@
 
 #define HAVE_LONG_LONG			0
 
-#define INT8_TYPE		__int8
-#define INT16_TYPE		__int16
-#define INT32_TYPE		__int32
-#define INT64_TYPE		__int64
-#define UINT8_TYPE		unsigned __int8
-#define UINT16_TYPE		unsigned __int16
-#define UINT32_TYPE		unsigned __int32
-#define UINT64_TYPE		unsigned __int64
-#define FLOAT4_TYPE		float
-#define DOUBLE8_TYPE	double
+typedef __int8	int8;
+typedef __int16	int16;
+typedef __int32	int32;
+typedef __int64	int64;
+
+typedef unsigned __int8		uint8;
+typedef unsigned __int16	uint16;
+typedef unsigned __int32	uint32;
+typedef unsigned __int64	uint64;
+
 #endif
+
+typedef float	float4;
+typedef double	double8;
 
 #endif
