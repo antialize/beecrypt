@@ -53,6 +53,12 @@
 # define BEECRYPTCXXAPI
 #endif
 
+#if HAVE_ASSERT_H
+# include <assert.h>
+#else
+# define assert(x)
+#endif
+
 #ifndef ROTL32
 # define ROTL32(x, s) (((x) << (s)) | ((x) >> (32 - (s))))
 #endif
@@ -65,12 +71,17 @@
 
 typedef uint8_t		byte;
 
-typedef int8_t		javabyte;
-typedef int16_t		javashort;
-typedef int32_t		javaint;
-typedef int64_t		javalong;
-
-typedef uint16_t	javachar;
+#if JAVAGLUE
+# include <jni.h>
+#else
+typedef int8_t		jbyte;
+typedef int16_t		jshort;
+typedef int32_t		jint;
+typedef int64_t		jlong;
+typedef uint16_t	jchar;
+typedef float		jfloat;
+typedef double		jdouble;
+#endif
 
 #if (MP_WBITS == 64)
 typedef uint64_t	mpw;

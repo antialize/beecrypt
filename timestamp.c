@@ -41,21 +41,21 @@
 # endif
 #endif
 
-javalong timestamp()
+jlong timestamp()
 {
-	javalong tmp;
+	jlong tmp;
 	#if HAVE_SYS_TIME_H
 	# if HAVE_GETTIMEOFDAY
 	struct timeval now;
 
 	gettimeofday(&now, 0);
 
-	tmp = ((javalong) now.tv_sec) * 1000 + (now.tv_usec / 1000);
+	tmp = ((jlong) now.tv_sec) * 1000 + (now.tv_usec / 1000);
 	# else
 	#  error
 	# endif
 	#elif HAVE_TIME_H
-	tmp = ((javalong) time(0)) * 1000;
+	tmp = ((jlong) time(0)) * 1000;
 	#else
 	# error implement other time function
 	#endif
