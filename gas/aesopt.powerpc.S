@@ -1,12 +1,4 @@
 /*
- * aesopt.powerpc.asm
- *
- * Assembler optimized AES routines for PowerPC processors
- *
- * Compile target is GNU Assembler
- *
- * Copyright (c) 2002 Bob Deblier <bob@virtualunlimited.com>
- *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -21,6 +13,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ */
+
+/*!\file aesopt.powerpc.S
+ * \brief AES block cipher, PowerPC assembler-optimized routines.
+ * \author Bob Deblier <bob.deblier@pandora.be>
+ * \ingroup BC_aes_m
  */
 
 #include "beecrypt.gas.h"

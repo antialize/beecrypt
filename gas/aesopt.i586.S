@@ -1,11 +1,5 @@
 /*
- * aesopt.i586.asm
- *
- * Assembler optimized AES routines for Intel Pentium processors
- *
- * Compile target is GNU Assembler
- *
- * Copyright (c) 2002 Bob Deblier <bob@virtualunlimited.com>
+ * Copyright (c) 2002 Bob Deblier
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,6 +15,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ */
+
+/*!\file aesopt.i586.S
+ * \brief AES block cipher, Pentium assembler-optimized routines.
+ * \author Bob Deblier <bob.deblier@pandora.be>
+ * \ingroup BC_aes_m
  */
 
 #include "beecrypt.gas.h"
