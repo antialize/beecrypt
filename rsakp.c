@@ -1,13 +1,5 @@
 /*
- * rsakp.c
- *
- * RSA Keypair, code
- *
- * <conformance statement for IEEE P1363 needed here>
- *
- * Copyright (c) 2000 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
+ * Copyright (c) 2000, 2002 Virtual Unlimited B.V.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,6 +17,12 @@
  *
  */
 
+/*!\file rsakp.c
+ * \brief RSA keypair.
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup IF_m IF_rsa_m
+ */
+
 #define BEECRYPT_DLL_EXPORT
 
 #include "rsakp.h"
@@ -40,6 +38,10 @@
 #if HAVE_STRING_H
 # include <string.h>
 #endif
+
+/*!\addtogroup IF_rsa_m
+ * \{
+ */
 
 int rsakpMake(rsakp* kp, randomGeneratorContext* rgc, int nsize)
 {
@@ -191,3 +193,6 @@ int rsakpCopy(rsakp* dst, const rsakp* src)
 
 	return 0;
 }
+
+/* \}
+ */

@@ -1,8 +1,4 @@
 /*
- * aes.h
- *
- * AES block cipher, header
- *
  * Copyright (c) 2002 Bob Deblier
  *
  * This library is free software; you can redistribute it and/or
@@ -21,16 +17,34 @@
  *
  */
 
+/*!\file aes.h
+ * \brief AES block cipher, headers.
+ * \author Bob Deblier <bob.deblier@pandora.be>
+ * \ingroup BC_m BC_aes_m
+ */
+
 #ifndef _AES_H
 #define _AES_H
 
 #include "beecrypt.h"
 #include "aesopt.h"
 
+/*!\brief This struct holds all the parameters necessary for the AES cipher.
+ * \ingroup BC_aes_m
+ */
 typedef struct
 {
+	/*!\var k
+	 * \brief Holds the key expansion.
+	 */
 	uint32 k[64];
+	/*!\var nr
+	 * \brief Number of rounds to be used in encryption/decryption.
+	 */
 	uint32 nr;
+	/*!\var fdback
+	 * \brief Buffer to be used by block chaining or feedback modes.
+	 */
 	uint32 fdback[4];
 } aesParam;
 

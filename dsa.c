@@ -1,14 +1,5 @@
 /*
- * dsa.c
- *
- * Digital Signature Algorithm signature scheme, code
- *
- * For more information on this algorithm, see:
- *  NIST FIPS 186-1
- *
- * Copyright (c) 2001 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
+ * Copyright (c) 2001, 2002 Virtual Unlimited B.V.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,19 +15,18 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ */
+
+/*!\file dsa.c
+ * \brief Digital Signature Algorithm, as specified by NIST FIPS 186.
  *
- * DSA Signature:
- *  Signing equation:
- *   r = (g^k mod p) mod q and
- *   s = (inv(k) * (h(m) + x*r)) mod q
- *  Verifying equation:
- *   check 0 < r < q and 0 < s < q
- *   w = inv(s) mod q
- *   u1 = (h(m)*w) mod q
- *   u2 = (r*w) mod q
- *   v = ((g^u1 * y^u2) mod p) mod q
- *   check v == r
+ * FIPS 186 specifies the DSA algorithm as having a large prime \f$p\f$,
+ * a cofactor \f$q\f$ and a generator \f$g\f$ of a subgroup of
+ * \f$\mathds{Z}^{*}_p\f$ with order \f$q\f$. The private and public key
+ * values are \f$x\f$ and \f$y\f$ respectively.
  *
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup DL_m DL_dsa_m
  */
  
 #define BEECRYPT_DLL_EXPORT
@@ -52,6 +42,30 @@
 # include <malloc.h>
 #endif
 
+/*!\addtogroup DL_dsa_m
+ * \{
+ */
+
+/*!\fn int dsasign(const mp32barrett* p, const mp32barrett* q, const mp32number* g, randomGeneratorContext* rgc, const mp32number* hm, const mp32number* x, mp32number* r, mp32number* s)
+ * \brief The raw DSA signing function.
+ *
+ * Signing equations:
+ *
+ * \li \f$r=(g^{k}\ \textrm{mod}\ p)\ \textrm{mod}\ q\f$
+ * \li \f$s=k^{-1}(h(m)+xr)\ \textrm{mod}\ q\f$
+ *
+ * \param p The prime.
+ * \param q The cofactor.
+ * \param g The generator.
+ * \param rgc The pseudo-random generator context.
+ * \param hm The hash to be signed.
+ * \param x The private key value.
+ * \param r The signature's \e r value.
+ * \param s The signature's \e r value.
+ *
+ * \retval 0 on success.
+ * \retval -1 on failure.
+ */
 int dsasign(const mp32barrett* p, const mp32barrett* q, const mp32number* g, randomGeneratorContext* rgc, const mp32number* hm, const mp32number* x, mp32number* r, mp32number* s)
 {
 	register uint32  psize = p->size;
@@ -86,16 +100,6 @@ int dsasign(const mp32barrett* p, const mp32barrett* q, const mp32number* g, ran
 	/* get a random k, invertible modulo q */
 	mp32brndinv_w(q, rgc, qtemp, qtemp+qsize, qwksp);
 
-/* FIPS 186 test vectors
-	qtemp[0] = 0x358dad57;
-	qtemp[1] = 0x1462710f;
-	qtemp[2] = 0x50e254cf;
-	qtemp[3] = 0x1a376b2b;
-	qtemp[4] = 0xdeaadfbf;
-
-	mp32binv_w(q, qsize, qtemp, qtemp+qsize, qwksp);
-*/
-
 	/* g^k mod p */
 	mp32bpowmod_w(p, g->size, g->data, qsize, qtemp, ptemp, pwksp);
 
@@ -124,9 +128,30 @@ int dsasign(const mp32barrett* p, const mp32barrett* q, const mp32number* g, ran
 	return rc;
 }
 
-/**
- * This function returns 0 is the signature fails to verify, and 1 if the
- * verification was successful.
+/*!\fn int dsavrfy(const mp32barrett* p, const mp32barrett* q, const mp32number* g, const mp32number* hm, const mp32number* y, const mp32number* r, const mp32number* s)
+ * \brief The raw DSA verification function.
+ *
+ * Verifying equations:
+ * \li Check \f$0<r<q\f$ and \f$0<s<q\f$
+ * \li \f$w=s^{-1}\ \textrm{mod}\ q\f$
+ * \li \f$u_1=w \cdot h(m)\ \textrm{mod}\ q\f$
+ * \li \f$u_2=rw\ \textrm{mod}\ q\f$
+ * \li \f$v=(g^{u_1}y^{u_2}\ \textrm{mod}\ p)\ \textrm{mod}\ q\f$
+ * \li Check \f$v=r\f$
+ *
+ * \param p The prime.
+ * \param q The cofactor.
+ * \param g The generator.
+ * \param hm The digest to be verified.
+ * \param y The public key value.
+ * \param r The signature's r value.
+ * \param s The signature's r value.
+ *
+ * \warning The return type of this function should be a boolean, but since
+ *          that type isn't as portable, an int is used.
+ *
+ * \retval 0 on failure.
+ * \retval 1 on success.
  */
 int dsavrfy(const mp32barrett* p, const mp32barrett* q, const mp32number* g, const mp32number* hm, const mp32number* y, const mp32number* r, const mp32number* s)
 {

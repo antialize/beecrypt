@@ -1,17 +1,5 @@
 /*
- * dhaes.c
- *
- * DHAES, code
- *
- * This code implements the encryption scheme from the paper:
- *
- * "DHAES: An Encryption Scheme Based on the Diffie-Hellman Problem"
- * Michel Abdalla, Mihir Bellare, Phillip Rogaway
- * September 1998
- *
- * Copyright (c) 2000, 2001 Virtual Unlimited, B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
+ * Copyright (c) 2000, 2001, 2002 Virtual Unlimited, B.V.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,6 +17,19 @@
  *
  */
 
+/*!\file dhaes.c
+ * \brief DHAES encryption scheme.
+ *
+ * This code implements the encryption scheme from the paper:
+ *
+ * "DHAES: An Encryption Scheme Based on the Diffie-Hellman Problem"
+ * Michel Abdalla, Mihir Bellare, Phillip Rogaway
+ * September 1998
+ *
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup DL_m DL_dh_m
+ */
+
 #define BEECRYPT_DLL_EXPORT
  
 #include "dhaes.h"
@@ -43,7 +44,7 @@
 # include <malloc.h>
 #endif
 
-/**
+/*
  * Good combinations will be:
  *
  * For 64-bit encryption:
@@ -209,7 +210,7 @@ static int dhaes_pContextSetup(dhaes_pContext* ctxt, const mp32number* private, 
 	mp32nwipe(&secret);
 	mp32nfree(&secret);
 
-	/**
+	/*
 	 * NOTE: blockciphers and keyed hash functions take keys with sizes
 	 * specified in bits and key data passed in 32-bit words.
 	 *

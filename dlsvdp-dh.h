@@ -1,11 +1,5 @@
 /*
- * dlsvdp-dh.h
- *
- * Discrete Logarithm Secret Value Derivation Primitive - Diffie Hellman, header
- *
- * Copyright (c) 2000 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
+ * Copyright (c) 2000, 2002 Virtual Unlimited B.V.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,6 +15,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ */
+
+/*!\file dlsvdp-dh.h
+ * \brief Diffie-Hellman algorithm, headers.
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup DL_m DL_dh_m 
  */
 
 #ifndef _DLSVDP_DH_H

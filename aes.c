@@ -1,8 +1,4 @@
 /*
- * aes.c
- *
- * AES cipher, code
- *
  * Copyright (c) 2002 Bob Deblier
  *
  * This library is free software; you can redistribute it and/or
@@ -21,6 +17,12 @@
  *
  */
 
+/*!\file aes.c
+ * \brief AES block cipher, as specified by NIST FIPS 197.
+ * \author Bob Deblier <bob.deblier@pandora.be>
+ * \ingroup BC_aes_m BC_m
+ */
+
 #define BEECRYPT_DLL_EXPORT
 
 #include "aes.h"
@@ -29,6 +31,13 @@
 
 #include <string.h>
 
+/*!\addtogroup BC_aes_m
+ * \{
+ */
+
+/*!\var _ae0
+ * \brief Table used for encryption.
+ */
 const uint32 _ae0[256] = {
     0xc66363a5, 0xf87c7c84, 0xee777799, 0xf67b7b8d,
     0xfff2f20d, 0xd66b6bbd, 0xde6f6fb1, 0x91c5c554,
@@ -96,6 +105,9 @@ const uint32 _ae0[256] = {
     0x7bb0b0cb, 0xa85454fc, 0x6dbbbbd6, 0x2c16163a
 };
 
+/*!\var _ae1
+ * \brief Table used for encryption.
+ */
 const uint32 _ae1[256] = {
     0xa5c66363, 0x84f87c7c, 0x99ee7777, 0x8df67b7b,
     0x0dfff2f2, 0xbdd66b6b, 0xb1de6f6f, 0x5491c5c5,
@@ -163,6 +175,9 @@ const uint32 _ae1[256] = {
     0xcb7bb0b0, 0xfca85454, 0xd66dbbbb, 0x3a2c1616
 };
 
+/*!\var _ae2
+ * \brief Table used for encryption.
+ */
 const uint32 _ae2[256] = {
     0x63a5c663, 0x7c84f87c, 0x7799ee77, 0x7b8df67b,
     0xf20dfff2, 0x6bbdd66b, 0x6fb1de6f, 0xc55491c5,
@@ -230,6 +245,9 @@ const uint32 _ae2[256] = {
     0xb0cb7bb0, 0x54fca854, 0xbbd66dbb, 0x163a2c16
 };
 
+/*!\var _ae3
+ * \brief Table used for encryption.
+ */
 const uint32 _ae3[256] = {
     0x6363a5c6, 0x7c7c84f8, 0x777799ee, 0x7b7b8df6,
     0xf2f20dff, 0x6b6bbdd6, 0x6f6fb1de, 0xc5c55491,
@@ -297,6 +315,9 @@ const uint32 _ae3[256] = {
     0xb0b0cb7b, 0x5454fca8, 0xbbbbd66d, 0x16163a2c
 };
 
+/*!\var _ae4
+ * \brief Table used for encryption.
+ */
 const uint32 _ae4[256] = {
     0x63636363, 0x7c7c7c7c, 0x77777777, 0x7b7b7b7b,
     0xf2f2f2f2, 0x6b6b6b6b, 0x6f6f6f6f, 0xc5c5c5c5,
@@ -364,6 +385,9 @@ const uint32 _ae4[256] = {
     0xb0b0b0b0, 0x54545454, 0xbbbbbbbb, 0x16161616
 };
 
+/*!\var _ad0
+ * \brief Table used for decryption.
+ */
 const uint32 _ad0[256] = {
     0x51f4a750, 0x7e416553, 0x1a17a4c3, 0x3a275e96,
     0x3bab6bcb, 0x1f9d45f1, 0xacfa58ab, 0x4be30393,
@@ -431,6 +455,9 @@ const uint32 _ad0[256] = {
     0x7bcb8461, 0xd532b670, 0x486c5c74, 0xd0b85742
 };
 
+/*!\var _ad1
+ * \brief Table used for decryption.
+ */
 const uint32 _ad1[256] = {
     0x5051f4a7, 0x537e4165, 0xc31a17a4, 0x963a275e,
     0xcb3bab6b, 0xf11f9d45, 0xabacfa58, 0x934be303,
@@ -498,6 +525,9 @@ const uint32 _ad1[256] = {
     0x617bcb84, 0x70d532b6, 0x74486c5c, 0x42d0b857
 };
 
+/*!\var _ad2
+ * \brief Table used for decryption.
+ */
 const uint32 _ad2[256] = {
     0xa75051f4, 0x65537e41, 0xa4c31a17, 0x5e963a27,
     0x6bcb3bab, 0x45f11f9d, 0x58abacfa, 0x03934be3,
@@ -565,6 +595,9 @@ const uint32 _ad2[256] = {
     0x84617bcb, 0xb670d532, 0x5c74486c, 0x5742d0b8
 };
 
+/*!\var _ad3
+ * \brief Table used for decryption.
+ */
 const uint32 _ad3[256] = {
     0xf4a75051, 0x4165537e, 0x17a4c31a, 0x275e963a,
     0xab6bcb3b, 0x9d45f11f, 0xfa58abac, 0xe303934b,
@@ -632,6 +665,9 @@ const uint32 _ad3[256] = {
     0xcb84617b, 0x32b670d5, 0x6c5c7448, 0xb85742d0
 };
 
+/*!\var _ad4
+ * \brief Table used for decryption.
+ */
 const uint32 _ad4[256] = {
     0x52525252, 0x09090909, 0x6a6a6a6a, 0xd5d5d5d5,
     0x30303030, 0x36363636, 0xa5a5a5a5, 0x38383838,
@@ -711,8 +747,24 @@ static const blockMode aesModes[2] =
 	{ /* CBC */ (blockModeEncrypt) aesCBCEncrypt, (blockModeDecrypt) aesCBCDecrypt }
 };
 
+/*!\var aes
+ * \brief Holds the full API description of the AES algorithm.
+ */
 const blockCipher aes = { "AES", sizeof(aesParam), 16, 128, 256, 64, (blockCipherSetup) aesSetup, (blockCipherSetIV) aesSetIV, (blockCipherEncrypt) aesEncrypt, (blockCipherDecrypt) aesDecrypt, aesModes };
 
+/*!\fn int aesSetup(aesParam* ap, const uint32* key, int keybits, cipherOperation op)
+ * \brief The setup function.
+ *
+ * This function expands the key depending on whether the ENCRYPT or DECRYPT
+ * operation was selected.
+ *
+ * \param ap The cipher's parameter block.
+ * \param key The key value; needs to be stored in host-endian format.
+ * \param keybits The number of bits in the key; legal values are: 128, 192 and 256.
+ * \param op ENCRYPT or DECRYPT.
+ * \retval 0 on success.
+ * \retval -1 on failure.
+ */
 int aesSetup(aesParam* ap, const uint32* key, int keybits, cipherOperation op)
 {
 	if (((keybits & 63) == 0) && (keybits >= 128) && (keybits <= 256))
@@ -841,6 +893,16 @@ int aesSetup(aesParam* ap, const uint32* key, int keybits, cipherOperation op)
 	return -1;
 }
 
+/*!\fn int aesSetIV(aesParam* ap, const uint32* iv)
+ * \brief The initialization vector setup function.
+ *
+ * This function is only necessary in block chaining or feedback modes.
+ *
+ * \param ap The cipher's parameter block.
+ * \param iv The initialization vector; needs to be stored in host-endian format.
+ * \retval 0 on success.
+ * \retval -1 on failure.
+ */
 #ifndef ASM_AESSETIV
 int aesSetIV(aesParam* ap, const uint32* iv)
 {
@@ -941,6 +1003,19 @@ int aesSetIV(aesParam* ap, const uint32* iv)
 		(_ae4[(t2      ) & 0xff] & 0x000000ff) ^ \
 		rk[3];
 
+/*!\fn aesEncrypt(aesParam* ap, uint32* dst, const uint32* src)
+ * \brief The raw encryption function.
+ *
+ * This function encrypts one block of data; the size of a block is 128 bits.
+ *
+ * \param ap The cipher's parameter block.
+ * \param dst The destination (ciphertext data) address; the uint32 pointer type
+ *            is only used for memory alignment purposes.
+ * \param src The source (cleartext data) address; the uint32 pointer type
+ *            is only used for memory alignment purposes.
+ * \retval 0 on success.
+ * \retval -1 on failure.
+ */
 #ifndef ASM_AESENCRYPT
 int aesEncrypt(aesParam* ap, uint32* dst, const uint32* src)
 {
@@ -1079,6 +1154,19 @@ int aesEncrypt(aesParam* ap, uint32* dst, const uint32* src)
    		(_ad4[(t0      ) & 0xff] & 0x000000ff) ^ \
    		rk[3];
 
+/*!\fn aesDecrypt(aesParam* ap, uint32* dst, const uint32* src)
+ * \brief The raw decryption function.
+ *
+ * This function decrypts one block of data; the size of a block is 128 bits.
+ *
+ * \param ap The cipher's parameter block.
+ * \param dst The destination (cleartext data) address; the uint32 pointer type
+ *            is only used for memory alignment purposes.
+ * \param src The source (ciphertext data) address; the uint32 pointer type
+ *            is only used for memory alignment purposes.
+ * \retval 0 on success.
+ * \retval -1 on failure.
+ */
 #ifndef ASM_AESDECRYPT
 int aesDecrypt(aesParam* ap, uint32* dst, const uint32* src)
 {
@@ -1139,6 +1227,17 @@ int aesDecrypt(aesParam* ap, uint32* dst, const uint32* src)
 }
 #endif
 
+/*!\fn aesECBEncrypt(aesParam* ap, int count, uint32* dst, const uint32* src)
+ * \brief Encrypts multiple blocks in Electronic Code Book (ECB) mode.
+ * \param ap The cipher's parameter block.
+ * \param count The number of blocks to be encrypted.
+ * \param dst The destination (ciphertext data) address; the uint32 pointer type
+ *            is only used for memory alignment purposes.
+ * \param src The source (cleartext data) address; the uint32 pointer type
+ *            is only used for memory alignment purposes.
+ * \retval 0 on success.
+ * \retval -1 on failure.
+ */
 #ifndef ASM_AESECBENCRYPT
 int aesECBEncrypt(aesParam* ap, int count, uint32* dst, const uint32* src)
 {
@@ -1155,6 +1254,17 @@ int aesECBEncrypt(aesParam* ap, int count, uint32* dst, const uint32* src)
 }
 #endif
 
+/*!\fn aesECBDecrypt(aesParam* ap, int count, uint32* dst, const uint32* src)
+ * \brief Decrypts multiple blocks in Electronic Code Book (ECB) mode.
+ * \param ap The cipher's parameter block.
+ * \param count The number of blocks to be encrypted.
+ * \param dst The destination (cleartext data) address; the uint32 pointer type
+ *            is only used for memory alignment purposes.
+ * \param src The source (ciphertext data) address; the uint32 pointer type
+ *            is only used for memory alignment purposes.
+ * \retval 0 on success.
+ * \retval -1 on failure.
+ */
 #ifndef ASM_AESECBDECRYPT
 int aesECBDecrypt(aesParam* ap, int count, uint32* dst, const uint32* src)
 {
@@ -1171,6 +1281,17 @@ int aesECBDecrypt(aesParam* ap, int count, uint32* dst, const uint32* src)
 }
 #endif
 
+/*!\fn aesCBCEncrypt(aesParam* ap, int count, uint32* dst, const uint32* src)
+ * \brief Encrypts multiple blocks in Cipher Block Chaining (CBC) mode.
+ * \param ap The cipher's parameter block.
+ * \param count The number of blocks to be encrypted.
+ * \param dst The destination (ciphertext data) address; the uint32 pointer type
+ *            is only used for memory alignment purposes.
+ * \param src The source (cleartext data) address; the uint32 pointer type
+ *            is only used for memory alignment purposes.
+ * \retval 0 on success.
+ * \retval -1 on failure.
+ */
 #ifndef ASM_AESCBCENCRYPT
 int aesCBCEncrypt(aesParam* ap, int count, uint32* dst, const uint32* src)
 {
@@ -1212,6 +1333,17 @@ int aesCBCEncrypt(aesParam* ap, int count, uint32* dst, const uint32* src)
 }
 #endif
 
+/*!\fn aesCBCDecrypt(aesParam* ap, int count, uint32* dst, const uint32* src)
+ * \brief Decrypts multiple blocks in Cipher Block Chaining (CBC) mode.
+ * \param ap The cipher's parameter block.
+ * \param count The number of blocks to be encrypted.
+ * \param dst The destination (cleartext data) address; the uint32 pointer type
+ *            is only used for memory alignment purposes.
+ * \param src The source (ciphertext data) address; the uint32 pointer type
+ *            is only used for memory alignment purposes.
+ * \retval 0 on success.
+ * \retval -1 on failure.
+ */
 #ifndef ASM_AESCBCDECRYPT
 int aesCBCDecrypt(aesParam* ap, int count, uint32* dst, const uint32* src)
 {
@@ -1304,3 +1436,6 @@ int aesCBCDecrypt(aesParam* ap, int count, uint32* dst, const uint32* src)
 	return 0;
 }
 #endif
+
+/* \}
+ */

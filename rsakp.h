@@ -1,13 +1,5 @@
 /*
- * rsakp.h
- *
- * RSA Keypair, header
- *
- * <conformance statement for IEEE P1363 needed here>
- *
- * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
+ * Copyright (c) 2000, 2001, 2002 Virtual Unlimited B.V.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,20 +17,58 @@
  *
  */
 
+/*!\file rsakp.h
+ * \brief RSA keypair, headers.
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup IF_m IF_rsa_m
+ */
+
 #ifndef _RSAKP_H
 #define _RSAKP_H
 
 #include "rsapk.h"
 
+/*!\brief RSA keypair.
+ * \ingroup IF_rsa_m
+ */
 typedef struct
 {
+	/*!\var n
+	 * \brief The modulus.
+	 *
+	 * \f$n=pq\f$
+	 */
 	mp32barrett n;
+	/*!\var e
+	 * \brief The public exponent.
+	 */
 	mp32number e;
+	/*!\var d
+	 * \brief The private exponent.
+	 */
 	mp32number d;
+	/*!\var p
+	 * \brief The first prime factor of the modulus.
+	 */
 	mp32barrett p;
+	/*!\var q
+	 * \brief The second prime factor of the modulus.
+	 */
 	mp32barrett q;
+	/*!\var d1
+	 *
+	 * \f$d_1=d\ \textrm{mod}\ (p-1)\f$
+	 */
 	mp32number d1;
+	/*!\var d2
+	 *
+	 * \f$d_2=d\ \textrm{mod}\ (q-1)\f$
+	 */
 	mp32number d2;
+	/*!\var q
+	 *
+	 * \f$c=q^{-1}\ \textrm{mod}\ p\f$
+	 */
 	mp32number c;
 } rsakp;
 

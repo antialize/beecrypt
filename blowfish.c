@@ -1,18 +1,5 @@
 /*
- * blowfish.c
- *
- * Blowfish block cipher, code
- *
- * For more information on this blockcipher, see:
- * "Applied Cryptography", second edition
- *  Bruce Schneier
- *  Wiley & Sons
- *
- * Also see: http://www.counterpane.com/blowfish.html
- *
- * Copyright (c) 1999, 2000 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
+ * Copyright (c) 1999, 2000, 2002 Virtual Unlimited B.V.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,6 +17,20 @@
  *
  */
 
+/*!\file blowfish.c
+ * \brief Blowfish block cipher.
+ *
+ * For more information on this blockcipher, see:
+ * "Applied Cryptography", second edition
+ *  Bruce Schneier
+ *  Wiley & Sons
+ *
+ * Also see http://www.counterpane.com/blowfish.html
+ *
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup BC_m BC_blowfish_m
+ */
+
 #define BEECRYPT_DLL_EXPORT
 
 #include "blowfish.h"
@@ -37,6 +38,12 @@
 
 #include <string.h>
 
+/*!\addtogroup BC_blowfish_m
+ * \{
+ */
+
+/*\!var _bf_p
+ */
 static uint32 _bf_p[BLOWFISHPSIZE] = {
 	0x243f6a88, 0x85a308d3, 0x13198a2e, 0x03707344,
 	0xa4093822, 0x299f31d0, 0x082efa98, 0xec4e6c89,
@@ -45,6 +52,9 @@ static uint32 _bf_p[BLOWFISHPSIZE] = {
 	0x9216d5d9, 0x8979fb1b
 };
 
+/*!\var _bf_s
+ * \brief Table with s-box data.
+ */
 static uint32 _bf_s[1024] = {
 	0xd1310ba6, 0x98dfb5ac, 0x2ffd72db, 0xd01adfb7,
 	0xb8e1afed, 0x6a267e96, 0xba7c9045, 0xf12c7f99,
@@ -313,8 +323,20 @@ static const blockMode blowfishModes[2] =
 	{ /* CBC */ (blockModeEncrypt) blowfishCBCEncrypt, (blockModeDecrypt) blowfishCBCDecrypt }
 };
 
+/*!\var blowfish
+ * \brief Holds the full API description of the Blowfish algorithm.
+ */
 const blockCipher blowfish = { "Blowfish", sizeof(blowfishParam), 8, 64, 448, 32, (blockCipherSetup) blowfishSetup, (blockCipherSetIV) blowfishSetIV, (blockCipherEncrypt) blowfishEncrypt, (blockCipherDecrypt) blowfishDecrypt, blowfishModes };
 
+/*!\fn int blowfishSetup(blowfishParam* bp, const uint32* key, int keybits, cipherOperation op)
+ * \brief The Blowfish setup function.
+ * \param bp The cipher's parameter block.
+ * \param key Pointer to the key value; needs to be stored in host-endian format.
+ * \param keybits The number of bits in the key; legal values are: 64, 96, 128, 160, 192, 224, 256, 288, 320, 352, 384, 416 and 448.
+ * \param op ENCRYPT or DECRYPT.
+ * \retval 0 on success.
+ * \retval -1 on failure.
+ */
 int blowfishSetup(blowfishParam* bp, const uint32* key, int keybits, cipherOperation op)
 {
 	if (((keybits & 7) == 0) && (keybits >= 64) && (keybits <= 448))
@@ -599,3 +621,6 @@ int blowfishCBCDecrypt(blowfishParam* bp, int count, uint32* dst, const uint32* 
 	return 0;
 }
 #endif
+
+/* \}
+ */

@@ -1,15 +1,5 @@
 /*
- * elgamal.c
- *
- * ElGamal signature scheme, code
- *
- * For more information on this algorithm, see:
- *  "Handbook of Applied Cryptography"
- *  11.5.2 "The ElGamal signature scheme", p. 454-459
- *
- * Copyright (c) 1999, 2000, 2001 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
+ * Copyright (c) 1999, 2000, 2001, 2002 Virtual Unlimited B.V.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,35 +15,21 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *
- * This code implements two of the six variants described:
- *
- * ElGamal Signature variant 1: (i.e. the standard version)
- *  Signing equation:
- *   r = g^k mod p and
- *   s = inv(k) * (h(m) - x*r) mod (p-1)
- *  Verifying equation:
- *   check 1 <= r <= (p-1)
- *   v1 = g^h(m) mod p
- *   v2 = y^r * r^s mod p
- *   check v1 == v2
- *  Simultaneous multiple exponentiation verification:
- *   y^r * r^s * g^(p-1-h(m)) mod p = 1 or (the former is probably faster)
- *   y^r * r^s * inv(g)^h(m) mod p = 1
- *
- * ElGamal Signature variant 3: signing is simpler, because no inverse has to be calculated
- *  Signing equation:
- *   r = g^k mod p and
- *   s = x*r + k*h(m) mod (p-1)
- *  Verifying equation:
- *   check 1 <= r <= (p-1)
- *   v1 = g^s mod p
- *   v2 = y^r * r^h(m) mod p
- *  Simultaneous multiple exponentiation verification:
- *   y^r * r^h(m) * g^(p-1-s) mod p = 1 (one of the exponents is significantly smaller, i.e. h(m))
- *
  */
  
+/*!\file elgamal.c
+ * \brief ElGamal algorithm.
+ *
+ * For more information on this algorithm, see:
+ *  "Handbook of Applied Cryptography",
+ *  11.5.2: "The ElGamal signature scheme", p. 454-459
+ *
+ * Two of the signature variants in Note 11.70 are described.
+ *
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup DL_m DL_elgamal_m
+ */
+
 #define BEECRYPT_DLL_EXPORT
 
 #include "elgamal.h"
@@ -67,6 +43,30 @@
 # include <malloc.h>
 #endif
 
+/*!\addtogroup DL_elgamal_m
+ * \{
+ */
+
+/*!\fn int elgv1sign(const mp32barrett* p, const mp32barrett* n, const mp32number* g, randomGeneratorContext* rgc, const mp32number* hm, const mp32number* x, mp32number* r, mp32number* s)
+ * \brief The raw ElGamal signing funcion, variant 1.
+ *
+ * Signing equations:
+ *
+ * \li \f$r=g^{k}\ \textrm{mod}\ p\f$
+ * \li \f$s=k^{-1}(h(m)-xr)\ \textrm{mod}\ (p-1)\f$
+ *
+ * \param p The prime.
+ * \param n The reducer mod (p-1).
+ * \param g The generator.
+ * \param rgc The pseudo-random generat
+ * \param hm The hash to be signed.
+ * \param x The private key value.
+ * \param r The signature's \e r value.
+ * \param s The signature's \e r value.
+ *
+ * \retval 0 on success.
+ * \retval -1 on failure.
+ */
 int elgv1sign(const mp32barrett* p, const mp32barrett* n, const mp32number* g, randomGeneratorContext* rgc, const mp32number* hm, const mp32number* x, mp32number* r, mp32number* s)
 {
 	register uint32  size = p->size;
@@ -104,6 +104,30 @@ int elgv1sign(const mp32barrett* p, const mp32barrett* n, const mp32number* g, r
 	return -1;
 }
 
+/*!\fn int elgv1vrfy(const mp32barrett* p, const mp32barrett* n, const mp32number* g, const mp32number* hm, const mp32number* y, const mp32number* r, const mp32number* s)
+ * \brief The raw ElGamal verification funcion, variant 1.
+ *
+ * Verifying equations:
+ *
+ * \li Check \f$0<r<p\f$ and \f$0<s<(p-1)\f$
+ * \li \f$v_1=y^{r}r^{s}\ \textrm{mod}\ p\f$
+ * \li \f$v_2=g^{h(m)}\ \textrm{mod}\ p\f$
+ * \li Check \f$v_1=v_2\f$
+ *
+ * \param p The prime.
+ * \param n The reducer mod (p-1).
+ * \param g The generator.
+ * \param hm The hash to be signed.
+ * \param y The public key value.
+ * \param r The signature's \e r value.
+ * \param s The signature's \e r value.
+ *
+ * \warning The return type of this function should be a boolean, but since
+ *          that type isn't as portable, an int is used.
+ *
+ * \retval 1 on success.
+ * \retval 0 on failure.
+ */
 int elgv1vrfy(const mp32barrett* p, const mp32barrett* n, const mp32number* g, const mp32number* hm, const mp32number* y, const mp32number* r, const mp32number* s)
 {
 	register uint32  size = p->size;
@@ -133,10 +157,10 @@ int elgv1vrfy(const mp32barrett* p, const mp32barrett* n, const mp32number* g, c
 		/* compute u2 = r^s mod p */
 		mp32bpowmod_w(p, r->size, r->data, s->size, s->data, temp+size, temp+2*size);
 
-		/* compute v2 = u1*u2 mod p */
+		/* compute v1 = u1*u2 mod p */
 		mp32bmulmod_w(p, size, temp, size, temp+size, temp+size, temp+2*size);
 
-		/* compute v1 = g^h(m) mod p */
+		/* compute v2 = g^h(m) mod p */
 		mp32bpowmod_w(p, g->size, g->data, hm->size, hm->data, temp, temp+2*size);
 
 		rc = mp32eq(size, temp, temp+size);
@@ -148,6 +172,26 @@ int elgv1vrfy(const mp32barrett* p, const mp32barrett* n, const mp32number* g, c
 	return 0;
 }
 
+/*!\fn int elgv3sign(const mp32barrett* p, const mp32barrett* n, const mp32number* g, randomGeneratorContext* rgc, const mp32number* hm, const mp32number* x, mp32number* r, mp32number* s)
+ * \brief The raw ElGamal signing funcion, variant 3.
+ *
+ * Signing equations:
+ *
+ * \li \f$r=g^{k}\ \textrm{mod}\ p\f$
+ * \li \f$s=xr+kh(m)\ \textrm{mod}\ (p-1)\f$
+ *
+ * \param p The prime.
+ * \param n The reducer mod (p-1).
+ * \param g The generator.
+ * \param rgc The pseudo-random generat
+ * \param hm The hash to be signed.
+ * \param x The private key value.
+ * \param r The signature's \e r value.
+ * \param s The signature's \e r value.
+ *
+ * \retval 0 on success.
+ * \retval -1 on failure.
+ */
 int elgv3sign(const mp32barrett* p, const mp32barrett* n, const mp32number* g, randomGeneratorContext* rgc, const mp32number* hm, const mp32number* x, mp32number* r, mp32number* s)
 {
 	register uint32  size = p->size;
@@ -181,6 +225,30 @@ int elgv3sign(const mp32barrett* p, const mp32barrett* n, const mp32number* g, r
 	return -1;
 }
 
+/*!\fn int elgv3vrfy(const mp32barrett* p, const mp32barrett* n, const mp32number* g, const mp32number* hm, const mp32number* y, const mp32number* r, const mp32number* s)
+ * \brief The raw ElGamal verification funcion, variant 3.
+ *
+ * Verifying equations:
+ *
+ * \li Check \f$0<r<p\f$ and \f$0<s<(p-1)\f$
+ * \li \f$v_1=g^{s}\ \textrm{mod}\ p\f$
+ * \li \f$v_2=y^{r}r^{h(m)}\ \textrm{mod}\ p\f$
+ * \li Check \f$v_1=v_2\f$
+ *
+ * \param p The prime.
+ * \param n The reducer mod (p-1).
+ * \param g The generator.
+ * \param hm The hash to be signed.
+ * \param y The public key value.
+ * \param r The signature's \e r value.
+ * \param s The signature's \e r value.
+ *
+ * \warning The return type of this function should be a boolean, but since
+ *          that type isn't as portable, an int is used.
+ *
+ * \retval 1 on success.
+ * \retval 0 on failure.
+ */
 int elgv3vrfy(const mp32barrett* p, const mp32barrett* n, const mp32number* g, const mp32number* hm, const mp32number* y, const mp32number* r, const mp32number* s)
 {
 	register uint32  size = p->size;
@@ -224,3 +292,6 @@ int elgv3vrfy(const mp32barrett* p, const mp32barrett* n, const mp32number* g, c
 	}
 	return 0;
 }
+
+/* \}
+ */

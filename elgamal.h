@@ -1,11 +1,5 @@
 /*
- * elgamal.h
- *
- * ElGamal signature scheme, header
- *
- * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
+ * Copyright (c) 2000, 2001, 2002 Virtual Unlimited B.V.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,6 +17,11 @@
  *
  */
 
+/*!\file elgamal.h
+ * \brief ElGamal algorithm, headers.
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup DL_m DL_elgamal_m
+ */
 #ifndef _ELGAMAL_H
 #define _ELGAMAL_H
 

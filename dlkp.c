@@ -1,13 +1,5 @@
 /*
- * dlkp.c
- *
- * Discrete Logarithm Keypair, code
- *
- * <conformance statement for IEEE P1363 needed here>
- *
- * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
+ * Copyright (c) 2000, 2001, 2002 Virtual Unlimited B.V.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,9 +17,19 @@
  *
  */
 
+/*!\file dlkp.c
+ * \brief Discrete Logarithm keypair.
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup DL_m
+ */
+
 #define BEECRYPT_DLL_EXPORT
 
 #include "dlkp.h"
+
+/*!\addtogroup DL_m
+ * \{
+ */
 
 int dlkp_pPair(dlkp_p* kp, randomGeneratorContext* rgc, const dldp_p* param)
 {
@@ -72,3 +74,6 @@ int dlkp_pCopy(dlkp_p* dst, const dlkp_p* src)
 
 	return 0;
 }
+
+/* \}
+ */

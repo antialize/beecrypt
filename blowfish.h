@@ -1,11 +1,5 @@
 /*
- * blowfish.h
- *
- * Blowfish block cipher, header
- *
- * Copyright (c) 1999, 2000 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
+ * Copyright (c) 1999, 2000, 2002 Virtual Unlimited B.V.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,6 +17,12 @@
  *
  */
 
+/*!\file blowfish.h
+ * \brief Blowfish block cipher, headers.
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup BC_m BC_blowfish_m
+ */
+
 #ifndef _BLOWFISH_H
 #define _BLOWFISH_H
 
@@ -32,10 +32,22 @@
 #define BLOWFISHROUNDS	16
 #define BLOWFISHPSIZE	(BLOWFISHROUNDS+2)
 
+/*!\brief This struct holds all the parameters necessary for the Blowfish cipher.
+ * \ingroup BC_blowfish_m
+ */
 typedef struct
 {
+	/*!\var p
+	 * \brief Holds the key expansion.
+	 */
 	uint32 p[BLOWFISHPSIZE];
+	/*!\var s
+	 * \brief Holds the s-boxes.
+	 */
 	uint32 s[1024];
+	/*!\var fdback
+	 * \brief Buffer to be used by block chaining or feedback modes.
+	 */
 	uint32 fdback[2];
 } blowfishParam;
 

@@ -1,13 +1,5 @@
 /*
- * dlkp.h
- *
- * Discrete Logarithm Keypair, header
- *
- * <conformance statement for IEEE P1363 needed here>
- *
- * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
+ * Copyright (c) 2000, 2001, 2002 Virtual Unlimited B.V.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,11 +17,19 @@
  *
  */
 
+/*!\file dlkp.h
+ * \brief Discrete Logarithm keypair, headers.
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup DL_m
+ */
+
 #ifndef _DLKP_H
 #define _DLKP_H
 
 #include "dlpk.h"
 
+/*!\ingroup DL_m
+ */
 typedef struct
 {
 	dldp_p param;

@@ -1,11 +1,5 @@
 /*
- * dlpk.h
- *
- * Discrete Logarithm Public Key, header
- *
- * Copyright (c) 2000 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
+ * Copyright (c) 2000, 2002 Virtual Unlimited B.V.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,11 +17,19 @@
  *
  */
 
+/*!\file dlpk.h
+ * \brief Discrete Logarithm public key, headers.
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup DL_m
+ */
+
 #ifndef _DLPK_H
 #define _DLPK_H
 
 #include "dldp.h"
 
+/*!\ingroup DL_m
+ */
 typedef struct
 {
 	dldp_p param;

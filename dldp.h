@@ -1,13 +1,5 @@
 /*
- * dldp.h
- *
- * Discrete Logarithm Domain Parameters, header
- *
- * <conformance statement for IEEE P1363 needed here>
- *
- * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
+ * Copyright (c) 2000, 2001, 2002 Virtual Unlimited B.V.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,6 +15,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ */
+
+/*!\file dldp.h
+ * \brief Discrete Logarithm domain parameters, headers.
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup DL_m
  */
 
 #ifndef _DLDP_H
@@ -47,12 +45,41 @@
  *  n = (p-1)
  */
 
+/*!\brief Discrete Logarithm Domain Parameters over a prime field.
+ *
+ * For the variables in this structure /f$p=qr+1/f$; if /f$p=2q+1 \Rightarrow r=2/f$.
+ *
+ * \ingroup DL_m
+ */
 typedef struct
 {
+	/*!\var p
+	 * \brief The prime.
+	 *
+	 */
 	mp32barrett p;
+	/*!\var q
+	 * \brief The cofactor.
+	 *
+	 * \f$q\f$ is a prime divisor of \f$p-1\f$.
+	 */
 	mp32barrett q;
+	/*!\var r
+	 *
+	 * \f$p=qr+1\f$
+	 */
 	mp32number  r;
+	/*!\var g
+	 * \brief The generator.
+	 *
+ 	 * \f$g\f$ is either a generator of \f$\mathds{Z}^{*}_p\f$, or a generator
+	 * of a cyclic subgroup \f$G\f$ of \f$\mathds{Z}^{*}_p\f$ of order \f$q\f$.
+	 */
 	mp32number  g;
+	/*!\var n
+	 *
+	 * \f$n=p-1=qr\f$
+	 */
 	mp32barrett n;
 } dldp_p;
 

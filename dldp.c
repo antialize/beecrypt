@@ -1,13 +1,5 @@
 /*
- * dldp.c
- *
- * Discrete Logarithm Domain Parameters, code
- *
- * <conformance statement for IEEE P1363 needed here>
- *
- * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
+ * Copyright (c) 2000, 2001, 2002 Virtual Unlimited B.V.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,6 +17,12 @@
  *
  */
 
+/*!\file dldp.c
+ * \brief Discrete Logarithm domain parameters.
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup DL_m
+ */
+
 #define BEECRYPT_DLL_EXPORT
 
 #include "dldp.h"
@@ -37,6 +35,10 @@
 #if HAVE_MALLOC
 # include <malloc.h>
 #endif
+
+/*!\addtogroup DL_m
+ * \{
+ */
 
 static int dldp_pgoqGenerator_w(dldp_p*, randomGeneratorContext*, uint32*);
 static int dldp_pgonGenerator_w(dldp_p*, randomGeneratorContext*, uint32*);
@@ -84,7 +86,7 @@ int dldp_pEqual(const dldp_p* a, const dldp_p* b)
 		mp32eqx(a->g.size, a->g.data, b->g.size, b->g.data);
 }
 
-/**
+/*
  * needs to make workspace of 8*size+2
  */
 int dldp_pValidate(const dldp_p* dp, randomGeneratorContext* rgc)
@@ -439,3 +441,6 @@ int dldp_pgonValidate(const dldp_p* dp, randomGeneratorContext* rgc)
 {
 	return dldp_pValidate((const dldp_p*) dp, rgc);
 }
+
+/* \}
+ */
