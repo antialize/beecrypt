@@ -300,6 +300,8 @@ LOCAL(aesEncryptECB_loop):
 	movd s2, 8(%edi)
 	movd s3,12(%edi)
 
+	addl `$'16,%esi
+	addl `$'16,%edi
 	decl 32(%esp)
 	jnz LOCAL(aesEncryptECB_loop)
 
@@ -312,7 +314,6 @@ LOCAL(aesEncryptECB_loop):
 	popl %edi
 	ret
 C_FUNCTION_END(aesEncryptECB)
-divert(0)
 
 
 define(`dtfs',`
@@ -576,6 +577,8 @@ LOCAL(aesDecryptECB_loop):
 	movd s2, 8(%edi)
 	movd s3,12(%edi)
 
+	addl `$'16,%esi
+	addl `$'16,%edi
 	decl 32(%esp)
 	jnz LOCAL(aesDecryptECB_loop)
 
