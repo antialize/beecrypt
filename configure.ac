@@ -23,11 +23,10 @@ AC_ARG_WITH(cpu,[  --with-cpu              optimize for specific cpu],[
   ])
 
 AC_ARG_WITH(arch,[  --with-arch             optimize for specific architecture (may not run on other cpus of same family)],[
-  BEECRYPT_WITH_ARCH,
+  BEECRYPT_WITH_ARCH
   ],[
   BEECRYPT_WITHOUT_ARCH
-  ]
-  )
+  ])
 
 AC_ARG_ENABLE(threads,[  --enable-threads        enables multithread support [default=yes]],[
   if test "$enableval" = no; then
