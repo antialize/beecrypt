@@ -28,11 +28,11 @@ using beecrypt::security::Security;
 
 using namespace beecrypt::crypto;
 
-SecretKeyFactory::SecretKeyFactory(SecretKeyFactorySpi* spi, const String& algorithm, const Provider& provider)
+SecretKeyFactory::SecretKeyFactory(SecretKeyFactorySpi* spi, const Provider& provider, const String& algorithm)
 {
 	_kspi = spi;
-	_algo = algorithm;
 	_prov = &provider;
+	_algo = algorithm;
 }
 
 SecretKeyFactory::~SecretKeyFactory()
@@ -44,7 +44,7 @@ SecretKeyFactory* SecretKeyFactory::getInstance(const String& algorithm) throw (
 {
     Security::spi* tmp = Security::getSpi(algorithm, "SecretKeyFactory");
 
-    SecretKeyFactory* result = new SecretKeyFactory((SecretKeyFactorySpi*) tmp->cspi, tmp->name, tmp->prov);
+    SecretKeyFactory* result = new SecretKeyFactory((SecretKeyFactorySpi*) tmp->cspi, tmp->prov, tmp->name);
 
     delete tmp;
 
@@ -55,7 +55,7 @@ SecretKeyFactory* SecretKeyFactory::getInstance(const String& algorithm, const S
 {
     Security::spi* tmp = Security::getSpi(algorithm, "SecretKeyFactory", provider);
 
-    SecretKeyFactory* result = new SecretKeyFactory((SecretKeyFactorySpi*) tmp->cspi, tmp->name, tmp->prov);
+    SecretKeyFactory* result = new SecretKeyFactory((SecretKeyFactorySpi*) tmp->cspi, tmp->prov, tmp->name);
 
     delete tmp;
 
@@ -66,7 +66,7 @@ SecretKeyFactory* SecretKeyFactory::getInstance(const String& algorithm, const P
 {
     Security::spi* tmp = Security::getSpi(algorithm, "SecretKeyFactory", provider);
 
-    SecretKeyFactory* result = new SecretKeyFactory((SecretKeyFactorySpi*) tmp->cspi, tmp->name, tmp->prov);
+    SecretKeyFactory* result = new SecretKeyFactory((SecretKeyFactorySpi*) tmp->cspi, tmp->prov, tmp->name);
 
     delete tmp;
 
