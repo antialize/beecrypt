@@ -34,7 +34,9 @@ AC_ARG_WITH(cpu,      [  --with-cpu              enable cpu-specific optimizatio
   [ case $target_cpu in
       i[[3456]]86)
         case $withval in
-          i[[3456]]86 | pentium | pentiumpro | pentium4)
+          i[[3456]]86 | \
+          pentium | pentium-mmx | pentiumpro | pentium[[234]] | \
+          athlon | athlon-tbird | athlon-4 | athlon-xp | athlon-mp)
             ac_with_cpu=$withval
             ;;
           *)
@@ -45,7 +47,7 @@ AC_ARG_WITH(cpu,      [  --with-cpu              enable cpu-specific optimizatio
         ;;
       sparc)
         case $withval in
-          sparcv8 | sparcv8plus | sparcv8plusa | sparcv8plusb | sparcv9 | sparcv9a | sparcv9b)
+          sparcv8 | sparcv8plus | sparcv8plus[[ab]] | sparcv9 | sparcv9[[ab]])
             ac_with_cpu=$withval
             ;;
           *)
@@ -53,6 +55,17 @@ AC_ARG_WITH(cpu,      [  --with-cpu              enable cpu-specific optimizatio
             ac_with_cpu=$target_cpu
             ;;
           esac
+        ;;
+      x86) # QNX Neutrino doesn't list the exact cpu type
+        case $withval in
+          i[[3456]]86)
+            ac_with_cpu=$withval
+            ;;
+          *)
+            AC_MSG_WARN([invalid cpu type])
+            ac_with_cpu=$target_cpu
+            ;;
+        esac
         ;;
       *)
         AC_MSG_WARN([invalid cpu type])
@@ -666,6 +679,9 @@ if test "$ac_enable_optimized" = yes; then
   arm*)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_ARM"
     ;;
+  athlon*)
+    CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I686"
+    ;;
   ia64)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_IA64"
     ;;
@@ -678,14 +694,11 @@ if test "$ac_enable_optimized" = yes; then
   i586 | pentium)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I586"
     ;;
-  i686 | pentiumpro)
+  i686 | pentiumpro | pentium[[23]])
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I686"
     ;;
   pentium4)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I686 -DOPTIMIZE_SSE2"
-    ;;
-  ia64)
-    CPPFLAGS="$CPPFLAGS -DOPTIMIZE_IA64"
     ;;
   powerpc)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_POWERPC"
@@ -709,9 +722,6 @@ if test "$ac_enable_optimized" = yes; then
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_SPARCV9"
     CFLAGS="$CFLAGS -Wa,-xarch=v9b"
     ;;
-  x86)
-  # QNX Neutrino doesn't list the exact cpu type
-    ;;
   esac
 fi
 
@@ -732,6 +742,9 @@ else
       arm*)
         CFLAGS="$CFLAGS -fomit-frame-pointer"
         ;;
+      athlon*)
+        CFLAGS="$CFLAGS -mcpu=$ac_with_cpu -fomit-frame-pointer"
+        ;;
       i386)
         CFLAGS="$CFLAGS -mcpu=i386 -fomit-frame-pointer"
         ;;
@@ -744,8 +757,8 @@ else
       i686 | pentiumpro)
         CFLAGS="$CFLAGS -mcpu=pentiumpro -fomit-frame-pointer"
         ;;
-      pentium4)
-        CFLAGS="$CFLAGS -mcpu=pentium4 -fomit-frame-pointer"
+      pentium[[234]])
+        CFLAGS="$CFLAGS -mcpu=$ac_with_cpu -fomit-frame-pointer"
         ;;
       sparcv8)
         CFLAGS="$CFLAGS -mv8"
@@ -772,7 +785,7 @@ else
       i586 | pentium)
         CFLAGS="$CFLAGS -mcpu=pentium -tpp5"
         ;;
-      i686 | pentiumpro)
+      i686 | pentiumpro | pentium[[23]])
         CFLAGS="$CFLAGS -mcpu=pentiumpro -tpp6"
         ;;
       pentium4)
@@ -859,7 +872,7 @@ EOF
 #include "gas/mp32opt.i386.S"
 EOF
       ;;
-    i[[56]]86 | pentium | pentiumpro | pentium4)
+    i[[56]]86 | pentium | pentiumpro | pentium[[234]])
       cat > $srcdir/aesopt.S << EOF
 #include "gas/aesopt.i586.S"
 EOF
