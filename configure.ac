@@ -416,12 +416,10 @@ fi
 AH_TEMPLATE([JAVAGLUE],[Define to 1 if you want to include the Java code])
 
 if test "$ac_with_javaglue" = yes ; then
-  AC_CHECK_PROG(ac_cv_have_java, java, yes, no)
-  if test "$ac_cv_have_java" = yes; then
-    AC_CHECK_PROG(ac_cv_have_javac, javac, yes, no)
-    if test "$ac_cv_have_javac" = yes; then
-      AC_CACHE_CHECK([for java native interface headers],ac_cv_java_include,[
-        cat > conftest.java << EOF
+  AC_CHECK_PROG(ac_cv_have_gcj, gcj, yes, no)
+  if test "$ac_cv_have_gcj" = yes; then
+    AC_CACHE_CHECK([for java native interface headers], ac_cv_java_include, [
+      cat > conftest.java << EOF
 public class conftest
 {
   public static void main(String[[]] argv)
@@ -430,38 +428,82 @@ public class conftest
   }
 }
 EOF
-        java_home=`javac conftest.java; java -classpath . conftest`
+      java_home="`gcj --main=conftest -o conftest conftest.java; ./conftest`"
+      if test -d "$ac_cv_java_include" ; then
+        ac_cv_java_headers=yes
+      else
+        ac_cv_java_include=$java_home/include
         case $target_os in
-        cygwin*)
-          java_home=`cygpath -u -p "$java_home"` ;;
+        linux*)
+          if test -f $java_home/include/jni.h; then
+            ac_cv_java_include="$java_home/include"
+          else
+            gcjpath="/usr/lib/gcc-lib/`gcj -dumpmachine`/`gcj -dumpversion`"
+            if test -f $gcjpath/include/jni.h; then
+              ac_cv_java_include="$gcjpath/include"
+            fi
+          fi
+          ;;
         esac
-        if test -d "$ac_cv_java_include" ; then
+        if test "X$ac_cv_java_include" != X -a -d "$ac_cv_java_include" ; then
           ac_cv_java_headers=yes
         else
+          AC_MSG_WARN([java headers not found, disabling javaglue])
+          ac_cv_java_headers=no
+          ac_with_javaglue=no
+        fi
+      fi
+      rm -fr conftest*
+    ])
+  else
+    AC_CHECK_PROG(ac_cv_have_java, java, yes, no)
+    if test "$ac_cv_have_java" = yes; then
+      AC_CHECK_PROG(ac_cv_have_javac, javac, yes, no)
+      if test "$ac_cv_have_javac" = yes; then
+        AC_CACHE_CHECK([for java native interface headers],ac_cv_java_include,[
+          cat > conftest.java << EOF
+public class conftest
+{
+  public static void main(String[[]] argv)
+  {
+     System.out.println(System.getProperty("java.home"));
+  }
+}
+EOF
+          java_home=`javac conftest.java; java -classpath . conftest`
           case $target_os in
-          darwin*)
-            ac_cv_java_include="$java_home"/../../../Headers ;;
-          *)
-            ac_cv_java_include="$java_home"/../include ;;
+          cygwin*)
+            java_home=`cygpath -u -p "$java_home"` ;;
           esac
           if test -d "$ac_cv_java_include" ; then
             ac_cv_java_headers=yes
           else
-            AC_MSG_WARN([java headers not found, disabling javaglue])
-            ac_cv_java_headers=no
-            ac_with_javaglue=no
+            case $target_os in
+            darwin*)
+              ac_cv_java_include="$java_home"/../../../Headers ;;
+            *)
+              ac_cv_java_include="$java_home"/../include ;;
+            esac
+            if test -d "$ac_cv_java_include" ; then
+              ac_cv_java_headers=yes
+            else
+              AC_MSG_WARN([java headers not found, disabling javaglue])
+              ac_cv_java_headers=no
+              ac_with_javaglue=no
+            fi
           fi
-        fi
-        rm -fr conftest*
-      ])
+          rm -fr conftest*
+        ])
+      else
+        AC_MSG_WARN([javac not found, disabling javaglue])
+        ac_cv_java_headers=no
+        ac_with_javaglue=no
+      fi
     else
-      AC_MSG_WARN([javac not found, disabling javaglue])
+      AC_MSG_WARN([java not found, disabling javaglue])
       ac_cv_java_headers=no
+      ac_with_javaglue=no
     fi
-  else
-    AC_MSG_WARN([java not found, disabling javaglue])
-    ac_cv_java_headers=no
-    ac_with_javaglue=no
   fi
 fi
 
