@@ -2,7 +2,7 @@
 export CFLAGS
 export LDFLAGS
 libtoolize --force --copy
-aclocal
+aclocal -I .
 automake -a -c
 autoconf
 autoheader
