@@ -615,7 +615,7 @@ AC_DEFUN(BEECRYPT_ASM_SOURCES,[
     ;;
   x86_64)
     AC_CONFIG_COMMANDS([mpopt.x86_m4],[
-      m4 $srcdir/gas/mpopt.x86_m4.m4 > mpopt.s
+      m4 $srcdir/gas/mpopt.x86_64.m4 > mpopt.s
       ])
     ;;
   esac
