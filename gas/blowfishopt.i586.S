@@ -5,7 +5,7 @@
  *
  * Compile target is GNU Assembler
  *
- * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
+ * Copyright (c) 2000, 2001, 2003 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -34,25 +34,25 @@
 	.macro  etworounds	p # bp in %esi, xl and xr in %ecx and %edx, %eax and %ebx clear
 	xorl 0+\p(%esi),%ecx
 	roll $16,%ecx
-	movb %ch,%al
-	movb %cl,%bl
+	movzx %ch,%eax
+	movzx %cl,%ebx
 	roll $16,%ecx
 	movl 0x000+72(%esi,%eax,4),%edi
 	addl 0x400+72(%esi,%ebx,4),%edi
-	movb %ch,%al
-	movb %cl,%bl
+	movzx %ch,%eax
+	movzx %cl,%ebx
 	xorl 0x800+72(%esi,%eax,4),%edi
 	addl 0xC00+72(%esi,%ebx,4),%edi
 	xorl %edi,%edx
 	xorl 4+\p(%esi),%edx
 	roll $16,%edx
-	movb %dh,%al
-	movb %dl,%bl
+	movzx %dh,%eax
+	movzx %dl,%ebx
 	roll $16,%edx
 	movl 0x000+72(%esi,%eax,4),%edi
 	addl 0x400+72(%esi,%ebx,4),%edi
-	movb %dh,%al
-	movb %dl,%bl
+	movzx %dh,%eax
+	movzx %dl,%ebx
 	xorl 0x800+72(%esi,%eax,4),%edi
 	addl 0xC00+72(%esi,%ebx,4),%edi
 	xorl %edi,%ecx
@@ -61,25 +61,25 @@
 	.macro  dtworounds	p # bp in %esi, xl and xr in %ecx and %edx, %eax and %ebx clear
 	xorl 4+\p(%esi),%ecx
 	roll $16,%ecx
-	movb %ch,%al
-	movb %cl,%bl
+	movzx %ch,%eax
+	movzx %cl,%ebx
 	roll $16,%ecx
 	movl 0x000+72(%esi,%eax,4),%edi
 	addl 0x400+72(%esi,%ebx,4),%edi
-	movb %ch,%al
-	movb %cl,%bl
+	movzx %ch,%eax
+	movzx %cl,%ebx
 	xorl 0x800+72(%esi,%eax,4),%edi
 	addl 0xC00+72(%esi,%ebx,4),%edi
 	xorl %edi,%edx
 	xorl 0+\p(%esi),%edx
 	roll $16,%edx
-	movb %dh,%al
-	movb %dl,%bl
+	movzx %dh,%eax
+	movzx %dl,%ebx
 	roll $16,%edx
 	movl 0x000+72(%esi,%eax,4),%edi
 	addl 0x400+72(%esi,%ebx,4),%edi
-	movb %dh,%al
-	movb %dl,%bl
+	movzx %dh,%eax
+	movzx %dl,%ebx
 	xorl 0x800+72(%esi,%eax,4),%edi
 	addl 0xC00+72(%esi,%ebx,4),%edi
 	xorl %edi,%ecx
@@ -94,9 +94,6 @@ LABEL(blowfishEncrypt)
 
 	movl 16(%esp),%esi # esi now contains bp
 	movl 24(%esp),%edi # edi now contains src
-
-	xorl %eax,%eax
-	xorl %ebx,%ebx
 
 	movl 0(%edi),%ecx
 	movl 4(%edi),%edx
@@ -140,9 +137,6 @@ LABEL(blowfishDecrypt)
 
 	movl 16(%esp),%esi # esi now contains bp
 	movl 24(%esp),%edi # edi now contains dst
-
-	xorl %eax,%eax
-	xorl %ebx,%ebx
 
 	movl 0(%edi),%ecx
 	movl 4(%edi),%edx
