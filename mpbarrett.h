@@ -53,8 +53,11 @@ void mpbwipe(mpbarrett*);
 
 BEECRYPTAPI
 void mpbset(mpbarrett*, size_t, const mpw*);
+
 BEECRYPTAPI
-void mpbsethex(mpbarrett*, const char*);
+int mpbsetbin(mpbarrett*, const byte*, size_t);
+BEECRYPTAPI
+int mpbsethex(mpbarrett*, const char*);
 
 BEECRYPTAPI
 void mpbsubone(const mpbarrett*, mpw*);
