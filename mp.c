@@ -1241,7 +1241,7 @@ mpw mppndiv(mpw xhi, mpw xlo, mpw y)
 		if (carry | (xhi >= y))
 		{
 			xhi -= y;
-			result |= 1;
+			result++;
 		}
 		carry = (xhi >> (MP_WBITS-1));
 		xhi <<= 1;
@@ -1252,73 +1252,48 @@ mpw mppndiv(mpw xhi, mpw xlo, mpw y)
 	if (carry | (xhi >= y))
 	{
 		xhi -= y;
-		result |= 1;
+		result++;
 	}
 	return result;
 }
 #endif
 
-#ifndef ASM_MPNMODW
-mpw mpnmodw(mpw* result, size_t xsize, const mpw* xdata, mpw y, mpw* workspace)
+#ifndef ASM_MPMOD
+void mpmod(mpw* result, size_t xsize, const mpw* xdata, size_t ysize, const mpw* ydata, mpw* workspace)
 {
-	/* result size xsize, workspace size xsize+1 */
-	register mpw q;
-	mpw  qsize = xsize-1;
+	/* result size xsize, workspace size 2*ysize+1 */
+	mpw q, msw;
 	mpw* rdata = result;
+	mpw* ynorm = workspace+ysize+1;
+	size_t shift, qsize = xsize-ysize;
 
+	mpcopy(ysize, ynorm, ydata);
+	shift = mpnorm(ysize, ynorm);
+	msw = *ynorm;
 	mpcopy(xsize, rdata, xdata);
-	/*
-		if (*rdata >= y)
-			*rdata -= y;
-	*/
-	if (mpge(1, rdata, &y))
-		mpsub(1, rdata, &y);
-
-	while (qsize--)
-	{
-		q = mppndiv(rdata[0], rdata[1], y);
-
-		*workspace = mpsetmul(1, workspace+1, &y, q);
-
-		while (mplt(2, rdata, workspace))
-		{
-			mpsubx(2, workspace, 1, &y);
-			/* q--; */
-		}
-		mpsub(2, rdata, workspace);
-		rdata++;
-	}
-
-	return *rdata;
-}
-#endif
-
-#ifndef ASM_MPNMOD
-void mpnmod(mpw* result, size_t xsize, const mpw* xdata, size_t ysize, const mpw* ydata, mpw* workspace)
-{
-	/* result size xsize, workspace size xsize+1 */
-	mpw q;
-	mpw msw = *ydata;
-	mpw qsize = xsize-ysize;
-	mpw* rdata = result;
-
-	mpcopy(xsize, rdata, xdata);
-	if (mpge(ysize, rdata, ydata))
-		mpsub(ysize, rdata, ydata);
+	if (mpge(ysize, rdata, ynorm))
+		mpsub(ysize, rdata, ynorm);
 
 	while (qsize--)
 	{
 		q = mppndiv(rdata[0], rdata[1], msw);
 
-		*workspace = mpsetmul(ysize, workspace+1, ydata, q);
+		*workspace = mpsetmul(ysize, workspace+1, ynorm, q);
 
 		while (mplt(ysize+1, rdata, workspace))
 		{
-			mpsubx(ysize+1, workspace, ysize, ydata);
+			mpsubx(ysize+1, workspace, ysize, ynorm);
 			q--;
 		}
 		mpsub(ysize+1, rdata, workspace);
 		rdata++;
+	}
+	/* de-normalization steps */
+	while (shift--)
+	{
+		mpdivtwo(ysize, ynorm);
+		if (mpge(ysize, rdata, ynorm))
+			mpsub(ysize, rdata, ynorm);
 	}
 }
 #endif

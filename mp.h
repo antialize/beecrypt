@@ -610,10 +610,11 @@ BEECRYPTAPI
 mpw mppndiv(mpw, mpw, mpw);
 
 BEECRYPTAPI
-mpw mpnmodw(mpw*, size_t, const mpw*, mpw, mpw*);
+void mpnmod(mpw*, size_t, const mpw*, size_t, const mpw*, mpw*);
 
 BEECRYPTAPI
-void mpnmod(mpw*, size_t, const mpw*, size_t, const mpw*, mpw*);
+void mpmod (mpw*, size_t, const mpw*, size_t, const mpw*, mpw*);
+
 BEECRYPTAPI
 void mpndivmod(mpw*, size_t, const mpw*, size_t, const mpw*, mpw*);
 
