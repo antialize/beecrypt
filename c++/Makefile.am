@@ -30,9 +30,12 @@ noinst_HEADERS = \
 adapter.h \
 resource.h
 
-TESTS = testdsa testrsa testks
+TESTS = testks testdsa testrsa testdhaes 
 
-check_PROGRAMS = testdsa testrsa testks
+check_PROGRAMS = testks testdsa testrsa testdhaes 
+
+testks_SOURCES = testks.cxx
+testks_LDADD = libbeecrypt_cxx.la
 
 testdsa_SOURCES = testdsa.cxx
 testdsa_LDADD = libbeecrypt_cxx.la
@@ -40,5 +43,5 @@ testdsa_LDADD = libbeecrypt_cxx.la
 testrsa_SOURCES = testrsa.cxx
 testrsa_LDADD = libbeecrypt_cxx.la
 
-testks_SOURCES = testks.cxx
-testks_LDADD = libbeecrypt_cxx.la
+testdhaes_SOURCES = testdhaes.cxx
+testdhaes_LDADD = libbeecrypt_cxx.la
