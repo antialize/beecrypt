@@ -1,8 +1,4 @@
 /*
- * memchunk.c
- *
- * BeeCrypt memory block handling, code
- *
  * Copyright (c) 2001 Virtual Unlimited B.V.
  *
  * This library is free software; you can redistribute it and/or
@@ -40,7 +36,7 @@
 # include <malloc.h>
 #endif
 
-memchunk* memchunkAlloc(int size)
+memchunk* memchunkAlloc(size_t size)
 {
 	memchunk* tmp = (memchunk*) calloc(1, sizeof(memchunk));
 
@@ -74,7 +70,7 @@ void memchunkFree(memchunk* m)
 	}
 }
 
-memchunk* memchunkResize(memchunk* m, int size)
+memchunk* memchunkResize(memchunk* m, size_t size)
 {
 	if (m)
 	{

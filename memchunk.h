@@ -1,11 +1,5 @@
 /*
- * memchunk.h
- *
- * Beecrypt memory block handling, header
- *
  * Copyright (c) 2001 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,6 +16,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+/*!\file memchunk.h
+ * \author Bob Deblier <bob.deblier@pandora.be>
+ */
+
 #ifndef _MEMCHUNK_H
 #define _MEMCHUNK_H
 
@@ -29,7 +27,7 @@
 
 typedef struct
 {
-	int		size;
+	size_t	size;
 	byte*	data;
 } memchunk;
 
@@ -38,11 +36,11 @@ extern "C" {
 #endif
 
 BEECRYPTAPI
-memchunk*	memchunkAlloc(int);
+memchunk*	memchunkAlloc(size_t);
 BEECRYPTAPI
 void		memchunkFree(memchunk*);
 BEECRYPTAPI
-memchunk*	memchunkResize(memchunk*, int);
+memchunk*	memchunkResize(memchunk*, size_t);
 BEECRYPTAPI
 memchunk*	memchunkClone(const memchunk*);
 
