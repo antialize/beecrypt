@@ -870,28 +870,22 @@ AC_DEFUN([BEECRYPT_NOEXECSTACK],[
     cat > conftest.c << EOF
 void foo(void) { }
 EOF
-    if AC_TRY_COMMAND([$CC -Wa,--noexecstack -c -o conftest.o conftest.c]) then
+    CFLAGS_save=$CFLAGS
+    CFLAGS="$CFLAGS -Wa,--noexecstack"
+    CXXFLAGS_save=$CXXFLAGS
+    CXXFLAGS="$CXXFLAGS -Wa,--noexecstack"
+	AC_LANG_PUSH(C)
+    AC_TRY_COMPILE([],[{}],[
       bc_cv_as_noexecstack=yes
-      if test "$ac_cv_c_compiler_gnu" = yes; then
-         CFLAGS="$CFLAGS -Wa,--noexecstack"
-      fi
-      if test "$ac_cv_cxx_compiler_gnu" = yes; then
-         CXXFLAGS="$CXXFLAGS -Wa,--noexecstack"
-      fi
       bc_gnu_stack='.section .note.GNU-stack,"",@progbits; .previous'
-    else
+      ],[
+      CFLAGS=$CFLAGS_save
+      CXXFLAGS=$CXXFLAGS_save
       bc_cv_as_noexecstack=no
       bc_gnu_stack=''
-    fi
+      ])
+    AC_LANG_POP(C)
     ])
-  AC_CACHE_CHECK([whether the linker can use noexecstack],bc_cv_ld_noexecstack,[
-    if AC_TRY_COMMAND([$LD -z noexecstack -o conftest conftest.o]) then
-      bc_cv_ld_noexecstack=yes
-      LDFLAGS="$LDFLAGS -z noexecstack"
-    else
-      bc_cv_ld_noexecstack=no
-    fi
-    ]) 
   ])
 
 
