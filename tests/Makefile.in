@@ -1,6 +1,6 @@
-# Makefile.in generated automatically by automake 1.4 from Makefile.am
+# Makefile.in generated automatically by automake 1.4-p5 from Makefile.am
 
-# Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
+# Copyright (C) 1994, 1995-8, 1999, 2001 Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
@@ -89,15 +89,18 @@ AS = @AS@
 CC = @CC@
 CPP = @CPP@
 DLLTOOL = @DLLTOOL@
+ECHO = @ECHO@
+EXEEXT = @EXEEXT@
 LD = @LD@
 LIBTOOL = @LIBTOOL@
 LIBTOOL_DEPS = @LIBTOOL_DEPS@
 LN_S = @LN_S@
 MAKEINFO = @MAKEINFO@
-NM = @NM@
 OBJDUMP = @OBJDUMP@
+OBJEXT = @OBJEXT@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
+STRIP = @STRIP@
 VERSION = @VERSION@
 ac_cv_have_java = @ac_cv_have_java@
 ac_cv_have_javac = @ac_cv_have_javac@
@@ -131,40 +134,43 @@ beetest_SOURCES = beetest.c
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../beecrypt.gnu.h
 CONFIG_CLEAN_FILES = 
+check_PROGRAMS =  testmd5$(EXEEXT) testsha1$(EXEEXT) testsha256$(EXEEXT) \
+testhmacmd5$(EXEEXT) testhmacsha1$(EXEEXT) testdldp$(EXEEXT) \
+testdsa$(EXEEXT)
 
 DEFS = @DEFS@ -I. -I$(srcdir) -I..
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
-beetest_OBJECTS =  beetest.o
+beetest_OBJECTS =  beetest.$(OBJEXT)
 beetest_LDADD = $(LDADD)
 beetest_DEPENDENCIES =  $(top_builddir)/libbeecrypt.la
 beetest_LDFLAGS = 
-testmd5_OBJECTS =  testmd5.o
+testmd5_OBJECTS =  testmd5.$(OBJEXT)
 testmd5_LDADD = $(LDADD)
 testmd5_DEPENDENCIES =  $(top_builddir)/libbeecrypt.la
 testmd5_LDFLAGS = 
-testsha1_OBJECTS =  testsha1.o
+testsha1_OBJECTS =  testsha1.$(OBJEXT)
 testsha1_LDADD = $(LDADD)
 testsha1_DEPENDENCIES =  $(top_builddir)/libbeecrypt.la
 testsha1_LDFLAGS = 
-testsha256_OBJECTS =  testsha256.o
+testsha256_OBJECTS =  testsha256.$(OBJEXT)
 testsha256_LDADD = $(LDADD)
 testsha256_DEPENDENCIES =  $(top_builddir)/libbeecrypt.la
 testsha256_LDFLAGS = 
-testhmacmd5_OBJECTS =  testhmacmd5.o
+testhmacmd5_OBJECTS =  testhmacmd5.$(OBJEXT)
 testhmacmd5_LDADD = $(LDADD)
 testhmacmd5_DEPENDENCIES =  $(top_builddir)/libbeecrypt.la
 testhmacmd5_LDFLAGS = 
-testhmacsha1_OBJECTS =  testhmacsha1.o
+testhmacsha1_OBJECTS =  testhmacsha1.$(OBJEXT)
 testhmacsha1_LDADD = $(LDADD)
 testhmacsha1_DEPENDENCIES =  $(top_builddir)/libbeecrypt.la
 testhmacsha1_LDFLAGS = 
-testdldp_OBJECTS =  testdldp.o
+testdldp_OBJECTS =  testdldp.$(OBJEXT)
 testdldp_LDADD = $(LDADD)
 testdldp_DEPENDENCIES =  $(top_builddir)/libbeecrypt.la
 testdldp_LDFLAGS = 
-testdsa_OBJECTS =  testdsa.o
+testdsa_OBJECTS =  testdsa.$(OBJEXT)
 testdsa_LDADD = $(LDADD)
 testdsa_DEPENDENCIES =  $(top_builddir)/libbeecrypt.la
 testdsa_LDFLAGS = 
@@ -178,14 +184,14 @@ DIST_COMMON =  Makefile.am Makefile.in
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
-TAR = tar
+TAR = gtar
 GZIP_ENV = --best
 SOURCES = $(beetest_SOURCES) $(testmd5_SOURCES) $(testsha1_SOURCES) $(testsha256_SOURCES) $(testhmacmd5_SOURCES) $(testhmacsha1_SOURCES) $(testdldp_SOURCES) $(testdsa_SOURCES)
 OBJECTS = $(beetest_OBJECTS) $(testmd5_OBJECTS) $(testsha1_OBJECTS) $(testsha256_OBJECTS) $(testhmacmd5_OBJECTS) $(testhmacsha1_OBJECTS) $(testdldp_OBJECTS) $(testdsa_OBJECTS)
 
 all: all-redirect
 .SUFFIXES:
-.SUFFIXES: .S .c .lo .o .s
+.SUFFIXES: .S .c .lo .o .obj .s
 $(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
 	cd $(top_srcdir) && $(AUTOMAKE) --gnu tests/Makefile
 
@@ -206,6 +212,11 @@ maintainer-clean-checkPROGRAMS:
 .c.o:
 	$(COMPILE) -c $<
 
+# FIXME: We should only use cygpath when building on Windows,
+# and only if it is available.
+.c.obj:
+	$(COMPILE) -c `cygpath -w $<`
+
 .s.o:
 	$(COMPILE) -c $<
 
@@ -214,6 +225,7 @@ maintainer-clean-checkPROGRAMS:
 
 mostlyclean-compile:
 	-rm -f *.o core *.core
+	-rm -f *.$(OBJEXT)
 
 clean-compile:
 
@@ -241,36 +253,36 @@ distclean-libtool:
 
 maintainer-clean-libtool:
 
-beetest: $(beetest_OBJECTS) $(beetest_DEPENDENCIES)
-	@rm -f beetest
+beetest$(EXEEXT): $(beetest_OBJECTS) $(beetest_DEPENDENCIES)
+	@rm -f beetest$(EXEEXT)
 	$(LINK) $(beetest_LDFLAGS) $(beetest_OBJECTS) $(beetest_LDADD) $(LIBS)
 
-testmd5: $(testmd5_OBJECTS) $(testmd5_DEPENDENCIES)
-	@rm -f testmd5
+testmd5$(EXEEXT): $(testmd5_OBJECTS) $(testmd5_DEPENDENCIES)
+	@rm -f testmd5$(EXEEXT)
 	$(LINK) $(testmd5_LDFLAGS) $(testmd5_OBJECTS) $(testmd5_LDADD) $(LIBS)
 
-testsha1: $(testsha1_OBJECTS) $(testsha1_DEPENDENCIES)
-	@rm -f testsha1
+testsha1$(EXEEXT): $(testsha1_OBJECTS) $(testsha1_DEPENDENCIES)
+	@rm -f testsha1$(EXEEXT)
 	$(LINK) $(testsha1_LDFLAGS) $(testsha1_OBJECTS) $(testsha1_LDADD) $(LIBS)
 
-testsha256: $(testsha256_OBJECTS) $(testsha256_DEPENDENCIES)
-	@rm -f testsha256
+testsha256$(EXEEXT): $(testsha256_OBJECTS) $(testsha256_DEPENDENCIES)
+	@rm -f testsha256$(EXEEXT)
 	$(LINK) $(testsha256_LDFLAGS) $(testsha256_OBJECTS) $(testsha256_LDADD) $(LIBS)
 
-testhmacmd5: $(testhmacmd5_OBJECTS) $(testhmacmd5_DEPENDENCIES)
-	@rm -f testhmacmd5
+testhmacmd5$(EXEEXT): $(testhmacmd5_OBJECTS) $(testhmacmd5_DEPENDENCIES)
+	@rm -f testhmacmd5$(EXEEXT)
 	$(LINK) $(testhmacmd5_LDFLAGS) $(testhmacmd5_OBJECTS) $(testhmacmd5_LDADD) $(LIBS)
 
-testhmacsha1: $(testhmacsha1_OBJECTS) $(testhmacsha1_DEPENDENCIES)
-	@rm -f testhmacsha1
+testhmacsha1$(EXEEXT): $(testhmacsha1_OBJECTS) $(testhmacsha1_DEPENDENCIES)
+	@rm -f testhmacsha1$(EXEEXT)
 	$(LINK) $(testhmacsha1_LDFLAGS) $(testhmacsha1_OBJECTS) $(testhmacsha1_LDADD) $(LIBS)
 
-testdldp: $(testdldp_OBJECTS) $(testdldp_DEPENDENCIES)
-	@rm -f testdldp
+testdldp$(EXEEXT): $(testdldp_OBJECTS) $(testdldp_DEPENDENCIES)
+	@rm -f testdldp$(EXEEXT)
 	$(LINK) $(testdldp_LDFLAGS) $(testdldp_OBJECTS) $(testdldp_LDADD) $(LIBS)
 
-testdsa: $(testdsa_OBJECTS) $(testdsa_DEPENDENCIES)
-	@rm -f testdsa
+testdsa$(EXEEXT): $(testdsa_OBJECTS) $(testdsa_DEPENDENCIES)
+	@rm -f testdsa$(EXEEXT)
 	$(LINK) $(testdsa_LDFLAGS) $(testdsa_OBJECTS) $(testdsa_LDADD) $(LIBS)
 
 tags: TAGS
