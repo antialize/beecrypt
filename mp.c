@@ -1447,36 +1447,46 @@ int i2osp(byte *osdata, size_t ossize, const mpw* idata, size_t isize)
 
 int os2ip(mpw* idata, size_t isize, const byte* osdata, size_t ossize)
 {
-	size_t required = MP_BYTES_TO_WORDS(ossize + MP_WBYTES - 1);
+	size_t required;
+
+	/* skip non-significant leading zero bytes */
+	while (!(*osdata) && ossize)
+	{
+		osdata++;
+		ossize--;
+	}
+
+	required = MP_BYTES_TO_WORDS(ossize + MP_WBYTES - 1);
 
 	if (isize >= required)
 	{
-		/* yes, we can proceed */
+		/* yes, we have enough space and can proceed */
+		mpw w = 0;
+		/* adjust counter so that the loop will start by skipping the proper
+		 * amount of leading bytes in the first significant word
+		 */
+		byte b = MP_WBYTES - (ossize % MP_WBYTES);
+
 		if (isize > required)
 		{	/* fill initials words with zero */
 			mpzero(isize-required, idata);
 			idata += isize-required;
 		}
-		if (required)
-		{	/* fill remaining words with endian-adjusted data */
-			#if !WORDS_BIGENDIAN
-			while (required)
-			{
-				mpw w = 0;
-				byte b = MP_WBYTES;
 
-				while (b--)
-				{
-					w <<= 8;
-					w |= *(osdata++);
-				}
+		while (ossize--)
+		{
+			w <<= 8;
+			w |= *(osdata++);
+			b--;
+
+			if (b == 0)
+			{
 				*(idata++) = w;
-				required--;
+				w = 0;
+				b = MP_WBYTES;
 			}
-			#else
-			memcpy(idata, osdata, MP_WORDS_TO_BYTES(required));
-			#endif
 		}
+
 		return 0;
 	}
 	return -1;
