@@ -1,0 +1,66 @@
+/*
+ * Copyright (c) 2003 Bob Deblier
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ */
+
+/*!\file testmpinv.c
+ * \brief Unit test program for the multi-precision modular inverse.
+ * \author Bob Deblier <bob.deblier@pandora.be>
+ * \ingroup UNIT_m
+ */
+
+#include <stdio.h>
+
+#include "beecrypt.h"
+#include "mpbarrett.h"
+
+static const char* dsa_q		= "c773218c737ec8ee993b4f2ded30f48edace915f";
+static const char* dsa_k		= "358dad571462710f50e254cf1a376b2bdeaadfbf";
+static const char* dsa_inv_k	= "0d5167298202e49b4116ac104fc3f415ae52f917";
+
+int main()
+{
+	int failures = 0;
+
+	mpbarrett q;
+	mpnumber  k;
+	mpnumber  inv_k;
+
+	mpw* workspace;
+
+	mpbzero(&q);
+	mpnzero(&k);
+	mpnzero(&inv_k);
+
+	mpbsethex(&q, dsa_q);
+	mpnsethex(&k, dsa_k);
+	mpnsethex(&k, dsa_inv_k);
+
+	workspace = (mpw*) malloc((7*q.size+6)*sizeof(mpw));
+
+	if (workspace)
+	{
+		mpbinv_w(q, k.size, k.data, workspace, workspace+q.size);
+	}
+	else
+	{
+		printf("malloc failed\n");
+		failures++;
+	}
+
+	return failures;
+}
