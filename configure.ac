@@ -350,12 +350,17 @@ AH_BOTTOM([
 AC_HEADER_STDC
 AC_CHECK_HEADERS([time.h sys/time.h])
 AC_HEADER_TIME
-AC_CHECK_HEADERS([ctype.h errno.h fcntl.h malloc.h termio.h termios.h])
-AC_CHECK_HEADERS([sys/ioctl sys/audioio.h sys/soundcard.h])
+AC_CHECK_HEADERS([stdio.h ctype.h errno.h fcntl.h malloc.h termio.h termios.h])
+AC_CHECK_HEADERS([sys/ioctl.h sys/audioio.h sys/soundcard.h])
 
+bc_include_stdio_h=
 bc_include_stdlib_h=
 bc_include_malloc_h=
 bc_include_string_h=
+bc_include_unistd_h=
+if test "$ac_cv_header_stdio_h" = yes; then
+  bc_include_stdio_h="#include <stdio.h>"
+fi
 if test "$ac_cv_header_stdlib_h" = yes; then
   bc_include_stdlib_h="#include <stdlib.h>"
 elif test "$ac_cv_header_malloc_h" = yes; then
@@ -371,9 +376,14 @@ fi
 if test "$ac_cv_header_string_h" = yes; then
   bc_include_string_h="#include <string.h>"
 fi
+if test "$ac_cv_header_unistd_h" = yes; then
+  bc_include_unistd_h="#include <unistd.h>"
+fi
+AC_SUBST(INCLUDE_STDIO_H,$bc_include_stdio_h)
 AC_SUBST(INCLUDE_STDLIB_H,$bc_include_stdlib_h)
 AC_SUBST(INCLUDE_MALLOC_H,$bc_include_malloc_h)
 AC_SUBST(INCLUDE_STRING_H,$bc_include_string_h)
+AC_SUBST(INCLUDE_UNISTD_H,$bc_include_unistd_h)
 
 if test "$ac_enable_threads" = yes; then
   AC_CHECK_HEADERS([thread.h pthread.h synch.h semaphore.h])
