@@ -743,7 +743,7 @@ static const uint32_t _arc[] = {
 /*!\var aes
  * \brief Holds the full API description of the AES algorithm.
  */
-const blockCipher aes = { "AES", sizeof(aesParam), 16, 128, 256, 64, (blockCipherSetup) aesSetup, (blockCipherSetIV) aesSetIV, (blockCipherEncrypt) aesEncrypt, (blockCipherDecrypt) aesDecrypt };
+const blockCipher aes = { "AES", sizeof(aesParam), 16, 128, 256, 64, (blockCipherSetup) aesSetup, (blockCipherSetIV) aesSetIV, (blockCipherEncrypt) aesEncrypt, (blockCipherDecrypt) aesDecrypt, (blockCipherFeedback) aesFeedback };
 
 /*!\fn int aesSetup(aesParam* ap, const byte* key, size_t keybits, cipherOperation op)
  * \brief The setup function.
