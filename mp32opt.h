@@ -101,7 +101,6 @@ extern "C" {
 #  define ASM_MP32ADDSQRTRC
 # endif
 # if defined(OPTIMIZE_SPARCV8)
-#  define ASM_MP32MULTWO
 #  define ASM_MP32SETMUL
 #  define ASM_MP32ADDMUL
 #  define ASM_MP32ADDSQRTRC
@@ -137,6 +136,11 @@ extern "C" {
 #endif
 
 #if defined(__SUNPRO_C) || defined(__SUNPRO_CC)
+# if defined(OPTIMIZE_SPARCV8)
+#  define ASM_MP32SETMUL
+#  define ASM_MP32ADDMUL
+#  define ASM_MP32ADDSQRTRC
+# endif
 # if defined(OPTIMIZE_SPARCV8PLUS) /* || defined(OPTIMIZE_SPARCV9) */
 #  define ASM_MP32ADDW
 #  define ASM_MP32ADD
