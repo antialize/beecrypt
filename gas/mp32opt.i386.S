@@ -1,12 +1,11 @@
 /*
  * mp32opt.i386.S
  *
- * Assembler optimized multiprecision integer routines for Intel 386 and higher
+ * Assembler optimized multiprecision integer routines for Intel 386 and higher.
  *
  * Compile target is GNU Assembler
  *
  * Copyright (c) 1998, 1999, 2000, 2001 Virtual Unlimited B.V.
- * Copyright (c) 2003 Bob Deblier
  *
  * Author: Bob Deblier <bob.deblier@pandora.be>
  *
@@ -244,33 +243,11 @@ LOCAL(mp32multwo_loop):
 C_FUNCTION_END(mp32multwo, LOCAL(mp32multwo_size))
 
 
+#if !defined(OPTIMIZE_SSE2)
 C_FUNCTION_BEGIN(mp32setmul)
 LABEL(mp32setmul)
 	pushl %edi
 	pushl %esi
-
-#if defined(OPTIMIZE_SSE2)
-	movl 12(%esp),%ecx
-	movl 16(%esp),%edi
-	movl 20(%esp),%esi
-	movd 24(%esp),%mm1
-
-	pxor %mm0,%mm0
-	decl %ecx
-
-	.align 4
-LOCAL(mp32setmul_loop):
-	movd (%esi,%ecx,4),%mm2
-	pmuludq %mm1,%mm2
-	paddq %mm2,%mm0
-	movd %mm0,(%edi,%ecx,4)
-	decl %ecx
-	psrlq $32,%mm0
-	jns LOCAL(mp32setmul_loop)
-
-	movd %mm0,%eax
-	emms
-#else
 	pushl %ebx
 	pushl %ebp
 
@@ -297,7 +274,6 @@ LOCAL(mp32setmul_loop):
 
 	popl %ebp
 	popl %ebx
-#endif
 	popl %esi
 	popl %edi
 	ret
@@ -308,31 +284,6 @@ C_FUNCTION_BEGIN(mp32addmul)
 LABEL(mp32addmul)
 	pushl %edi
 	pushl %esi
-
-#if defined(OPTIMIZE_SSE2)
-	movl 12(%esp),%ecx
-	movl 16(%esp),%edi
-	movl 20(%esp),%esi
-	movd 24(%esp),%mm1
-
-	pxor %mm0,%mm0
-	decl %ecx
-
-	.align 4
-LOCAL(mp32addmul_loop):
-	movd (%esi,%ecx,4),%mm2
-	movd (%edi,%ecx,4),%mm3
-	pmuludq %mm1,%mm2
-	paddq %mm2,%mm3
-	paddq %mm3,%mm0
-	movd %mm0,(%edi,%ecx,4)
-	decl %ecx
-	psrlq $32,%mm0
-	jns LOCAL(mp32addmul_loop)
-
-	movd %mm0,%eax
-	emms
-#else
 	pushl %ebx
 	pushl %ebp
 
@@ -361,12 +312,11 @@ LOCAL(mp32addmul_loop):
 
 	popl %ebp
 	popl %ebx
-#endif
 	popl %esi
 	popl %edi
 	ret
 C_FUNCTION_END(mp32addmul, LOCAL(mp32addmul_size))
-
+#endif
 
 C_FUNCTION_BEGIN(mp32addsqrtrc)
 LABEL(mp32addsqrtrc)
