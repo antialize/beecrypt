@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT(beecrypt, 2.2.0, bob.deblier@pandora.be)
+AC_INIT(beecrypt, 2.3.0pre, bob.deblier@pandora.be)
 AM_INIT_AUTOMAKE
 AC_CANONICAL_TARGET
 AC_CONFIG_SRCDIR([beecrypt.h])
@@ -205,19 +205,6 @@ AH_TEMPLATE([HAVE_DEV_TTY],[Define to 1 if your system has device /dev/tty])
 AH_TEMPLATE([HAVE_LONG_LONG],[Define to 1 if your compiler knows the 'long long' type])
 AH_TEMPLATE([HAVE_UNSIGNED_LONG_LONG],[Define to 1 if your compiler knows the 'unsigned long long' type])
 
-AH_TEMPLATE([INT8_TYPE],[Define to 8-bit signed integer type])
-AH_TEMPLATE([INT16_TYPE],[Define to 16-bit signed integer type])
-AH_TEMPLATE([INT32_TYPE],[Define to 32-bit signed integer type])
-AH_TEMPLATE([INT64_TYPE],[Define to 64-bit signed integer type])
-
-AH_TEMPLATE([UINT8_TYPE],[Define to 8-bit unsigned integer type])
-AH_TEMPLATE([UINT16_TYPE],[Define to 16-bit unsigned integer type])
-AH_TEMPLATE([UINT32_TYPE],[Define to 32-bit unsigned integer type])
-AH_TEMPLATE([UINT64_TYPE],[Define to 64-bit unsigned integer type])
-
-AH_TEMPLATE([FLOAT4_TYPE],[Define to 32-bit floating point type])
-AH_TEMPLATE([DOUBLE8_TYPE],[Define to 64-bit floating point type])
-
 AH_BOTTOM([
 #if LINUX
 #define _LIBC_REENTRANT
@@ -371,12 +358,12 @@ AC_C_INLINE
 AC_CHECK_SIZEOF(char)
 AC_CHECK_SIZEOF(unsigned char)
 if test "$ac_cv_sizeof_char" -eq 1; then
-  AC_DEFINE([INT8_TYPE], [char])
+  AC_SUBST(int8_type,"char")
 else
   AC_MSG_ERROR([compiler has no 1 byte char])
 fi
 if test "$ac_cv_sizeof_unsigned_char" -eq 1; then
-  AC_DEFINE([UINT8_TYPE], [unsigned char])
+  AC_SUBST(uint8_type,"unsigned char")
 else
   AC_MSG_ERROR([compiler has no 1 byte unsigned char])
 fi
@@ -384,12 +371,12 @@ fi
 AC_CHECK_SIZEOF(short)
 AC_CHECK_SIZEOF(unsigned short)
 if test "$ac_cv_sizeof_short" -eq 2; then
-  AC_DEFINE([INT16_TYPE], [short])
+  AC_SUBST(int16_type,"short")
 else
   AC_MSG_ERROR([compiler has no 2 byte short])
 fi
 if test "$ac_cv_sizeof_unsigned_short" -eq 2; then
-  AC_DEFINE([UINT16_TYPE], [unsigned short])
+  AC_SUBST(uint16_type,"unsigned short")
 else
   AC_MSG_ERROR([compiler has no 2 byte unsigned short])
 fi
@@ -399,38 +386,38 @@ AC_CHECK_SIZEOF(unsigned int)
 AC_CHECK_SIZEOF(long)
 AC_CHECK_SIZEOF(unsigned long)
 if test "$ac_cv_sizeof_int" -eq 4; then
-  AC_DEFINE([INT32_TYPE], [int])
+  AC_SUBST(int32_type,"int")
 elif test "$ac_cv_sizeof_long" -eq 4; then
-  AC_DEFINE([INT32_TYPE], [long])
+  AC_SUBST(int32_type,"long")
 else
   AC_MSG_ERROR([compiler has no 4 byte integer])
 fi
 if test "$ac_cv_sizeof_unsigned_int" -eq 4; then
-  AC_DEFINE([UINT32_TYPE], [unsigned int])
+  AC_SUBST(uint32_type,"unsigned int")
 elif test "$ac_cv_sizeof_unsigned_long" -eq 4; then
-  AC_DEFINE([UINT32_TYPE], [unsigned long])
+  AC_SUBST(uint32_type,"unsigned long")
 else
   AC_MSG_ERROR([compiler has no 4 byte unsigned integer])
 fi
 
 if test "$ac_cv_sizeof_long" -eq 8; then
-  AC_DEFINE([INT64_TYPE], [long])
+  AC_SUBST(int64_type,"long")
 else
   AC_CHECK_SIZEOF(long long)
   if test "$ac_cv_sizeof_long_long" -eq 8; then
     AC_DEFINE([HAVE_LONG_LONG])
-    AC_DEFINE([INT64_TYPE], [long long])
+    AC_SUBST(int64_type,"long long")
   else
     AC_MSG_ERROR([compiler has no 8 byte integer])
   fi
 fi
 if test "$ac_cv_sizeof_unsigned_long" -eq 8; then
-  AC_DEFINE([UINT64_TYPE], [unsigned long])
+  AC_SUBST(uint64_type,"unsigned long")
 else
   AC_CHECK_SIZEOF(unsigned long long)
   if test "$ac_cv_sizeof_unsigned_long_long" -eq 8; then
     AC_DEFINE([HAVE_UNSIGNED_LONG_LONG])
-    AC_DEFINE(UINT64_TYPE, [unsigned long long])
+    AC_SUBST(uint64_type,"unsigned long long")
   else
     AC_MSG_ERROR([compiler has no 8 byte unsigned integer])
   fi
@@ -438,14 +425,14 @@ fi
 
 AC_CHECK_SIZEOF(float)
 if test "$ac_cv_sizeof_float" -eq 4; then
-  AC_DEFINE([FLOAT4_TYPE], [float])
+  AC_SUBST(float4_type,"float")
 else
   AC_MSG_ERROR([compiler has no 4 byte float])
 fi
 
 AC_CHECK_SIZEOF(double)
 if test "$ac_cv_sizeof_double" -eq 8; then
-  AC_DEFINE([DOUBLE8_TYPE], [double])
+  AC_SUBST(double8_type,"double")
 else
   AC_MSG_ERROR([compiler has no 8 byte double])
 fi
@@ -851,5 +838,6 @@ AC_CONFIG_FILES([Makefile
                  gas/Makefile
                  masm/Makefile
                  mwerks/Makefile
-                 tests/Makefile])
+                 tests/Makefile
+                 beecrypt.gnu.types.h])
 AC_OUTPUT
