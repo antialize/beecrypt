@@ -5,7 +5,6 @@ AM_INIT_AUTOMAKE
 AC_CANONICAL_TARGET
 AC_CONFIG_SRCDIR(beecrypt.h)
 AC_CONFIG_HEADERS([config.h])
-AC_LIBTOOL_WIN32_DLL
 
 # Checks for package options
 AC_ARG_ENABLE(debug, [  --enable-debug          creates debugging code [default=no]],[
@@ -118,6 +117,7 @@ AH_TEMPLATE([HAVE_DLFCN_H],[.])
 
 AH_TEMPLATE([HAVE_SYS_AUDIOIO_H],[.])
 AH_TEMPLATE([HAVE_SYS_IOCTL_H],[.])
+AH_TEMPLATE([HAVE_SYS_MMAN_H],[.])
 AH_TEMPLATE([HAVE_SYS_SOUNDCARD_H],[.])
 AH_TEMPLATE([HAVE_SYS_STAT_H],[.])
 AH_TEMPLATE([HAVE_SYS_TIME_H],[.])
@@ -151,7 +151,7 @@ AC_HEADER_STDC
 AC_CHECK_HEADERS([time.h sys/time.h])
 AC_HEADER_TIME
 AC_CHECK_HEADERS([stdio.h ctype.h errno.h fcntl.h malloc.h termio.h termios.h])
-AC_CHECK_HEADERS([sys/ioctl.h sys/audioio.h sys/soundcard.h])
+AC_CHECK_HEADERS([sys/ioctl.h sys/mman.h sys/audioio.h sys/soundcard.h])
 
 bc_include_stdio_h=
 bc_include_stdlib_h=
@@ -620,6 +620,7 @@ AC_CONFIG_FILES([
     c++/crypto/interfaces/Makefile
     c++/crypto/spec/Makefile
     c++/io/Makefile
+    c++/nio/Makefile
     c++/lang/Makefile
     c++/provider/Makefile
     c++/security/Makefile
