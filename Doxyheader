@@ -3,19 +3,19 @@
 Included in the library are:
     - entropy sources for initializing pseudo-random generators
     - pseudo-random generators
-		- FIPS-186
-		- Mersenne Twister
+        - FIPS-186
+        - Mersenne Twister
     - block ciphers
-		- AES
-		- Blowfish
+        - AES
+        - Blowfish
     - hash functions
-		- MD5
-		- SHA-1
-		- SHA-256
+        - MD5
+        - SHA-1
+        - SHA-256
     - keyed hash functions (a.k.a. message authentication codes)
-		- HMAC-MD5
-		- HMAC-SHA-1
-		- HMAC-SHA-256
+        - HMAC-MD5
+        - HMAC-SHA-1
+        - HMAC-SHA-256
     - multi-precision integer library, with assembler-optimized routines
       for several processors
     - probabilistic primality testing, with optimized small prime trial
@@ -42,7 +42,7 @@ The library has been tested on the following platforms:
     - FreeBSD 4.0 alpha
     - FreeBSD 4.0, 4.2 x86
         - includes assembler optimization (tuned for Pentium and higher)
-	- HP-UX 11a PA-RISC
+    - HP-UX 11a PA-RISC
     - Linux glibc 2.x alpha
     - Linux glibc 2.x arm
         - includes assembler optimization
@@ -65,6 +65,13 @@ The library is currently in the process of being ported to:
       this will need a fix)
     - Cygwin (the DLL builds now, but needs to be tested)
 
+The structures in the library are geared towards exchange with Java
+and its security and cryptography classes. This library can also be
+accessed from Java by installing BeeCrypt for Java, a JCE 1.2 crypto
+provider and the counterpart of this library.
+
+Many thanks to:
+ 
  */
 
 /*! \defgroup	ES_m	Entropy sources
