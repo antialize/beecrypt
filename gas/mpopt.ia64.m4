@@ -19,16 +19,12 @@ dnl  License along with this library; if not, write to the Free Software
 dnl  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 include(config.m4)
-
-define(`saved_pfs',`r14')
-define(`saved_lc',`r15')
+include(ASM_SRCDIR/ia64.m4)
 
 define(`size',`r16')
 define(`dst',`r17')
 define(`src',`r18')
 define(`alt',`r19')
-
-	.explicit
 
 
 C_FUNCTION_BEGIN(mpadd)
