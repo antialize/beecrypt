@@ -38,8 +38,6 @@
 #include "mpnumber.h"
 #include "mpbarrett.h"
 
-#include <stdio.h>
-
 /*
  * mpbzero
  */

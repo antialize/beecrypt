@@ -29,6 +29,7 @@
 #endif
 
 #include "entropy.h"
+#include "endianness.h"
 
 #if WIN32
 # include <mmsystem.h>
@@ -77,14 +78,9 @@
 #if HAVE_FCNTL_H
 # include <fcntl.h>
 #endif
-#if HAVE_UNISTD_H
-# include <unistd.h>
-#endif
 #if HAVE_ERRNO_H
 # include <errno.h>
 #endif
-
-#include <stdio.h>
 
 #if WIN32
 static HINSTANCE	entropy_instance = (HINSTANCE) 0;

@@ -52,7 +52,7 @@ memchunk* pkcs5Unpad(size_t blockbytes, memchunk* tmp)
 	{
 		byte padvalue = tmp->data[tmp->size - 1];
 
-		int i;
+		unsigned int i;
 
 		if (padvalue > blockbytes)
 			return (memchunk*) 0;
@@ -93,7 +93,7 @@ memchunk* pkcs5UnpadCopy(size_t blockbytes, const memchunk* src)
 {
 	memchunk* tmp;
 	byte padvalue;
-	int i;
+	unsigned int i;
 
 	if (src == (memchunk*) 0)
 		return (memchunk*) 0;

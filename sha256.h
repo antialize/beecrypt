@@ -54,7 +54,7 @@ typedef struct
 	 * \brief Offset into \a data; points to the place where new data will be
 	 *  copied before it is processed.
 	 */
-	short offset;
+	unsigned short offset;
 } sha256Param;
 
 #ifdef __cplusplus

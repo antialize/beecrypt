@@ -44,8 +44,6 @@
 #include "beecrypt.api.h"
 #include "mpopt.h"
 
-#include <stdio.h>
-
 #define MP_HWBITS	(MP_WBITS >> 1)
 #define MP_WBYTES	(MP_WBITS >> 3)
 #define MP_WNIBBLES	(MP_WBITS >> 2)

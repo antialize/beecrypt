@@ -160,7 +160,7 @@ typedef struct
 	 * \note The implementor should set this by using sizeof(<struct holding
      *  random generator's parameters>).
 	 */
-	const unsigned int				paramsize;
+	const size_t					paramsize;
 	/*!\var setup
 	 * \brief Points to the setup function.
 	 */
@@ -269,9 +269,9 @@ typedef int (*hashFunctionDigest)(hashFunctionParam*, byte*);
 typedef struct
 {
 	const char*					name;
-	const unsigned int			paramsize;	/* in bytes */
-	const unsigned int			blocksize;	/* in bytes */
-	const unsigned int			digestsize;	/* in bytes */
+	const size_t				paramsize;	/* in bytes */
+	const size_t				blocksize;	/* in bytes */
+	const size_t				digestsize;	/* in bytes */
 	const hashFunctionReset		reset;
 	const hashFunctionUpdate	update;
 	const hashFunctionDigest	digest;
@@ -384,12 +384,12 @@ typedef int (*keyedHashFunctionDigest )(keyedHashFunctionParam*, byte*);
 typedef struct
 {
 	const char*						name;
-	const unsigned int				paramsize;	/* in bytes */
-	const unsigned int				blocksize;	/* in bytes */
-	const unsigned int				digestsize;	/* in bytes */
-	const unsigned int				keybitsmin;	/* in bits */
-	const unsigned int				keybitsmax;	/* in bits */
-	const unsigned int				keybitsinc;	/* in bits */
+	const size_t					paramsize;	/* in bytes */
+	const size_t					blocksize;	/* in bytes */
+	const size_t					digestsize;	/* in bytes */
+	const size_t					keybitsmin;	/* in bits */
+	const size_t					keybitsmax;	/* in bits */
+	const size_t					keybitsinc;	/* in bits */
 	const keyedHashFunctionSetup	setup;
 	const keyedHashFunctionReset	reset;
 	const keyedHashFunctionUpdate	update;
@@ -545,24 +545,24 @@ typedef struct
 	/*!\var paramsize
 	 * \brief The size of the parameters required by this cipher, in bytes.
 	 */
-	const unsigned int			paramsize;
+	const size_t				paramsize;
 	/*!\var blocksize
 	 * \brief The size of one block of data, in bytes.
 	 */
-	const unsigned int			blocksize;
+	const size_t				blocksize;
 	/*!\var keybitsmin
 	 * \brief The minimum number of key bits.
 	 */
-	const unsigned int			keybitsmin;
+	const size_t				keybitsmin;
 	/*!\var keybitsmax
 	 * \brief The maximum number of key bits.
 	 */
-	const unsigned int			keybitsmax;
+	const size_t				keybitsmax;
 	/*!\var keybitsinc
 	 * \brief The allowed increment in key bits between min and max.
 	 * \see keybitsmin and keybitsmax.
 	 */
-	const unsigned int			keybitsinc;
+	const size_t				keybitsinc;
 	/*!\var setup
 	 * \brief Pointer to the cipher's setup function.
 	 */

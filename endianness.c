@@ -30,8 +30,6 @@
 
 #include "endianness.h"
 
-#include <stdio.h>
-
 int16_t swap16(int16_t n)
 {
 	return (    ((n & 0xff) << 8) |

@@ -31,8 +31,6 @@
 
 #include "mpprime.h"
 
-#include <stdio.h>
-
 /*
  * A word of explanation here on what this table accomplishes:
  *

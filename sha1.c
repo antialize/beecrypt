@@ -194,7 +194,7 @@ void sha1Process(sha1Param* sp)
 
 int sha1Update(sha1Param* sp, const byte* data, size_t size)
 {
-	register int proclength;
+	register unsigned short proclength;
 
 	#if (MP_WBITS == 64)
 	mpw add[1];
@@ -212,7 +212,7 @@ int sha1Update(sha1Param* sp, const byte* data, size_t size)
 
 	while (size > 0)
 	{
-		proclength = ((sp->offset + size) > 64) ? (64 - sp->offset) : size;
+		proclength = ((sp->offset + size) > 64U) ? (64U - sp->offset) : size;
 		memcpy(((byte *) sp->data) + sp->offset, data, proclength);
 		size -= proclength;
 		data += proclength;

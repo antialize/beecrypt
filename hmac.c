@@ -45,7 +45,7 @@
 
 int hmacSetup(byte* kxi, byte* kxo, const hashFunction* hash, hashFunctionParam* param, const byte* key, size_t keybits)
 {
-	register int i;
+	register unsigned int i;
 
 	size_t keybytes = keybits >> 3;
 

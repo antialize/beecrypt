@@ -250,7 +250,7 @@ char* b64encode(const void* data, size_t ns)
     if (s == NULL)	return NULL;
     if (*s == '\0')	return calloc(1, sizeof(*t));
 
-    if (ns == 0) ns = strlen(s);
+    if (ns == 0) ns = strlen((const char*) s);
     nt = ((ns + 2) / 3) * 4;
 
     /* Add additional bytes necessary for eol string(s). */
@@ -314,7 +314,7 @@ char* b64encode(const void* data, size_t ns)
 		*te = '\0';
     }
 
-    return t;
+    return (char*) t;
 }
 
 #define CRC24_INIT 0xb704ceL

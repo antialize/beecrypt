@@ -32,8 +32,6 @@
 #include "mp.h"
 #include "mpopt.h"
 
-#include <stdio.h>
-
 #ifndef ASM_MPZERO
 void mpzero(size_t size, mpw* data)
 {
