@@ -857,7 +857,7 @@ AC_DEFUN([BEECRYPT_NOEXECSTACK],[
     cat > conftest.c << EOF
 void foo(void) { }
 EOF
-    if AC_TRY_COMMAND([$CC -c -o conftest.o conftest.c]) then
+    if AC_TRY_COMMAND([$CC -Wa,--noexecstack -c -o conftest.o conftest.c]) then
       bc_cv_as_noexecstack=yes
       if test "$ac_cv_c_compiler_gnu" = yes; then
          CFLAGS="$CFLAGS -Wa,--noexecstack"
