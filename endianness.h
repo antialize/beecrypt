@@ -128,6 +128,8 @@ int encodeInts(const javaint*, byte*, int);
 BEECRYPTAPI
 int encodeIntsPartial(const javaint*, byte*, int);
 BEECRYPTAPI
+int encodeIntsPartialPad(const javaint*, byte*, int, byte);
+BEECRYPTAPI
 int encodeChars(const javachar*, byte*, int);
 
 BEECRYPTAPI
