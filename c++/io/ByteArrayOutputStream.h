@@ -40,8 +40,8 @@ namespace beecrypt {
 			mutex _lock;
 
 		protected:
-			bytearray _buf;
-			size_t    _count;
+			bytearray buf;
+			size_t    count;
 
 		public:
 			ByteArrayOutputStream();
