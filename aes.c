@@ -19,6 +19,9 @@
 
 /*!\file aes.c
  * \brief AES block cipher, as specified by NIST FIPS 197.
+ *
+ * Based on Brian Gladman's AES implementation.
+ *
  * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup BC_aes_m BC_m
  */
