@@ -584,7 +584,7 @@ uint32 mp32setmul(register uint32 size, register uint32* result, register const 
 		*(--result) = (uint32) temp;
 		carry = (uint32) (temp >> 32);
 	}
-	return carry
+	return carry;
 # else
 	register uint32 temp, load, carry = 0;
 	register uint16 ylo, yhi;
