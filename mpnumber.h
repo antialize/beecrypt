@@ -55,8 +55,11 @@ BEECRYPTAPI
 void mpnset   (mpnumber*, size_t, const mpw*);
 BEECRYPTAPI
 void mpnsetw  (mpnumber*, mpw);
+
 BEECRYPTAPI
-void mpnsethex(mpnumber*, const char*);
+int mpnsetbin(mpnumber*, const byte*, size_t);
+BEECRYPTAPI
+int mpnsethex(mpnumber*, const char*);
 
 BEECRYPTAPI
 int  mpninv(mpnumber*, const mpnumber*, const mpnumber*);

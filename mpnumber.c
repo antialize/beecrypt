@@ -137,10 +137,19 @@ void mpnsetw(mpnumber* n, mpw val)
 		n->size = 0;
 }
 
-void mpnsethex(mpnumber* n, const char* hex)
+int mpnsetbin(mpnumber* n, const byte* osdata, size_t ossize)
 {
-	register size_t len = strlen(hex);
-	register size_t size = MP_NIBBLES_TO_WORDS(len + MP_WNIBBLES - 1);
+	int rc = -1;
+	size_t size;
+
+	/* skip zero bytes */
+	while (!(*osdata) && ossize)
+	{
+		osdata++;
+		ossize--;
+	}
+
+	size = MP_BYTES_TO_WORDS(ossize + MP_WBYTES - 1);
 
 	if (n->data)
 	{
@@ -154,10 +163,38 @@ void mpnsethex(mpnumber* n, const char* hex)
 	{
 		n->size = size;
 
-		hs2ip(n->data, size, hex, len);
+		rc = os2ip(n->data, size, osdata, ossize);
 	}
 	else
 		n->size = 0;
+
+	return rc;
+}
+
+int mpnsethex(mpnumber* n, const char* hex)
+{
+	int rc = -1;
+	size_t len = strlen(hex);
+	size_t size = MP_NIBBLES_TO_WORDS(len + MP_WNIBBLES - 1);
+
+	if (n->data)
+	{
+		if (n->size != size)
+			n->data = (mpw*) realloc(n->data, size * sizeof(mpw));
+	}
+	else
+		n->data = (mpw*) malloc(size * sizeof(mpw));
+
+	if (n->data)
+	{
+		n->size = size;
+
+		rc = hs2ip(n->data, size, hex, len);
+	}
+	else
+		n->size = 0;
+
+	return rc;
 }
 
 int mpninv(mpnumber* inv, const mpnumber* k, const mpnumber* mod)
