@@ -25,9 +25,7 @@ define(USE_SIZE_DIRECTIVE,yes)
 define(SYMNAME,`GSYM_PREFIX`$1'')
 define(LOCAL,`LSYM_PREFIX`$1'')
 
-ifdef(ALIGN,,`
-define(ALIGN)
-')
+ifdef(`ALIGN',,`define(`ALIGN',`')')
 
 define(C_FUNCTION_BEGIN,`
 	TEXTSEG
