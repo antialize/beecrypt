@@ -758,14 +758,10 @@ int main()
 		else
 			printf("*** error: library corrupt\n");
 	}
-	/*
 	testBlockCiphers();
 	testHashFunctions();
-	*/
 	testExpMods();
-	/*
 	testDLParams();
-	*/
 
 	printf("done\n");
 

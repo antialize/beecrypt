@@ -333,7 +333,7 @@ tarball: $(DISTFILES)
 	@rm -rf $(PRODUCT)
 
 depend:
-	makedepend -I${srcdir} *.c
+	makedepend $(CPPFLAGS) $(JNIFLAGS) *.c
 
 ${srcdir}/configure: ${srcdir}/configure.in
 	cd ${top_srcdir} && autoconf
