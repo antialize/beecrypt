@@ -45,6 +45,15 @@
 # endif
 #endif
 
+#if defined(__DECC)
+# if defined(OPTIMIZE_ALPHA)
+#  define ASM_MPADD
+#  define ASM_MPSUB
+#  define ASM_MPSETMUL
+#  define ASM_MPADDMUL
+# endif
+#endif
+
 #if defined(__GNUC__)
 # if defined(OPTIMIZE_ALPHA)
 #  define ASM_MPADD
