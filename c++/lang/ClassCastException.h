@@ -16,38 +16,27 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-/*!\file Throwable.h
+/*!\file ClassCastException.h
  * \ingroup CXX_LANG_m
  */
 
-#ifndef _CLASS_THROWABLE_H
-#define _CLASS_THROWABLE_H
-
-#include "beecrypt/api.h"
+#ifndef _CLASS_CLASSCASTEXCEPTION_H
+#define _CLASS_CLASSCASTEXCEPTION_H
 
 #ifdef __cplusplus
 
-#include "beecrypt/c++/lang/String.h"
-using beecrypt::lang::String;
+#include "beecrypt/c++/lang/RuntimeException.h"
+using beecrypt::lang::RuntimeException;
 
 namespace beecrypt {
 	namespace lang {
-		/*!\brief This class is the superclass of all errors and exceptions
-		 *        used by the BeeCrypt C++ API
-		 * \ingroup CXX_LANG_m
+		/* \ingroup CXX_LANG_m
 		 */
-		class BEECRYPTCXXAPI Throwable
+		class BEECRYPTCXXAPI ClassCastException : public RuntimeException
 		{
-		private:
-			String _msg;
-
 		public:
-			Throwable() throw ();
-			Throwable(const String& message) throw ();
-			Throwable(const Throwable& cause) throw ();
-			virtual ~Throwable() throw () {};
-
-			const String& getMessage() const throw ();
+			ClassCastException() throw ();
+			ClassCastException(const String& message) throw ();
 		};
 	}
 }

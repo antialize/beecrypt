@@ -29,6 +29,7 @@
 
 #include "beecrypt/c++/lang/NumberFormatException.h"
 using beecrypt::lang::NumberFormatException;
+#include "beecrypt/c++/lang/Object.h"
 #include "beecrypt/c++/lang/String.h"
 using beecrypt::lang::String;
 
@@ -38,7 +39,7 @@ namespace beecrypt {
 		 *        problem, which should not be caught by the application.
 		 * \ingroup CXX_LANG_m
 		 */
-		class BEECRYPTCXXAPI Long
+		class BEECRYPTCXXAPI Long : public beecrypt::lang::Object
 		{
 		private:
 			javalong _val;
@@ -56,6 +57,7 @@ namespace beecrypt {
 		public:
 			Long(javalong value);
 			Long(const String& s) throw (NumberFormatException);
+			virtual ~Long() {};
 
 			javabyte byteValue() const throw ();
 			javashort shortValue() const throw ();

@@ -7,6 +7,8 @@ noinst_LTLIBRARIES = libcxxlang.la
 cxxlangdir=$(pkgincludedir)/c++/lang
 
 libcxxlang_la_SOURCES = \
+ClassCastException.cxx \
+CloneNotSupportedException.cxx \
 Error.cxx \
 Exception.cxx \
 IllegalArgumentException.cxx \
@@ -14,12 +16,16 @@ IllegalStateException.cxx \
 Long.cxx \
 NullPointerException.cxx \
 NumberFormatException.cxx \
+Object.cxx \
 OutOfMemoryError.cxx \
 RuntimeException.cxx \
 Throwable.cxx \
 UnsupportedOperationException.cxx
 
 cxxlang_HEADERS = \
+ClassCastException.h \
+Cloneable.h \
+CloneNotSupportedException.h \
 Comparable.h \
 Error.h \
 Exception.h \
@@ -28,6 +34,7 @@ IllegalStateException.h \
 Long.h \
 NullPointerException.h \
 NumberFormatException.h \
+Object.h \
 OutOfMemoryError.h \
 RuntimeException.h \
 String.h \

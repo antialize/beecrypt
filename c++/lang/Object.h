@@ -16,38 +16,32 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-/*!\file Throwable.h
+/*!\file Object.h
  * \ingroup CXX_LANG_m
  */
 
-#ifndef _CLASS_THROWABLE_H
-#define _CLASS_THROWABLE_H
-
-#include "beecrypt/api.h"
+#ifndef _CLASS_OBJECT_H
+#define _CLASS_OBJECT_H
 
 #ifdef __cplusplus
 
-#include "beecrypt/c++/lang/String.h"
-using beecrypt::lang::String;
+#include "beecrypt/c++/lang/CloneNotSupportedException.h"
+using beecrypt::lang::CloneNotSupportedException;
 
 namespace beecrypt {
 	namespace lang {
-		/*!\brief This class is the superclass of all errors and exceptions
-		 *        used by the BeeCrypt C++ API
-		 * \ingroup CXX_LANG_m
-		 */
-		class BEECRYPTCXXAPI Throwable
+		class BEECRYPTCXXAPI Object
 		{
-		private:
-			String _msg;
+			class beecrypt::lang::CloneNotSupportedException;
+
+		protected:
+			virtual Object* clone() const throw (CloneNotSupportedException);
 
 		public:
-			Throwable() throw ();
-			Throwable(const String& message) throw ();
-			Throwable(const Throwable& cause) throw ();
-			virtual ~Throwable() throw () {};
+			Object() throw ();
+			virtual ~Object() {};
 
-			const String& getMessage() const throw ();
+			virtual bool equals(const Object& compare) const throw ();
 		};
 	}
 }
