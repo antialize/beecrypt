@@ -142,19 +142,18 @@ int rsapricrt(const mpbarrett* n, const mpbarrett* p, const mpbarrett* q,
 int rsavrfy(const mpbarrett* n, const mpnumber* e,
             const mpnumber* m, const mpnumber* c)
 {
-	int rc;
+	int rc = 0;
 	register size_t size = n->size;
 
 	register mpw* temp;
 
 	if (mpgex(m->size, m->data, n->size, n->modl))
-		return -1;
+		return rc;
 
 	if (mpgex(c->size, c->data, n->size, n->modl))
-		return 0;
+		return rc;
 
 	temp = (mpw*) malloc((5*size+2)*sizeof(mpw));
-
 	if (temp)
 	{
 		mpbpowmod_w(n, m->size, m->data, e->size, e->data, temp, temp+size);
@@ -162,9 +161,7 @@ int rsavrfy(const mpbarrett* n, const mpnumber* e,
 		rc = mpeqx(size, temp, c->size, c->data);
 
 		free(temp);
-
-		return rc;
 	}
 
-	return 0;
+	return rc;
 }
