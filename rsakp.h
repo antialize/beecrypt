@@ -77,7 +77,7 @@ extern "C" {
 #endif
 
 BEECRYPTAPI
-int rsakpMake(rsakp*, randomGeneratorContext*, int);
+int rsakpMake(rsakp*, randomGeneratorContext*, size_t);
 BEECRYPTAPI
 int rsakpInit(rsakp*);
 BEECRYPTAPI

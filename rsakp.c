@@ -36,77 +36,64 @@
  * \{
  */
 
-int rsakpMake(rsakp* kp, randomGeneratorContext* rgc, int nsize)
+int rsakpMake(rsakp* kp, randomGeneratorContext* rgc, size_t bits)
 {
 	/* 
 	 * Generates an RSA Keypair for use with the Chinese Remainder Theorem
 	 */
 
-	register size_t pqsize = (nsize+1) >> 1;
-	register mpw* temp = (mpw*) malloc((16*pqsize+6)*sizeof(mpw));
-	register int newn = 1;
+	size_t pbits = (bits+1) >> 1;
+	size_t qbits = (bits - pbits);
+	size_t nsize = MP_BITS_TO_WORDS(bits+MP_WBITS-1);
+	size_t psize = MP_BITS_TO_WORDS(pbits+MP_WBITS-1);
+	size_t qsize = MP_BITS_TO_WORDS(qbits+MP_WBITS-1);
+	size_t pqsize = psize+qsize;
+	mpw* temp = (mpw*) malloc((16*pqsize+6)*sizeof(mpw));
 
 	if (temp)
 	{
-		mpbarrett r, psubone, qsubone;
-		mpnumber phi;
-
-		nsize = pqsize << 1;
+		mpbarrett psubone, qsubone;
+		mpnumber phi, min;
+		mpw* divmod = temp;
+		mpw* dividend = divmod+nsize+1;
+		mpw* workspace = dividend+nsize+1;
+		int shift;
 
 		/* set e */
-		mpnsetw(&kp->e, 65535);
+		mpnsetw(&kp->e, 65537);
 
-		/* generate a random prime p and q */
-		mpprnd_w(&kp->p, rgc, pqsize, mpptrials(MP_WORDS_TO_BITS(pqsize)), &kp->e, temp);
-		mpprnd_w(&kp->q, rgc, pqsize, mpptrials(MP_WORDS_TO_BITS(pqsize)), &kp->e, temp);
+		/* generate a random prime p */
+		mpprnd_w(&kp->p, rgc, pbits, mpptrials(pbits), &kp->e, temp);
 
-		/* if p <= q, perform a swap to make p larger than q */
-		if (mple(pqsize, kp->p.modl, kp->q.modl))
+		/* find out how big q should be */
+		shift = MP_WORDS_TO_BITS(nsize) - bits;
+		mpzero(nsize, dividend);
+		dividend[0] |= MP_MSBMASK;
+		dividend[nsize-1] |= MP_LSBMASK;
+		mpndivmod(divmod, nsize+1, dividend, psize, kp->p.modl, workspace);
+		mprshift(nsize+1, divmod, shift);
+
+		mpnzero(&min);
+		mpnset(&min, nsize+1-psize, divmod);
+
+		/* generate a random prime q, with min/max constraints */
+		if (mpprndr_w(&kp->q, rgc, qbits, mpptrials(qbits), &min, (mpnumber*) 0, &kp->e, temp))
 		{
-			memcpy(&r, &kp->q, sizeof(mpbarrett));
-			memcpy(&kp->q, &kp->p, sizeof(mpbarrett));
-			memcpy(&kp->p, &r, sizeof(mpbarrett));
+			/* shouldn't happen */
+			mpnfree(&min);
+			free(temp);
+			return -1;
 		}
 
-		mpbzero(&r);
+		mpnfree(&min);
+
 		mpbzero(&psubone);
 		mpbzero(&qsubone);
 		mpnzero(&phi);
 
-		while (1)
-		{
-			mpmul(temp, pqsize, kp->p.modl, pqsize, kp->q.modl);
-
-			if (newn && mpmsbset(nsize, temp))
-				break;
-
-			/* product of p and q doesn't have the required size (one bit short) */
-
-			mpprnd_w(&r, rgc, pqsize, mpptrials(MP_WORDS_TO_BITS(pqsize)), &kp->e, temp);
-
-			if (mple(pqsize, kp->p.modl, r.modl))
-			{
-				mpbfree(&kp->q);
-				memcpy(&kp->q, &kp->p, sizeof(mpbarrett));
-				memcpy(&kp->p, &r, sizeof(mpbarrett));
-				mpbzero(&r);
-				newn = 1;
-			}
-			else if (mple(pqsize, kp->q.modl, r.modl))
-			{
-				mpbfree(&kp->q);
-				memcpy(&kp->q, &r, sizeof(mpbarrett));
-				mpbzero(&r);
-				newn = 1;
-			}
-			else
-			{
-				mpbfree(&r);
-				newn = 0;
-			}
-		}
-
-		mpbset(&kp->n, nsize, temp);
+		/* set n = p*q, with appropriate size (pqsize may be > nsize) */
+		mpmul(temp, psize, kp->p.modl, qsize, kp->q.modl);
+		mpbset(&kp->n, nsize, temp+pqsize-nsize);
 
 		/* compute p-1 */
 		mpbsubone(&kp->p, temp);
@@ -132,7 +119,7 @@ int rsakpMake(rsakp* kp, randomGeneratorContext* rgc, int nsize)
 		mpbmod_w(&qsubone, kp->d.data, kp->d2.data, temp);
 
 		/* compute c = inv(q) mod p */
-		mpninv(&kp->c, (const mpnumber*) &kp->q, (const mpnumber*) &kp->p);
+		mpninv(&kp->c, (mpnumber*) &kp->q, (mpnumber*) &kp->p);
 
 		free(temp);
 
