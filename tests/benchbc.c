@@ -22,8 +22,19 @@
  * \author Bob Deblier <bob.deblier@pandora.be>
  */
 
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include "beecrypt.h"
 #include "timestamp.h"
+
+#if HAVE_STDLIB_H
+# include <stdlib.h>
+#endif
+#if HAVE_MALLOC_H
+# include <malloc.h>
+#endif
 
 #include <stdio.h>
 

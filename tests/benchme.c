@@ -22,11 +22,15 @@
  * \author Bob Deblier <bob.deblier@pandora.be>
  */
 
-#include <stdio.h>
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "beecrypt.h"
 #include "dldp.h"
 #include "timestamp.h"
+
+#include <stdio.h>
 
 #define SECONDS	10
 
