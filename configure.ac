@@ -527,6 +527,8 @@ EOF
               cygwin*)
                 ac_cv_java_include="-I$java_include -I$java_include/win32" ;;
               darwin*) ;;
+              hpux*)
+                ac_cv_java_include="-I$java_include -I$java_include/hpux" ;;
               linux*)
                 ac_cv_java_include="-I$java_include -I$java_include/linux" ;;
               osf*)
