@@ -880,9 +880,9 @@ int mppmilrab_w(const mpbarrett* p, randomGeneratorContext* rc, int t, mpw* wksp
 /*
  * needs workspace of (8*size+2) words
  */
-void mpprnd_w(mpbarrett* p, randomGeneratorContext* rc, size_t bits, int t, const mpnumber* f, mpw* wksp)
+int mpprnd_w(mpbarrett* p, randomGeneratorContext* rc, size_t bits, int t, const mpnumber* f, mpw* wksp)
 {
-	mpprndr_w(p, rc, bits, t, (const mpnumber*) 0, (const mpnumber*) 0, f, wksp);
+	return mpprndr_w(p, rc, bits, t, (const mpnumber*) 0, (const mpnumber*) 0, f, wksp);
 }
 
 /*
@@ -951,6 +951,7 @@ int mpprndr_w(mpbarrett* p, randomGeneratorContext* rc, size_t bits, int t, cons
 				return 0;
 		}
 	}
+	return -1;
 }
 
 /*
@@ -1107,16 +1108,16 @@ void mpprndsafe_w(mpbarrett* p, randomGeneratorContext* rc, size_t bits, int t, 
 			mpbmu_w(&q, wksp);
 
 			if (!mppmilrab_w(&q, rc, t, wksp))
-                continue;
+				continue;
 
-            mpbmu_w(p, wksp);
+			mpbmu_w(p, wksp);
 
-            if (!mppmilrab_w(p, rc, t, wksp))
+			if (!mppmilrab_w(p, rc, t, wksp))
 				continue;
 
 			mpbfree(&q);
 
 			return;
-        }
-    }
+		}
+	}
 }
