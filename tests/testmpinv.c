@@ -36,31 +36,27 @@ int main()
 {
 	int failures = 0;
 
-	mpbarrett q;
-	mpnumber  k;
-	mpnumber  inv_k;
+	mpnumber q;
+	mpnumber k;
+	mpnumber inv_k;
+	mpnumber inv;
 
-	mpw* workspace;
-
-	mpbzero(&q);
+	mpnzero(&q);
 	mpnzero(&k);
 	mpnzero(&inv_k);
+	mpnzero(&inv);
 
-	mpbsethex(&q, dsa_q);
+	mpnsethex(&q, dsa_q);
 	mpnsethex(&k, dsa_k);
 	mpnsethex(&k, dsa_inv_k);
 
-	workspace = (mpw*) malloc((7*q.size+6)*sizeof(mpw));
-
-	if (workspace)
+	if (mpninv(&inv_k, &k, &q))
 	{
-		mpbinv_w(q, k.size, k.data, workspace, workspace+q.size);
+		if (mpnex(inv.size, inv.data, inv_k.size, inv_k.data))
+			failures++;
 	}
 	else
-	{
-		printf("malloc failed\n");
 		failures++;
-	}
 
 	return failures;
 }
