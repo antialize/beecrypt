@@ -751,7 +751,7 @@ int mpbinv_w(const mpbarrett* b, size_t xsize, const mpw* xdata, mpw* result, mp
 				mpsubx(size+1, ddata, size, b->modl);
 			}
 
-			if (full) mpsdivtwo(size+1, ddata);
+			if (full) mpsdivtwo(size+1, cdata);
 			mpsdivtwo(size+1, ddata);
 		}
 		if (mpge(size+1, udata, vdata))
