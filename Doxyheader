@@ -274,8 +274,6 @@
  */
 /*!\defgroup	CXX_CRYPTO_SPEC_m	C++ classes mimicking javax.crypto.spec
  */
-/*!\defgroup	CXX_PROVIDER_m	C++ Base Cryptographic Service Provider
- */
 /*!\defgroup	JAVA_m	Java API
  */
 /*!\defgroup	UNIT_m	Unit tests
