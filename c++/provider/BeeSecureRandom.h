@@ -32,6 +32,8 @@ using beecrypt::security::SecureRandomSpi;
 
 namespace beecrypt {
 	namespace provider {
+		/*!\ingroup CXX_PROVIDER_m
+		 */
 		class BeeSecureRandom : public SecureRandomSpi
 		{
 		private:

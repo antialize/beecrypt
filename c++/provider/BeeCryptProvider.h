@@ -17,7 +17,7 @@
  */
 
 /*!\file BeeCryptProvider.h
- * \ingroup CXX_PROV_m
+ * \ingroup CXX_PROVIDER_m
  */
 
 #ifndef _CLASS_BEECRYPTPROVIDER_H
@@ -30,6 +30,8 @@ using beecrypt::security::Provider;
 
 namespace beecrypt {
 	namespace provider {
+		/*!\ingroup CXX_PROVIDER_m
+		 */
 		class BeeCryptProvider : public Provider
 		{
 		private:

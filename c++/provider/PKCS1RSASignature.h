@@ -17,7 +17,7 @@
  */
 
 /*!\file PKCS1RSASignature.h
- * \ingroup CXX_PROV_m
+ * \ingroup CXX_PROVIDER_m
  */
 
 #ifndef _CLASS_PKCS1RSASIGNATURE_H

@@ -17,7 +17,7 @@
  */
 
 /*!\file SHA1withDSASignature.h
- * \ingroup CXX_PROV_m
+ * \ingroup CXX_PROVIDER_m
  */
 
 #ifndef _CLASS_SHA1WITHDSASIGNATURE_H

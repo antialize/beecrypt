@@ -32,16 +32,16 @@ namespace beecrypt {
 	namespace crypto {
 		namespace interfaces {
 			/*!\brief PBEKey interface
-			* \ingroup CXX_CRYPTO_m
-			*/
+			 * \ingroup CXX_CRYPTO_INTERFACES_m
+			 */
 			class BEECRYPTCXXAPI PBEKey : public SecretKey
 			{
-				public:
-					virtual size_t getIterationCount() const throw () = 0;
-					virtual const array<javachar>& getPassword() const throw () = 0;
-					virtual const bytearray* getSalt() const throw () = 0;
+			public:
+				virtual size_t getIterationCount() const throw () = 0;
+				virtual const array<javachar>& getPassword() const throw () = 0;
+				virtual const bytearray* getSalt() const throw () = 0;
 
-					virtual PBEKey* clone() const = 0;
+				virtual PBEKey* clone() const = 0;
 			};
 		}
 	}

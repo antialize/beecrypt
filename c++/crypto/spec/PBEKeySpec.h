@@ -34,23 +34,25 @@ using beecrypt::security::spec::KeySpec;
 namespace beecrypt {
 	namespace crypto {
 		namespace spec {
+			/*!\ingroup CXX_CRYPTO_SPEC_m
+			 */
 			class BEECRYPTCXXAPI PBEKeySpec : public KeySpec
 			{
-				private:
-					array<javachar> _password;
-					bytearray* _salt;
-					size_t _iteration_count;
-					size_t _key_length;
+			private:
+				array<javachar> _password;
+				bytearray* _salt;
+				size_t _iteration_count;
+				size_t _key_length;
 
-				public:
-					PBEKeySpec(const array<javachar>* password);
-					PBEKeySpec(const array<javachar>* password, const bytearray* salt, size_t iterationCount, size_t keyLength);
-					virtual ~PBEKeySpec();
+			public:
+				PBEKeySpec(const array<javachar>* password);
+				PBEKeySpec(const array<javachar>* password, const bytearray* salt, size_t iterationCount, size_t keyLength);
+				virtual ~PBEKeySpec();
 
-					const array<javachar>& getPassword() const throw ();
-					const bytearray* getSalt() const throw ();
-					size_t getIterationCount() const throw ();
-					size_t getKeyLength() const throw ();
+				const array<javachar>& getPassword() const throw ();
+				const bytearray* getSalt() const throw ();
+				size_t getIterationCount() const throw ();
+				size_t getKeyLength() const throw ();
 			};
 		}
 	}

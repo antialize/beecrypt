@@ -41,17 +41,19 @@ using std::type_info;
 
 namespace beecrypt {
 	namespace crypto {
+		/*!\ingroup CXX_CRYPTO_m
+		 */
 		class BEECRYPTCXXAPI SecretKeyFactorySpi
 		{
 			friend class SecretKeyFactory;
 
-			protected:
-				virtual SecretKey* engineGenerateSecret(const KeySpec&) throw (InvalidKeySpecException) = 0;
-				virtual KeySpec* engineGetKeySpec(const SecretKey&, const type_info&) throw (InvalidKeySpecException) = 0;
-				virtual SecretKey* engineTranslateKey(const SecretKey&) throw (InvalidKeyException) = 0;
+		protected:
+			virtual SecretKey* engineGenerateSecret(const KeySpec&) throw (InvalidKeySpecException) = 0;
+			virtual KeySpec* engineGetKeySpec(const SecretKey&, const type_info&) throw (InvalidKeySpecException) = 0;
+			virtual SecretKey* engineTranslateKey(const SecretKey&) throw (InvalidKeyException) = 0;
 
-			public:
-				virtual ~SecretKeyFactorySpi() {};
+		public:
+			virtual ~SecretKeyFactorySpi() {};
 		};
 	}
 }

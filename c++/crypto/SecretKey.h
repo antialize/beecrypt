@@ -30,13 +30,13 @@ using beecrypt::security::Key;
 
 namespace beecrypt {
 	namespace crypto {
-		/*!\brief SecretKey interface
-		* \ingroup CXX_CRYPTO_m
-		*/
+		/*!\brief Secret key interface
+		 * \ingroup CXX_CRYPTO_m
+		 */
 		class BEECRYPTCXXAPI SecretKey : public Key
 		{
-			public:
-				virtual SecretKey* clone() const = 0;
+		public:
+			virtual SecretKey* clone() const = 0;
 		};
 	}
 }

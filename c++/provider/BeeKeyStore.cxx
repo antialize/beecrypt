@@ -201,7 +201,13 @@ const Certificate* BeeKeyStore::engineGetCertificate(const String& alias)
 	{
 		CertEntry* ce = dynamic_cast<CertEntry*>(it->second);
 		if (ce)
-			result =  ce->cert;
+			result = ce->cert;
+		else
+		{
+			KeyEntry* ke = dynamic_cast<KeyEntry*>(it->second);
+			if (ke)
+				result = ke->chain[0];
+		}
 	}
 	_lock.unlock();
 	return result;
@@ -238,7 +244,7 @@ const vector<Certificate*>* BeeKeyStore::engineGetCertificateChain(const String&
 	{
 		KeyEntry* ke = dynamic_cast<KeyEntry*>(it->second);
 		if (ke)
-			result = &ke->chain;
+			result = const_cast<vector<Certificate*>*>(&ke->chain);
 	}
 	_lock.unlock();
 	return result;

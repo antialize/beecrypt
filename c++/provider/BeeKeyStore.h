@@ -42,7 +42,8 @@ using std::map;
 namespace beecrypt {
 	namespace provider {
 		/*!\brief The default BeeCrypt KeyStore.
-		*/
+		 * \ingroup CXX_PROVIDER_m
+		 */
 		class BeeKeyStore : public KeyStoreSpi
 		{
 		private:

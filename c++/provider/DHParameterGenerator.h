@@ -17,7 +17,7 @@
  */
 
 /*!\file DHParameterGenerator.h
- * \ingroup CXX_PROV_m
+ * \ingroup CXX_PROVIDER_m
  */
 
 #ifndef _CLASS_DHPARAMETERGENERATOR_H

@@ -17,7 +17,7 @@
  */
 
 /*!\file HMACSHA256.h
- * \ingroup CXX_PROV_m
+ * \ingroup CXX_PROVIDER_m
  */
 
 #ifndef _CLASS_HMACSHA256_H

@@ -17,7 +17,7 @@
  */
 
 /*!\file MD5withRSASignature.h
- * \ingroup CXX_PROV_m
+ * \ingroup CXX_PROVIDER_m
  */
 
 #ifndef _CLASS_MD5WITHRSASIGNATURE_H

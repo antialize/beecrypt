@@ -17,7 +17,7 @@
  */
 
 /*!\file DHKeyFactory.h
- * \ingroup CXX_PROV_m
+ * \ingroup CXX_PROVIDER_m
  */
 
 #ifndef _CLASS_DHKEYFACTORY_H

@@ -30,11 +30,13 @@ using beecrypt::security::GeneralSecurityException;
 
 namespace beecrypt {
 	namespace crypto {
+		/*!\ingroup CXX_CRYPTO_m
+		 */
 		class BEECRYPTCXXAPI BadPaddingException : public GeneralSecurityException
 		{
 		public:
 			BadPaddingException() throw ();
-			BadPaddingException(const String&) throw ();
+			BadPaddingException(const String& message) throw ();
 		};
 	}
 }

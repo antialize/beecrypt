@@ -32,16 +32,18 @@ using beecrypt::io::IOException;
 
 namespace beecrypt {
 	namespace io {
+		/*!\ingroup CXX_IO_m
+		 */
 		class BEECRYPTCXXAPI OutputStream
 		{
-			public:
-				virtual ~OutputStream() {};
+		public:
+			virtual ~OutputStream() {};
 
-				virtual void close() throw (IOException);
-				virtual void flush() throw (IOException);
-				virtual void write(byte b) throw (IOException) = 0;
-				virtual void write(const byte* data, size_t offset, size_t length) throw (IOException);
-				virtual void write(const bytearray& b) throw (IOException);
+			virtual void close() throw (IOException);
+			virtual void flush() throw (IOException);
+			virtual void write(byte b) throw (IOException) = 0;
+			virtual void write(const byte* data, size_t offset, size_t length) throw (IOException);
+			virtual void write(const bytearray& b) throw (IOException);
 		};
 	}
 }

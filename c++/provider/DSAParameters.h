@@ -17,7 +17,7 @@
  */
 
 /*!\file DSAParameters.h
- * \ingroup CXX_PROV_m
+ * \ingroup CXX_PROVIDER_m
  */
 
 #ifndef _CLASS_DSAPARAMETERS_H

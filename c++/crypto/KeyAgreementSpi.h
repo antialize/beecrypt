@@ -16,27 +16,27 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-/*!\file MacSpi.h
+/*!\file KeyAgreementSpi.h
  * \ingroup CXX_CRYPTO_m
  */
 
-#ifndef _CLASS_MACSPI_H
-#define _CLASS_MACSPI_H
+#ifndef _CLASS_KEYAGREEMENTSPI_H
+#define _CLASS_KEYAGREEMENTSPI_H
 
 #include "beecrypt/api.h"
 
 #ifdef __cplusplus
 
 #include "beecrypt/c++/array.h"
-using beecrypt::array;
+using beecrypt::bytearray;
+#include "beecrypt/c++/crypto/SecretKey.h"
+using beecrypt::crypto::SecretKey;
 #include "beecrypt/c++/lang/IllegalStateException.h"
 using beecrypt::lang::IllegalStateException;
-#include "beecrypt/c++/security/InvalidAlgorithmParameterException.h"
-using beecrypt::security::InvalidAlgorithmParameterException;
+#include "beecrypt/c++/security/SecureRandom.h"
+using beecrypt::security::SecureRandom;
 #include "beecrypt/c++/security/InvalidKeyException.h"
 using beecrypt::security::InvalidKeyException;
-#include "beecrypt/c++/security/Key.h"
-using beecrypt::security::Key;
 #include "beecrypt/c++/security/ShortBufferException.h"
 using beecrypt::security::ShortBufferException;
 #include "beecrypt/c++/security/spec/AlgorithmParameterSpec.h"
@@ -46,23 +46,20 @@ namespace beecrypt {
 	namespace crypto {
 		/*!\ingroup CXX_CRYPTO_m
 		 */
-		class BEECRYPTCXXAPI MacSpi
+		class BEECRYPTCXXAPI KeyAgreementSpi
 		{
-			friend class Mac;
+			friend class KeyAgreement;
 
 		protected:
-			virtual const bytearray& engineDoFinal() = 0;
-			virtual size_t engineDoFinal(byte*, size_t, size_t) throw (ShortBufferException) = 0;
-			virtual size_t engineGetMacLength() = 0;
-			virtual void engineInit(const Key&, const AlgorithmParameterSpec*) throw (InvalidKeyException, InvalidAlgorithmParameterException) = 0; 
-			virtual void engineReset() = 0;
-			virtual void engineUpdate(byte) = 0;
-			virtual void engineUpdate(const byte*, size_t, size_t) = 0;
+			virtual void engineInit(const Key&, SecureRandom*) throw (InvalidKeyException) = 0;
+			virtual void engineInit(const Key&, const AlgorithmParameterSpec&, SecureRandom*) throw (InvalidKeyException) = 0;
+			virtual Key* engineDoPhase(const Key&, bool) = 0;
+			virtual bytearray* engineGenerateSecret() throw (IllegalStateException) = 0;
+			virtual size_t engineGenerateSecret(bytearray&, size_t) throw (IllegalStateException, ShortBufferException) = 0;
+			virtual SecretKey* engineGenerateSecret(const String&) throw (IllegalStateException, NoSuchAlgorithmException, InvalidKeyException) = 0;
 
 		public:
-			virtual ~MacSpi() {};
-
-			virtual MacSpi* clone() const = 0;
+			virtual ~KeyAgreementSpi() {};
 		};
 	}
 }

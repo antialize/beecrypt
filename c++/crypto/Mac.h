@@ -38,40 +38,42 @@ using beecrypt::security::NoSuchProviderException;
 
 namespace beecrypt {
 	namespace crypto {
+		/*!\ingroup CXX_CRYPTO_m
+		 */
 		class BEECRYPTCXXAPI Mac
 		{
-			public:
-				static Mac* getInstance(const String&) throw (NoSuchAlgorithmException);
-				static Mac* getInstance(const String&, const String&) throw (NoSuchAlgorithmException, NoSuchProviderException);
-				static Mac* getInstance(const String&, const Provider&) throw (NoSuchAlgorithmException);
+		public:
+			static Mac* getInstance(const String&) throw (NoSuchAlgorithmException);
+			static Mac* getInstance(const String&, const String&) throw (NoSuchAlgorithmException, NoSuchProviderException);
+			static Mac* getInstance(const String&, const Provider&) throw (NoSuchAlgorithmException);
 
-			private:
-				MacSpi*         _mspi;
-				String          _algo;
-				const Provider* _prov;
-				bool            _init;
+		private:
+			MacSpi*         _mspi;
+			String          _algo;
+			const Provider* _prov;
+			bool            _init;
 
-			protected:
-				Mac(MacSpi*, const String&, const Provider&);
+		protected:
+			Mac(MacSpi*, const String&, const Provider&);
 
-			public:
-				~Mac();
+		public:
+			~Mac();
 
-				Mac* clone() const;
+			Mac* clone() const;
 
-				const bytearray& doFinal() throw (IllegalStateException);
-				const bytearray& doFinal(const bytearray&) throw (IllegalStateException);
-				size_t doFinal(byte* data, size_t offset, size_t length) throw (ShortBufferException, IllegalStateException);
-				size_t getMacLength();
-				void init(const Key&) throw (InvalidKeyException);
-				void init(const Key&, const AlgorithmParameterSpec*) throw (InvalidKeyException, InvalidAlgorithmParameterException);
-				void reset();
-				void update(byte) throw (IllegalStateException);
-				void update(const byte* data, size_t offset, size_t length) throw (IllegalStateException);
-				void update(const bytearray&) throw (IllegalStateException);
+			const bytearray& doFinal() throw (IllegalStateException);
+			const bytearray& doFinal(const bytearray&) throw (IllegalStateException);
+			size_t doFinal(byte* data, size_t offset, size_t length) throw (ShortBufferException, IllegalStateException);
+			size_t getMacLength();
+			void init(const Key&) throw (InvalidKeyException);
+			void init(const Key&, const AlgorithmParameterSpec*) throw (InvalidKeyException, InvalidAlgorithmParameterException);
+			void reset();
+			void update(byte) throw (IllegalStateException);
+			void update(const byte* data, size_t offset, size_t length) throw (IllegalStateException);
+			void update(const bytearray&) throw (IllegalStateException);
 
-				const String& getAlgorithm() const throw ();
-				const Provider& getProvider() const throw ();
+			const String& getAlgorithm() const throw ();
+			const Provider& getProvider() const throw ();
 		};
 	}
 }

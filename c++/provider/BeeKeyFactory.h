@@ -36,6 +36,8 @@ using beecrypt::security::spec::KeySpec;
 
 namespace beecrypt {
 	namespace provider {
+		/*!\ingroup CXX_PROVIDER_m
+		 */
 		class BeeKeyFactory : public KeyFactorySpi
 		{
 		public:

@@ -17,7 +17,7 @@
  */
 
 /*!\file BeeCertificateFactory.h
- * \ingroup CXX_PROV_m
+ * \ingroup CXX_PROVIDER_m
  */
 
 #ifndef _CLASS_BEECERTIFICATEFACTORY_H
@@ -30,6 +30,8 @@ using beecrypt::security::cert::CertificateFactorySpi;
 
 namespace beecrypt {
 	namespace provider {
+		/*!\ingroup CXX_PROVIDER_m
+		 */
 		class BeeCertificateFactory : public CertificateFactorySpi
 		{
 		protected:

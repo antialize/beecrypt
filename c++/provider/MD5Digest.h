@@ -17,7 +17,7 @@
  */
 
 /*!\file MD5Digest.h
- * \ingroup CXX_PROV_m
+ * \ingroup CXX_PROVIDER_m
  */
 
 #ifndef _CLASS_MD5DIGEST_H
