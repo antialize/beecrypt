@@ -3,15 +3,15 @@
 
 #include "beecrypt.gnu.h"
 
-#ifndef C_FUNCTION_NAME
+#ifndef SYMBOL_NAME
 # if LEADING_UNDERSCORE
 #  ifdef __STDC__
-#   define C_FUNCTION_NAME(name)	_##name
+#   define SYMBOL_NAME(name)	_##name
 #  else
-#   define C_FUNCTION_NAME(name)	_/**/name
+#   define SYMBOL_NAME(name)	_/**/name
 #  endif
 # else
-#  define C_FUNCTION_NAME(name)	name
+#  define SYMBOL_NAME(name)	name
 # endif
 #endif
 
@@ -31,7 +31,7 @@
 # define ALIGNMENT	8
 #endif
 
-#define LABEL(name) C_FUNCTION_NAME(name):
+#define LABEL(name) SYMBOL_NAME(name):
 #if DARWIN
 # define LOCAL(name) L##name
 #else
@@ -45,8 +45,8 @@
 #if CYGWIN
 # define C_FUNCTION_BEGIN(name)	\
 	.align	ALIGNMENT;	\
-	.globl	C_FUNCTION_NAME(name);	\
-	.def	C_FUNCTION_NAME(name);	\
+	.globl	SYMBOL_NAME(name);	\
+	.def	SYMBOL_NAME(name);	\
 	.scl	2;	\
 	.type	32;	\
 	.endef
@@ -61,7 +61,7 @@
 # endif
 # if DARWIN
 #  define C_FUNCTION_BEGIN(name) \
-	.globl	C_FUNCTION_NAME(name)
+	.globl	SYMBOL_NAME(name)
 #  define C_FUNCTION_END(name, label)
 # elif defined(OPTIMIZE_IA64)
 #  define C_FUNCTION_BEGIN(name) \
@@ -73,9 +73,9 @@
 # else
 #  define C_FUNCTION_BEGIN(name) \
 	.align	ALIGNMENT; \
-	.global	C_FUNCTION_NAME(name)
+	.global	SYMBOL_NAME(name)
 #  define C_FUNCTION_END(name, label) \
-	label:	.size C_FUNCTION_NAME(name), label - C_FUNCTION_NAME(name);
+	label:	.size SYMBOL_NAME(name), label - SYMBOL_NAME(name);
 # endif
 #endif
 
