@@ -568,6 +568,8 @@ AC_DEFUN(BEECRYPT_ASM_ALIGN,[
       case $target_cpu in
       i[[3456]]86 | athlon*)
         bc_cv_asm_align=".align 4" ;;
+      ia64)
+        bc_cv_asm_align=".align 16" ;;
       s390x)
         bc_cv_asm_align=".align 4" ;;
       sparc*)
