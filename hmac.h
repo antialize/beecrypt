@@ -3,7 +3,7 @@
  *
  * HMAC message authentication code, header
  *
- * Copyright (c) 1999, 2000 Virtual Unlimited B.V.
+ * Copyright (c) 1999, 2000, 2002 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -30,8 +30,8 @@
 
 typedef struct
 {
-	uint32 kxi[16];
-	uint32 kxo[16];
+	byte kxi[64];
+	byte kxo[64];
 } hmacParam;
 
 #ifdef __cplusplus

@@ -3,7 +3,7 @@
  *
  * HMAC-MD5 message authentication code, header
  *
- * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
+ * Copyright (c) 2000, 2001, 2002 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -31,9 +31,8 @@
 
 typedef struct
 {
-	byte kxi[64];
-	byte kxo[64];
-	md5Param param;
+	hmacParam hparam;
+	md5Param mparam;
 } hmacmd5Param;
 
 #ifdef __cplusplus

@@ -29,8 +29,8 @@
 #include "mp32.h"
 #include "endianness.h"
 
-#define HMAC_IPAD	0x36363636
-#define HMAC_OPAD	0x5c5c5c5c
+#define HMAC_IPAD	0x36
+#define HMAC_OPAD	0x5c
 
 int hmacSetup(hmacParam* hp, const hashFunction* hash, hashFunctionParam* param, const uint32* key, int keybits)
 {
@@ -72,24 +72,24 @@ int hmacSetup(hmacParam* hp, const hashFunction* hash, hashFunctionParam* param,
 		keywords = hash->digestsize >> 2;
 		keybytes = hash->digestsize;
 
-		encodeInts(keydigest, (byte*) hp->kxi, keybytes);
-		encodeInts(keydigest, (byte*) hp->kxo, keybytes);
+		encodeInts(keydigest, hp->kxi, keybytes);
+		encodeInts(keydigest, hp->kxo, keybytes);
 	}
 	else if (keybytes > 0)
 	{
-		encodeIntsPartialPad(key, (byte*) hp->kxi, keybytes, 0);
-		encodeIntsPartialPad(key, (byte*) hp->kxo, keybytes, 0);
+		encodeIntsPartial(key, hp->kxi, keybytes);
+		encodeIntsPartial(key, hp->kxo, keybytes);
 	}
 	else
 		return -1;
 
-	for (i = 0; i < keywords; i++)
+	for (i = 0; i < keybytes; i++)
 	{
 		hp->kxi[i] ^= HMAC_IPAD;
 		hp->kxo[i] ^= HMAC_OPAD;
 	}
 
-	for (i = keywords; i < 16; i++)
+	for (i = keybytes; i < 64; i++)
 	{
 		hp->kxi[i] = HMAC_IPAD;
 		hp->kxo[i] = HMAC_OPAD;
@@ -103,7 +103,7 @@ int hmacReset(hmacParam* hp, const hashFunction* hash, hashFunctionParam* param)
 	if (hash->reset(param))
 		return -1;
 
-	if (hash->update(param, (const byte*) hp->kxi, 64))
+	if (hash->update(param, hp->kxi, 64))
 		return -1;
 
 	return 0;
@@ -119,7 +119,7 @@ int hmacDigest(hmacParam* hp, const hashFunction* hash, hashFunctionParam* param
 	if (hash->digest(param, data))
 		return -1;
 
-	if (hash->update(param, (const byte*) hp->kxo, 64))
+	if (hash->update(param, hp->kxo, 64))
 		return -1;
 
 	/* digestsize is in bytes; divide by 4 to get the number of words */

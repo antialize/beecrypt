@@ -3,7 +3,7 @@
  *
  * HMAC-SHA-1 message authentication code, header
  *
- * Copyright (c) 1999, 2000, 2001 Virtual Unlimited B.V.
+ * Copyright (c) 1999, 2000, 2001, 2002 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -31,9 +31,8 @@
 
 typedef struct
 {
-	byte kxi[64];
-	byte kxo[64];
-	sha1Param param;
+	hmacParam hparam;
+	sha1Param sparam;
 } hmacsha1Param;
 
 #ifdef __cplusplus
