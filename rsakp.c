@@ -97,25 +97,25 @@ int rsakpMake(rsakp* kp, randomGeneratorContext* rgc, size_t bits)
 
 		/* compute p-1 */
 		mpbsubone(&kp->p, temp);
-		mpbset(&psubone, pqsize, temp);
+		mpbset(&psubone, psize, temp);
 
 		/* compute q-1 */
 		mpbsubone(&kp->q, temp);
-		mpbset(&qsubone, pqsize, temp);
+		mpbset(&qsubone, qsize, temp);
 
 		/* compute phi = (p-1)*(q-1) */
-		mpmul(temp, pqsize, psubone.modl, pqsize, qsubone.modl);
+		mpmul(temp, psize, psubone.modl, qsize, qsubone.modl);
 		mpnset(&phi, nsize, temp);
 
 		/* compute d = inv(e) mod phi */
 		mpninv(&kp->d, &kp->e, &phi);
 
 		/* compute d1 = d mod (p-1) */
-		mpnsize(&kp->d1, pqsize);
+		mpnsize(&kp->d1, psize);
 		mpbmod_w(&psubone, kp->d.data, kp->d1.data, temp);
 
 		/* compute d2 = d mod (q-1) */
-		mpnsize(&kp->d2, pqsize);
+		mpnsize(&kp->d2, qsize);
 		mpbmod_w(&qsubone, kp->d.data, kp->d2.data, temp);
 
 		/* compute c = inv(q) mod p */
