@@ -711,7 +711,7 @@ int mpptrials(size_t bits)
 	return 35;
 }
 
-static void mpprndbits(mpbarrett* p, short msbclr, short lsbset, randomGeneratorContext* rc)
+static void mpprndbits(mpbarrett* p, size_t msbclr, size_t lsbset, randomGeneratorContext* rc)
 {
 	register size_t size = p->size;
 
