@@ -32,7 +32,7 @@
  * \{
  */
 
-/*!\fn blockEncryptECB(const blockCipher* bc, blockCipherParam* bp, int nblocks, uint32_t* dst, const uint32_t* src)
+/*!\fn blockEncryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, int nblocks)
  * \brief Encrypts multiple blocks in Electronic Code Book (ECB) mode.
  * \param bc The blockcipher.
  * \param bp The cipher's parameter block.
@@ -41,10 +41,9 @@
  * \param src The cleartext data; should be aligned on a 32-bit boundary.
  * \retval 0 on success.
  */
-int blockEncryptECB(const blockCipher* bc, blockCipherParam* bp, int nblocks, uint32_t* dst, const uint32_t* src)
+int blockEncryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, int nblocks)
 {
-	/* assumes that every blockcipher's blocksize is a multiple of 32 bits */
-	register int blockwords = bc->blocksize >> 2;
+	register const int blockwords = bc->blocksize >> 2;
 
 	while (nblocks > 0)
 	{
@@ -58,7 +57,7 @@ int blockEncryptECB(const blockCipher* bc, blockCipherParam* bp, int nblocks, ui
 	return 0;
 }
 
-/*!\fn blockDecryptECB(const blockCipher* bc, blockCipherParam* bp, int nblocks, uint32_t* dst, const uint32_t* src)
+/*!\fn blockDecryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, int nblocks)
  * \brief Decrypts multiple blocks in Electronic Code Book (ECB) mode.
  * \param bc The blockcipher.
  * \param bp The cipher's parameter block.
@@ -67,10 +66,9 @@ int blockEncryptECB(const blockCipher* bc, blockCipherParam* bp, int nblocks, ui
  * \param src The ciphertext data; should be aligned on a 32-bit boundary.
  * \retval 0 on success.
  */
-int blockDecryptECB(const blockCipher* bc, blockCipherParam* bp, int nblocks, uint32_t* dst, const uint32_t* src)
+int blockDecryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, int nblocks)
 {
-	/* assumes that every blockcipher's blocksize is a multiple of 32 bits */
-	register int blockwords = bc->blocksize >> 2;
+	register const int blockwords = bc->blocksize >> 2;
 
 	while (nblocks > 0)
 	{
@@ -84,9 +82,8 @@ int blockDecryptECB(const blockCipher* bc, blockCipherParam* bp, int nblocks, ui
 	return 0;
 }
 
-int blockEncryptCBC(const blockCipher* bc, blockCipherParam* bp, int nblocks, uint32_t* dst, const uint32_t* src)
+int blockEncryptCBC(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, int nblocks)
 {
-	/* assumes that every blockcipher's blocksize is a multiple of 32 bits */
 	register int blockwords = bc->blocksize >> 2;
 	register uint32_t* fdback = bc->getfb(bp);
 
@@ -123,7 +120,7 @@ int blockEncryptCBC(const blockCipher* bc, blockCipherParam* bp, int nblocks, ui
 	return 0;
 }
 
-int blockDecryptCBC(const blockCipher* bc, blockCipherParam* bp, int nblocks, uint32_t* dst, const uint32_t* src)
+int blockDecryptCBC(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, int nblocks)
 {
 	/* assumes that every blockcipher's blocksize is a multiple of 32 bits */
 	register int blockwords = bc->blocksize >> 2;

@@ -814,6 +814,7 @@ int blockCipherContextInit(blockCipherContext* ctxt, const blockCipher* ciph)
 
 	ctxt->algo = ciph;
 	ctxt->param = (blockCipherParam*) calloc(ciph->paramsize, 1);
+	ctxt->op = NOCRYPT;
 
 	if (ctxt->param == (blockCipherParam*) 0)
 		return -1;
@@ -831,6 +832,8 @@ int blockCipherContextSetup(blockCipherContext* ctxt, const byte* key, size_t ke
 
 	if (ctxt->param == (blockCipherParam*) 0)
 		return -1;
+
+	ctxt->op = op;
 
 	if (key == (byte*) 0)
 		return -1;
@@ -867,6 +870,36 @@ int blockCipherContextFree(blockCipherContext* ctxt)
 	ctxt->param = (blockCipherParam*) 0;
 
 	return 0;
+}
+
+int blockCipherContextECB(blockCipherContext* ctxt, void* dst, const void* src, int nblocks)
+{
+	switch (ctxt->op)
+	{
+	case NOCRYPT:
+		memcpy(dst, src, nblocks * ctxt->algo->blocksize);
+		return 0;
+	case ENCRYPT:
+		return blockEncryptECB(ctxt->algo, ctxt->param, dst, src, nblocks);
+	case DECRYPT:
+		return blockDecryptECB(ctxt->algo, ctxt->param, dst, src, nblocks);
+	}
+	return -1;
+}
+
+int blockCipherContextCBC(blockCipherContext* ctxt, void* dst, const void* src, int nblocks)
+{
+	switch (ctxt->op)
+	{
+	case NOCRYPT:
+		memcpy(dst, src, nblocks * ctxt->algo->blocksize);
+		return 0;
+	case ENCRYPT:
+		return blockEncryptCBC(ctxt->algo, ctxt->param, dst, src, nblocks);
+	case DECRYPT:
+		return blockDecryptCBC(ctxt->algo, ctxt->param, dst, src, nblocks);
+	}
+	return -1;
 }
 
 /*!\}

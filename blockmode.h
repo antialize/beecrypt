@@ -33,14 +33,14 @@ extern "C" {
 #endif
 
 BEECRYPTAPI
-int blockEncryptECB(const blockCipher*, blockCipherParam*, int, uint32_t*, const uint32_t*);
+int blockEncryptECB(const blockCipher*, blockCipherParam*, uint32_t*, const uint32_t*, int);
 BEECRYPTAPI
-int blockDecryptECB(const blockCipher*, blockCipherParam*, int, uint32_t*, const uint32_t*);
+int blockDecryptECB(const blockCipher*, blockCipherParam*, uint32_t*, const uint32_t*, int);
 
 BEECRYPTAPI
-int blockEncryptCBC(const blockCipher*, blockCipherParam*, int, uint32_t*, const uint32_t*);
+int blockEncryptCBC(const blockCipher*, blockCipherParam*, uint32_t*, const uint32_t*, int);
 BEECRYPTAPI
-int blockDecryptCBC(const blockCipher*, blockCipherParam*, int, uint32_t*, const uint32_t*);
+int blockDecryptCBC(const blockCipher*, blockCipherParam*, uint32_t*, const uint32_t*, int);
 
 #ifdef __cplusplus
 }

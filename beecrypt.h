@@ -52,7 +52,7 @@ typedef int (*entropyNext)(byte*, size_t);
  *
  * The struct contains the following function(s):
  *
- * int (*next)(uint32_t* data, int size);
+ * int (*next)(byte* data, size_t size);
  *
  * This function will fill an array of 32-bit unsigned integers of given size
  * with entropy.
@@ -454,6 +454,7 @@ int keyedHashFunctionContextDigestMatch(keyedHashFunctionContext*, const mpnumbe
  */
 typedef enum
 {
+	NOCRYPT,
 	ENCRYPT,
 	DECRYPT
 } cipherOperation;
@@ -484,10 +485,8 @@ typedef int (*blockCipherSetIV  )(blockCipherParam*, const byte*);
 /*!\typedef int (*blockCipherEncrypt)(blockCipherParam* bp, uint32_t* dst, const uint32_t* src)
  * \brief Prototype for a \e raw encryption function.
  * \param bp The blockcipher's parameters.
- * \param dst The destination address.
- * \param sec The source address.
- * \note This is a raw encryption function.
- * \note Type uint32_t* is used for dst and src to indicate that memory should be aligned on a 4-byte boundary.
+ * \param dst The ciphertext address; must be aligned on 32-bit boundary;
+ * \param src The cleartext address; must be aligned on 32-bit boundary;
  * \retval 0 on success.
  * \retval -1 on failure.
  * \ingroup BC_m
@@ -601,11 +600,14 @@ typedef struct
 	/*!\var algo
 	 * \brief Pointer to a blockCipher.
 	 */
-	const blockCipher* algo;
+	const blockCipher*	algo;
 	/*!\var param
 	 * \brief Pointer to the parameters used by algo.
 	 */
-	blockCipherParam* param;
+	blockCipherParam*	param;
+	/*!\var op
+	 */
+	cipherOperation		op;
 } blockCipherContext;
 
 /*
@@ -629,6 +631,12 @@ int blockCipherContextSetIV(blockCipherContext*, const byte*);
 
 BEECRYPTAPI
 int blockCipherContextFree(blockCipherContext*);
+
+BEECRYPTAPI
+int blockCipherECB(blockCipherContext*, uint32_t*, const uint32_t*, int);
+
+BEECRYPTAPI
+int blockCipherCBC(blockCipherContext*, uint32_t*, const uint32_t*, int);
 
 #ifdef __cplusplus
 }
