@@ -603,6 +603,11 @@ AC_DEFUN(BEECRYPT_ASM_SOURCES,[
       m4 $srcdir/gas/mpopt.ppc64.m4 > mpopt.s
       ])
     ;;
+  s390x)
+    AC_CONFIG_COMMANDS([mpopt.s390x],[
+      m4 $srcdir/gas/mpopt.s390x.m4 > mpopt.s
+      ])
+    ;;
   sparcv8)
     AC_CONFIG_COMMANDS([mpopt.sparcv8],[
       m4 $srcdir/gas/mpopt.sparcv8.m4 > mpopt.s
