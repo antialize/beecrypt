@@ -320,7 +320,7 @@ static uint32_t _bf_s[1024] = {
 /*!\var blowfish
  * \brief Holds the full API description of the Blowfish algorithm.
  */
-const blockCipher blowfish = { "Blowfish", sizeof(blowfishParam), 8, 64, 448, 32, (blockCipherSetup) blowfishSetup, (blockCipherSetIV) blowfishSetIV, (blockCipherEncrypt) blowfishEncrypt, (blockCipherDecrypt) blowfishDecrypt };
+const blockCipher blowfish = { "Blowfish", sizeof(blowfishParam), 8, 64, 448, 32, (blockCipherSetup) blowfishSetup, (blockCipherSetIV) blowfishSetIV, (blockCipherEncrypt) blowfishEncrypt, (blockCipherDecrypt) blowfishDecrypt, (blockCipherFeedback) blowfishFeedback };
 
 /*!\fn int blowfishSetup(blowfishParam* bp, const uint32_t* key, int keybits, cipherOperation op)
  * \brief The Blowfish setup function.
