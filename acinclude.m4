@@ -654,9 +654,6 @@ AC_DEFUN(BEECRYPT_ASM_SOURCES,[
       # Code is i586-specific!
       case $bc_target_arch in
       athlon* | i[[56]]86 | pentium*)
-        AC_CONFIG_COMMANDS([aesopt.i586],[
-          m4 $srcdir/gas/aesopt.i586.m4 > aesopt.s
-          ])
         AC_CONFIG_COMMANDS([blowfishopt.i586],[
           m4 $srcdir/gas/blowfishopt.i586.m4 > blowfishopt.s
           ])

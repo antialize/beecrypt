@@ -35,16 +35,14 @@ extern "C" {
 
 #if WIN32
 # if defined(_MSC_VER) && defined(_M_IX86)
-#  define ASM_AESENCRYPT
-#  define ASM_AESDECRYPT
+/* this space intentionally left blank */
 # elif __INTEL__ && __MWERKS__
 # endif
 #endif
 
 #if defined(__GNUC__)
 # if defined(OPTIMIZE_I586) || defined(OPTIMIZE_I686)
-#  define ASM_AESENCRYPT
-#  define ASM_AESDECRYPT
+/* this space intentionally left blank */
 # endif
 #endif
 
