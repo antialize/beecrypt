@@ -96,6 +96,7 @@ Included in the library are:
 	- DHAES encryption scheme
 
 Planned for the near future are:
+    - mp64 library for operation on 64-bit computers (and possibly also on 32-bit)
     - compliance with and compliance statements for IEEE P1363
     - more blockciphers (Twofish, ... )
 	- more hash functions (RIPEMD-160, SHA-384, SHA-512, HAVAL, Tiger)
