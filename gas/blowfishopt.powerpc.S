@@ -25,31 +25,6 @@
 
 #include "beecrypt.gas.h"
 
-#if !DARWIN           
-# define r0     %r0    
-# define r1     %r1 
-# define r3     %r3 
-# define r4     %r4 
-# define r5     %r5
-# define r6     %r6
-# define r7     %r7
-# define r8     %r8
-# define r9     %r9
-# define r10    %r10
-# define r11    %r11
-# define r12    %r12
-# define r24    %r24
-# define r25    %r25
-# define r26    %r26
-# define r27    %r27
-# define r28    %r28
-# define r29    %r29
-# define r30    %r30
-# define r31    %r31
-#else
-# define L(label) L##label
-#endif
-
 	.file "blowfish.powerpc.S"
 
 	.text
