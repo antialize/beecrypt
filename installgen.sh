@@ -1,5 +1,5 @@
 #! /bin/sh
-rm -f ltconfig ltmain.sh
+libtoolize --force
 aclocal
 autoheader
 automake -a
