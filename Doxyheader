@@ -83,7 +83,8 @@
  *
  * The library has been tested on the following platforms:
  * <ul>
- *  <li>Darwin
+ *  <li>Cygwin
+ *  <li>Darwin/MacOS X
  *  <li>Linux glibc 2.x alpha
  *  <li>Linux glibc 2.x arm
  *  <li>Linux glibc 2.x ia64
@@ -93,7 +94,7 @@
  *  <li>Linux glibc 2.x s390x
  *  <li>Linux glibc 2.x sparc
  *  <li>Linux glibc 2.x x86
- *  <li>Linux glibc 2.x x86_64
+ *  <li>Linux glibc 2.x x86_64/amd64
  *  <li>Solaris 2.[6789] sparc (with Forte or GNU compilers)
  *  <li>Solaris 2.[78] x86 (with Forte or GNU compilers)
  *  <li>Tru64 Unix alpha
@@ -194,6 +195,8 @@
 /*!\defgroup	CXX_IO_m	C++ classes mimicking java.io
  */
 /*!\defgroup	CXX_LANG_m	C++ classes mimicking java.lang
+ */
+/*!\defgroup	CXX_NIO_m	C++ classes mimicking java.nio
  */
 /*!\defgroup	CXX_SECURITY_m	C++ classes mimicking java.security
  */
