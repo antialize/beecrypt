@@ -30,22 +30,38 @@ AC_ARG_ENABLE(optimized, [  --enable-optimized      enables the assembler optimi
     fi
   ])
 
-AC_ARG_ENABLE(sse2,      [  --enable-sse2           enables Intel SSE2 assembler optimizations [default depends on --enable-optimized and target_cpu]],
-  [ if test "$enableval" = yes; then
-      ac_enable_sse2=yes
-    else
-      ac_enable_sse2=no
-   fi
+AC_ARG_WITH(cpu,      [  --with-cpu              enable cpu-specific optimizations [default $target_cpu]],
+  [ case $target_cpu in
+      i[[3456]]86)
+        case $withval in
+          i[[3456]]86 | pentium | pentium | pentiumpro | pentium4)
+            ac_with_cpu=$withval
+            ;;
+          *)
+            AC_MSG_WARN([invalid cpu type])
+            ac_with_cpu=$target_cpu
+            ;;
+        esac
+        ;;
+      sparc)
+        case $withval in
+          sparcv8 | sparcv8plus | sparcv8plusa | sparcv8plusb | sparcv9 | sparcv9a | sparcv9b)
+            ac_with_cpu=$withval
+            ;;
+          *)
+            AC_MSG_WARN([invalid cpu type])
+            ac_with_cpu=$target_cpu
+            ;;
+          esac
+        ;;
+      *)
+        AC_MSG_WARN([invalid cpu type])
+        ac_with_cpu=$target_cpu
+        ;;
+    esac
+    echo "end of specified with-cpu"
   ],
-  [ if test "$ac_enable_debug" = no; then
-      ac_enable_sse2=no
-    else
-      if test "$target_cpu" = i686; then
-        ac_enable_sse2=yes
-      else
-        ac_enable_sse2=no
-      fi
-    fi
+  [ ac_with_cpu=$target_cpu
   ])
 
 AC_ARG_ENABLE(threads, [  --enable-threads        enables multithread support [de fault=yes]],
@@ -108,21 +124,30 @@ LDFLAGS=""
 
 # Checks for compiler characteristics and flags
 if test "$ac_cv_prog_gcc" != yes; then
-  AC_CACHE_CHECK([whether we are using Sun Workshop C], ac_cv_prog_SUNPRO_CC, [
+  AC_CACHE_CHECK([whether we are using Intel C++], ac_cv_prog_INTEL_ICC, [
     AC_EGREP_CPP(yes, [
-      #ifdef __SUNPRO_C
+      #ifdef __INTEL_COMPILER
         yes;
       #endif
-      ], ac_cv_prog_SUNPRO_CC=yes, ac_cv_prog_SUNPRO_CC=no)
+      ], ac_cv_prog_INTEL_ICC=yes, ac_cv_prog_INTEL_ICC=no)
     ])
-  if test "$ac_cv_prog_SUNPRO_CC" != yes; then
-    AC_CACHE_CHECK([whether we are using Compaq's C compiler], ac_cv_prog_DECC, [
+  if test "$ac_cv_prog_INTEL_ICC" != yes; then
+    AC_CACHE_CHECK([whether we are using Sun Workshop C], ac_cv_prog_SUNPRO_CC, [
       AC_EGREP_CPP(yes, [
-        #ifdef __DECC
+        #ifdef __SUNPRO_C
           yes;
         #endif
-        ], ac_cv_prog_DECC=yes, ac_cv_prog_DECC=no)
+        ], ac_cv_prog_SUNPRO_CC=yes, ac_cv_prog_SUNPRO_CC=no)
       ])
+    if test "$ac_cv_prog_SUNPRO_CC" != yes; then
+      AC_CACHE_CHECK([whether we are using Compaq's C compiler], ac_cv_prog_DECC, [
+        AC_EGREP_CPP(yes, [
+          #ifdef __DECC
+            yes;
+          #endif
+          ], ac_cv_prog_DECC=yes, ac_cv_prog_DECC=no)
+        ])
+    fi
   fi
 fi
 
@@ -598,14 +623,6 @@ esac
 case $target_os in
   cygwin*)
     ;;
-  linux*)
-    AC_MSG_CHECKING([for /dev/random])
-    AC_MSG_RESULT(yes)
-    ac_cv_have_dev_random=yes
-    AC_MSG_CHECKING([for /dev/urandom])
-    AC_MSG_RESULT(yes)
-    ac_cv_have_dev_urandom=yes
-    ;;
   *)
     AC_CHECKING(for generic entropy devices)
     AC_CACHE_CHECK([for /dev/random], ac_cv_have_dev_random, [
@@ -615,9 +632,6 @@ case $target_os in
         ac_cv_have_dev_random=no
       fi
       ])
-    if test "$ac_cv_have_dev_random" = yes; then
-      AC_DEFINE([HAVE_DEV_RANDOM], 1)
-    fi
     AC_CACHE_CHECK([for /dev/urandom], ac_cv_have_dev_urandom, [
       if test -r /dev/urandom; then
         ac_cv_have_dev_urandom=yes
@@ -625,9 +639,6 @@ case $target_os in
         ac_cv_have_dev_urandom=no
       fi
       ])
-    if test "$ac_cv_have_dev_urandom" = yes; then
-      AC_DEFINE([HAVE_DEV_URANDOM], 1)
-    fi
     AC_CACHE_CHECK([for /dev/tty], ac_cv_have_dev_tty, [
       if test -r /dev/tty; then
         ac_cv_have_dev_tty=yes
@@ -635,14 +646,21 @@ case $target_os in
         ac_cv_have_dev_tty=no
       fi
       ])
-    if test "$ac_cv_have_dev_tty" = yes; then
-      AC_DEFINE([HAVE_DEV_TTY], 1)
-    fi
     ;;
 esac
 
+if test "$ac_cv_have_dev_random" = yes; then
+  AC_DEFINE([HAVE_DEV_RANDOM], 1)
+fi
+if test "$ac_cv_have_dev_urandom" = yes; then
+  AC_DEFINE([HAVE_DEV_URANDOM], 1)
+fi
+if test "$ac_cv_have_dev_tty" = yes; then
+  AC_DEFINE([HAVE_DEV_TTY], 1)
+fi
+
 if test "$ac_enable_optimized" = yes; then
-  case $target_cpu in
+  case $ac_with_cpu in
   alpha*)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_ALPHA"
     ;;
@@ -658,14 +676,14 @@ if test "$ac_enable_optimized" = yes; then
   i486)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I486"
     ;;
-  i586)
+  i586 | pentium)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I586"
     ;;
-  i686)
+  i686 | pentiumpro)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I686"
-    if test "$ac_enable_sse2" = yes; then
-      CPPFLAGS="$CPPFLAGS -DOPTIMIZE_SSE2"
-    fi
+    ;;
+  pentium4)
+    CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I686 -DOPTIMIZE_SSE2"
     ;;
   ia64)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_IA64"
@@ -707,7 +725,7 @@ else
   if test "$ac_cv_prog_gcc" = yes; then
     CFLAGS="$CFLAGS -O3"
     if test "$ac_enable_optimized" = yes; then
-      case $target_cpu in
+      case $ac_with_cpu in
 # This switch makes the mp32 routines slower by about 10%, so it's disabled
 #     alphaev6)
 #       CFLAGS="$CFLAGS -mcpu=ev6"
@@ -721,11 +739,14 @@ else
       i486)
         CFLAGS="$CFLAGS -mcpu=i486 -fomit-frame-pointer"
         ;;
-      i586)
+      i586 | pentium)
         CFLAGS="$CFLAGS -mcpu=pentium -fomit-frame-pointer"
         ;;
-      i686)
+      i686 | pentiumpro)
         CFLAGS="$CFLAGS -mcpu=pentiumpro -fomit-frame-pointer"
+        ;;
+      pentium4)
+        CFLAGS="$CFLAGS -mcpu=pentium4 -fomit-frame-pointer"
         ;;
       sparcv8)
         CFLAGS="$CFLAGS -mv8"
@@ -740,10 +761,29 @@ else
         ;;
       esac
     fi
+  elif test "$ac_cv_prog_INTEL_ICC" = yes; then
+    CFLAGS="$CFLAGS -O3"
+    case $ac_with_cpu in
+      i386)
+        CFLAGS="$CFLAGS"
+        ;;
+      i486)
+        CFLAGS="$CFLAGS"
+        ;;
+      i586 | pentium)
+        CFLAGS="$CFLAGS -mcpu=pentium -tpp5"
+        ;;
+      i686 | pentiumpro)
+        CFLAGS="$CFLAGS -mcpu=pentiumpro -tpp6"
+        ;;
+      pentium4)
+        CFLAGS="$CFLAGS -mcpu=pentium4 -tpp7"
+        ;;
+    esac
   elif test "$ac_cv_prog_SUNPRO_CC" = yes; then
     CFLAGS="$CFLAGS -fast"
     if test "$ac_enable_optimized" = yes; then
-      case $target_cpu in
+      case $ac_with_cpu in
       sparcv8)
         CFLAGS="$CFLAGS -xtarget=generic -xarch=v8"
         ;;
@@ -809,7 +849,7 @@ rm -f $srcdir/blowfishopt.c $srcdir/blowfishopt.S
 rm -f $srcdir/mp32opt.c $srcdir/mp32opt.S
 rm -f $srcdir/sha1opt.c $srcdir/sha1opt.S
 if test "$ac_enable_optimized" = yes; then
-  case $target_cpu in
+  case $ac_with_cpu in
     arm*)
       cat > $srcdir/mp32opt.S << EOF
 #include "gas/mp32opt.arm.S"
@@ -820,7 +860,7 @@ EOF
 #include "gas/mp32opt.i386.S"
 EOF
       ;;
-    i[[56]]86)
+    i[[56]]86 | pentium | pentiumpro | pentium4)
       cat > $srcdir/aesopt.S << EOF
 #include "gas/aesopt.i586.S"
 EOF
@@ -830,7 +870,7 @@ EOF
       cat > $srcdir/mp32opt.S << EOF
 #include "gas/mp32opt.i386.S"
 EOF
-      if test "$ac_enable_sse2" = yes; then
+      if test "$ac_with_cpu" = pentium4; then
         cat >> $srcdir/mp32opt.S << EOF
 #include "gas/mp32opt.sse2.S"
 EOF
