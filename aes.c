@@ -43,10 +43,51 @@
 #if WORDS_BIGENDIAN
 # include "aes_be.h"
 #else
-# include "aes_le.h"
+#  include "aes_le.h"
 #endif
 
-const blockCipher aes = { "AES", sizeof(aesParam), 16, 128, 256, 64, (blockCipherSetup) aesSetup, (blockCipherSetIV) aesSetIV, (blockCipherEncrypt) aesEncrypt, (blockCipherDecrypt) aesDecrypt, (blockCipherFeedback) aesFeedback };
+#ifdef ASM_AESENCRYPTECB
+extern int aesEncryptECB(aesParam*, uint32_t*, const uint32_t*, unsigned int);
+#endif
+
+#ifdef ASM_AESDECRYPTECB
+extern int aesDecryptECB(aesParam*, uint32_t*, const uint32_t*, unsigned int);
+#endif
+
+const blockCipher aes = {
+	"AES",
+	sizeof(aesParam),
+	16,
+	128,
+	256,
+	64,
+	(blockCipherSetup) aesSetup,
+	(blockCipherSetIV) aesSetIV,
+	/* raw */
+	{
+		(blockCipherRawcrypt) aesEncrypt,
+		(blockCipherRawcrypt) aesDecrypt
+	},
+	/* ecb */
+	{
+		#ifdef ASM_AESENCRYPTECB
+		(blockCipherModcrypt) aesEncryptECB,
+		#else
+		(blockCipherModcrypt) 0,
+		#endif
+		#ifdef ASM_AESDECRYPTECB
+		(blockCipherModcrypt) aesDecryptECB,
+		#else
+		(blockCipherModcrypt) 0,
+		#endif
+	},
+	/* cbc */
+	{
+		(blockCipherModcrypt) 0,
+		(blockCipherModcrypt) 0
+	},
+	(blockCipherFeedback) aesFeedback
+};
 
 int aesSetup(aesParam* ap, const byte* key, size_t keybits, cipherOperation op)
 {
