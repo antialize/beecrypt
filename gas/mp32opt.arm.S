@@ -35,6 +35,7 @@
 
 #if 0
 C_FUNCTION_BEGIN(mp32addw)
+LABEL(mp32addw)
 	/* r0 is xsize and must be at least one, r1 = xdata, r2 = y */
 	stmfd sp!, {r4, lr}
 	add r1, r1, r0, asl #2
@@ -52,6 +53,7 @@ C_FUNCTION_END(mp32addw, .Lmp32addw_size)
 
 
 C_FUNCTION_BEGIN(mp32subw)
+LABEL(mp32subw)
 	/* r0 is xsize and must be at least one, r1 = xdata, r2 = y */
 	stmfd sp!, {r4, lr}
 	add r1, r1, r0, asl #2
@@ -69,6 +71,7 @@ C_FUNCTION_END(mp32subw, .Lmp32subw_size)
 
 
 C_FUNCTION_BEGIN(mp32add)
+LABEL(mp32add)
 	/* r0 is size, r1 = xdata, r2 = ydata */
 	stmfd sp!, {r4, r5, lr}
 	/* copy cpsr to r5 and clear the carry bit */
