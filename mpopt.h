@@ -61,6 +61,9 @@
 #  define ASM_MPSETMUL
 #  define ASM_MPADDMUL
 # elif defined(OPTIMIZE_ARM)
+#  define ASM_MPSETMUL
+#  define ASM_MPADDMUL
+#  define ASM_MPADDSQRTRC
 # elif defined(OPTIMIZE_I386) || defined(OPTIMIZE_I486) || defined(OPTIMIZE_I586) || defined(OPTIMIZE_I686)
 #  define ASM_MPZERO
 #  define ASM_MPFILL
