@@ -26,13 +26,12 @@
 #ifdef __cplusplus
 
 #include "beecrypt/c++/lang/IllegalStateException.h"
-using beecrypt::lang::IllegalStateException;
 
 namespace beecrypt {
 	namespace nio {
-		 /* \ingroup CXX_NIO_m
+		/*!\ingroup CXX_NIO_m
 		 */
-		class BEECRYPTCXXAPI InvalidMarkException : public IllegalStateException
+		class BEECRYPTCXXAPI InvalidMarkException : public beecrypt::lang::IllegalStateException
 		{
 		public:
 			InvalidMarkException() throw ();

@@ -27,12 +27,13 @@
 
 #include "beecrypt/c++/lang/IllegalArgumentException.h"
 using beecrypt::lang::IllegalArgumentException;
+#include "beecrypt/c++/lang/Object.h"
 #include "beecrypt/c++/nio/InvalidMarkException.h"
 using beecrypt::nio::InvalidMarkException;
 
 namespace beecrypt {
 	namespace nio {
-		class BEECRYPTAPI Buffer
+		class BEECRYPTAPI Buffer : public beecrypt::lang::Object
 		{
 		protected:
 			size_t _capacity;

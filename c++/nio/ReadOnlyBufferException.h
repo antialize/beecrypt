@@ -26,13 +26,12 @@
 #ifdef __cplusplus
 
 #include "beecrypt/c++/lang/UnsupportedOperationException.h"
-using beecrypt::lang::UnsupportedOperationException;
 
 namespace beecrypt {
 	namespace nio {
 		 /* \ingroup CXX_NIO_m
 		 */
-		class BEECRYPTCXXAPI ReadOnlyBufferException : public UnsupportedOperationException
+		class BEECRYPTCXXAPI ReadOnlyBufferException : public beecrypt::lang::UnsupportedOperationException
 		{
 		public:
 			ReadOnlyBufferException() throw ();

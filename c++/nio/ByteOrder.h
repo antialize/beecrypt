@@ -27,6 +27,7 @@
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/lang/Object.h"
 #include "beecrypt/c++/lang/String.h"
 using beecrypt::lang::String;
 
@@ -39,7 +40,7 @@ using beecrypt::lang::String;
 
 namespace beecrypt {
 	namespace nio {
-		class BEECRYPTCXXAPI ByteOrder
+		class BEECRYPTCXXAPI ByteOrder : public beecrypt::lang::Object
 		{
 		private:
 			String _name;
@@ -53,6 +54,8 @@ namespace beecrypt {
 			static const ByteOrder& nativeOrder();
 
 		public:
+			virtual ~ByteOrder() {};
+
 			const String& toString() const;
 		};
 	}

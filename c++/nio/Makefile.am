@@ -7,14 +7,12 @@ cxxniodir= $(pkgincludedir)/c++/nio
 
 libcxxnio_la_SOURCES = \
 Buffer.cxx \
-ByteBuffer.cxx \
 ByteOrder.cxx \
 InvalidMarkException.cxx \
 ReadOnlyBufferException.cxx
 
 cxxnio_HEADERS = \
 Buffer.h \
-ByteBuffer.h \
 ByteOrder.h \
 InvalidMarkException.h \
 ReadOnlyBufferException.h

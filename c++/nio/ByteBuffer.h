@@ -37,7 +37,7 @@ using beecrypt::nio::ByteOrder;
 using beecrypt::nio::ReadOnlyBufferException;
 
 /* Note: be careful; we have to derive a MappedByteBuffer class from this one
- * (which contains an mmap-ed fd
+ * (which contains an mmap-ed fd)
  */
 
 namespace beecrypt {
