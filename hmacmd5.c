@@ -29,6 +29,10 @@
 
 #define BEECRYPT_DLL_EXPORT
 
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include "hmacmd5.h"
 
 /*!\addtogroup HMAC_md5_m

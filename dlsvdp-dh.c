@@ -29,6 +29,10 @@
 
 #define BEECRYPT_DLL_EXPORT
 
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include "dlsvdp-dh.h"
 
 /*!\addtogroup DL_dh_m

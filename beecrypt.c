@@ -24,6 +24,10 @@
 
 #define BEECRYPT_DLL_EXPORT
 
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include "beecrypt.h"
 
 #if HAVE_STDLIB_H
@@ -39,7 +43,6 @@
 # include <windows.h>
 #endif
 
-#include "endianness.h"
 #include "entropy.h"
 
 #include "fips186.h"
@@ -622,18 +625,18 @@ int keyedHashFunctionContextUpdateMP(keyedHashFunctionContext* ctxt, const mpnum
 	if (n != (mpnumber*) 0)
 	{
 		register int rc;
-		register byte* temp = (byte*) malloc((n->size << 2) + 1);
+		register byte* temp = (byte*) malloc(MP_WORDS_TO_BYTES(n->size)+1);
 
 		if (mpmsbset(n->size, n->data))
 		{
 			temp[0] = 0;
-			encodeInts((javaint*) n->data, temp+1, n->size);
-			rc = ctxt->algo->update(ctxt->param, temp, (n->size << 2) + 1);
+			i2osp(temp+1, MP_WORDS_TO_BYTES(n->size), n->data, n->size);
+			rc = ctxt->algo->update(ctxt->param, temp, MP_WORDS_TO_BYTES(n->size)+1);
 		}
 		else
 		{
-			encodeInts((javaint*) n->data, temp, n->size);
-			rc = ctxt->algo->update(ctxt->param, temp, n->size << 2);
+			i2osp(temp, MP_WORDS_TO_BYTES(n->size), n->data, n->size);
+			rc = ctxt->algo->update(ctxt->param, temp, MP_WORDS_TO_BYTES(n->size));
 		}
 		free(temp);
 

@@ -29,6 +29,10 @@
 
 #define BEECRYPT_DLL_EXPORT
 
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include "hmacsha1.h"
 
 /*!\addtogroup HMAC_sha1_m

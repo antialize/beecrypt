@@ -25,6 +25,10 @@
 
 #define BEECRYPT_DLL_EXPORT
 
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include "hmacsha256.h"
 
 /*!\addtogroup HMAC_sha256_m

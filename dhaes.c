@@ -24,7 +24,11 @@
  */
 
 #define BEECRYPT_DLL_EXPORT
- 
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include "dhaes.h"
 #include "dlsvdp-dh.h"
 #include "blockmode.h"

@@ -24,6 +24,10 @@
 
 #define BEECRYPT_DLL_EXPORT
 
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include "timestamp.h"
 
 #if TIME_WITH_SYS_TIME

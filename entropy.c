@@ -24,8 +24,11 @@
 
 #define BEECRYPT_DLL_EXPORT
 
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include "entropy.h"
-#include "endianness.h"
 
 #if WIN32
 # include <mmsystem.h>
