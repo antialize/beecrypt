@@ -45,13 +45,13 @@ namespace beecrypt {
 			String           _algo;
 
 		protected:
-			KeyAgreement(KeyAgreementSpi* spi, const Provider& provider, const String& algorithm);
+			KeyAgreement(KeyAgreementSpi* spi, const Provider* provider, const String& algorithm);
 
 		public:
 			~KeyAgreement();
 
-			void init(const Key&, SecureRandom*) throw (InvalidKeyException);
-			void init(const Key&, const AlgorithmParameterSpec&, SecureRandom*) throw (InvalidKeyException);
+			void init(const Key&, SecureRandom* = 0) throw (InvalidKeyException);
+			void init(const Key&, const AlgorithmParameterSpec&, SecureRandom* = 0) throw (InvalidKeyException);
 
 			Key* doPhase(const Key&, bool) throw (InvalidKeyException, IllegalStateException);
 

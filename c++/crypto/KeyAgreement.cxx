@@ -22,16 +22,20 @@
 # include "config.h"
 #endif
 
+#if HAVE_ASSERT_H
+# include <assert.h>
+#endif
+
 #include "beecrypt/c++/crypto/KeyAgreement.h"
 #include "beecrypt/c++/security/Security.h"
 using beecrypt::security::Security;
 
 using namespace beecrypt::crypto;
 
-KeyAgreement::KeyAgreement(KeyAgreementSpi* spi, const Provider& provider, const String& algorithm)
+KeyAgreement::KeyAgreement(KeyAgreementSpi* spi, const Provider* provider, const String& algorithm)
 {
 	_kspi = spi;
-	_prov = &provider;
+	_prov = provider;
 	_algo = algorithm;
 }
 
@@ -44,6 +48,10 @@ KeyAgreement* KeyAgreement::getInstance(const String& algorithm) throw (NoSuchAl
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "KeyAgreement");
 
+	#if HAVE_ASSERT_H
+	assert(dynamic_cast<KeyAgreementSpi*>((KeyAgreementSpi*) tmp->cspi));
+	#endif
+
 	KeyAgreement* result = new KeyAgreement((KeyAgreementSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 	delete tmp;
@@ -55,6 +63,10 @@ KeyAgreement* KeyAgreement::getInstance(const String& algorithm, const String& p
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "KeyAgreement", provider);
 
+	#if HAVE_ASSERT_H
+	assert(dynamic_cast<KeyAgreementSpi*>((KeyAgreementSpi*) tmp->cspi));
+	#endif
+
 	KeyAgreement* result = new KeyAgreement((KeyAgreementSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 	delete tmp;
@@ -65,6 +77,10 @@ KeyAgreement* KeyAgreement::getInstance(const String& algorithm, const String& p
 KeyAgreement* KeyAgreement::getInstance(const String& algorithm, const Provider& provider) throw (NoSuchAlgorithmException)
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "KeyAgreement", provider);
+
+	#if HAVE_ASSERT_H
+	assert(dynamic_cast<KeyAgreementSpi*>((KeyAgreementSpi*) tmp->cspi));
+	#endif
 
 	KeyAgreement* result = new KeyAgreement((KeyAgreementSpi*) tmp->cspi, tmp->prov, tmp->name);
 
