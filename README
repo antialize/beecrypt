@@ -80,7 +80,7 @@ provider and the counterpart of this library.
 Included in the library are:
     - entropy sources for initializing pseudo-random generators
     - pseudo-random generators: FIPS-186, Mersenne Twister
-    - block ciphers: Blowfish
+    - block ciphers: AES, Blowfish
     - hash functions: MD5, SHA-1, SHA-256
     - keyed hash functions: MD5/HMAC, SHA-1/HMAC, SHA-256/HMAC
     - multi-precision integer library, with assembler-optimized routines
@@ -97,10 +97,11 @@ Included in the library are:
 
 Planned for the near future are:
     - compliance with and compliance statements for IEEE P1363
-    - more blockciphers (Rijndael a.k.a AES, Twofish, ... )
+    - more blockciphers (Twofish, ... )
 	- more hash functions (RIPEMD-160, SHA-384, SHA-512, HAVAL, Tiger)
 	- RSA signatures as specified by RFC-2440.
 	- Elliptic Curves (ECDSA, ... )
+    - more blockcipher modes (OFB, ... )
 
 The library has been tested on the following platforms:
 	- FreeBSD 4.0 alpha
