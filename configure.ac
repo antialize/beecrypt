@@ -601,7 +601,7 @@ bc_libalt=
 case $target_os in
 linux*)
   case $bc_target_arch in
-  alpha* | powerpc64 | s390x | x86_64)
+  powerpc64 | s390x | x86_64)
     bc_libalt="64"
     ;;
   esac
