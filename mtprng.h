@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 1999, 2000 Virtual Unlimited B.V.
+ * Copyright (c) 1998, 1999, 2000, 2003 Virtual Unlimited B.V.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,7 +19,7 @@
 
 /*!\file mtprng.h
  * \brief Mersenne Twister pseudo-random number generator, headers.
- * \author Bob Deblier <bob@virtualunlimited.com?
+ * \author Bob Deblier <bob@virtualunlimited.com>
  * \ingroup PRNG_m
  */
 
