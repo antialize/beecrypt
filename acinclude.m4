@@ -329,6 +329,7 @@ AC_DEFUN(BEECRYPT_COMPAQ_CC,[
       CPPFLAGS="$CPPFLAGS -pthread"
     fi
     if test "$ac_enable_debug" != yes; then
+      BEECRYPT_CFLAGS_REM([-g])
       CFLAGS="$CFLAGS -fast"
     fi
   fi
