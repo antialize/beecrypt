@@ -33,7 +33,7 @@ using beecrypt::nio::InvalidMarkException;
 
 namespace beecrypt {
 	namespace nio {
-		class BEECRYPTAPI Buffer : public beecrypt::lang::Object
+		class BEECRYPTCXXAPI Buffer : public beecrypt::lang::Object
 		{
 		protected:
 			size_t _capacity;
