@@ -108,7 +108,7 @@ AC_DEFUN(BEECRYPT_WITH_ARCH,[
 dnl  BEECRYPT_WITHOUT_ARCH
 AC_DEFUN(BEECRYPT_WITHOUT_ARCH,[
   ac_with_arch=no
-   case $target_cpu in
+  case $target_cpu in
   alpha*)
     bc_target_arch=alpha
     ;;
@@ -424,47 +424,49 @@ AC_DEFUN(BEECRYPT_GNU_CC,[
     BEECRYPT_CFLAGS_REM([-g])
     BEECRYPT_CFLAGS_REM([-O2])
     CFLAGS="$CFLAGS -O3 -fomit-frame-pointer"
-    case $bc_target_cpu in
-    athlon*)
-      CFLAGS="$CFLAGS -mcpu=pentiumpro";
-      ;;
-    i586)
-      CFLAGS="$CFLAGS -mcpu=pentium"
-      ;;
-    i686)
-      CFLAGS="$CFLAGS -mcpu=pentiumpro"
-      ;;
-    ia64)
-      # no -mcpu=... option on ia64
-      ;;
-    pentium*)
-      CFLAGS="$CFLAGS -mcpu=$bc_target_arch"
-      ;;
-    esac
-    # Architecture-specific optimizations
-    case $bc_target_arch in
-    athlon*)
-      CFLAGS="$CFLAGS -march=$bc_target_arch"
-      ;;
-    i586)
-      CFLAGS="$CFLAGS -march=pentium"
-      ;;
-    i686)
-      CFLAGS="$CFLAGS -march=pentiumpro"
-      ;;
-    pentium*)
-      CFLAGS="$CFLAGS -march=$bc_target_arch"
-      ;;
-    powerpc | powerpc64)
-      CFLAGS="$CFLAGS -mcpu=$bc_target_arch"
-      ;;
-    sparcv8)
-      CFLAGS="$CFLAGS -mv8"
-      ;;
-    sparcv8plus)
-      CFLAGS="$CFLAGS -mv8plus"
-      ;;
-    esac
+    if test "$bc_cv_c_aggressive_opt" = yes; then
+      case $bc_target_cpu in
+      athlon*)
+        CFLAGS="$CFLAGS -mcpu=pentiumpro";
+        ;;
+      i586)
+        CFLAGS="$CFLAGS -mcpu=pentium"
+        ;;
+      i686)
+        CFLAGS="$CFLAGS -mcpu=pentiumpro"
+        ;;
+      ia64)
+        # no -mcpu=... option on ia64
+        ;;
+      pentium*)
+        CFLAGS="$CFLAGS -mcpu=$bc_target_arch"
+        ;;
+      esac
+      # Architecture-specific optimizations
+      case $bc_target_arch in
+      athlon*)
+        CFLAGS="$CFLAGS -march=$bc_target_arch"
+        ;;
+      i586)
+        CFLAGS="$CFLAGS -march=pentium"
+        ;;
+      i686)
+        CFLAGS="$CFLAGS -march=pentiumpro"
+        ;;
+      pentium*)
+        CFLAGS="$CFLAGS -march=$bc_target_arch"
+        ;;
+      powerpc | powerpc64)
+        CFLAGS="$CFLAGS -mcpu=$bc_target_arch"
+        ;;
+      sparcv8)
+        CFLAGS="$CFLAGS -mv8"
+        ;;
+      sparcv8plus)
+        CFLAGS="$CFLAGS -mv8plus"
+        ;;
+      esac
+    fi
   fi
   ])
 
@@ -487,7 +489,9 @@ AC_DEFUN(BEECRYPT_COMPAQ_CC,[
     fi
     if test "$ac_enable_debug" != yes; then
       BEECRYPT_CFLAGS_REM([-g])
-      CFLAGS="$CFLAGS -fast"
+      if test "$bc_cv_c_aggressive_opt" = yes; then
+        CFLAGS="$CFLAGS -fast"
+      fi
     fi
   fi
   ])
@@ -497,7 +501,9 @@ dnl  BEECRYPT_HPUX_CC
 AC_DEFUN(BEECRYPT_HPUX_CC,[
   if test "$ac_enable_debug" != yes; then
     BEECRYPT_CFLAGS_REM([-g])
-    CFLAGS="$CFLAGS -fast"
+    if test "$bc_cv_c_aggressive_opt" = yes; then
+      CFLAGS="$CFLAGS -fast"
+    fi
   fi
   ])
 
@@ -524,10 +530,12 @@ AC_DEFUN(BEECRYPT_IBM_CC,[
     esac
     if test "$ac_enable_debug" != yes; then
       BEECRYPT_CFLAGS_REM([-g])
-      if test "$ac_with_arch" = yes; then
-        CFLAGS="$CFLAGS -O5"
-      else
-        CFLAGS="$CFLAGS -O3"
+      if test "$bc_cv_c_aggressive_opt" = yes; then
+        if test "$ac_with_arch" = yes; then
+          CFLAGS="$CFLAGS -O5"
+        else
+          CFLAGS="$CFLAGS -O3"
+        fi
       fi
     fi
     # Version 5.0 doesn't have this, but 6.0 does
@@ -550,35 +558,36 @@ AC_DEFUN(BEECRYPT_INTEL_CC,[
   if test "$bc_cv_prog_INTEL_CC" = yes; then
     if test "$ac_enable_debug" != yes; then
       BEECRYPT_CFLAGS_REM([-g])
-      CFLAGS="$CFLAGS -O3"
-      case $bc_target_cpu in
-      i586 | pentium | pentium-mmx)
-        CFLAGS="$CFLAGS -mcpu=pentium"
-        ;;
-      i686 | pentiumpro | pentium[[23]])
-        CFLAGS="$CFLAGS -mcpu=pentiumpro"
-        ;;
-      pentium4)
-        CFLAGS="$CFLAGS -mcpu=pentium4"
-        ;;
-      esac
-      case $bc_target_arch in
-      i586 | pentium | pentium-mmx)
-        CFLAGS="$CFLAGS -tpp5"
-        ;;
-      i686 | pentiumpro)
-        CFLAGS="$CFLAGS -tpp6 -march=pentiumpro"
-        ;;
-      pentium2)
-        CFLAGS="$CFLAGS -tpp6 -march=pentiumii"
-        ;;
-      pentium3)
-        CFLAGS="$CFLAGS -tpp6 -march=pentiumiii"
-        ;;
-      pentium4)
-        CFLAGS="$CFLAGS -tpp7 -march=pentium4"
-        ;;
-      esac
+      if test "$bc_cv_c_aggressive_opt" = yes; then
+        case $bc_target_cpu in
+        i586 | pentium | pentium-mmx)
+          CFLAGS="$CFLAGS -mcpu=pentium"
+          ;;
+        i686 | pentiumpro | pentium[[23]])
+          CFLAGS="$CFLAGS -mcpu=pentiumpro"
+          ;;
+        pentium4)
+          CFLAGS="$CFLAGS -mcpu=pentium4"
+          ;;
+        esac
+        case $bc_target_arch in
+        i586 | pentium | pentium-mmx)
+          CFLAGS="$CFLAGS -tpp5"
+          ;;
+        i686 | pentiumpro)
+          CFLAGS="$CFLAGS -tpp6 -march=pentiumpro"
+          ;;
+        pentium2)
+          CFLAGS="$CFLAGS -tpp6 -march=pentiumii"
+          ;;
+        pentium3)
+          CFLAGS="$CFLAGS -tpp6 -march=pentiumiii"
+          ;;
+        pentium4)
+          CFLAGS="$CFLAGS -tpp7 -march=pentium4"
+          ;;
+        esac
+      fi
     fi
     AC_CHECK_FUNC([_rotl])
     AC_CHECK_FUNC([_rotr])
@@ -603,21 +612,23 @@ AC_DEFUN(BEECRYPT_SUN_FORTE_CC,[
     fi
     if test "$ac_enable_debug" != yes; then
       BEECRYPT_CFLAGS_REM([-g])
-      CFLAGS="$CFLAGS -fast"
-      case $bc_target_arch in
-      sparc)
-        CFLAGS="$CFLAGS -xtarget=generic -xarch=generic"
-        ;;
-      sparcv8)
-        CFLAGS="$CFLAGS -xtarget=generic -xarch=v8"
-        ;;
-      sparcv8plus*)
-        CFLAGS="$CFLAGS -xtarget=generic -xarch=v8plus"
-        ;;
-      sparcv9*)
-        CFLAGS="$CFLAGS -xtarget=generic64 -xarch=v9"
-        ;;
-      esac
+      if test "$bc_cv_c_aggressive_opt" = yes; then
+        CFLAGS="$CFLAGS -fast"
+        case $bc_target_arch in
+        sparc)
+          CFLAGS="$CFLAGS -xtarget=generic -xarch=generic"
+          ;;
+        sparcv8)
+          CFLAGS="$CFLAGS -xtarget=generic -xarch=v8"
+          ;;
+        sparcv8plus*)
+          CFLAGS="$CFLAGS -xtarget=generic -xarch=v8plus"
+          ;;
+        sparcv9*)
+          CFLAGS="$CFLAGS -xtarget=generic64 -xarch=v9"
+          ;;
+        esac
+      fi
     fi
   fi
   ])
@@ -625,8 +636,21 @@ AC_DEFUN(BEECRYPT_SUN_FORTE_CC,[
 
 dnl  BEECRYPT_CC
 AC_DEFUN(BEECRYPT_CC,[
+  if test "$CFLAGS" = ""; then
+    bc_cv_c_aggressive_opt=yes
+  else
+    bc_cv_c_aggressive_opt=no
+  fi
   if test "$ac_cv_c_compiler_gnu" = yes; then
-    BEECRYPT_GNU_CC
+    # Intel's icc can be mistakenly identified as gcc
+    case $target_os in
+    linux*)
+      BEECRYPT_INTEL_CC
+      ;;
+    esac
+    if test "$bc_cv_prog_INTEL_CC" != yes; then
+      BEECRYPT_GNU_CC
+    fi
   else
     case $target_os in
     aix*)
