@@ -21,7 +21,7 @@ dnl  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 	.file "sha1opt.i586.S"
 
 include(config.m4)
-include(gas/x86.m4)
+include(ASM_SRCDIR/x86.m4)
 
 	.equ	K00,	0x5a827999
 	.equ	K20,	0x6ed9eba1

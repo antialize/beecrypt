@@ -21,7 +21,7 @@ dnl  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 	.file "mpopt.s"
 
 include(config.m4)
-include(gas/x86.m4)
+include(ASM_SRCDIR/x86.m4)
 
 
 C_FUNCTION_BEGIN(mpzero)

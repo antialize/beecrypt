@@ -21,7 +21,7 @@ dnl  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 	.file "blowfishopt.s"
 
 include(config.m4)
-include(gas/x86.m4)
+include(ASM_SRCDIR/x86.m4)
 
 dnl during this macro we assume:
 dnl	bp in %esi, xl and xr in %ecx and %edx, %eax and %ebx clear

@@ -21,7 +21,7 @@ dnl  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 	.file "mpopt.s"
 
 include(config.m4)
-include(gas/sparc.m4)
+include(ASM_SRCDIR/sparc.m4)
 
 C_FUNCTION_BEGIN(mpaddw)
 	sll %o0,2,%g1
