@@ -18,6 +18,7 @@ Mac.cxx \
 MacInputStream.cxx \
 MacOutputStream.cxx \
 NoSuchPaddingException.cxx \
+NullCipher.cxx \
 SecretKeyFactory.cxx
 libcxxcrypto_la_LIBADD = spec/libcxxcryptospec.la
 
@@ -33,6 +34,7 @@ MacInputStream.h \
 MacOutputStream.h \
 MacSpi.h \
 NoSuchPaddingException.h \
+NullCipher.h \
 SecretKey.h \
 SecretKeyFactory.h \
 SecretKeyFactorySpi.h
