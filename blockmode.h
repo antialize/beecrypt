@@ -18,7 +18,8 @@
  */
 
 /*!\file blockmode.h
- * \brief Blockcipher operation modes, headers.
+ * \brief Blockcipher operation modes.
+ * \todo Additional modes, such as CFB and OFB.
  * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup BC_m
  */
@@ -32,15 +33,57 @@
 extern "C" {
 #endif
 
+/*!\fn int blockEncryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, int nblocks)
+ * \brief This function encrypts a number of data blocks in Electronic Code
+ *  Book mode.
+ * \param bc The blockcipher.
+ * \param bp The cipher's parameter block.
+ * \param nblocks The number of blocks to be encrypted.
+ * \param dst The ciphertext data; should be aligned on a 32-bit boundary.
+ * \param src The cleartext data; should be aligned on a 32-bit boundary.
+ * \retval 0 on success.
+ */
 BEECRYPTAPI
-int blockEncryptECB(const blockCipher*, blockCipherParam*, uint32_t*, const uint32_t*, int);
-BEECRYPTAPI
-int blockDecryptECB(const blockCipher*, blockCipherParam*, uint32_t*, const uint32_t*, int);
+int blockEncryptECB(const blockCipher* bc, blockCipherParam*i bp, uint32_t* dst, const uint32_t* src, int nblocks);
 
+/*!\fn int blockDecryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, int nblocks)
+ * \brief This function decrypts a number of data blocks in Electronic Code
+ *  Book mode.
+ * \param bc The blockcipher.
+ * \param bp The cipher's parameter block.
+ * \param nblocks The number of blocks to be decrypted.
+ * \param dst The cleartext data; should be aligned on a 32-bit boundary.
+ * \param src The ciphertext data; should be aligned on a 32-bit boundary.
+ * \retval 0 on success.
+ */
 BEECRYPTAPI
-int blockEncryptCBC(const blockCipher*, blockCipherParam*, uint32_t*, const uint32_t*, int);
+int blockDecryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, int nblocks);
+
+/*!\fn int blockEncryptCBC(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, int nblocks)
+ * \brief This function encrypts a number of data blocks in Cipher Block
+ *  Chaining mode.
+ * \param bc The blockcipher.
+ * \param bp The cipher's parameter block.
+ * \param nblocks The number of blocks to be encrypted.
+ * \param dst The ciphertext data; should be aligned on a 32-bit boundary.
+ * \param src The cleartext data; should be aligned on a 32-bit boundary.
+ * \retval 0 on success.
+ */
 BEECRYPTAPI
-int blockDecryptCBC(const blockCipher*, blockCipherParam*, uint32_t*, const uint32_t*, int);
+int blockEncryptCBC(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, int nblocks);
+
+/*!\fn int blockDecryptCBC(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, int nblocks)
+ * \brief This function decrypts a number of data blocks in Cipher Block
+ *  Chaining mode.
+ * \param bc The blockcipher.
+ * \param bp The cipher's parameter block.
+ * \param nblocks The number of blocks to be decrypted.
+ * \param dst The cleartext data; should be aligned on a 32-bit boundary.
+ * \param src The ciphertext data; should be aligned on a 32-bit boundary.
+ * \retval 0 on success.
+ */
+BEECRYPTAPI
+int blockDecryptCBC(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, int nblocks);
 
 #ifdef __cplusplus
 }

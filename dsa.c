@@ -18,14 +18,7 @@
  */
 
 /*!\file dsa.c
- * \brief Digital Signature Algorithm, as specified by NIST FIPS 186.
- *
- * FIPS 186 specifies the DSA algorithm as having a large prime \f$p\f$,
- * a cofactor \f$q\f$ and a generator \f$g\f$ of a subgroup of
- * \f$\mathds{Z}^{*}_p\f$ with order \f$q\f$. The private and public key
- * values are \f$x\f$ and \f$y\f$ respectively.
- *
- * \author Bob Deblier <bob.deblier@pandora.be>
+ * \brief Digital Signature Algorithm.
  * \ingroup DL_m DL_dsa_m
  */
  
@@ -41,30 +34,6 @@
 # include <malloc.h>
 #endif
 
-/*!\addtogroup DL_dsa_m
- * \{
- */
-
-/*!\fn int dsasign(const mpbarrett* p, const mpbarrett* q, const mpnumber* g, randomGeneratorContext* rgc, const mpnumber* hm, const mpnumber* x, mpnumber* r, mpnumber* s)
- * \brief The raw DSA signing function.
- *
- * Signing equations:
- *
- * \li \f$r=(g^{k}\ \textrm{mod}\ p)\ \textrm{mod}\ q\f$
- * \li \f$s=k^{-1}(h(m)+xr)\ \textrm{mod}\ q\f$
- *
- * \param p The prime.
- * \param q The cofactor.
- * \param g The generator.
- * \param rgc The pseudo-random generator context.
- * \param hm The hash to be signed.
- * \param x The private key value.
- * \param r The signature's \e r value.
- * \param s The signature's \e r value.
- *
- * \retval 0 on success.
- * \retval -1 on failure.
- */
 int dsasign(const mpbarrett* p, const mpbarrett* q, const mpnumber* g, randomGeneratorContext* rgc, const mpnumber* hm, const mpnumber* x, mpnumber* r, mpnumber* s)
 {
 	register size_t psize = p->size;
@@ -127,31 +96,6 @@ int dsasign(const mpbarrett* p, const mpbarrett* q, const mpnumber* g, randomGen
 	return rc;
 }
 
-/*!\fn int dsavrfy(const mpbarrett* p, const mpbarrett* q, const mpnumber* g, const mpnumber* hm, const mpnumber* y, const mpnumber* r, const mpnumber* s)
- * \brief The raw DSA verification function.
- *
- * Verifying equations:
- * \li Check \f$0<r<q\f$ and \f$0<s<q\f$
- * \li \f$w=s^{-1}\ \textrm{mod}\ q\f$
- * \li \f$u_1=w \cdot h(m)\ \textrm{mod}\ q\f$
- * \li \f$u_2=rw\ \textrm{mod}\ q\f$
- * \li \f$v=(g^{u_1}y^{u_2}\ \textrm{mod}\ p)\ \textrm{mod}\ q\f$
- * \li Check \f$v=r\f$
- *
- * \param p The prime.
- * \param q The cofactor.
- * \param g The generator.
- * \param hm The digest to be verified.
- * \param y The public key value.
- * \param r The signature's r value.
- * \param s The signature's r value.
- *
- * \warning The return type of this function should be a boolean, but since
- *          that type isn't portable, an int is used.
- *
- * \retval 0 on failure.
- * \retval 1 on success.
- */
 int dsavrfy(const mpbarrett* p, const mpbarrett* q, const mpnumber* g, const mpnumber* hm, const mpnumber* y, const mpnumber* r, const mpnumber* s)
 {
 	register size_t psize = p->size;

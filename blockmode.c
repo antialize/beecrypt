@@ -19,7 +19,6 @@
 
 /*!\file blockmode.c
  * \brief Blockcipher operation modes.
- * \todo Additional modes, such as CFB and OFB.
  * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup BC_m
  */
@@ -28,19 +27,6 @@
 
 #include "blockmode.h"
 
-/*!\addtogroup BC_m
- * \{
- */
-
-/*!\fn blockEncryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, int nblocks)
- * \brief Encrypts multiple blocks in Electronic Code Book (ECB) mode.
- * \param bc The blockcipher.
- * \param bp The cipher's parameter block.
- * \param nblocks The number of blocks to be encrypted.
- * \param dst The ciphertext data; should be aligned on a 32-bit boundary.
- * \param src The cleartext data; should be aligned on a 32-bit boundary.
- * \retval 0 on success.
- */
 int blockEncryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, int nblocks)
 {
 	register const int blockwords = bc->blocksize >> 2;
@@ -57,15 +43,6 @@ int blockEncryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, 
 	return 0;
 }
 
-/*!\fn blockDecryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, int nblocks)
- * \brief Decrypts multiple blocks in Electronic Code Book (ECB) mode.
- * \param bc The blockcipher.
- * \param bp The cipher's parameter block.
- * \param nblocks The number of blocks to be decrypted.
- * \param dst The cleartext data; should be aligned on a 32-bit boundary.
- * \param src The ciphertext data; should be aligned on a 32-bit boundary.
- * \retval 0 on success.
- */
 int blockDecryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, int nblocks)
 {
 	register const int blockwords = bc->blocksize >> 2;
@@ -153,44 +130,3 @@ int blockDecryptCBC(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, 
 	}
 	return -1;
 }
-
-/*
-int blockEncrypt(const blockCipher* bc, blockCipherParam* bp, cipherMode mode, int blocks, uint32_t* dst, const uint32_t* src)
-{
-	if (bc->mode)
-	{
-		register const blockMode* bm = bc->mode+mode;
-
-		if (bm)
-		{
-			register const blockModeEncrypt be = bm->encrypt;
-
-			if (be)
-				return be(bp, blocks, dst, src);
-		}
-	}
-
-	return -1;
-}
-
-int blockDecrypt(const blockCipher* bc, blockCipherParam* bp, cipherMode mode, int blocks, uint32_t* dst, const uint32_t* src)
-{
-	if (bc->mode)
-	{
-		register const blockMode* bm = bc->mode+mode;
-
-		if (bm)
-		{
-			register const blockModeEncrypt bd = bm->decrypt;
-
-			if (bd)
-				return bd(bp, blocks, dst, src);
-		}
-	}
-
-	return -1;
-}
-*/
-
-/*!\}
- */
