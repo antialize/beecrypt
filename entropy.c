@@ -60,10 +60,12 @@
 # elif HAVE_TERMIO_H
 #  include <termio.h>
 # endif
-# if HAVE_THREAD_H && HAVE_SYNCH_H
-#  include <synch.h>
-# elif HAVE_PTHREAD_H
-#  include <pthread.h>
+# ifdef _REENTRANT
+#  if HAVE_THREAD_H && HAVE_SYNCH_H
+#   include <synch.h>
+#  elif HAVE_PTHREAD_H
+#   include <pthread.h>
+#  endif
 # endif
 # if HAVE_AIO_H
 #  include <aio.h>
