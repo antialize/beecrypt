@@ -27,7 +27,7 @@
 # include "config.h"
 #endif
 
-#include "memchunk.h"
+#include "beecrypt/memchunk.h"
 
 memchunk* memchunkAlloc(size_t size)
 {
@@ -46,6 +46,12 @@ memchunk* memchunkAlloc(size_t size)
 	}
 
 	return tmp;
+}
+
+void memchunkInit(memchunk* m)
+{
+	m->data = (byte*) 0;
+	m->size = 0;
 }
 
 void memchunkWipe(memchunk* m)

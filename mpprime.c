@@ -29,7 +29,7 @@
 # include "config.h"
 #endif
 
-#include "mpprime.h"
+#include "beecrypt/mpprime.h"
 
 /*
  * A word of explanation here on what this table accomplishes:

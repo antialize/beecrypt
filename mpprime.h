@@ -26,7 +26,7 @@
 #ifndef _MPPRIME_H
 #define _MPPRIME_H
 
-#include "mpbarrett.h"
+#include "beecrypt/mpbarrett.h"
 
 #define SMALL_PRIMES_PRODUCT_MAX	32
 

@@ -28,8 +28,8 @@
 # include "config.h"
 #endif
 
-#include "dsa.h"
-#include "dldp.h"
+#include "beecrypt/dsa.h"
+#include "beecrypt/dldp.h"
 
 int dsasign(const mpbarrett* p, const mpbarrett* q, const mpnumber* g, randomGeneratorContext* rgc, const mpnumber* hm, const mpnumber* x, mpnumber* r, mpnumber* s)
 {

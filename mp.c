@@ -29,8 +29,8 @@
 # include "config.h"
 #endif
 
-#include "mp.h"
-#include "mpopt.h"
+#include "beecrypt/mp.h"
+#include "beecrypt/mpopt.h"
 
 #ifndef ASM_MPZERO
 void mpzero(size_t size, mpw* data)
@@ -1465,13 +1465,16 @@ int os2ip(mpw* idata, size_t isize, const byte* osdata, size_t ossize)
 		/* adjust counter so that the loop will start by skipping the proper
 		 * amount of leading bytes in the first significant word
 		 */
-		byte b = MP_WBYTES - (ossize % MP_WBYTES);
+		byte b = (ossize % MP_WBYTES);
 
 		if (isize > required)
 		{	/* fill initials words with zero */
 			mpzero(isize-required, idata);
 			idata += isize-required;
 		}
+
+		if (b == 0)
+			b = MP_WBYTES;
 
 		while (ossize--)
 		{

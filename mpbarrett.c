@@ -33,10 +33,10 @@
 # include "config.h"
 #endif
 
-#include "beecrypt.h"
-#include "mpprime.h"
-#include "mpnumber.h"
-#include "mpbarrett.h"
+#include "beecrypt/beecrypt.h"
+#include "beecrypt/mpprime.h"
+#include "beecrypt/mpnumber.h"
+#include "beecrypt/mpbarrett.h"
 
 /*
  * mpbzero
@@ -853,4 +853,9 @@ void mpbnpowmodsld(const mpbarrett* b, const mpw* slide, const mpnumber* pow, mp
 	mpbpowmodsld_w(b, slide, pow->size, pow->data, y->data, temp);
 
 	free(temp);
+}
+
+size_t mpbbits(const mpbarrett* b)
+{
+	return mpbits(b->size, b->modl);
 }

@@ -23,7 +23,7 @@
 #ifndef _MEMCHUNK_H
 #define _MEMCHUNK_H
 
-#include "beecrypt.api.h"
+#include "beecrypt/api.h"
 
 typedef struct
 {

@@ -29,7 +29,7 @@
 # include "config.h"
 #endif
 
-#include "mpnumber.h"
+#include "beecrypt/mpnumber.h"
 
 void mpnzero(mpnumber* n)
 {
@@ -44,7 +44,15 @@ void mpnsize(mpnumber* n, size_t size)
 		if (n->data)
 		{
 			if (n->size != size)
+			{
+				if (size < n->size)
+				{
+					register size_t offset = n->size - size;
+
+					memmove(n->data, n->data + offset, offset * sizeof(mpw));
+				}
 				n->data = (mpw*) realloc(n->data, size * sizeof(mpw));
+			}
 		}
 		else
 			n->data = (mpw*) malloc(size * sizeof(mpw));
@@ -143,7 +151,7 @@ int mpnsetbin(mpnumber* n, const byte* osdata, size_t ossize)
 	size_t size;
 
 	/* skip zero bytes */
-	while (!(*osdata) && ossize)
+	while ((*osdata == 0) && ossize)
 	{
 		osdata++;
 		ossize--;
@@ -212,4 +220,50 @@ int mpninv(mpnumber* inv, const mpnumber* k, const mpnumber* mod)
 	}
 
 	return rc;
+}
+
+size_t mpntrbits(mpnumber* n, size_t bits)
+{
+	size_t sigbits = mpbits(n->size, n->data);
+	size_t offset = 0;
+
+	if (sigbits < bits)
+	{
+		/* no need to truncate */
+		return sigbits;
+	}
+	else
+	{
+		size_t allbits = MP_BITS_TO_WORDS(n->size + MP_WBITS - 1);
+
+		while ((allbits - bits) > MP_WBITS)
+		{
+			/* zero a word */
+			n->data[offset++] = 0;
+			allbits -= MP_WBITS;
+		}
+
+		if ((allbits - bits))
+		{
+			/* mask the next word */
+			n->data[offset] &= (MP_ALLMASK >> (MP_WBITS - bits));
+
+			/* resize the number */
+			mpnsize(n, n->size - offset);
+
+			/* finally return the number of remaining bits */
+			return bits;
+		}
+		else
+		{
+			/* nothing remains */
+			mpnsetw(n, 0);
+			return 0;
+		}
+	}
+}
+
+size_t mpnbits(const mpnumber* n)
+{
+	return mpbits(n->size, n->data);
 }
