@@ -49,6 +49,26 @@
 # endif
 #endif
 
+#if defined(__GNUC__) && defined(__i386__)
+static inline uint32_t ROTL32(uint32_t x, int n)
+{
+	__asm__("roll %%cl,%0"
+		:	"=r" (x)
+		:	"0" (x), "c" (n));
+
+	return x;
+}
+
+static inline uint32_t ROTR32(uint32_t x, int n)
+{
+	__asm__("rorl %%cl,%0"
+		:	"=r" (x)
+		:	"0" (x), "c" (n));
+
+	return x;
+}
+#endif
+
 #ifndef ROTL32
 # define ROTL32(x, s) (((x) << (s)) | ((x) >> (32 - (s))))
 #endif
