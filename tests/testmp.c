@@ -13,7 +13,7 @@ int main()
 {
 	int i, carry;
 	mpw x[4];
-	mpw y[4];
+/*	mpw y[4]; */
 	mpw r[8];
 
 	for (i = 0; i < 4; i++)
