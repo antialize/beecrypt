@@ -191,10 +191,11 @@ int encodeIntsPartial(const javaint* i, byte* data, int bytecount)
 int encodeIntsPartialPad(const javaint* i, byte* data, int bytecount, byte padvalue)
 {
 	register int rc = bytecount;
+
 	#if (WORDS_BIGENDIAN)
 	memcpy(data, i, rc);
 	if (rc & 0x3)
-		memset(data+rc, padvalue,  4 - (rc & 0x3));
+		memset(data+rc, padvalue, 4 -(rc & 0x3));
 	#else
 	javaint tmp;
 
@@ -205,9 +206,8 @@ int encodeIntsPartialPad(const javaint* i, byte* data, int bytecount, byte padva
 		data += 4;
 		bytecount -= 4;
 	}
-	/* bytecount may be negative, but that's okay */
-	if (rc & 0x3)
-		memset(data+bytecount, padvalue, 4+bytecount);
+	if (bytecount)
+		memset(data+bytecount, padvalue, -bytecount);
 	#endif
 	return rc;
 }
@@ -332,7 +332,7 @@ int decodeIntsPartial(javaint* i, const byte* data, int bytecount)
 	#if (WORDS_BIGENDIAN)
 	memcpy(i, data, rc);
 	if (rc & 0x3)
-		memset(i + (rc >> 2), 0, 4 - (rc & 0x3));
+		memset(((byte*) i) + rc, 0, 4 - (rc & 0x3));
 	#else
 	javaint tmp;
 	while (bytecount >= 4)
