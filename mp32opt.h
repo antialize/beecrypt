@@ -3,7 +3,7 @@
  *
  * Multiprecision integer assembler-optimized routined for 32 bit cpu, header
  *
- * Copyright (c) 1999, 2000 Virtual Unlimited B.V.
+ * Copyright (c) 1999, 2000, 2001 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -55,7 +55,7 @@ extern "C" {
 #endif
 
 #if defined(__GNUC__)
-# if defined(OPTIMIZE_I386) || defined(OPTIMIZE_I486) || defined(OPTIMIZED_I586) || defined(OPTIMIZE_I686)
+# if defined(OPTIMIZE_I386) || defined(OPTIMIZE_I486) || defined(OPTIMIZE_I586) || defined(OPTIMIZE_I686)
 #  define ASM_MP32ADDW
 #  define ASM_MP32ADD
 #  define ASM_MP32SUBW
