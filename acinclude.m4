@@ -434,6 +434,7 @@ AC_DEFUN(BEECRYPT_ASM_DEFS,[
   AC_SUBST(ASM_OS,$target_os)
   AC_SUBST(ASM_CPU,$bc_target_cpu)
   AC_SUBST(ASM_ARCH,$bc_target_arch)
+  AC_SUBST(ASM_BIGENDIAN,$ac_cv_c_bigendian)
   ])
 
 
@@ -512,7 +513,6 @@ AC_DEFUN(BEECRYPT_ASM_LSYM_PREFIX,[
 
 dnl  BEECRYPT_ASM_SOURCES
 AC_DEFUN(BEECRYPT_ASM_SOURCES,[
-  touch $srcdir/mpopt.s
   case $bc_target_arch in
   alpha*)
     AC_CONFIG_COMMANDS([mpopt.alpha],[
@@ -533,6 +533,11 @@ AC_DEFUN(BEECRYPT_ASM_SOURCES,[
     AC_CONFIG_COMMANDS([mpopt.ppc],[
       m4 $srcdir/gas/mpopt.ppc.m4 > $srcdir/mpopt.s
       ])
+    if test "$ac_cv_c_bigendian" = yes; then
+      AC_CONFIG_COMMANDS([blowfishopt.ppc],[
+        m4 $srcdir/gas/blowfishopt.ppc.m4 > $srcdir/blowfishopt.s
+        ])
+    fi
     ;;
   powerpc64)
     AC_CONFIG_COMMANDS([mpopt.ppc64],[
@@ -540,7 +545,6 @@ AC_DEFUN(BEECRYPT_ASM_SOURCES,[
       ])
     ;;
   esac
-  touch $srcdir/aesopt.s
   if test "$ac_with_arch" = yes; then
     # Code is i586-specific!
     case $bc_target_arch in
@@ -557,6 +561,8 @@ AC_DEFUN(BEECRYPT_ASM_SOURCES,[
       ;;
     esac
   fi
-  touch blowfishopt.s
-  touch sha1opt.s
+  touch $srcdir/mpopt.s
+  touch $srcdir/aesopt.s
+  touch $srcdir/blowfishopt.s
+  touch $srcdir/sha1opt.s
   ])
