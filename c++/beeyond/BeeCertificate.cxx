@@ -28,6 +28,8 @@
 using beecrypt::io::ByteArrayInputStream;
 #include "beecrypt/c++/io/ByteArrayOutputStream.h"
 using beecrypt::io::ByteArrayOutputStream;
+#include "beecrypt/c++/lang/Long.h"
+using beecrypt::lang::Long;
 #include "beecrypt/c++/lang/NullPointerException.h"
 using beecrypt::lang::NullPointerException;
 #include "beecrypt/c++/security/KeyFactory.h"
@@ -224,7 +226,7 @@ BeeCertificate::Field* BeeCertificate::instantiateField(javaint type)
 	}
 }
 
-const Date BeeCertificate::FOREVER((javalong) 0x7FFFFFFFFFFFFFFFL);
+const Date BeeCertificate::FOREVER(Long::MAX_VALUE);
 
 BeeCertificate::BeeCertificate() : Certificate("BEE")
 {
@@ -569,6 +571,28 @@ bool BeeCertificate::hasParentCertificate() const
 	return false;
 }
 
+bool BeeCertificate::isSelfSignedCertificate() const
+{
+	// if there's a parent certificate, this certificate isn't self-signed
+	if (hasParentCertificate())
+		return false;
+
+	// no public key means that we cannot verify
+	if (!hasPublicKey())
+		return false;
+
+	try
+	{
+		verify(getPublicKey());
+
+		return true;
+	}
+	catch (Exception)
+	{
+		return false;
+	}
+}
+
 bytearray* BeeCertificate::encodeTBS() const
 {
 	ByteArrayOutputStream bos;
@@ -609,7 +633,7 @@ BeeCertificate* BeeCertificate::self(const PublicKey& pub, const PrivateKey& pri
 		try
 		{
 			// issuer is kept blank
-			cert->subject = "PublicKey Certificate";
+			cert->subject = "Public Key Certificate";
 			cert->expires = FOREVER;
 			cert->signature_algorithm = signatureAlgorithm;
 			cert->fields.push_back(new PublicKeyField(pub));
@@ -663,7 +687,7 @@ BeeCertificate* BeeCertificate::make(const PublicKey& pub, const PrivateKey& pri
 		try
 		{
 			// issuer is kept blank
-			cert->subject = "PublicKey Certificate";
+			cert->subject = "Public Key Certificate";
 			cert->expires = FOREVER;
 			cert->signature_algorithm = signatureAlgorithm;
 			cert->fields.push_back(new PublicKeyField(pub));

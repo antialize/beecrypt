@@ -175,6 +175,8 @@ namespace beecrypt {
 			bool hasPublicKey() const;
 			bool hasParentCertificate() const;
 
+			bool isSelfSignedCertificate() const;
+
 			const Certificate& getParentCertificate() const;
 
 		public:
