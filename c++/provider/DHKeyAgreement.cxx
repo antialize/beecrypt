@@ -31,6 +31,8 @@ using beecrypt::crypto::interfaces::DHPublicKey;
 using beecrypt::crypto::SecretKeyFactory;
 #include "beecrypt/c++/crypto/spec/SecretKeySpec.h"
 using beecrypt::crypto::spec::SecretKeySpec;
+#include "beecrypt/c++/security/ProviderException.h"
+using beecrypt::security::ProviderException;
 
 using namespace beecrypt::provider;
 
@@ -61,7 +63,7 @@ Key* DHKeyAgreement::engineDoPhase(const Key& key, bool lastPhase) throw (Invali
 			_y = pub->getY();
 
 			if (dlsvdp_pDHSecret(&_param, &_x, &_y, &_s))
-				throw RuntimeException();
+				throw ProviderException("BeeCrypt internal error in dlsvdp_pDHSecret");
 
 			if (lastPhase)
 			{

@@ -22,13 +22,16 @@
 
 #include "beecrypt/c++/lang/NullPointerException.h"
 using beecrypt::lang::NullPointerException;
+#include "beecrypt/c++/security/ProviderException.h"
+using beecrypt::security::ProviderException;
 #include "beecrypt/c++/provider/SHA384Digest.h"
 
 using namespace beecrypt::provider;
 
 SHA384Digest::SHA384Digest() : _digest(48)
 {
-	sha384Reset(&_param);
+	if (sha384Reset(&_param))
+		throw ProviderException("BeeCrypt internal error in sha384Reset");
 }
 
 SHA384Digest::~SHA384Digest()
@@ -46,7 +49,8 @@ SHA384Digest* SHA384Digest::clone() const
 
 const bytearray& SHA384Digest::engineDigest()
 {
-	sha384Digest(&_param, _digest.data());
+	if (sha384Digest(&_param, _digest.data()))
+		throw ProviderException("BeeCrypt internal error in sha384Digest");
 
 	return _digest;
 }
@@ -59,7 +63,8 @@ size_t SHA384Digest::engineDigest(byte* data, size_t offset, size_t length) thro
 	if (length < 48)
 		throw ShortBufferException();
 
-	sha384Digest(&_param, data);
+	if (sha384Digest(&_param, data))
+		throw ProviderException("BeeCrypt internal error in sha384Digest");
 
 	return 48;
 }
@@ -71,15 +76,18 @@ size_t SHA384Digest::engineGetDigestLength()
 
 void SHA384Digest::engineReset()
 {
-	sha384Reset(&_param);
+	if (sha384Reset(&_param))
+		throw ProviderException("BeeCrypt internal error in sha384Reset");
 }
 
 void SHA384Digest::engineUpdate(byte b)
 {
-	sha384Update(&_param, &b, 1);
+	if (sha384Update(&_param, &b, 1))
+		throw ProviderException("BeeCrypt internal error in sha384Update");
 }
 
 void SHA384Digest::engineUpdate(const byte* data, size_t offset, size_t length)
 {
-	sha384Update(&_param, data+offset, length);
+	if (sha384Update(&_param, data+offset, length))
+		throw ProviderException("BeeCrypt internal error in sha384Update");
 }

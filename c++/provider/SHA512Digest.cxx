@@ -22,13 +22,16 @@
 
 #include "beecrypt/c++/lang/NullPointerException.h"
 using beecrypt::lang::NullPointerException;
+#include "beecrypt/c++/security/ProviderException.h"
+using beecrypt::security::ProviderException;
 #include "beecrypt/c++/provider/SHA512Digest.h"
 
 using namespace beecrypt::provider;
 
 SHA512Digest::SHA512Digest() : _digest(64)
 {
-	sha512Reset(&_param);
+	if (sha512Reset(&_param))
+		throw ProviderException("BeeCrypt internal error in sha512Reset");
 }
 
 SHA512Digest::~SHA512Digest()
@@ -46,7 +49,8 @@ SHA512Digest* SHA512Digest::clone() const
 
 const bytearray& SHA512Digest::engineDigest()
 {
-	sha512Digest(&_param, _digest.data());
+	if (sha512Digest(&_param, _digest.data()))
+		throw ProviderException("BeeCrypt internal error in sha512Digest");
 
 	return _digest;
 }
@@ -59,7 +63,8 @@ size_t SHA512Digest::engineDigest(byte* data, size_t offset, size_t length) thro
 	if (length < 64)
 		throw ShortBufferException();
 
-	sha512Digest(&_param, data);
+	if (sha512Digest(&_param, data))
+		throw ProviderException("BeeCrypt internal error in sha512Digest");
 
 	return 64;
 }
@@ -71,15 +76,18 @@ size_t SHA512Digest::engineGetDigestLength()
 
 void SHA512Digest::engineReset()
 {
-	sha512Reset(&_param);
+	if (sha512Reset(&_param))
+		throw ProviderException("BeeCrypt internal error in sha512Reset");
 }
 
 void SHA512Digest::engineUpdate(byte b)
 {
-	sha512Update(&_param, &b, 1);
+	if (sha512Update(&_param, &b, 1))
+		throw ProviderException("BeeCrypt internal error in sha512Digest");
 }
 
 void SHA512Digest::engineUpdate(const byte* data, size_t offset, size_t length)
 {
-	sha512Update(&_param, data+offset, length);
+	if (sha512Update(&_param, data+offset, length))
+		throw ProviderException("BeeCrypt internal error in sha512Digest");
 }

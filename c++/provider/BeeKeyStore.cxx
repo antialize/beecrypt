@@ -38,6 +38,8 @@ using beecrypt::crypto::MacInputStream;
 using beecrypt::crypto::MacOutputStream;
 #include "beecrypt/c++/security/SecureRandom.h"
 using beecrypt::security::SecureRandom;
+#include "beecrypt/c++/security/ProviderException.h"
+using beecrypt::security::ProviderException;
 #include "beecrypt/c++/beeyond/PKCS12PBEKey.h"
 using beecrypt::beeyond::PKCS12PBEKey;
 #include "beecrypt/c++/provider/KeyProtector.h"
@@ -624,7 +626,7 @@ void BeeKeyStore::engineStore(OutputStream& out, const array<javachar>* password
 				continue;
 			}
 
-			throw RuntimeException();
+			throw ProviderException("entry is neither KeyEntry nor CertEntry");
 		}
 		/* don't call close on a FilterOutputStream because the
 		 * underlying stream still has to write data!
