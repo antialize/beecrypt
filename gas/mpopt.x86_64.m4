@@ -22,7 +22,6 @@ include(config.m4)
 include(ASM_SRCDIR/asmdefs.m4)
 include(ASM_SRCDIR/x86_64.m4)
 
-
 C_FUNCTION_BEGIN(mpzero)
 	movq %rdi,%rcx
 	movq %rsi,%rdi
