@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2000, 2003 Virtual Unlimited B.V.
  *
- * Author: Bob Deblier <bob@virtualunlimited.com>
+ * Author: Bob Deblier <bob.deblier@pandora.be>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

@@ -1,8 +1,6 @@
 /*
  * Copyright (c) 1998, 1999, 2000, 2001 Virtual Unlimited B.V.
  *
- * Author: Bob Deblier <bob@virtualunlimited.com>
- *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -28,9 +26,9 @@
  * Adapted from optimized code by Shawn J. Cokus <cokus@math.washington.edu>
  *
  * \warning This generator has a very long period, passes statistical test and
- &          is very fast, but is not recommended for use in cryptography.
+ *          is very fast, but is not recommended for use in cryptography.
  * 
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup PRNG_m
  */
 

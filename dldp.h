@@ -19,7 +19,7 @@
 
 /*!\file dldp.h
  * \brief Discrete Logarithm domain parameters, headers.
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup DL_m
  */
 

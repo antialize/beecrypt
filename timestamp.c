@@ -19,7 +19,7 @@
 
 /*!\file timestamp.c
  * \brief Java compatible 64-bit timestamp.
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  */
 
 #define BEECRYPT_DLL_EXPORT

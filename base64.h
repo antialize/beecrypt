@@ -19,7 +19,7 @@
 
 /*!\file base64.h
  * \brief Base64 encoding and decoding, headers.
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  */
 
 #ifndef _BASE64_H

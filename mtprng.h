@@ -19,7 +19,7 @@
 
 /*!\file mtprng.h
  * \brief Mersenne Twister pseudo-random number generator, headers.
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup PRNG_m
  */
 
