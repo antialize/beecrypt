@@ -982,8 +982,6 @@ void mpprndconone_w(mpbarrett* p, randomGeneratorContext* rc, size_t bits, int t
 	 * Optional input f: if f is not null, then search p so that GCD(p-1,f) = 1
 	 */
 
-	printf("mpprndconone cofactor %d bits %d qbits %d\n", cofactor, bits, mpbits(q->size, q->modl));
-
 	mpbinit(p, MP_BITS_TO_WORDS(bits + MP_WBITS - 1));
 
 	if (p->modl != (mpw*) 0)
