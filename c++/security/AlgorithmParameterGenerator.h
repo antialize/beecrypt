@@ -39,7 +39,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI AlgorithmParameterGenerator
+		class BEECRYPTCXXAPI AlgorithmParameterGenerator : public beecrypt::lang::Object
 		{
 		public:
 			static AlgorithmParameterGenerator* getInstance(const String& algorithm) throw (NoSuchAlgorithmException);
@@ -55,7 +55,7 @@ namespace beecrypt {
 			AlgorithmParameterGenerator(AlgorithmParameterGeneratorSpi* spi, const Provider* provider, const String& algorithm);
 
 		public:
-			~AlgorithmParameterGenerator();
+			virtual ~AlgorithmParameterGenerator();
 
 			AlgorithmParameters* generateParameters() throw (InvalidAlgorithmParameterException);
 

@@ -27,6 +27,8 @@
 
 #include "beecrypt/c++/array.h"
 using beecrypt::array;
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/PublicKey.h"
 using beecrypt::security::PublicKey;
 #include "beecrypt/c++/security/InvalidKeyException.h"
@@ -45,7 +47,7 @@ namespace beecrypt {
 		namespace cert {
 			/*!\ingroup CXX_SECURITY_CERT_m
 			 */
-			class BEECRYPTCXXAPI Certificate
+			class BEECRYPTCXXAPI Certificate : public beecrypt::lang::Object
 			{
 			private:
 				String _type;
@@ -56,9 +58,7 @@ namespace beecrypt {
 			public:
 				virtual ~Certificate();
 
-				virtual bool operator==(const Certificate&) const;
-
-				virtual Certificate* clone() const = 0;
+				virtual bool equals(const Object& compare) const throw ();
 
 				virtual const bytearray& getEncoded() const = 0;
 				virtual const PublicKey& getPublicKey() const = 0;

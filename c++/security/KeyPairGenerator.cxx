@@ -47,11 +47,13 @@ KeyPairGenerator* KeyPairGenerator::getInstance(const String& algorithm) throw (
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "KeyPairGenerator");
 
-	#if HAVE_ASSERT_H
-	assert(dynamic_cast<KeyPairGeneratorSpi*>((KeyPairGeneratorSpi*) tmp->cspi));
+	#if 0 // HAVE_ASSERT_H
+	std::cout << "cspi is of typeid " << typeid(*tmp->cspi).name() << std::endl;
+
+	assert(dynamic_cast<KeyPairGeneratorSpi*>(tmp->cspi));
 	#endif
 
-	KeyPairGenerator* result = new KeyPairGenerator((KeyPairGeneratorSpi*) tmp->cspi, tmp->prov, tmp->name);
+	KeyPairGenerator* result = new KeyPairGenerator(reinterpret_cast<KeyPairGeneratorSpi*>(tmp->cspi), tmp->prov, tmp->name);
 
 	delete tmp;
 
@@ -63,10 +65,10 @@ KeyPairGenerator* KeyPairGenerator::getInstance(const String& algorithm, const S
 	Security::spi* tmp = Security::getSpi(algorithm, "KeyPairGenerator", provider);
 
 	#if HAVE_ASSERT_H
-	assert(dynamic_cast<KeyPairGeneratorSpi*>((KeyPairGeneratorSpi*) tmp->cspi));
+	assert(dynamic_cast<KeyPairGeneratorSpi*>(tmp->cspi));
 	#endif
 
-	KeyPairGenerator* result = new KeyPairGenerator((KeyPairGeneratorSpi*) tmp->cspi, tmp->prov, tmp->name);
+	KeyPairGenerator* result = new KeyPairGenerator(reinterpret_cast<KeyPairGeneratorSpi*>(tmp->cspi), tmp->prov, tmp->name);
 
 	delete tmp;
 
@@ -78,10 +80,10 @@ KeyPairGenerator* KeyPairGenerator::getInstance(const String& algorithm, const P
 	Security::spi* tmp = Security::getSpi(algorithm, "KeyPairGenerator", provider);
 
 	#if HAVE_ASSERT_H
-	assert(dynamic_cast<KeyPairGeneratorSpi*>((KeyPairGeneratorSpi*) tmp->cspi));
+	assert(dynamic_cast<KeyPairGeneratorSpi*>(tmp->cspi));
 	#endif
 
-	KeyPairGenerator* result = new KeyPairGenerator((KeyPairGeneratorSpi*) tmp->cspi, tmp->prov, tmp->name);
+	KeyPairGenerator* result = new KeyPairGenerator(reinterpret_cast<KeyPairGeneratorSpi*>(tmp->cspi), tmp->prov, tmp->name);
 
 	delete tmp;
 

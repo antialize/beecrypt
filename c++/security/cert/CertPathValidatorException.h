@@ -33,7 +33,7 @@ namespace beecrypt {
 		namespace cert {
 			/*!\ingroup CXX_SECURITY_CERT_m
 			 */
-			class BEECRYPTCXXAPI CertPathValidatorException : public GeneralSecurityException
+			class BEECRYPTCXXAPI CertPathValidatorException : public beecrypt::security::GeneralSecurityException
 			{
 			public:
 				CertPathValidatorException() throw ();

@@ -51,10 +51,10 @@ KeyStore* KeyStore::getInstance(const String& type) throw (KeyStoreException)
 		Security::spi* tmp = Security::getSpi(type, "KeyStore");
 
 		#if HAVE_ASSERT_H
-		assert(dynamic_cast<KeyStoreSpi*>((KeyStoreSpi*) tmp->cspi));
+		assert(dynamic_cast<KeyStoreSpi*>(tmp->cspi));
 		#endif
 
-		KeyStore* result = new KeyStore((KeyStoreSpi*) tmp->cspi, tmp->prov, tmp->name);
+		KeyStore* result = new KeyStore(reinterpret_cast<KeyStoreSpi*>(tmp->cspi), tmp->prov, tmp->name);
 
 		delete tmp;
 
@@ -73,10 +73,10 @@ KeyStore* KeyStore::getInstance(const String& type, const String& provider) thro
 		Security::spi* tmp = Security::getSpi(type, "KeyStore", provider);
 
 		#if HAVE_ASSERT_H
-		assert(dynamic_cast<KeyStoreSpi*>((KeyStoreSpi*) tmp->cspi));
+		assert(dynamic_cast<KeyStoreSpi*>(tmp->cspi));
 		#endif
 
-		KeyStore* result = new KeyStore((KeyStoreSpi*) tmp->cspi, tmp->prov, tmp->name);
+		KeyStore* result = new KeyStore(reinterpret_cast<KeyStoreSpi*>(tmp->cspi), tmp->prov, tmp->name);
 
 		delete tmp;
 
@@ -95,10 +95,10 @@ KeyStore* KeyStore::getInstance(const String& type, const Provider& provider) th
 		Security::spi* tmp = Security::getSpi(type, "KeyStore", provider);
 
 		#if HAVE_ASSERT_H
-		assert(dynamic_cast<KeyStoreSpi*>((KeyStoreSpi*) tmp->cspi));
+		assert(dynamic_cast<KeyStoreSpi*>(tmp->cspi));
 		#endif
 
-		KeyStore* result = new KeyStore((KeyStoreSpi*) tmp->cspi, tmp->prov, tmp->name);
+		KeyStore* result = new KeyStore(reinterpret_cast<KeyStoreSpi*>(tmp->cspi), tmp->prov, tmp->name);
 
 		delete tmp;
 

@@ -27,6 +27,8 @@
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/SecureRandomSpi.h"
 using beecrypt::security::SecureRandomSpi;
 #include "beecrypt/c++/security/Provider.h"
@@ -40,7 +42,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI SecureRandom
+		class BEECRYPTCXXAPI SecureRandom : public beecrypt::lang::Object
 		{
 		public:
 			static SecureRandom* getInstance(const String& type) throw (NoSuchAlgorithmException);
@@ -59,7 +61,7 @@ namespace beecrypt {
 
 		public:
 			SecureRandom();
-			~SecureRandom();
+			virtual ~SecureRandom();
 
 			void generateSeed(byte*, size_t);
 			void nextBytes(byte*, size_t);

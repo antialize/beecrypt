@@ -31,6 +31,8 @@ using beecrypt::mutex;
 using beecrypt::io::InputStream;
 #include "beecrypt/c++/io/OutputStream.h"
 using beecrypt::io::OutputStream;
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/lang/String.h"
 using beecrypt::lang::String;
 #include "beecrypt/c++/util/Enumeration.h"
@@ -43,7 +45,7 @@ namespace beecrypt {
 	namespace util {
 		/*!\ingroup CXX_UTIL_m
 		 */
-		class BEECRYPTCXXAPI Properties
+		class BEECRYPTCXXAPI Properties : public beecrypt::lang::Object
 		{
 		private:
 			typedef map<String,String> properties_map;
@@ -72,7 +74,7 @@ namespace beecrypt {
 			Properties();
 			Properties(const Properties& copy);
 			Properties(const Properties* defaults);
-			~Properties();
+			virtual ~Properties();
 
 			const String* getProperty(const String& key) const throw ();
 			const String* getProperty(const String& key, const String& defaultValue) const throw ();

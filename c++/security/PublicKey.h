@@ -35,8 +35,6 @@ namespace beecrypt {
 		 */
 		class PublicKey : public Key
 		{
-		public:
-			virtual PublicKey* clone() const = 0;
 		};
 	}
 }

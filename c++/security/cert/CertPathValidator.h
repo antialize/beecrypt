@@ -43,7 +43,7 @@ namespace beecrypt {
 		namespace cert {
 			/*!\ingroup CXX_SECURITY_CERT_m
 			 */
-			class BEECRYPTCXXAPI CertPathValidator
+			class BEECRYPTCXXAPI CertPathValidator : public beecrypt::lang::Object
 			{
 			public:
 				static CertPathValidator* getInstance(const String& algorithm) throw (NoSuchAlgorithmException);
@@ -61,7 +61,7 @@ namespace beecrypt {
 				CertPathValidator(CertPathValidatorSpi* spi, const Provider* provider, const String& algorithm);
 
 			public:
-				~CertPathValidator();
+				virtual ~CertPathValidator();
 
 				CertPathValidatorResult* validate(const CertPath& certPath, const CertPathParameters& params) throw (CertPathValidatorException, InvalidAlgorithmParameterException);
 

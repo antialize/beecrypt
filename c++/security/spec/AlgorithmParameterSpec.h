@@ -27,13 +27,16 @@
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
+
 namespace beecrypt {
 	namespace security {
 		namespace spec {
 			/*!\brief The base class for specification of cryptographic parameters.
 			 * \ingroup CXX_SECURITY_SPEC_m
 			 */
-			class BEECRYPTCXXAPI AlgorithmParameterSpec
+			class BEECRYPTCXXAPI AlgorithmParameterSpec : public beecrypt::lang::Object
 			{
 			public:
 				virtual ~AlgorithmParameterSpec() {};

@@ -27,6 +27,8 @@
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/spec/AlgorithmParameterSpec.h"
 using beecrypt::security::spec::AlgorithmParameterSpec;
 #include "beecrypt/c++/security/spec/InvalidParameterSpecException.h"
@@ -39,7 +41,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI AlgorithmParametersSpi
+		class BEECRYPTCXXAPI AlgorithmParametersSpi : public beecrypt::lang::Object
 		{
 			friend class BEECRYPTCXXAPI AlgorithmParameters;
 

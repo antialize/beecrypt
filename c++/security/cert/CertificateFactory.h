@@ -25,6 +25,8 @@
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/lang/String.h"
 using beecrypt::lang::String;
 #include "beecrypt/c++/security/Provider.h"
@@ -44,7 +46,7 @@ namespace beecrypt {
 		namespace cert {
 			/*!\ingroup CXX_SECURITY_CERT_m
 			 */
-			class BEECRYPTCXXAPI CertificateFactory
+			class BEECRYPTCXXAPI CertificateFactory : public beecrypt::lang::Object
 			{
 			public:
 				static CertificateFactory* getInstance(const String& type) throw (NoSuchAlgorithmException);
@@ -60,7 +62,7 @@ namespace beecrypt {
 				CertificateFactory(CertificateFactorySpi* spi, const Provider* provider, const String& type);
 
 			public:
-				~CertificateFactory();
+				virtual ~CertificateFactory();
 
 				Certificate* generateCertificate(InputStream& in) throw (CertificateException);
 				vector<Certificate*>* generateCertificates(InputStream& in) throw (CertificateException);

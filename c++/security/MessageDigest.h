@@ -27,6 +27,8 @@
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/MessageDigestSpi.h"
 using beecrypt::security::MessageDigestSpi;
 #include "beecrypt/c++/security/Provider.h"
@@ -40,7 +42,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI MessageDigest
+		class BEECRYPTCXXAPI MessageDigest : public beecrypt::lang::Object
 		{
 		public:
 			static MessageDigest* getInstance(const String& algorithm) throw (NoSuchAlgorithmException);
@@ -56,9 +58,9 @@ namespace beecrypt {
 			MessageDigest(MessageDigestSpi* spi, const Provider* provider, const String& algorithm);
 
 		public:
-			~MessageDigest();
+			virtual ~MessageDigest();
 
-			MessageDigest* clone() const;
+			virtual MessageDigest* clone() const throw (CloneNotSupportedException);
 
 			const bytearray& digest();
 			const bytearray& digest(const bytearray& b);

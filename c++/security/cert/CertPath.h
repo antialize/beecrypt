@@ -27,12 +27,8 @@
 
 #ifdef __cplusplus
 
-/*
-#include "beecrypt/c++/array.h"
-using beecrypt::bytearray;
-#include "beecrypt/c++/lang/String.h"
-using beecrypt::lang::String;
-*/
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/cert/Certificate.h"
 using beecrypt::security::cert::Certificate;
 
@@ -44,7 +40,7 @@ namespace beecrypt {
 		namespace cert {
 			/*!\ingroup CXX_SECURITY_CERT_m
 			 */
-			class BEECRYPTCXXAPI CertPath
+			class BEECRYPTCXXAPI CertPath : public beecrypt::lang::Object
 			{
 			private:
 				String _type;
@@ -54,8 +50,6 @@ namespace beecrypt {
 
 			public:
 				virtual ~CertPath();
-
-				virtual bool operator==(const CertPath& compare) const = 0;
 
 				virtual const vector<const Certificate*>& getCertificates() const = 0;
 

@@ -25,6 +25,8 @@
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/KeyPairGeneratorSpi.h"
 using beecrypt::security::KeyPairGeneratorSpi;
 #include "beecrypt/c++/security/Provider.h"
@@ -38,7 +40,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI KeyPairGenerator
+		class BEECRYPTCXXAPI KeyPairGenerator : public beecrypt::lang::Object
 		{
 		public:
 			static KeyPairGenerator* getInstance(const String& algorithm) throw (NoSuchAlgorithmException);
@@ -54,7 +56,7 @@ namespace beecrypt {
 			KeyPairGenerator(KeyPairGeneratorSpi* spi, const Provider* provider, const String& algorithm);
 
 		public:
-			~KeyPairGenerator();
+			virtual ~KeyPairGenerator();
 
 			KeyPair* generateKeyPair();
 

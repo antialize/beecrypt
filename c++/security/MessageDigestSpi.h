@@ -29,6 +29,8 @@
 
 #include "beecrypt/c++/array.h"
 using beecrypt::bytearray;
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/ShortBufferException.h"
 using beecrypt::security::ShortBufferException;
 
@@ -36,7 +38,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI MessageDigestSpi
+		class BEECRYPTCXXAPI MessageDigestSpi : public beecrypt::lang::Object
 		{
 			friend class MessageDigest;
 
@@ -51,7 +53,7 @@ namespace beecrypt {
 		public:
 			virtual ~MessageDigestSpi() {};
 
-			virtual MessageDigestSpi* clone() const = 0;
+			virtual MessageDigestSpi* clone() const throw (CloneNotSupportedException) = 0;
 		};
 	}
 }

@@ -31,6 +31,8 @@
 using beecrypt::bytearray;
 #include "beecrypt/c++/lang/IllegalStateException.h"
 using beecrypt::lang::IllegalStateException;
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/AlgorithmParameters.h"
 using beecrypt::security::AlgorithmParameters;
 #include "beecrypt/c++/security/PrivateKey.h"
@@ -54,7 +56,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI SignatureSpi
+		class BEECRYPTCXXAPI SignatureSpi : public beecrypt::lang::Object
 		{
 			friend class Signature;
 

@@ -27,11 +27,14 @@
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
+
 namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI SecureRandomSpi
+		class BEECRYPTCXXAPI SecureRandomSpi : public beecrypt::lang::Object
 		{
 			friend class SecureRandom;
 

@@ -14,8 +14,7 @@ CertificateFactory.cxx \
 CertificateNotYetValidException.cxx \
 CertPath.cxx \
 CertPathValidator.cxx \
-CertPathValidatorException.cxx \
-CertPathValidatorResult.cxx
+CertPathValidatorException.cxx
 
 cxxsecuritycert_HEADERS =\
 Certificate.h \

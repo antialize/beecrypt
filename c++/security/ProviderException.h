@@ -32,7 +32,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI ProviderException : public RuntimeException
+		class BEECRYPTCXXAPI ProviderException : public beecrypt::lang::RuntimeException
 		{
 		public:
 			ProviderException() throw ();

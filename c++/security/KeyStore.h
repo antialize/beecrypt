@@ -31,6 +31,8 @@
 using beecrypt::io::InputStream;
 #include "beecrypt/c++/io/OutputStream.h"
 using beecrypt::io::OutputStream;
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/KeyStoreSpi.h"
 using beecrypt::security::KeyStoreSpi;
 #include "beecrypt/c++/security/KeyStoreException.h"
@@ -46,11 +48,11 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI KeyStore
+		class BEECRYPTCXXAPI KeyStore : public beecrypt::lang::Object
 		{
 		#if FOR_NEXT_VERSION_COMPATIBLE_WITH_JAVA_1_5
 		public:
-			class BEECRYPTCXXAPI Entry
+			class BEECRYPTCXXAPI Entry : public beecrypt::lang::Object
 			{
 			public:
 				virtual ~Entry() {};
@@ -101,7 +103,7 @@ namespace beecrypt {
 			KeyStore(KeyStoreSpi* spi, const Provider* provider, const String& type);
 
 		public:
-			~KeyStore();
+			virtual ~KeyStore();
 
 			Enumeration* aliases();
 			bool containsAlias(const String& alias) throw (KeyStoreException);

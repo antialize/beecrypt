@@ -27,6 +27,8 @@
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/AlgorithmParameters.h"
 using beecrypt::security::AlgorithmParameters;
 #include "beecrypt/c++/security/SecureRandom.h"
@@ -45,7 +47,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI AlgorithmParameterGeneratorSpi
+		class BEECRYPTCXXAPI AlgorithmParameterGeneratorSpi : public beecrypt::lang::Object
 		{
 			friend class BEECRYPTCXXAPI AlgorithmParameterGenerator;
 

@@ -27,6 +27,8 @@
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/InvalidAlgorithmParameterException.h"
 using beecrypt::security::InvalidAlgorithmParameterException;
 #include "beecrypt/c++/security/cert/CertPath.h"
@@ -43,7 +45,7 @@ namespace beecrypt {
 		namespace cert {
 			/*!\ingroup CXX_SECURITY_CERT_m
 			 */
-			class BEECRYPTCXXAPI CertPathValidatorSpi
+			class BEECRYPTCXXAPI CertPathValidatorSpi : public beecrypt::lang::Object
 			{
 				friend class CertPathValidator;
 

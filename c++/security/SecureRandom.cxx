@@ -37,10 +37,10 @@ SecureRandom* SecureRandom::getInstance(const String& algorithm) throw (NoSuchAl
 	Security::spi* tmp = Security::getSpi(algorithm, "SecureRandom");
 
 	#if HAVE_ASSERT_H
-	assert(dynamic_cast<SecureRandomSpi*>((SecureRandomSpi*) tmp->cspi));
+	assert(dynamic_cast<SecureRandomSpi*>(tmp->cspi));
 	#endif
 
-	SecureRandom* result = new SecureRandom((SecureRandomSpi*) tmp->cspi, tmp->prov, tmp->name);
+	SecureRandom* result = new SecureRandom(reinterpret_cast<SecureRandomSpi*>(tmp->cspi), tmp->prov, tmp->name);
 
 	delete tmp;
 
@@ -52,10 +52,10 @@ SecureRandom* SecureRandom::getInstance(const String& type, const String& provid
 	Security::spi* tmp = Security::getSpi(type, "SecureRandom", provider);
 
 	#if HAVE_ASSERT_H
-	assert(dynamic_cast<SecureRandomSpi*>((SecureRandomSpi*) tmp->cspi));
+	assert(dynamic_cast<SecureRandomSpi*>(tmp->cspi));
 	#endif
 
-	SecureRandom* result = new SecureRandom((SecureRandomSpi*) tmp->cspi, tmp->prov, tmp->name);
+	SecureRandom* result = new SecureRandom(reinterpret_cast<SecureRandomSpi*>(tmp->cspi), tmp->prov, tmp->name);
 
 	delete tmp;
 
@@ -67,10 +67,10 @@ SecureRandom* SecureRandom::getInstance(const String& type, const Provider& prov
 	Security::spi* tmp = Security::getSpi(type, "SecureRandom", provider);
 
 	#if HAVE_ASSERT_H
-	assert(dynamic_cast<SecureRandomSpi*>((SecureRandomSpi*) tmp->cspi));
+	assert(dynamic_cast<SecureRandomSpi*>(tmp->cspi));
 	#endif
 
-	SecureRandom* result = new SecureRandom((SecureRandomSpi*) tmp->cspi, tmp->prov, tmp->name);
+	SecureRandom* result = new SecureRandom(reinterpret_cast<SecureRandomSpi*>(tmp->cspi), tmp->prov, tmp->name);
 
 	delete tmp;
 

@@ -27,6 +27,8 @@
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/KeyFactorySpi.h"
 using beecrypt::security::KeyFactorySpi;
 #include "beecrypt/c++/security/Provider.h"
@@ -43,7 +45,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI KeyFactory
+		class BEECRYPTCXXAPI KeyFactory : public beecrypt::lang::Object
 		{
 		public:
 			static KeyFactory* getInstance(const String& algorithm) throw (NoSuchAlgorithmException);
@@ -59,7 +61,7 @@ namespace beecrypt {
 			KeyFactory(KeyFactorySpi* spi, const Provider* provider, const String& algorithm);
 
 		public:
-			~KeyFactory();
+			virtual ~KeyFactory();
 
 			PrivateKey* generatePrivate(const KeySpec& spec) throw (InvalidKeySpecException);
 			PublicKey* generatePublic(const KeySpec& spec) throw (InvalidKeySpecException);

@@ -52,10 +52,10 @@ AlgorithmParameters* AlgorithmParameters::getInstance(const String& algorithm) t
 	Security::spi* tmp = Security::getSpi(algorithm, "AlgorithmParameters");
 
 	#if HAVE_ASSERT_H
-	assert(dynamic_cast<AlgorithmParametersSpi*>((AlgorithmParametersSpi*) tmp->cspi));
+	assert(dynamic_cast<AlgorithmParametersSpi*>(tmp->cspi));
 	#endif
 
-	AlgorithmParameters* result = new AlgorithmParameters((AlgorithmParametersSpi*) tmp->cspi, tmp->prov, tmp->name);
+	AlgorithmParameters* result = new AlgorithmParameters(reinterpret_cast<AlgorithmParametersSpi*>(tmp->cspi), tmp->prov, tmp->name);
 
 	delete tmp;
 
@@ -67,10 +67,10 @@ AlgorithmParameters* AlgorithmParameters::getInstance(const String& algorithm, c
 	Security::spi* tmp = Security::getSpi(algorithm, "AlgorithmParameters", provider);
 
 	#if HAVE_ASSERT_H
-	assert(dynamic_cast<AlgorithmParametersSpi*>((AlgorithmParametersSpi*) tmp->cspi));
+	assert(dynamic_cast<AlgorithmParametersSpi*>(tmp->cspi));
 	#endif
 
-	AlgorithmParameters* result = new AlgorithmParameters((AlgorithmParametersSpi*) tmp->cspi, tmp->prov, tmp->name);
+	AlgorithmParameters* result = new AlgorithmParameters(reinterpret_cast<AlgorithmParametersSpi*>(tmp->cspi), tmp->prov, tmp->name);
 
 	delete tmp;
 
@@ -82,10 +82,10 @@ AlgorithmParameters* AlgorithmParameters::getInstance(const String& algorithm, c
 	Security::spi* tmp = Security::getSpi(algorithm, "AlgorithmParameters", provider);
 
 	#if HAVE_ASSERT_H
-	assert(dynamic_cast<AlgorithmParametersSpi*>((AlgorithmParametersSpi*) tmp->cspi));
+	assert(dynamic_cast<AlgorithmParametersSpi*>(tmp->cspi));
 	#endif
 
-	AlgorithmParameters* result = new AlgorithmParameters((AlgorithmParametersSpi*) tmp->cspi, tmp->prov, tmp->name);
+	AlgorithmParameters* result = new AlgorithmParameters(reinterpret_cast<AlgorithmParametersSpi*>(tmp->cspi), tmp->prov, tmp->name);
 
 	delete tmp;
 

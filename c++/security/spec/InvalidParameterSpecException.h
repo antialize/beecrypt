@@ -33,7 +33,7 @@ namespace beecrypt {
 		namespace spec {
 			/*!\ingroup CXX_SECURITY_SPEC_m
 			 */
-			class BEECRYPTCXXAPI InvalidParameterSpecException : public GeneralSecurityException
+			class BEECRYPTCXXAPI InvalidParameterSpecException : public beecrypt::security::GeneralSecurityException
 			{
 			public:
 				InvalidParameterSpecException() throw ();

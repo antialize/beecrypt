@@ -32,7 +32,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI InvalidParameterException : public IllegalArgumentException
+		class BEECRYPTCXXAPI InvalidParameterException : public beecrypt::lang::IllegalArgumentException
 		{
 		public:
 			InvalidParameterException() throw ();

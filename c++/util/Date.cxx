@@ -61,14 +61,18 @@ const Date& Date::operator=(const Date& set) throw ()
 	return *this;
 }
 
-bool Date::operator==(const Date& cmp) const throw ()
+bool Date::equals(const Object& compare) const throw ()
 {
-	return _time == cmp._time;
-}
+	if (this == &compare)
+		return true;
 
-bool Date::operator!=(const Date& cmp) const throw ()
-{
-	return _time != cmp._time;
+	const Date* d = dynamic_cast<const Date*>(&compare);
+	if (d)
+	{
+		return _time == d->_time;
+	}
+
+	return false;
 }
 
 bool Date::after(const Date& cmp) const throw ()

@@ -38,7 +38,7 @@ namespace beecrypt {
 			/*!\brief EC public key interface
 			 * \ingroup CXX_SECURITY_INTERFACES_m
 			 */
-			class ECPublicKey : public PublicKey, ECKey
+			class ECPublicKey : public PublicKey, public ECKey
 			{
 			public:
 				virtual const ECPoint& getW() const throw () = 0;

@@ -88,7 +88,7 @@ MessageDigest* MessageDigest::getInstance(const String& algorithm, const Provide
 	return result;
 }
 
-MessageDigest* MessageDigest::clone() const
+MessageDigest* MessageDigest::clone() const throw (CloneNotSupportedException)
 {
 	MessageDigestSpi* _mspc = _mspi->clone();
 

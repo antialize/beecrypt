@@ -40,10 +40,6 @@ namespace beecrypt {
 		public:
 			virtual ~Key() {};
 
-			virtual Key* clone() const = 0;
-
-			virtual bool operator==(const Key& compare) const throw () = 0;
-
 			virtual const bytearray* getEncoded() const = 0;
 			virtual const String& getAlgorithm() const throw () = 0;
 			virtual const String* getFormat() const throw () = 0;

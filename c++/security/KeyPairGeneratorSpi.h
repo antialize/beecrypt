@@ -27,6 +27,8 @@
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/KeyPair.h"
 using beecrypt::security::KeyPair;
 #include "beecrypt/c++/security/SecureRandom.h"
@@ -42,7 +44,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI KeyPairGeneratorSpi
+		class BEECRYPTCXXAPI KeyPairGeneratorSpi : public beecrypt::lang::Object
 		{
 			friend class KeyPairGenerator;
 

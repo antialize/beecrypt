@@ -27,6 +27,8 @@
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/PrivateKey.h"
 using beecrypt::security::PrivateKey;
 #include "beecrypt/c++/security/PublicKey.h"
@@ -44,7 +46,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI KeyFactorySpi
+		class BEECRYPTCXXAPI KeyFactorySpi : public beecrypt::lang::Object
 		{
 			friend class KeyFactory;
 

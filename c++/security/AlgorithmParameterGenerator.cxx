@@ -52,10 +52,10 @@ AlgorithmParameterGenerator* AlgorithmParameterGenerator::getInstance(const Stri
 	Security::spi* tmp = Security::getSpi(algorithm, "AlgorithmParameterGenerator");
 
 	#if HAVE_ASSERT_H
-	assert(dynamic_cast<AlgorithmParameterGeneratorSpi*>((AlgorithmParameterGeneratorSpi*) tmp->cspi));
+	assert(dynamic_cast<AlgorithmParameterGeneratorSpi*>(tmp->cspi));
 	#endif
 
-    AlgorithmParameterGenerator* result = new AlgorithmParameterGenerator((AlgorithmParameterGeneratorSpi*) tmp->cspi, tmp->prov, tmp->name);
+    AlgorithmParameterGenerator* result = new AlgorithmParameterGenerator(reinterpret_cast<AlgorithmParameterGeneratorSpi*>(tmp->cspi), tmp->prov, tmp->name);
 
     delete tmp;
                                                                                 
@@ -67,10 +67,10 @@ AlgorithmParameterGenerator* AlgorithmParameterGenerator::getInstance(const Stri
 	Security::spi* tmp = Security::getSpi(algorithm, "AlgorithmParameterGenerator", provider);
 
 	#if HAVE_ASSERT_H
-	assert(dynamic_cast<AlgorithmParameterGeneratorSpi*>((AlgorithmParameterGeneratorSpi*) tmp->cspi));
+	assert(dynamic_cast<AlgorithmParameterGeneratorSpi*>(tmp->cspi));
 	#endif
 
-    AlgorithmParameterGenerator* result = new AlgorithmParameterGenerator((AlgorithmParameterGeneratorSpi*) tmp->cspi, tmp->prov, tmp->name);
+    AlgorithmParameterGenerator* result = new AlgorithmParameterGenerator(reinterpret_cast<AlgorithmParameterGeneratorSpi*>(tmp->cspi), tmp->prov, tmp->name);
 
     delete tmp;
                                                                                 
@@ -82,10 +82,10 @@ AlgorithmParameterGenerator* AlgorithmParameterGenerator::getInstance(const Stri
 	Security::spi* tmp = Security::getSpi(algorithm, "AlgorithmParameterGenerator", provider);
 
 	#if HAVE_ASSERT_H
-	assert(dynamic_cast<AlgorithmParameterGeneratorSpi*>((AlgorithmParameterGeneratorSpi*) tmp->cspi));
+	assert(dynamic_cast<AlgorithmParameterGeneratorSpi*>(tmp->cspi));
 	#endif
 
-    AlgorithmParameterGenerator* result = new AlgorithmParameterGenerator((AlgorithmParameterGeneratorSpi*) tmp->cspi, tmp->prov, tmp->name);
+    AlgorithmParameterGenerator* result = new AlgorithmParameterGenerator(reinterpret_cast<AlgorithmParameterGeneratorSpi*>(tmp->cspi), tmp->prov, tmp->name);
 
     delete tmp;
                                                                                 

@@ -27,16 +27,19 @@
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
+
 namespace beecrypt {
 	namespace security {
 		namespace spec {
 			/*!\brief The base class for specification of cryptographic keys
 			 * \ingroup CXX_SECURITY_SPEC_m
 			 */
-			class BEECRYPTCXXAPI KeySpec
+			class BEECRYPTCXXAPI KeySpec : public beecrypt::lang::Object
 			{
 			public:
-				virtual ~KeySpec() {}
+				virtual ~KeySpec() {};
 			};
 		}
 	}

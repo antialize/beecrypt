@@ -40,7 +40,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI Provider : public Properties
+		class BEECRYPTCXXAPI Provider : public beecrypt::util::Properties
 		{
 			friend class Security;
 
@@ -52,7 +52,7 @@ namespace beecrypt {
 			mutex _lock;
 			UConverter* _conv;
 
-			typedef void* (*instantiator)();
+			typedef Object* (*instantiator)();
 			typedef map<String,instantiator> instantiator_map;
 
 			instantiator_map _imap;

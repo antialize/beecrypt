@@ -27,6 +27,8 @@
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/lang/String.h"
 using beecrypt::lang::String;
 
@@ -34,7 +36,7 @@ namespace beecrypt {
 	namespace util {
 		/*!\ingroup CXX_UTIL_m
 		 */
-		class BEECRYPTCXXAPI Date
+		class BEECRYPTCXXAPI Date : public beecrypt::lang::Object
 		{
 		private:
 			javalong _time;
@@ -42,10 +44,11 @@ namespace beecrypt {
 		public:
 			Date() throw ();
 			Date(javalong) throw ();
+			virtual ~Date() {};
+
+			virtual bool equals(const Object&) const throw ();
 
 			const Date& operator=(const Date&) throw ();
-			bool operator==(const Date&) const throw ();
-			bool operator!=(const Date&) const throw ();
 
 			bool after(const Date&) const throw ();
 			bool before(const Date&) const throw ();

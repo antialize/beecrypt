@@ -31,6 +31,8 @@
 using beecrypt::io::InputStream;
 #include "beecrypt/c++/io/OutputStream.h"
 using beecrypt::io::OutputStream;
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/cert/Certificate.h"
 using beecrypt::security::cert::Certificate;
 
@@ -42,7 +44,7 @@ namespace beecrypt {
 		namespace cert {
 			/*!\ingroup CXX_SECURITY_CERT_m
 			 */
-			class BEECRYPTCXXAPI CertificateFactorySpi
+			class BEECRYPTCXXAPI CertificateFactorySpi : public beecrypt::lang::Object
 			{
 				friend class CertificateFactory;
 

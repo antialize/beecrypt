@@ -32,7 +32,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI GeneralSecurityException : public Exception
+		class BEECRYPTCXXAPI GeneralSecurityException : public beecrypt::lang::Exception
 		{
 		public:
 			GeneralSecurityException() throw ();

@@ -25,17 +25,16 @@
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/lang/Cloneable.h"
+using beecrypt::lang::Cloneable;
+
 namespace beecrypt {
 	namespace security {
 		namespace cert {
 			/*!\ingroup CXX_SECURITY_CERT_m
 			 */
-			class BEECRYPTCXXAPI CertPathParameters 
+			class BEECRYPTCXXAPI CertPathParameters : public beecrypt::lang::Cloneable
 			{
-			public:
-				virtual ~CertPathParameters() {};
-
-				virtual CertPathParameters* clone() const = 0;
 			};
 		}
 	}

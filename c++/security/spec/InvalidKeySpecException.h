@@ -33,7 +33,7 @@ namespace beecrypt {
 		namespace spec {
 			/*!\ingroup CXX_SECURITY_SPEC_m
 			 */
-			class BEECRYPTCXXAPI InvalidKeySpecException : public GeneralSecurityException
+			class BEECRYPTCXXAPI InvalidKeySpecException : public beecrypt::security::GeneralSecurityException
 			{
 			public:
 				InvalidKeySpecException() throw ();

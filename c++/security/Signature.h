@@ -27,6 +27,8 @@
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/SignatureSpi.h"
 using beecrypt::security::SignatureSpi;
 #include "beecrypt/c++/security/NoSuchAlgorithmException.h"
@@ -38,7 +40,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI Signature
+		class BEECRYPTCXXAPI Signature : public beecrypt::lang::Object
 		{
 		protected:
 			static const int UNINITIALIZED = 0;
@@ -78,7 +80,7 @@ namespace beecrypt {
 			Signature(SignatureSpi* spi, const Provider* provider, const String& algorithm);
 
 		public:
-			~Signature();
+			virtual ~Signature();
 
 			AlgorithmParameters* getParameters() const;
 			void setParameter(const AlgorithmParameterSpec&) throw (InvalidAlgorithmParameterException);

@@ -48,10 +48,10 @@ KeyFactory* KeyFactory::getInstance(const String& algorithm) throw (NoSuchAlgori
     Security::spi* tmp = Security::getSpi(algorithm, "KeyFactory");
 
 	#if HAVE_ASSERT_H
-	assert(dynamic_cast<KeyFactorySpi*>((KeyFactorySpi*) tmp->cspi));
+	assert(dynamic_cast<KeyFactorySpi*>(tmp->cspi));
 	#endif
 
-    KeyFactory* result = new KeyFactory((KeyFactorySpi*) tmp->cspi, tmp->prov, tmp->name);
+    KeyFactory* result = new KeyFactory(reinterpret_cast<KeyFactorySpi*>(tmp->cspi), tmp->prov, tmp->name);
 
     delete tmp;
 
@@ -63,10 +63,10 @@ KeyFactory* KeyFactory::getInstance(const String& algorithm, const String& provi
     Security::spi* tmp = Security::getSpi(algorithm, "KeyFactory", provider);
 
 	#if HAVE_ASSERT_H
-	assert(dynamic_cast<KeyFactorySpi*>((KeyFactorySpi*) tmp->cspi));
+	assert(dynamic_cast<KeyFactorySpi*>(tmp->cspi));
 	#endif
 
-    KeyFactory* result = new KeyFactory((KeyFactorySpi*) tmp->cspi, tmp->prov, tmp->name);
+    KeyFactory* result = new KeyFactory(reinterpret_cast<KeyFactorySpi*>(tmp->cspi), tmp->prov, tmp->name);
 
     delete tmp;
 
@@ -78,10 +78,10 @@ KeyFactory* KeyFactory::getInstance(const String& algorithm, const Provider& pro
     Security::spi* tmp = Security::getSpi(algorithm, "KeyFactory", provider);
 
 	#if HAVE_ASSERT_H
-	assert(dynamic_cast<KeyFactorySpi*>((KeyFactorySpi*) tmp->cspi));
+	assert(dynamic_cast<KeyFactorySpi*>(tmp->cspi));
 	#endif
 
-    KeyFactory* result = new KeyFactory((KeyFactorySpi*) tmp->cspi, tmp->prov, tmp->name);
+    KeyFactory* result = new KeyFactory(reinterpret_cast<KeyFactorySpi*>(tmp->cspi), tmp->prov, tmp->name);
 
     delete tmp;
 
