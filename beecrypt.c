@@ -384,13 +384,13 @@ int hashFunctionContextUpdateMP(hashFunctionContext* ctxt, const mpnumber* n)
 		int rc;
 
 		/* get the number of significant bits in the number */
-		size_t sig = mpbits(n->size, n->data);
+		size_t sigbits = mpbits(n->size, n->data);
 
 		/* calculate how many bytes we need for a java-style encoding;
 		 * if the most significant bit of the most significant byte
 		 * is set, then we need to prefix a zero byte.
 		 */
-		size_t req = ((sig+7) >> 3) + (((sig&7) == 0) ? 1 : 0);
+		size_t req = ((sigbits+8) >> 3);
 
 		byte* tmp = (byte*) malloc(req);
 
@@ -638,13 +638,13 @@ int keyedHashFunctionContextUpdateMP(keyedHashFunctionContext* ctxt, const mpnum
 		int rc;
 
 		/* get the number of significant bits in the number */
-		size_t sig = mpbits(n->size, n->data);
+		size_t sigbits = mpbits(n->size, n->data);
 
 		/* calculate how many bytes we need a java-style encoding; if the
 		 * most significant bit of the most significant byte is set, then
 		 * we need to prefix a zero byte.
 		 */
-		size_t req = ((sig+7) >> 3) + (((sig&7) == 0) ? 1 : 0);
+		size_t req = ((sigbits+8) >> 3);
 
 		byte* tmp = (byte*) malloc(req);
 
