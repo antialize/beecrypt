@@ -196,7 +196,7 @@ int md5Update(md5Param* mp, const byte* data, size_t size)
 	mpadd(1, mp->length, add);
 	#elif (MP_WBITS == 32)
 	mpw add[2];
-	mpsetw(2, add, size);
+	mpsetws(2, add, size);
 	mplshift(2, add, 3);
 	mpadd(2, mp->length, add);
 	#else
