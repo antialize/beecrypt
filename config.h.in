@@ -18,6 +18,9 @@
 /* Define to 1 if you want to enable multithread support */
 #undef ENABLE_THREADS
 
+/* Define to 1 if you want to enable thread-local-storage support */
+#undef ENABLE_THREAD_LOCAL_STORAGE
+
 /* Define to 1 if you are using FreeBSD */
 #undef FREEBSD
 
@@ -291,6 +294,27 @@
 
 /* Define to `unsigned' if <sys/types.h> does not define. */
 #undef size_t
+
+
+#if ENABLE_THREADS
+# ifndef _REENTRANT
+#  define _REENTRANT
+# endif
+# if LINUX
+#  define _LIBC_REENTRANT
+# endif
+#else
+# ifdef _REENTRANT
+#  undef _REENTRANT
+# endif
+#endif
+
+
+
+#if !ENABLE_THREAD_LOCAL_STORAGE
+# define __thread
+#endif
+
 
 
 #if ENABLE_THREADS
