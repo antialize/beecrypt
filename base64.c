@@ -3,7 +3,7 @@
  *
  * Base64 encoding/decoding, code
  *
- * Copyright (c) 2000 Virtual Unlimited B.V.
+ * Copyright (c) 2000-2001 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -39,8 +39,8 @@
 
 static const char* to_b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-/* encode 72 characters per line */
-#define CHARS_PER_LINE	72
+/* encode 64 characters per line */
+#define CHARS_PER_LINE	64
 
 char* b64enc(const memchunk* chunk)
 {
@@ -61,8 +61,8 @@ char* b64enc(const memchunk* chunk)
 		while (div > 0)
 		{
 			buf[0] = to_b64[ (data[0] >> 2) & 0x3f];
-			buf[1] = to_b64[((data[0] << 4) & 0x30) + ((data[1] >> 4) & 0xf)];
-			buf[2] = to_b64[((data[1] << 2) & 0x3c) + ((data[2] >> 6) & 0x3)];
+			buf[1] = to_b64[((data[0] << 4) & 0x30) | ((data[1] >> 4) & 0xf)];
+			buf[2] = to_b64[((data[1] << 2) & 0x3c) | ((data[2] >> 6) & 0x3)];
 			buf[3] = to_b64[  data[2] & 0x3f];
 			data += 3;
 			buf += 4;
@@ -191,6 +191,14 @@ memchunk* b64dec(const char* string)
 						else if ((ch >= '0') && (ch <= '9'))
 						{
 							bits = (byte) (ch - '0' + 52);
+						}
+						else if (ch == '+')
+						{
+							bits = 62;
+						}
+						else if (ch == '/')
+						{
+							bits = 63;
 						}
 						else if (ch == '=')
 							break;

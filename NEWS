@@ -1,3 +1,9 @@
+2.2.0:
+	- Added DSA signature algorithm.
+	- Fixed compatibility with the latest automake & autoconf versions.
+	- Fixed a bug in testing the result of a gcd operation in the mp32prndconone routine.
+	- Fixed a bug in base64 decoding.
+
 2.1.0:
 	- Added support for automake, autoheader and libtool, which should make compiling the library even easier.
 	- Changed DHAES API to conform to IEEE P.1363 submission and to allow for uneven key splitting.

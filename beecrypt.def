@@ -88,6 +88,8 @@ EXPORTS
  dlpk_pgoqValidate
  dlpk_pgonValidate
  dlsvdp_pDHSecret
+ dsasign
+ dsavrfy
  elgv1sign
  elgv1vrfy 
  elgv3sign
@@ -282,6 +284,7 @@ EXPORTS
  randomGeneratorDefault
  randomGeneratorContextInit
  randomGeneratorContextFree
+ randomGeneratorContextNext
  rsapri
  rsapricrt
  rsavrfy

@@ -148,7 +148,7 @@ mp32add proc
 	mov ecx,dword ptr [esp+12]
 	mov edi,dword ptr [esp+16]
 	mov esi,dword ptr [esp+20]
-	
+
 	xor edx,edx
 	dec ecx
 
@@ -175,7 +175,7 @@ mp32sub proc
 	mov ecx,dword ptr [esp+12]
 	mov edi,dword ptr [esp+16]
 	mov esi,dword ptr [esp+20]
-	
+
 	xor edx,edx
 	dec ecx
 
@@ -205,6 +205,7 @@ mp32divtwo proc
 	lea edi,dword ptr [edi+ecx*4]
 	neg ecx
 	clc
+
 @mp32divtwo_loop:
 	rcr dword ptr [edi+ecx*4],1
 	inc ecx
@@ -222,8 +223,8 @@ mp32multwo proc
 	mov ecx,dword ptr [esp+8]
 	mov edi,dword ptr [esp+12]
 
-	clc
 	dec ecx
+	clc
 
 	align 4
 @mp32multwo_loop:
@@ -276,7 +277,6 @@ mp32setmul endp
 
 
 	align 8
-
 mp32addmul proc
 	push edi
 	push esi
@@ -314,7 +314,6 @@ mp32addmul endp
 
 
 	align 8
-
 mp32addsqrtrc proc
 	push edi
 	push esi

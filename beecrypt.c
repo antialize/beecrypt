@@ -228,6 +228,11 @@ int randomGeneratorContextFree(randomGeneratorContext* ctxt)
 	return rc;
 }
 
+int randomGeneratorContextNext(randomGeneratorContext* ctxt, uint32* data, int size)
+{
+	return ctxt->rng->next(ctxt->param, data, size);
+}
+
 static const hashFunction* hashFunctionList[] =
 {
 	&md5,

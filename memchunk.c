@@ -88,3 +88,18 @@ memchunk* memchunkResize(memchunk* m, int size)
 
 	return m;
 }
+
+memchunk* memchunkClone(const memchunk* m)
+{
+	if (m)
+	{
+		memchunk* tmp = memchunkAlloc(m->size);
+
+		if (tmp)
+			memcpy(tmp->data, m->data, m->size);
+
+		return tmp;
+	}
+
+	return (memchunk*) 0;
+}
