@@ -517,14 +517,14 @@ void testRSA()
 		#if HAVE_TIME_H
 		tstart = clock();
 		#endif
-		for (i = 0; i < 100; i++)
+		for (i = 0; i < 1000; i++)
 		{
 			rsavrfy((rsapk*) &kp, &hm, &s);
 		}
 		#if HAVE_TIME_H
 		tstop = clock();
 		ttime = ((double)(tstop - tstart)) / CLOCKS_PER_SEC;
-		printf(" 100x in %.3f seconds\n", ttime);
+		printf(" 1000x in %.3f seconds\n", ttime);
 		#endif
 
 		rsakpFree(&kp);
