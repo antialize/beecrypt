@@ -71,11 +71,19 @@ namespace beecrypt {
 
 			array(const array& _copy) throw (std::bad_alloc)
 			{
-				_data = (T*) malloc(_copy._size * sizeof(T));
-				if (_data == 0)
-					throw std::bad_alloc();
-				_size = _copy._size;
-				memcpy(_data, _copy._data, _size * sizeof(T));
+				if (_copy._size)
+				{
+					_data = (T*) malloc(_copy._size * sizeof(T));
+					if (_data == 0)
+						throw std::bad_alloc();
+					_size = _copy._size;
+					memcpy(_data, _copy._data, _size * sizeof(T));
+				}
+				else
+				{
+					_data = 0;
+					_size = 0;
+				}
 			}
 
 			~array() throw ()
