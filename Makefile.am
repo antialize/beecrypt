@@ -28,8 +28,8 @@
 # 3. Interfaces removed (bad): Increment CURRENT, set AGE and REVISION to 0.
 #
 
-LIBBEECRYPT_LT_CURRENT = 7
-LIBBEECRYPT_LT_AGE = 1
+LIBBEECRYPT_LT_CURRENT = 8
+LIBBEECRYPT_LT_AGE = 2
 LIBBEECRYPT_LT_REVISION = 0
 
 AUTOMAKE_OPTIONS = gnu check-news no-dependencies
