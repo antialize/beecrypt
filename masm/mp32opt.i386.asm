@@ -5,7 +5,7 @@
 ;
 ; Compile target is Microsoft Macro Assembler
 ;
-; Copyright (c) 1998-2000 Virtual Unlimited B.V.
+; Copyright (c) 1998, 1999, 2000, 2001 Virtual Unlimited B.V.
 ;
 ; Author: Bob Deblier <bob@virtualunlimited.com>
 ;
@@ -30,7 +30,57 @@
 	.code
 
 	align 8
+mp32zero proc
+	push edi
 
+	mov ecx,dword ptr [esp+8]
+	mov edi,dword ptr [esp+12]
+
+	xor eax,eax
+	rep stosd
+
+	pop edi
+	ret
+mp32zero endp
+
+
+	align 8
+mp32fill proc
+	push edi
+
+	mov ecx,dword ptr [esp+8]
+	mov edi,dword ptr [esp+12]
+	mov eax,dword ptr [esp+16]
+
+	rep stosd
+
+	pop edi
+	ret
+mp32fill endp
+
+
+	align 8
+mp32odd proc
+	mov ecx,dword ptr [esp+4]
+	mov eax,dword ptr [esp+8]
+	mov eax,dword ptr [eax+ecx*4-4]
+	and eax,1
+	ret
+mp32odd endp
+
+
+	align 8
+mp32even proc
+	mov ecx,dword ptr [esp+4]
+	mov eax,dword ptr [esp+8]
+	mov eax,dword ptr [eax+ecx*4-4]
+	not eax
+	and eax,1
+	ret
+mp32even endp
+
+
+	align 8
 mp32addw proc
 	push edi
 
@@ -41,17 +91,17 @@ mp32addw proc
 	lea edi,dword ptr [edi+ecx*4-4]
 	add dword ptr [edi],eax
 	dec ecx
-	jz @addw_end
+	jz @mp32addw_end
 	sub edi,4
 	xor edx,edx
 
 	align 4
-@addw_loop:
+@mp32addw_loop:
 	adc dword ptr [edi],edx
 	sub edi,4
 	dec ecx
-	jnz @addw_loop
-@addw_end:
+	jnz @mp32addw_loop
+@mp32addw_end:
 	sbb eax,eax
 	neg eax
 
@@ -61,7 +111,6 @@ mp32addw endp
 
 
 	align 8
-
 mp32subw proc
 	push edi
 
@@ -72,17 +121,17 @@ mp32subw proc
 	lea edi,dword ptr [edi+ecx*4-4]
 	sub dword ptr [edi],eax
 	dec ecx
-	jz @subw_end
+	jz @mp32subw_end
 	sub edi,4
 	xor edx,edx
 
 	align 4
-@subw_loop:
+@mp32subw_loop:
 	sbb dword ptr [edi],edx
 	sub edi,4
 	dec ecx
-	jnz @subw_loop
-@subw_end:
+	jnz @mp32subw_loop
+@mp32subw_end:
 	sbb eax,eax
 	neg eax
 
@@ -92,7 +141,6 @@ mp32subw endp
 
 
 	align 8
-
 mp32add proc
 	push edi
 	push esi
@@ -103,12 +151,13 @@ mp32add proc
 	
 	xor edx,edx
 	dec ecx
-		
-@add_loop:
+
+	align 4
+@mp32add_loop:
 	mov eax,dword ptr [esi+ecx*4]
 	adc dword ptr [edi+ecx*4],eax
 	dec ecx
-	jns @add_loop
+	jns @mp32add_loop
 	
 	sbb eax,eax
 	neg eax
@@ -119,7 +168,6 @@ mp32add proc
 mp32add endp
 
 	align 8
-
 mp32sub proc
 	push edi
 	push esi
@@ -130,12 +178,13 @@ mp32sub proc
 	
 	xor edx,edx
 	dec ecx
-		
-@sub_loop:
+
+	align 4
+@mp32sub_loop:
 	mov eax,dword ptr [esi+ecx*4]
 	sbb dword ptr [edi+ecx*4],eax
 	dec ecx
-	jns @sub_loop
+	jns @mp32sub_loop
 	
 	sbb eax,eax
 	neg eax
@@ -145,23 +194,42 @@ mp32sub proc
 	ret
 mp32sub endp
 
+	
+	align 8
+mp32divtwo proc
+	push edi
+
+	mov ecx,dword ptr [esp+8]
+	mov edi,dword ptr [esp+12]
+
+	lea edi,dword ptr [edi+ecx*4]
+	neg ecx
+	clc
+@mp32divtwo_loop:
+	rcr dword ptr [edi+ecx*4],1
+	inc ecx
+	jnz @mp32divtwo_loop
+	
+	pop edi
+	ret
+mp32divtwo endp
+
 
 	align 8
-
 mp32multwo proc
 	push edi
 	
 	mov ecx,dword ptr [esp+8]
 	mov edi,dword ptr [esp+12]
 
-	xor eax,eax
+	clc
 	dec ecx
-	
-@multwo_loop:
-	mov eax,dword ptr [edi+ecx*4]
-	adc dword ptr [edi+ecx*4],eax
+
+	align 4
+@mp32multwo_loop:
+	rcl dword ptr [edi+ecx*4],1
 	dec ecx
-	jns @multwo_loop
+	jns @mp32multwo_loop
 	
 	sbb eax,eax
 	neg eax
@@ -172,7 +240,6 @@ mp32multwo endp
 
 
 	align 8
-
 mp32setmul proc
 	push edi
 	push esi
@@ -184,21 +251,21 @@ mp32setmul proc
 	mov esi,dword ptr [esp+28]
 	mov ebp,dword ptr [esp+32]
 
-	xor ebx,ebx
+	xor edx,edx
 	dec ecx
 	
 	align 4
-@setmul_loop:
+@mp32setmul_loop:
+	mov ebx,edx
 	mov eax,dword ptr [esi+ecx*4]
 	mul ebp
 	add eax,ebx
 	adc edx,0
 	mov dword ptr [edi+ecx*4],eax
-	mov ebx,edx
 	dec ecx
-	jns @setmul_loop
+	jns @mp32setmul_loop
 
-	mov eax,ebx
+	mov eax,edx
 
 	pop ebp
 	pop ebx
@@ -221,23 +288,22 @@ mp32addmul proc
 	mov esi,dword ptr [esp+28]
 	mov ebp,dword ptr [esp+32]
 
-	xor ebx,ebx
+	xor edx,edx
 	dec ecx
-	
+
 	align 4
-@addmul_loop:
+@mp32addmul_loop:
+	mov ebx,edx
 	mov eax,dword ptr [esi+ecx*4]
 	mul ebp
 	add eax,ebx
 	adc edx,0
-	add eax,dword ptr [edi+ecx*4]
+	add dword ptr [edi+ecx*4],eax
 	adc edx,0
-	mov dword ptr [edi+ecx*4],eax
-	mov ebx,edx
 	dec ecx
-	jns @addmul_loop
+	jns @mp32addmul_loop
 
-	mov eax,ebx
+	mov eax,edx
 
 	pop ebp
 	pop ebx
@@ -262,19 +328,17 @@ mp32addsqrtrc proc
 	dec ecx
 
 	align 4
-@addsqrtrc_loop:
+@mp32addsqrtrc_loop:
 	mov eax,dword ptr [esi+ecx*4]
 	mul eax
 	add eax,ebx
 	adc edx,0
-	add eax,dword ptr [edi+ecx*8+4]
-	adc edx,dword ptr [edi+ecx*8+0]
+	add dword ptr [edi+ecx*8+4],eax
+	adc dword ptr [edi+ecx*8+0],edx
 	sbb ebx,ebx
-	mov dword ptr [edi+ecx*8+4],eax
-	mov dword ptr [edi+ecx*8+0],edx
 	neg ebx
 	dec ecx
-	jns @addsqrtrc_loop
+	jns @mp32addsqrtrc_loop
 
 	mov eax,ebx
 

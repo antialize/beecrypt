@@ -159,6 +159,9 @@ EXPORTS
  md5Reset
  md5Update
  md5Digest
+ memchunkAlloc
+ memchunkFree
+ memchunkResize
  ;mp32copy
  ;mp32move
  mp32zero
@@ -270,9 +273,9 @@ EXPORTS
  mtprngSeed
  mtprngSetup
  pkcs5Pad
- pkcs5PadInline
+ pkcs5PadCopy
  pkcs5Unpad
- pkcs5UnpadInline
+ pkcs5UnpadCopy
  randomGeneratorCount
  randomGeneratorGet
  randomGeneratorFind

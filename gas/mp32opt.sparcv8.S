@@ -5,7 +5,7 @@
  *
  * Compile target is GNU Assembler, Sun Solaris Assembler
  *
- * Copyright (c) 1998, 1999, 2000, 2001 Virtual Unlimited B.V.
+ * Copyright (c) 2001 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -70,3 +70,24 @@ C_FUNCTION_BEGIN(mp32addmul)
 	retl
 	nop
 C_FUNCTION_END(mp32addmul, .Lmp32addmul_size)
+
+
+#if 0
+C_FUNCTION_BEGIN(mp32addsqrtrc)
+	sll %o0,2,%g1
+	dec 4,%o1
+	dec 4,%o2
+	sub %o3,%o2,4
+	clr %o0
+.Lmp32addsqrtrc_loop:
+	ld [%o2+%g1],%g2
+	ld [%o1+%g1],%g3
+	ld [%o3+%g1],%g4
+	umul %g2,%g2,%g2
+	rd %y,%o4
+	addcc %g3,%g2,%g3
+	addx %g4,%o4,%g4
+	/* carry from first addition */
+	addx %g0,%g0,%o4
+C_FUNCTION_END(mp32addsqrtrc, .Lmp32addsqrtrc_size)
+#endif

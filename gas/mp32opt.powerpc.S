@@ -31,178 +31,193 @@
 
 	.text
 
-#if DARWIN
-# define reg0	r0
-# define reg3	r3
-# define reg4	r4
-# define reg5	r5
-# define reg6	r6
-# define reg7	r7
-# define reg8	r8
-# define reg9	r9
-#else
-# define reg0	%r0
-# define reg3	%r3
-# define reg4	%r4
-# define reg5	%r5
-# define reg6	%r6
-# define reg7	%r7
-# define reg8	%r8
-# define reg9	%r9
+#if !DARWIN
+# define r0	%r0
+# define r3	%r3
+# define r4	%r4
+# define r5	%r5
+# define r6	%r6
+# define r7	%r7
+# define r8	%r8
+# define r9	%r9
+# define r10	%r10
+# define r11	%r11
+# define r12	%r12
 #endif
 
 C_FUNCTION_BEGIN(mp32addw)
-	mtctr reg3
-	slwi reg0,reg3,2
-	add reg4,reg4,reg0
-	li reg0,0
-	lwzu reg6,-4(reg4)
-	addc reg6,reg6,reg5
-	stw reg6,0(reg4)
+	mtctr r3
+	slwi r0,r3,2
+	add r4,r4,r0
+	li r0,0
+	lwzu r6,-4(r4)
+	addc r6,r6,r5
+	stw r6,0(r4)
 	bdz .Lmp32addw_skip
 .Lmp32addw_loop:
-	lwzu reg6,-4(reg4)
-	adde reg6,reg0,reg6
-	stw reg6,0(reg4)
+	lwzu r6,-4(r4)
+	adde r6,r0,r6
+	stw r6,0(r4)
 	bdnz .Lmp32addw_loop
 .Lmp32addw_skip:
 	/* return the carry */
-	addze reg3,reg0
+	addze r3,r0
 	blr
 C_FUNCTION_END(mp32addw, .Lmp32addw_size)
 
 
 C_FUNCTION_BEGIN(mp32subw)
-	mtctr reg3
-	slwi reg0,reg3,2
-	add reg4,reg4,reg0
-	li reg0,0
-	lwz reg6,-4(reg4)
-	subfc reg6,reg5,reg6
-	stwu reg6,-4(reg4)
+	mtctr r3
+	slwi r0,r3,2
+	add r4,r4,r0
+	li r0,0
+	lwz r6,-4(r4)
+	subfc r6,r5,r6
+	stwu r6,-4(r4)
 	bdz .Lmp32subw_skip
 .Lmp32subw_loop:
-	lwz reg6,-4(reg4)
-	subfe reg6,reg0,reg6
-	stwu reg6, -4(reg4)
+	lwz r6,-4(r4)
+	subfe r6,r0,r6
+	stwu r6, -4(r4)
 	bdnz .Lmp32subw_loop
 .Lmp32subw_skip:
 	/* return the carry */
-	subfe reg3,reg0,reg0
-	neg reg3,reg3
+	subfe r3,r0,r0
+	neg r3,r3
 	blr
 C_FUNCTION_END(mp32subw, .Lmp32subw_size)
 
 
 C_FUNCTION_BEGIN(mp32add)
-	mtctr reg3
-	slwi reg0,reg3,2
-	add reg4,reg4,reg0
-	add reg5,reg5,reg0
-	li reg0,0
-	lwz reg6,-4(reg4)
-	lwzu reg7,-4(reg5)
-	addc reg6,reg7,reg6
-	stwu reg6,-4(reg4)
+	mtctr r3
+	slwi r0,r3,2
+	add r4,r4,r0
+	add r5,r5,r0
+	li r0,0
+	lwz r6,-4(r4)
+	lwzu r7,-4(r5)
+	addc r6,r7,r6
+	stwu r6,-4(r4)
 	bdz .Lmp32add_skip
 .Lmp32add_loop:
-	lwz reg6,-4(reg4)
-	lwzu reg7,-4(reg5)
-	adde reg6,reg7,reg6
-	stwu reg6,-4(reg4)
+	lwz r6,-4(r4)
+	lwzu r7,-4(r5)
+	adde r6,r7,r6
+	stwu r6,-4(r4)
 	bdnz .Lmp32add_loop
 .Lmp32add_skip:
 	/* return the carry */
-	addze reg3,reg0
+	addze r3,r0
 	blr
 C_FUNCTION_END(mp32add, .Lmp32add_size)
 
 
 C_FUNCTION_BEGIN(mp32sub)
-	mtctr reg3
-	slwi reg0,reg3,2
-	add reg4,reg4,reg0
-	add reg5,reg5,reg0
-	li reg0,0
-	lwz reg6,-4(reg4)
-	lwzu reg7,-4(reg5)
-	subfc reg6,reg7,reg6
-	stwu reg6,-4(reg4)
+	mtctr r3
+	slwi r0,r3,2
+	add r4,r4,r0
+	add r5,r5,r0
+	li r0,0
+	lwz r6,-4(r4)
+	lwzu r7,-4(r5)
+	subfc r6,r7,r6
+	stwu r6,-4(r4)
 	bdz .Lmp32sub_skip
 .Lmp32sub_loop:
-	lwz reg6,-4(reg4)
-	lwzu reg7,-4(reg5)
-	subfe reg6,reg7,reg6
-	stwu reg6,-4(reg4)
+	lwz r6,-4(r4)
+	lwzu r7,-4(r5)
+	subfe r6,r7,r6
+	stwu r6,-4(r4)
 	bdnz .Lmp32sub_loop
 .Lmp32sub_skip:
 	/* return the carry */
-	subfe reg3,reg0,reg0
-	neg reg3,reg3
+	subfe r3,r0,r0
+	neg r3,r3
 	blr
 C_FUNCTION_END(mp32sub, .Lmp32sub_size)
 
 
+C_FUNCTION_BEGIN(mp32multwo)
+	mtctr r3
+	slwi r0,r3,2
+	add r4,r4,r0
+	li r0,0
+	lwz r6,-4(r4)
+	addc r6,r6,r6
+	stwu r6,-4(r4)
+	bdz .Lmp32multwo_skip
+.Lmp32multwo_loop:
+	lwz r6,-4(r4)
+	adde r6,r6,r6
+	stwu r6,-4(r4)
+	bdnz .Lmp32multwo_loop
+.Lmp32multwo_skip:
+	/* return the carry */
+	addze r3,r0
+	blr
+C_FUNCTION_END(mp32multwo, .Lmp32multwo_size)
+
+
 C_FUNCTION_BEGIN(mp32setmul)
-	mtctr reg3
-	slwi reg0,reg3,2
-	add reg4,reg4,reg0
-	add reg5,reg5,reg0
-	li reg3,0
+	mtctr r3
+	slwi r0,r3,2
+	add r4,r4,r0
+	add r5,r5,r0
+	li r3,0
 .Lmp32setmul_loop:
-	lwzu reg7,-4(reg5)
-	mullw reg8,reg7,reg6
-	addc reg8,reg8,reg3
-	mulhwu reg3,reg7,reg6
-	addze reg3,reg3
-	stwu reg8,-4(reg4)
+	lwzu r7,-4(r5)
+	mullw r8,r7,r6
+	addc r8,r8,r3
+	mulhwu r9,r7,r6
+	addze r3,r9
+	stwu r8,-4(r4)
 	bdnz .Lmp32setmul_loop
 	blr
 C_FUNCTION_END(mp32setmul, .Lmp32setmul_size)
 
 
 C_FUNCTION_BEGIN(mp32addmul)
-	mtctr reg3
-	slwi reg0,reg3,2
-	add reg4,reg4,reg0
-	add reg5,reg5,reg0
-	li reg3,0
+	mtctr r3
+	slwi r0,r3,2
+	add r4,r4,r0
+	add r5,r5,r0
+	li r3,0
 .Lmp32addmul_loop:
-	lwzu reg7,-4(reg4)
-	lwzu reg8,-4(reg5)
-	mullw reg9,reg8,reg6
-	addc reg9,reg9,reg3
-	mulhwu reg3,reg8,reg6
-	addze reg3,reg3
-	addc reg9,reg9,reg7
-	addze reg3,reg3
-	stw reg9,0(reg4)
+	lwzu r8,-4(r5)
+	lwzu r7,-4(r4)
+	mullw r9,r8,r6
+	addc r9,r9,r3
+	mulhwu r10,r8,r6
+	addze r3,r10
+	addc r9,r9,r7
+	addze r3,r3
+	stw r9,0(r4)
 	bdnz .Lmp32addmul_loop
 	blr
 C_FUNCTION_END(mp32addmul, .Lmp32addmul_size)
 
 
 C_FUNCTION_BEGIN(mp32addsqrtrc)
-	mtctr reg3
-	slwi reg0,reg3,2
-	add reg4,reg4,reg0
-	add reg5,reg5,reg0
-	add reg4,reg4,reg0
-	li reg3,0
+	mtctr r3
+	slwi r0,r3,2
+	add r4,r4,r0
+	add r5,r5,r0
+	add r4,r4,r0
+	li r3,0
 .Lmp32addsqrtrc_loop:
-	lwzu reg0,-4(reg5)
-	lwz reg6,-8(reg4)
-	lwz reg7,-4(reg4)
-	mullw reg9,reg0,reg0
-	mulhwu reg8,reg0,reg0
-	addc reg9,reg9,reg3
-	addze reg8,reg8
-	addc reg7,reg7,reg9
-	adde reg6,reg6,reg8
-	li reg3,0
-	addze reg3,reg3
-	stw reg7,-4(reg4)
-	stwu reg6,-8(reg4)
+	lwzu r0,-4(r5)
+	lwz r6,-8(r4)
+	lwz r7,-4(r4)
+	mullw r9,r0,r0
+	addc r9,r9,r3
+	mulhwu r8,r0,r0
+	addze r8,r8
+	li r3,0
+	addc r7,r7,r9
+	adde r6,r6,r8
+	addze r3,r3
+	stw r7,-4(r4)
+	stwu r6,-8(r4)
 	bdnz .Lmp32addsqrtrc_loop
 	blr
 C_FUNCTION_END(mp32addsqrtrc, .Lmp32addsqrtrc_size)

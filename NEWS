@@ -1,13 +1,18 @@
 2.1.0:
 	- Added support for automake autoheader and libtool, which should make compiling the library even easier.
 	- Changed DHAES API to conform to IEEE P.1363 submission and to allow for uneven key splitting.
+	- Improved PKCS#5 padding routines.
 	- Added a hash reset to the hashFunctionContextInit function. This was pointed out by Marko Kreen.
 	- Fixed problem with configuring on i486-pc-linux-gnu. This was pointed out Steve O'Neill.
 	- Fixed problem in the C version of mp32sub where carry would sometimes be missed. This was pointed out by Jon Sturgeon.
-	- Revised entropy gathering system to do timeouts & asynchronous I/O where possible, to avoid hangs in case there's no noise on the audio device (i.e. digital silence), or when no data is available on /dev/random.
-	- Changed mp32opt sparcv9 assembler multiplication routines to squeeze off a few cycles.
-	- Added sparcv8 assembler routines for multi-precision multiplication.
+	- Revised entropy gathering system to do timeouts & asynchronous I/O where possible, to avoid hangs in case there's no noise on the audio device (i.e. digital silence), or when no data is available on devices such as /dev/random.
+	- Changed mp32opt i386 assembler routines for slight performance improvement.
+	- Changed mp32opt powerpc assembler routines for slight performance improvement.
+	- Changed mp32opt sparcv9 assembler routines for slight performance improvement.
+	- Added sparcv8 assembler routines for multi-precision integer multiplication.
+	- Added arm assembler routines for multi-precision integer multiplication.
 	- Added prototype 64-bit ia64 assembler routines for multi-precision integer operations.
+	- Started writing the long-awaited documentation.
 
 2.0.0:
 	- Changed mp32barrett struct and operations to be multithread-safe; this required a change in API.

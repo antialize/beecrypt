@@ -1,9 +1,9 @@
 /*
- * timestamp.c
+ * memchunk.c
  *
- * Java compatible 64-bit timestamp, code
+ * BeeCrypt memory block handling, code
  *
- * Copyright (c) 1999, 2000 Virtual Unlimited B.V.
+ * Copyright (c) 2001 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -25,33 +25,66 @@
 
 #define BEECRYPT_DLL_EXPORT
 
-#include "timestamp.h"
+#include "memchunk.h"
 
-#if HAVE_TIME_H
-# include <time.h>
+#if HAVE_STDLIB_H
+# include <stdlib.h>
 #endif
-#if HAVE_SYS_TIME_H
-# include <sys/time.h>
+#if HAVE_MALLOC_H
+# include <malloc.h>
 #endif
 
-javalong timestamp()
+memchunk* memchunkAlloc(int size)
 {
-	javalong tmp;
-	#if HAVE_SYS_TIME_H
-	# if HAVE_GETTIMEOFDAY
-	struct timeval now;
+	memchunk* tmp = (memchunk*) calloc(1, sizeof(memchunk));
 
-	gettimeofday(&now, 0);
+	if (tmp)
+	{
+		tmp->size = size;
+		tmp->data = (byte*) malloc(size);
 
-	tmp = ((javalong) now.tv_sec) * 1000 + (now.tv_usec / 1000);
-	# else
-	#  error
-	# endif
-	#elif HAVE_TIME_H
-	tmp = ((javalong) time(0)) * 1000;
-	#else
-	# error implement other time function
-	#endif
+		if (tmp->data == (byte*) 0)
+		{
+			free(tmp);
+			tmp = 0;
+		}
+	}
 
 	return tmp;
+}
+
+void memchunkFree(memchunk* m)
+{
+	if (m)
+	{
+		if (m->data)
+		{
+			free(m->data);
+
+			m->size = 0;
+			m->data = (byte*) 0;
+		}
+		free(m);
+	}
+}
+
+memchunk* memchunkResize(memchunk* m, int size)
+{
+	if (m)
+	{
+		if (m->data)
+			m->data = (byte*) realloc(m->data, size);
+		else
+			m->data = (byte*) malloc(size);
+
+		if (m->data == (byte*) 0)
+		{
+			free(m);
+			m = (memchunk*) 0;
+		}
+		else
+			m->size = size;
+	}
+
+	return m;
 }

@@ -1,7 +1,7 @@
 /*
  * beecrypt.h
  *
- * Beecrypt library hooks & stubs, header
+ * BeeCrypt library hooks & stubs, header
  *
  * Copyright (c) 1999, 2000, 2001 Virtual Unlimited B.V.
  *
@@ -20,6 +20,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
  */
 
 #ifndef _BEECRYPT_H
@@ -29,13 +30,8 @@
 # include "config.h"
 #endif
 
+#include "memchunk.h"
 #include "mp32number.h"
-
-typedef struct
-{
-	int		size;
-	byte*	data;
-} memchunk;
 
 /*
  * Entropy Sources

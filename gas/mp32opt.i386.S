@@ -31,6 +31,54 @@
 
 	.text
 
+
+C_FUNCTION_BEGIN(mp32zero)
+	pushl %edi
+
+	movl 8(%esp),%ecx
+	movl 12(%esp),%edi
+
+	xorl %eax,%eax
+	repz stosl
+
+	popl %edi
+	ret
+C_FUNCTION_END(mp32zero, .Lmp32zero_size)
+
+
+C_FUNCTION_BEGIN(mp32fill)
+	pushl %edi
+
+	movl 8(%esp),%ecx
+	movl 12(%esp),%edi
+	movl 16(%esp),%eax
+
+	repz stosl
+
+	popl %edi
+	ret
+C_FUNCTION_END(mp32fill, .Lmp32fill_size)
+
+
+C_FUNCTION_BEGIN(mp32even)
+	mov 4(%esp),%ecx
+	mov 8(%esp),%eax
+	mov 4(%esp,%ecx,4),%eax
+	not %eax
+	and %eax,1
+	ret
+C_FUNCTION_END(mp32even, .Lmp32even_size)
+
+
+C_FUNCTION_BEGIN(mp32odd)
+	mov 4(%esp),%ecx
+	mov 8(%esp),%eax
+	mov 4(%esp,%ecx,4),%eax
+	and %eax,1
+	ret
+C_FUNCTION_END(mp32odd, .Lmp32odd_size)
+
+
 C_FUNCTION_BEGIN(mp32addw)
 	pushl %edi
 
@@ -45,7 +93,7 @@ C_FUNCTION_BEGIN(mp32addw)
 	jz .Lmp32addw_skip
 	leal -4(%edi),%edi
 
-	.p2align 4,,7
+	.align 4
 .Lmp32addw_loop:
 	adcl %edx,(%edi)
 	leal -4(%edi),%edi
@@ -74,7 +122,7 @@ C_FUNCTION_BEGIN(mp32subw)
 	jz .Lmp32subw_skip
 	leal -4(%edi),%edi
 
-	.p2align 4,,7
+	.align 4
 .Lmp32subw_loop:
 	sbbl %edx,(%edi)
 	leal -4(%edi),%edi
@@ -99,7 +147,7 @@ C_FUNCTION_BEGIN(mp32add)
 	xorl %edx,%edx
 	decl %ecx
 
-	.p2align 4,,7
+	.align 4
 .Lmp32add_loop:
 	movl (%esi,%ecx,4),%eax
 	adcl %eax,(%edi,%ecx,4)
@@ -126,7 +174,7 @@ C_FUNCTION_BEGIN(mp32sub)
 	xorl %edx,%edx
 	decl %ecx
 
-	.p2align 4,,7
+	.align 4
 .Lmp32sub_loop:
 	movl (%esi,%ecx,4),%eax
 	sbbl %eax,(%edi,%ecx,4)
@@ -141,19 +189,39 @@ C_FUNCTION_BEGIN(mp32sub)
 C_FUNCTION_END(mp32sub, .Lmp32sub_size)
 
 
+C_FUNCTION_BEGIN(mp32divtwo)
+	pushl %edi
+
+	movl 8(%esp),%ecx
+	movl 12(%esp),%edi
+
+	leal (%edi,%ecx,4),%edi
+	negl %ecx
+	clc
+
+	.align 4
+.Lmp32divtwo_loop:
+	rcrl $1,(%edi,%ecx,4)
+	inc %ecx
+	jnz .Lmp32divtwo_loop
+
+	popl %edi
+	ret
+C_FUNCTION_END(mp32divtwo, .Lmp32divtwo_size)
+
+
 C_FUNCTION_BEGIN(mp32multwo)
 	pushl %edi
 
 	movl 8(%esp),%ecx
 	movl 12(%esp),%edi
 
-	xorl %eax,%eax
+	clc
 	decl %ecx
 
-	.p2align 4,,7
+	.align 4
 .Lmp32multwo_loop:
-	movl (%edi,%ecx,4),%eax
-	adcl %eax,(%edi,%ecx,4)
+	rcll $1,(%edi,%ecx,4)
 	decl %ecx 
 	jns .Lmp32multwo_loop
 
@@ -176,21 +244,21 @@ C_FUNCTION_BEGIN(mp32setmul)
 	movl 28(%esp),%esi
 	movl 32(%esp),%ebp
 
-	xorl %ebx,%ebx
+	xorl %edx,%edx
 	decl %ecx
 
-	.p2align 4,,7
+	.align 4
 .Lmp32setmul_loop:
+	movl %edx,%ebx
 	movl (%esi,%ecx,4),%eax
 	mull %ebp
 	addl %ebx,%eax
 	adcl $0,%edx
 	movl %eax,(%edi,%ecx,4)
-	movl %edx,%ebx
 	decl %ecx
 	jns .Lmp32setmul_loop
 
-	movl %ebx,%eax
+	movl %edx,%eax
 
 	popl %ebp
 	popl %ebx
@@ -211,11 +279,12 @@ C_FUNCTION_BEGIN(mp32addmul)
 	movl 28(%esp),%esi
 	movl 32(%esp),%ebp
 
-	xorl %ebx,%ebx
+	xorl %edx,%edx
 	decl %ecx
 
-	.p2align 4,,7
+	.align 4
 .Lmp32addmul_loop:
+	movl %edx,%ebx
 	movl (%esi,%ecx,4),%eax
 	mull %ebp
 	addl %ebx,%eax
@@ -223,11 +292,10 @@ C_FUNCTION_BEGIN(mp32addmul)
 	addl (%edi,%ecx,4),%eax
 	adcl $0,%edx
 	movl %eax,(%edi,%ecx,4)
-	movl %edx,%ebx
 	decl %ecx
 	jns .Lmp32addmul_loop
 
-	movl %ebx,%eax
+	movl %edx,%eax
 
 	popl %ebp
 	popl %ebx
@@ -249,17 +317,15 @@ C_FUNCTION_BEGIN(mp32addsqrtrc)
 	xorl %ebx,%ebx
 	decl %ecx
 
-	.p2align 4,,7
+	.align 4
 .Lmp32addsqrtrc_loop:
 	movl (%esi,%ecx,4),%eax
 	mull %eax
 	addl %ebx,%eax
 	adcl $0,%edx
-	addl 4(%edi,%ecx,8),%eax
-	adcl (%edi,%ecx,8),%edx
+	addl %eax,4(%edi,%ecx,8)
+	adcl %edx,(%edi,%ecx,8)
 	sbbl %ebx,%ebx
-	movl %eax,4(%edi,%ecx,8)
-	movl %edx,(%edi,%ecx,8)
 	negl %ebx
 	decl %ecx
 	jns .Lmp32addsqrtrc_loop

@@ -105,9 +105,10 @@ C_FUNCTION_BEGIN(mp64copy)
 C_FUNCTION_END(mp64copy)
 
 
+#if 0
 /* mp64z is in development */
 C_FUNCTION_BEGIN(mp64z)
-	alloc saved_pfs = ar.pfd,2,6,0,8
+	alloc saved_pfs = ar.pfs,2,6,0,8
 	mov saved_lc = ar.lc
 	sub size = in0,r0,1;;
 
@@ -121,7 +122,7 @@ C_FUNCTION_BEGIN(mp64z)
 .Lmp64z_loop:
 	(p16) ld8 r32 = [src],8
 	(p17) cmp.ne p1,p0 = r33,r0
-	(p1) br.cond .Lmp64z_exit;;
+	(p1) br.exit.dpnt .Lmp64z_exit;;
 	br.ctop.dptk .Lmp64z_loop;;
 .Lmp64z_exit:
 	(p1) mov ret0 = r0
@@ -130,6 +131,7 @@ C_FUNCTION_BEGIN(mp64z)
 	mov ar.pfs = saved_pfs
 	br.ret.sptk b0
 C_FUNCTION_END(mp64z)
+#endif
 
 
 /* mp64add works */
@@ -151,13 +153,12 @@ C_FUNCTION_BEGIN(mp64add)
 .Lmp64add_loop:
 	(p16) ld8 r32 = [src],-8
 	(p16) ld8 r35 = [alt],-8
-	(p18) st8 [dst] = r37,-8
 	(p20) add r36 = r33,r36		/* no carry add */
 	(p22) add r36 = r33,r36,1	/* carry add */
 	;;
-	(p20) cmp.ltu p19,p21 = r33,r36	/* no previous carry */
-	(p22) cmp.leu p19,p21 = r33,r36	/* previous carry */
-	;;
+	(p20) cmp.leu p19,p21 = r33,r36	/* no previous carry */
+	(p22) cmp.ltu p19,p21 = r33,r36	/* previous carry */
+	(p18) st8 [dst] = r37,-8
 	br.ctop.dptk .Lmp64add_loop;;
 
 	/* return carry */
@@ -189,13 +190,12 @@ C_FUNCTION_BEGIN(mp64sub)
 .Lmp64sub_loop:
 	(p16) ld8 r32 = [src],-8
 	(p16) ld8 r35 = [alt],-8
-	(p18) st8 [dst] = r37,-8
 	(p20) sub r36 = r33,r36		/* no carry sub */
 	(p22) sub r36 = r33,r36,1	/* carry sub */
 	;;
-	(p20) cmp.gtu p19,p21 = r33,r36	/* no previous carry */
-	(p22) cmp.geu p19,p21 = r33,r36	/* previous carry */
-	;;
+	(p20) cmp.geu p19,p21 = r33,r36	/* no previous carry */
+	(p22) cmp.gtu p19,p21 = r33,r36	/* previous carry */
+	(p18) st8 [dst] = r37,-8
 	br.ctop.dptk .Lmp64sub_loop;;
 
 	/* return carry */
@@ -228,8 +228,8 @@ C_FUNCTION_BEGIN(mp64setmul)
 
 .Lmp64setmul_loop:
 	(p16) ldf8 f36 = [src],-8
-	(p17) xma.lu f32 = f6,f37,f7
 	(p18) stf8 [dst] = f33,-8
+	(p17) xma.lu f32 = f6,f37,f7
 	(p17) xma.hu f7  = f6,f37,f7;;
 	br.ctop.dptk .Lmp64setmul_loop;;
 
@@ -264,21 +264,19 @@ C_FUNCTION_BEGIN(mp64addmul)
 	mov pr.rot = ((1 << 16) | (1 << 21));
 
 .Lmp64addmul_loop:
+	(p18) getf.sig r33 = f34	/* hi 64 bit word */
+	(p24) add r38 = r35,r38
+	(p17) xma.lu f37 = f6,f41,f45
+	(p18) getf.sig r37 = f38	/* lo 64 bit word */
+	(p26) add r38 = r35,r38,1
+	(p17) xma.hu f33 = f6,f41,f45
 	(p16) ldf8 f40 = [src],-8
 	(p16) ldf8 f44 = [alt],-8
-	(p17) xma.lu f37 = f6,f41,f45
-	(p17) xma.hu f33 = f6,f41,f45
-	(p18) getf.sig r33 = f34	/* hi 64 bit word */
-	(p18) getf.sig r37 = f38	/* lo 64 bit word */
-	(p20) st8 [dst] = r39,-8
-	/* add carry register and carry bit to lo word */
-	(p24) add r38 = r35,r38
-	(p26) add r38 = r35,r38,1
 	;;
 	/* set carry from this operation */
-	(p24) cmp.ltu p23,p25 = r35,r38
-	(p26) cmp.leu p23,p25 = r35,r38
-	;;
+	(p24) cmp.leu p23,p25 = r35,r38
+	(p26) cmp.ltu p23,p25 = r35,r38
+	(p20) st8 [dst] = r39,-8
 	br.ctop.dptk .Lmp64addmul_loop;;
 
 	/* return carry */
@@ -289,3 +287,36 @@ C_FUNCTION_BEGIN(mp64addmul)
 	mov ar.pfs = saved_pfs
 	br.ret.sptk b0
 C_FUNCTION_END(mp64addmul)
+
+/* mp64addsqrtrc will be a little more challenging */
+
+/* the primary loop will look like this:
+
+.Lmp64addsqrtrc_loop:
+	/* stage 1 */
+	(p16) ldf8 to_square
+	(p16) ld8 lo_to_add
+	(p16) ld8 hi_to_add
+	/* stage 2 */
+	(p17) xma.lu to_square,to_square,carry
+	(p17) xma.hu to_square,to_square,carry
+	/* stage 3 */
+	(p18) getf lo xma
+	(p18) getf hi xma
+	/* stage 4 */
+	(p?) add lo no carry 
+	(p?) add lo carry
+	/* stage 5 */
+    (p?+1) add hi no carry
+	(p?+1) add hi carry
+	;;
+	/* also stage 4 */
+	(p?) cmp lo for carry
+	(p?) cmp lo for carry
+	/* also stage 5 */
+	(p?+1) cmp hi for carry
+	(p?+1) cmp hi for carry
+	st8 lo
+	st8 hi
+	br.ctop
+*/

@@ -58,8 +58,6 @@
 #  include <synch.h>
 # elif HAVE_PTHREAD_H
 #  include <pthread.h>
-# else
-#  error need locking mechanism
 # endif
 # if HAVE_AIO_H
 #  include <aio.h>
@@ -327,7 +325,7 @@ static int entropy_noise_gather(int fd, int samplesize, int channels, int swap, 
 	/* the first event is the due to the opening of the wave */
 	ResetEvent(entropy_wavein_event);
 	#else
-	# if HAVE_WORKING_AIO
+	# if ENABLE_AIO
 	struct aiocb my_aiocb;
 	const struct aiocb* my_aiocb_list = &my_aiocb;
 	#  if HAVE_TIME_H
@@ -340,9 +338,6 @@ static int entropy_noise_gather(int fd, int samplesize, int channels, int swap, 
 
 	my_aiocb.aio_fildes = fd;
 	my_aiocb.aio_sigevent.sigev_notify = SIGEV_NONE;
-
-	my_aiocb_timeout.tv_sec = (timeout / 1000);
-	my_aiocb_timeout.tv_nsec = (timeout % 1000) * 1000000;
 	# endif
 	#endif
 
@@ -375,7 +370,7 @@ static int entropy_noise_gather(int fd, int samplesize, int channels, int swap, 
 			return -1;
 		}
 		#else
-		# if HAVE_WORKING_AIO
+		# if ENABLE_AIO
 		my_aiocb.aio_buf = sampledata;
 		my_aiocb.aio_nbytes = 1024 * samplesize * channels;
 
@@ -390,7 +385,10 @@ static int entropy_noise_gather(int fd, int samplesize, int channels, int swap, 
 			return -1;
 		}
 
-		# if HAVE_WORKING_AIO
+		# if ENABLE_AIO
+		my_aiocb_timeout.tv_sec = (timeout / 1000);
+		my_aiocb_timeout.tv_nsec = (timeout % 1000) * 1000000;
+
 		rc = aio_suspend(&my_aiocb_list, 1, &my_aiocb_timeout);
 
 		if (rc < 0)
@@ -401,8 +399,11 @@ static int entropy_noise_gather(int fd, int samplesize, int channels, int swap, 
 				/* certain linux glibc versions are buggy and don't aio_suspend properly */
 				nanosleep(&my_aiocb_timeout, (struct timespec*) 0);
 
+				my_aiocb_timeout.tv_sec = (timeout / 1000);
+				my_aiocb_timeout.tv_nsec = (timeout % 1000) * 1000000;
+
 				/* and try again */
-				rc = aio_suspend(&my_aiocb_list, 1, (struct timespec*) 0);
+				rc = aio_suspend(&my_aiocb_list, 1, &my_aiocb_timeout);
 			}
 			#endif
 		}
@@ -410,14 +411,28 @@ static int entropy_noise_gather(int fd, int samplesize, int channels, int swap, 
 		if (rc < 0)
 		{
 			/* cancel any remaining reads */
-			aio_cancel(fd, &my_aiocb);
+			while (rc != AIO_ALLDONE)
+			{
+				rc = aio_cancel(fd, (struct aiocb*) 0);
+
+				if (rc == AIO_NOTCANCELED)
+				{
+					my_aiocb_timeout.tv_sec = (timeout / 1000);
+					my_aiocb_timeout.tv_nsec = (timeout % 1000) * 1000000;
+
+					nanosleep(&my_aiocb_timeout, (struct timespec*) 0);
+				}
+
+				if (rc < 0)
+					break;
+			}
 			free(sampledata);
 			return -1;
 		}
 
 		rc = aio_error(&my_aiocb);
 
-		if (rc < 0)
+		if (rc)
 		{
 			free(sampledata);
 			return -1;
@@ -598,7 +613,7 @@ int entropy_wavein(uint32* data, int size)
 	rc = waveInOpen(&wavein, WAVE_MAPPER, &waveformatex, (DWORD) entropy_wavein_event, (DWORD) 0, CALLBACK_EVENT);
 	if (rc != MMSYSERR_NOERROR)
 	{
-		fprintf(stderr, "waveInOpen failed!\n", rc);
+		fprintf(stderr, "waveInOpen failed!\n"); fflush(stderr);
 		ReleaseMutex(entropy_wavein_lock);
 		return -1;
 	}
@@ -638,7 +653,7 @@ int entropy_console(uint32* data, int size)
 			fprintf(stderr, "ReadConsoleInput failed\n"); fflush(stderr);
 			return -1;
 		}
-		if (inRet == 1 && inEvent.EventType == KEY_EVENT)
+		if ((inRet == 1) && (inEvent.EventType == KEY_EVENT) && inEvent.Event.KeyEvent.bKeyDown)
 		{
 			printf("."); fflush(stdout);
 			if (!QueryPerformanceCounter(&hrtsample))
@@ -817,7 +832,7 @@ static int entropy_randombits(int fd, int timeout, uint32* data, int size)
 	register int   bytesize = (size << 2);
 	register int rc;
 
-	#if HAVE_WORKING_AIO
+	#if ENABLE_AIO
 	struct aiocb my_aiocb;
 	const struct aiocb* my_aiocb_list = &my_aiocb;
 	# if HAVE_TIME_H
@@ -830,14 +845,11 @@ static int entropy_randombits(int fd, int timeout, uint32* data, int size)
 
 	my_aiocb.aio_fildes = fd;
 	my_aiocb.aio_sigevent.sigev_notify = SIGEV_NONE;
-
-	my_aiocb_timeout.tv_sec = (timeout / 1000);
-	my_aiocb_timeout.tv_nsec = (timeout % 1000) * 1000000;
 	#endif
 
 	while (bytesize)
 	{
-		#if HAVE_WORKING_AIO
+		#if ENABLE_AIO
 		my_aiocb.aio_buf = bytedata;
 		my_aiocb.aio_nbytes = bytesize;
 
@@ -849,7 +861,10 @@ static int entropy_randombits(int fd, int timeout, uint32* data, int size)
 		if (rc < 0)
 			return -1;
 
-		#if HAVE_WORKING_AIO
+		#if ENABLE_AIO
+		my_aiocb_timeout.tv_sec = (timeout / 1000);
+		my_aiocb_timeout.tv_nsec = (timeout % 1000) * 1000000;
+
 		rc = aio_suspend(&my_aiocb_list, 1, &my_aiocb_timeout);
 
 		if (rc < 0)
@@ -860,8 +875,11 @@ static int entropy_randombits(int fd, int timeout, uint32* data, int size)
 				/* certain linux glibc versions are buggy and don't aio_suspend properly */
 				nanosleep(&my_aiocb_timeout, (struct timespec*) 0);
 
+				my_aiocb_timeout.tv_sec = 0;
+				my_aiocb_timeout.tv_nsec = 0;
+
 				/* and try again */
-				rc = aio_suspend(&my_aiocb_list, 1, (struct timespec*) 0);
+				rc = aio_suspend(&my_aiocb_list, 1, &my_aiocb_timeout);
 			}
 			#endif
 		}
@@ -869,7 +887,21 @@ static int entropy_randombits(int fd, int timeout, uint32* data, int size)
 		if (rc < 0)
 		{
 			/* cancel any remaining reads */
-			aio_cancel(fd, (struct aiocb*) &my_aiocb);
+			while (rc != AIO_ALLDONE)
+			{
+				rc = aio_cancel(fd, (struct aiocb*) 0);
+
+				if (rc == AIO_NOTCANCELED)
+				{
+					my_aiocb_timeout.tv_sec = (timeout / 1000);
+					my_aiocb_timeout.tv_nsec = (timeout % 1000) * 1000000;
+
+					nanosleep(&my_aiocb_timeout, (struct timespec*) 0);
+				}
+
+				if (rc < 0)
+					break;
+			}
 
 			return -1;
 		}
@@ -1042,8 +1074,6 @@ int entropy_dev_audio(uint32 *data, int size)
 	# elif HAVE_PTHREAD_H
 	if (pthread_mutex_lock(&dev_audio_lock))
 		return -1;
-	# else
-	#  error need locking mechanism
 	# endif
 	#endif
 
@@ -1114,8 +1144,6 @@ dev_audio_end:
 	mutex_unlock(&dev_audio_lock);
 	# elif HAVE_PTHREAD_H
 	pthread_mutex_unlock(&dev_audio_lock);
-	# else
-	#  error need locking mechanism
 	# endif
 	#endif
 	return rc;
@@ -1136,8 +1164,6 @@ int entropy_dev_dsp(uint32 *data, int size)
 	# elif HAVE_PTHREAD_H
 	if (pthread_mutex_lock(&dev_dsp_lock))
 		return -1;
-	# else
-	#  error need locking mechanism
 	# endif
 	#endif
 
@@ -1151,7 +1177,7 @@ int entropy_dev_dsp(uint32 *data, int size)
 
 	#if HAVE_SYS_SOUNDCARD_H /* i.e. Linux audio */
 	{
-		int mask, format, size, stereo, speed, swap;
+		int mask, format, samplesize, stereo, speed, swap;
 
 		if ((rc = ioctl(dev_dsp_fd, SNDCTL_DSP_GETFMTS, &mask)) < 0)
 		{
@@ -1167,33 +1193,33 @@ int entropy_dev_dsp(uint32 *data, int size)
 		if (mask & AFMT_S16_BE)
 		{
 			format = AFMT_S16_BE;
-			size = 2;
+			samplesize = 2;
 			swap = 0;
 		}
 		else if (mask & AFMT_S16_LE)
 		{
 			format = AFMT_S16_LE;
-			size = 2;
+			samplesize = 2;
 			swap = 1;
 		}
 		#else
 		if (mask & AFMT_S16_LE)
 		{
 			format = AFMT_S16_LE;
-			size = 2;
+			samplesize = 2;
 			swap = 0;
 		}
 		else if (mask & AFMT_S16_BE)
 		{
 			format = AFMT_S16_BE;
-			size = 2;
+			samplesize = 2;
 			swap = 1;
 		}
 		#endif
 		else if (mask & AFMT_S8)
 		{
 			format = AFMT_S8;
-			size = 1;
+			samplesize = 1;
 			swap = 0;
 		}
 		else
@@ -1223,7 +1249,7 @@ int entropy_dev_dsp(uint32 *data, int size)
 		speed = 44100;
 		ioctl(dev_dsp_fd, SNDCTL_DSP_SPEED, &speed);
 
-		rc = entropy_noise_gather(dev_dsp_fd, size, 2, swap, timeout_env ? atoi(timeout_env) : 1000, data, size);
+		rc = entropy_noise_gather(dev_dsp_fd, samplesize, 2, swap, timeout_env ? atoi(timeout_env) : 1000, data, size);
 	}
 	#else
 	# error Unknown type of /dev/dsp interface
@@ -1237,8 +1263,6 @@ dev_dsp_end:
 	mutex_unlock(&dev_dsp_lock);
 	# elif HAVE_PTHREAD_H
 	pthread_mutex_unlock(&dev_dsp_lock);
-	# else
-	#  error need locking mechanism
 	# endif
 	#endif
 
@@ -1260,8 +1284,6 @@ int entropy_dev_random(uint32* data, int size)
 	# elif HAVE_PTHREAD_H
 	if (pthread_mutex_lock(&dev_random_lock))
 		return -1;
-	# else
-	#  error need locking mechanism
 	# endif
 	#endif
 
@@ -1274,7 +1296,7 @@ int entropy_dev_random(uint32* data, int size)
 		goto dev_random_end;
 
 	/* collect entropy, with timeout */
-	rc = entropy_randombits(dev_random_fd, timeout_env ? atoi(timeout_env) : 2000, data, size);
+	rc = entropy_randombits(dev_random_fd, timeout_env ? atoi(timeout_env) : 1000, data, size);
 
 	close(dev_random_fd);
 
@@ -1284,8 +1306,6 @@ dev_random_end:
 	mutex_unlock(&dev_random_lock);
 	# elif HAVE_PTHREAD_H
 	pthread_mutex_unlock(&dev_random_lock);
-	# else
-	#  error need locking mechanism
 	# endif
 	#endif
 	return rc;
@@ -1306,8 +1326,6 @@ int entropy_dev_urandom(uint32* data, int size)
 	# elif HAVE_PTHREAD_H
 	if (pthread_mutex_lock(&dev_urandom_lock))
 		return -1;
-	# else
-	#  error need locking mechanism
 	# endif
 	#endif
 
@@ -1320,7 +1338,7 @@ int entropy_dev_urandom(uint32* data, int size)
 		goto dev_urandom_end;
 
 	/* collect entropy, with timeout */
-	rc = entropy_randombits(dev_urandom_fd, timeout_env ? atoi(timeout_env) : 2000, data, size);
+	rc = entropy_randombits(dev_urandom_fd, timeout_env ? atoi(timeout_env) : 1000, data, size);
 
 	close(dev_urandom_fd);
 
@@ -1330,8 +1348,6 @@ dev_urandom_end:
 	mutex_unlock(&dev_urandom_lock);
 	# elif HAVE_PTHREAD_H
 	pthread_mutex_unlock(&dev_urandom_lock);
-	# else
-	#  error need locking mechanism
 	# endif
 	#endif
 	return rc;
@@ -1350,8 +1366,6 @@ int entropy_dev_tty(uint32* data, int size)
 	# elif HAVE_PTHREAD_H
 	if (pthread_mutex_lock(&dev_tty_lock))
 		return -1;
-	# else
-	#  error need locking mechanism
 	# endif
 	#endif
 
@@ -1373,8 +1387,6 @@ dev_tty_end:
 	mutex_unlock(&dev_tty_lock);
 	# elif HAVE_PTHREAD_H
 	pthread_mutex_unlock(&dev_tty_lock);
-	# else
-	#  error need locking mechanism
 	# endif
 	#endif
 

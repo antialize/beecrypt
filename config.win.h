@@ -3,7 +3,7 @@
  *
  * Win32 config file
  *
- * Copyright (c) 2000, Virtual Unlimited B.V.
+ * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -34,19 +34,19 @@
 
 #include <windows.h>
 
-#if defined(_MSC_VER)
+#if __MWERKS__
+# if __INTEL__
+#  define WORDS_BIGENDIAN		0
+# else
+#  error Unknown CPU type in MetroWerks CodeWarrior
+# endif
+#elif defined(_MSC_VER)
 # if defined(_M_IX86)
 #  define WORDS_BIGENDIAN		0
 #  define ROTL32(x, s) _rotl(x, s)
 #  define ROTR32(x, s) _rotr(x, s)
 # else
 #  error Unknown CPU type in Microsoft Visual C
-# endif
-#elif __MWERKS__
-# if __INTEL__
-#  define WORDS_BIGENDIAN		0
-# else
-#  error Unknown CPU type in MetroWerks CodeWarrior
 # endif
 #else
 # error Unknown compiler for WIN32

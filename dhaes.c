@@ -259,7 +259,7 @@ memchunk* dhaes_pContextEncrypt(dhaes_pContext* ctxt, mp32number* ephemeralPubli
 		goto encrypt_end;
 
 	/* add pkcs-5 padding */
-	paddedtext = pkcs5Pad(ctxt->cipher.algo->blocksize, cleartext);
+	paddedtext = pkcs5PadCopy(ctxt->cipher.algo->blocksize, cleartext);
 
 	/* encrypt the memchunk in CBC mode */
 	if (blockEncrypt(ctxt->cipher.algo, ctxt->cipher.param, CBC, paddedtext->size / ctxt->cipher.algo->blocksize, (uint32*) paddedtext->data, (const uint32*) paddedtext->data))
@@ -332,14 +332,13 @@ memchunk* dhaes_pContextDecrypt(dhaes_pContext* ctxt, const mp32number* ephemera
 	}
 
 	/* remove pkcs-5 padding */
-	if (pkcs5UnpadInline(ctxt->cipher.algo->blocksize, paddedtext))
+	cleartext = pkcs5Unpad(ctxt->cipher.algo->blocksize, paddedtext);
+
+	if (cleartext == (memchunk*) 0)
 	{
 		free(paddedtext->data);
 		free(paddedtext);
-		goto decrypt_end;
 	}
-
-	cleartext = paddedtext;
 
 decrypt_end:
 

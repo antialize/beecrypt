@@ -1,9 +1,9 @@
 /*
- * blockpad.h
+ * memchunk.h
  *
- * Blockcipher padding, header
+ * Beecrypt memory block handling, header
  *
- * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
+ * Copyright (c) 2001 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -20,27 +20,31 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
  */
 
-#ifndef _BLOCKPAD_H
-#define _BLOCKPAD_H
+#ifndef _MEMCHUNK_H
+#define _MEMCHUNK_H
 
-#include "beecrypt.h"
+#ifdef HAVE_CONFIG_H
+# include "config.h"
+#endif
+
+typedef struct
+{
+	int		size;
+	byte*	data;
+} memchunk;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 BEEDLLAPI
-memchunk* pkcs5Pad  (int, memchunk*);
+memchunk*	memchunkAlloc(int);
 BEEDLLAPI
-memchunk* pkcs5Unpad(int, memchunk*);
-
+void		memchunkFree(memchunk*);
 BEEDLLAPI
-memchunk* pkcs5PadCopy  (int, const memchunk*);
-BEEDLLAPI
-memchunk* pkcs5UnpadCopy(int, const memchunk*);
+memchunk*	memchunkResize(memchunk*, int);
 
 #ifdef __cplusplus
 }

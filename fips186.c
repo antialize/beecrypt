@@ -61,8 +61,6 @@ int fips186Setup(fips186Param* fp)
 		#  elif defined(HAVE_PTHREAD_H)
 		if (pthread_mutex_init(&fp->lock, (pthread_mutexattr_t *) 0))
 			return -1;
-		#  else
-		#   error need locking mechanism
 		#  endif
 		# endif
 		#endif
@@ -89,8 +87,6 @@ int fips186Seed(fips186Param* fp, const uint32* data, int size)
 		#  elif defined(HAVE_PTHREAD_H)
 		if (pthread_mutex_lock(&fp->lock))
 			return -1;
-		#  else
-		#   error need locking mechanism
 		#  endif
 		# endif
 		#endif
@@ -107,8 +103,6 @@ int fips186Seed(fips186Param* fp, const uint32* data, int size)
 		#  elif defined(HAVE_PTHREAD_H)
 		if (pthread_mutex_unlock(&fp->lock))
 			return -1;
-		#  else
-		#   error need locking mechanism
 		#  endif
 		# endif
 		#endif
@@ -132,8 +126,6 @@ int fips186Next(fips186Param* fp, uint32* data, int size)
 		#  elif defined(HAVE_PTHREAD_H)
 		if (pthread_mutex_lock(&fp->lock))
 			return -1;
-		#  else
-		#   error need locking mechanism
 		#  endif
 		# endif
 		#endif
@@ -172,8 +164,6 @@ int fips186Next(fips186Param* fp, uint32* data, int size)
 		#  elif defined(HAVE_PTHREAD_H)
 		if (pthread_mutex_unlock(&fp->lock))
 			return -1;
-		#  else
-		#   error need locking mechanism
 		#  endif
 		# endif
 		#endif
@@ -197,8 +187,6 @@ int fips186Cleanup(fips186Param* fp)
 		#  elif defined(HAVE_PTHREAD_H)
 		if (pthread_mutex_destroy(&fp->lock))
 			return -1;
-		#  else
-		#   error need locking mechanism
 		#  endif
 		# endif
 		#endif

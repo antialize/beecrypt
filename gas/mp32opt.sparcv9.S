@@ -120,6 +120,25 @@ C_FUNCTION_BEGIN(mp32sub)
 C_FUNCTION_END(mp32sub, .Lmp32sub_size)
 
 
+C_FUNCTION_BEGIN(mp32multwo)
+
+	.register %g2,#scratch
+	.register %g3,#scratch
+
+	sll %o0,2,%g1
+	dec 4,%g1
+	addcc %g0,%g0,%o0
+.Lmp32multwo_loop:
+	lduw [%o1+%g1],%g2
+	addccc %g2,%g2,%g3
+	stw %g3,[%o1+%g1]
+	brnz,pt %g1,.Lmp32multwo_loop
+	dec 4,%g1
+	retl
+	movcs %icc,1,%o0
+C_FUNCTION_END(mp32multwo, .Lmp32multwo_size)
+
+
 C_FUNCTION_BEGIN(mp32setmul)
 
 	.register %g2,#scratch

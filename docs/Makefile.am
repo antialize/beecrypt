@@ -1,5 +1,5 @@
 #
-# Makefile.am's purpose is to add the GNU Assembler sources to the dist
+# Makefile.am's purpose is to add the documentation html files to the dist
 #
 # Copyright (c) 2001 Virtual Unlimited B.V.
 #
@@ -22,4 +22,4 @@
 
 AUTOMAKE_OPTIONS = gnu no-dependencies
 
-SOURCES = blowfishopt.i586.S fips180opt.i586.S mp32opt.arm.S mp32opt.i386.S mp32opt.ia64.S mp32opt.powerpc.S mp32opt.sparcv8.S mp32opt.sparcv9.S mp64opt.ia64.S
+EXTRA_DIST = index.html installing.html using.html developing.html api.html manual.css

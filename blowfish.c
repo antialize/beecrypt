@@ -313,7 +313,7 @@ static const blockMode blowfishModes[2] =
 	{ /* CBC */ (blockModeEncrypt) blowfishCBCEncrypt, (blockModeDecrypt) blowfishCBCDecrypt }
 };
 
-const blockCipher blowfish = { "Blowfish", sizeof(blowfishParam), 8, 64, 448, 32, (const blockCipherSetup) blowfishSetup, (const blockCipherSetIV) blowfishSetIV, (const blockCipherEncrypt) blowfishEncrypt, (const blockCipherDecrypt) blowfishDecrypt, blowfishModes };
+const blockCipher blowfish = { "Blowfish", sizeof(blowfishParam), 8, 64, 448, 32, (blockCipherSetup) blowfishSetup, (blockCipherSetIV) blowfishSetIV, (blockCipherEncrypt) blowfishEncrypt, (blockCipherDecrypt) blowfishDecrypt, blowfishModes };
 
 int blowfishSetup(blowfishParam* bp, const uint32* key, int keybits, cipherOperation op)
 {
@@ -530,31 +530,71 @@ int blowfishCBCDecrypt(blowfishParam* bp, int count, uint32* dst, const uint32* 
 {
 	if (count > 0)
 	{
-		blowfishDecrypt(bp, dst, src);
-
-		dst[0] ^= bp->fdback[0];
-		dst[1] ^= bp->fdback[1];
-
-		dst += 2;
-		src += 2;
-
-		count--;
-
-		while (count > 0)
+		if (src == dst)
 		{
+			register uint32 fb0 = src[0];
+			register uint32 fb1 = src[1];
+
 			blowfishDecrypt(bp, dst, src);
 
-			dst[0] ^= src[-2];
-			dst[1] ^= src[-1];
+			dst[0] ^= bp->fdback[0];
+			dst[1] ^= bp->fdback[1];
 
 			dst += 2;
 			src += 2;
 
 			count--;
-		}
 
-		bp->fdback[0] = src[-2];
-		bp->fdback[1] = src[-1];
+			while (count > 0)
+			{
+				register int src0 = src[0];
+				register int src1 = src[1];
+
+				blowfishDecrypt(bp, dst, src);
+
+				dst[0] ^= fb0;
+				dst[1] ^= fb1;
+
+				fb0 = src0;
+				fb1 = src1;
+
+				dst += 2;
+				src += 2;
+
+				count--;
+			}
+
+			bp->fdback[0] = fb0;
+			bp->fdback[1] = fb1;
+		}
+		else
+		{
+			blowfishDecrypt(bp, dst, src);
+
+			dst[0] ^= bp->fdback[0];
+			dst[1] ^= bp->fdback[1];
+
+			dst += 2;
+			src += 2;
+
+			count--;
+
+			while (count > 0)
+			{
+				blowfishDecrypt(bp, dst, src);
+
+				dst[0] ^= src[-2];
+				dst[1] ^= src[-1];
+
+				dst += 2;
+				src += 2;
+
+				count--;
+			}
+
+			bp->fdback[0] = src[-2];
+			bp->fdback[1] = src[-1];
+		}
 	}
 	return 0;
 }

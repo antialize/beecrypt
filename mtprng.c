@@ -51,7 +51,7 @@
 #define loBits(a)		((a) & 0x7FFFFFFF)
 #define mixBits(a, b)	(hiBit(a) | loBits(b))
 
-const randomGenerator mtprng = { "Mersenne Twister", sizeof(mtprngParam), (const randomGeneratorSetup) mtprngSetup, (const randomGeneratorSeed) mtprngSeed, (const randomGeneratorNext) mtprngNext, (const randomGeneratorCleanup) mtprngCleanup };
+const randomGenerator mtprng = { "Mersenne Twister", sizeof(mtprngParam), (randomGeneratorSetup) mtprngSetup, (randomGeneratorSeed) mtprngSeed, (randomGeneratorNext) mtprngNext, (randomGeneratorCleanup) mtprngCleanup };
 
 static void mtprngReload(mtprngParam* mp)
 {
@@ -85,8 +85,6 @@ int mtprngSetup(mtprngParam* mp)
 		#  elif defined(HAVE_PTHREAD_H)
 		if (pthread_mutex_init(&mp->lock, (pthread_mutexattr_t *) 0))
 			return -1;
-		#  else
-		#   error need locking mechanism
 		#  endif
 		# endif
 		#endif
@@ -116,8 +114,6 @@ int mtprngSeed(mtprngParam* mp, const uint32* data, int size)
 		#  elif defined(HAVE_PTHREAD_H)
 		if (pthread_mutex_lock(&mp->lock))
 			return -1;
-		#  else
-		#   error need locking mechanism
 		#  endif
 		# endif
 		#endif
@@ -139,8 +135,6 @@ int mtprngSeed(mtprngParam* mp, const uint32* data, int size)
 		#  elif defined(HAVE_PTHREAD_H)
 		if (pthread_mutex_unlock(&mp->lock))
 			return -1;
-		#  else
-		#   error need locking mechanism
 		#  endif
 		# endif
 		#endif
@@ -166,8 +160,6 @@ int mtprngNext(mtprngParam* mp, uint32* data, int size)
 		#  elif defined(HAVE_PTHREAD_H)
 		if (pthread_mutex_lock(&mp->lock))
 			return -1;
-		#  else
-		#   error need locking mechanism
 		#  endif
 		# endif
 		#endif
@@ -195,8 +187,6 @@ int mtprngNext(mtprngParam* mp, uint32* data, int size)
 		#  elif defined(HAVE_PTHREAD_H)
 		if (pthread_mutex_unlock(&mp->lock))
 			return -1;
-		#  else
-		#   error need locking mechanism
 		#  endif
 		# endif
 		#endif
@@ -220,8 +210,6 @@ int mtprngCleanup(mtprngParam* mp)
 		#  elif defined(HAVE_PTHREAD_H)
 		if (pthread_mutex_destroy(&mp->lock))
 			return -1;
-		#  else
-		#   error need locking mechanism
 		#  endif
 		# endif
 		#endif

@@ -1114,6 +1114,7 @@ void mp32print(register uint32 xsize, register const uint32* xdata)
 {
 	while (xsize--)
 		printf("%08x", *(xdata++));
+	fflush(stdout);
 }
 #endif
 
@@ -1123,5 +1124,6 @@ void mp32println(register uint32 xsize, register const uint32* xdata)
 	while (xsize--)
 		printf("%08x", *(xdata++));
 	printf("\n");
+	fflush(stdout);
 }
 #endif
