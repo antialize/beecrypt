@@ -32,14 +32,6 @@
 # if WIN32
 #  include <windows.h>
 #  include <winbase.h>
-# else
-#  if HAVE_THREAD_H && HAVE_SYNCH_H
-#   include <synch.h>
-#  elif HAVE_PTHREAD_H
-#   include <pthread.h>
-#  else
-#   error need locking mechanism
-#  endif
 # endif
 #endif
 
@@ -53,20 +45,14 @@ typedef struct
 {
 	#ifdef _REENTRANT
 	# if WIN32
-	HANDLE			lock;
+	HANDLE		lock;
 	# else
-	#  if HAVE_THREAD_H && HAVE_SYNCH_H
-	mutex_t			lock;
-	#  elif HAVE_PTHREAD_H
-	pthread_mutex_t	lock;
-	#  else
-	#   error need locking mechanism
-	#  endif
+	bc_lock_t	lock;
 	# endif
 	#endif
-	uint32_t  state[N+1];
-	uint32_t  left;
-	uint32_t* nextw;
+	uint32_t	state[N+1];
+	uint32_t	left;
+	uint32_t*	nextw;
 } mtprngParam;
 
 #ifdef __cplusplus

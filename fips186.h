@@ -32,23 +32,15 @@
 # if WIN32
 #  include <windows.h>
 #  include <winbase.h>
-# else
-#  if HAVE_THREAD_H && HAVE_SYNCH_H
-#   include <synch.h>
-#  elif HAVE_PTHREAD_H
-#   include <pthread.h>
-#  else
-#   error need locking mechanism
-#  endif
 # endif
 #endif
 
 #include "beecrypt.h"
 #include "sha1.h"
 
-#if (MP_WBYTES == 8)
+#if (MP_WBITS == 64)
 # define FIPS186_STATE_SIZE	8
-#elif (MP_WBYTES == 4)
+#elif (MP_WBITS == 32)
 # define FIPS186_STATE_SIZE	16
 #else
 # error
@@ -60,15 +52,9 @@ typedef struct
 {
 	#ifdef _REENTRANT
 	# if WIN32
-	HANDLE			lock;
+	HANDLE		lock;
 	# else
-	#  if HAVE_THREAD_H && HAVE_SYNCH_H
-	mutex_t			lock;
-	#  elif HAVE_PTHREAD_H
-	pthread_mutex_t	lock;
-	#  else
-	#   error need locking mechanism
-	#  endif
+	bc_lock_t	lock;
 	# endif
 	#endif
 	sha1Param	param;
