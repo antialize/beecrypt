@@ -1,11 +1,5 @@
 /*
- * beecrypt.c
- *
- * BeeCrypt library hooks & stubs, code
- *
  * Copyright (c) 1999, 2000, 2001, 2002 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,7 +14,11 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
+ */
+
+/*!\file beecrypt.c
+ * \brief BeeCrypt API.
+ * \author Bob Deblier <bob@virtualunlimited.com>
  */
 
 #define BEECRYPT_DLL_EXPORT
@@ -41,21 +39,31 @@
 #endif
 
 #include "endianness.h"
+#include "mp32.h"
 #include "entropy.h"
+
+#include "bbs.h"
 #include "fips186.h"
+#include "mtprng.h"
+
+#include "md5.h"
+#include "sha1.h"
+#include "sha256.h"
+
 #include "hmacmd5.h"
 #include "hmacsha1.h"
 #include "hmacsha256.h"
-#include "md5.h"
-#include "mp32.h"
-#include "mtprng.h"
-#include "sha1.h"
-#include "sha256.h"
 
 #include "aes.h"
 #include "blowfish.h"
 #include "blockmode.h"
 
+/*!\addgroup ES_m */
+/* \{ */
+
+/*!\var entropySourceList
+ * \brief Table holding all available entropy sources.
+ */
 static entropySource entropySourceList[] =
 {
 #if WIN32
@@ -147,9 +155,12 @@ int entropyGatherNext(uint32* data, int size)
 	return -1;
 }
 
+/* \} */
+
 static const randomGenerator* randomGeneratorList[] =
 {
 	&fips186prng,
+/*	&bbsprng, */
 	&mtprng
 };
 
@@ -646,6 +657,9 @@ int keyedHashFunctionContextDigestMatch(keyedHashFunctionContext* ctxt, const mp
 }
 
 
+/*!\addtogroup BC_m */
+/* \{ */
+
 static const blockCipher* blockCipherList[] =
 {
 	&aes,
@@ -654,11 +668,23 @@ static const blockCipher* blockCipherList[] =
 
 #define BLOCKCIPHERS (sizeof(blockCipherList) / sizeof(blockCipher*))
 
+/*!\fn int blockCipherCount()
+ * \brief Return the number of available blockciphers.
+ * \return The number of available blockciphers.
+ */
 int blockCipherCount()
 {
 	return BLOCKCIPHERS;
 }
 
+/*!\fn const blockCipher* blockCipherDefault()
+ * \brief Return the default blockcipher.
+ *
+ * By default, the function returns the first entry in blockCipherList, but
+ * this can be overridden by setting environment variable BEECRYPT_CIPHER.
+ *
+ * \return The default blockcipher.
+ */
 const blockCipher* blockCipherDefault()
 {
 	char* selection = getenv("BEECRYPT_CIPHER");
@@ -669,6 +695,12 @@ const blockCipher* blockCipherDefault()
 		return &blowfish;
 }
 
+/*!\fn const blockCipher* blockCipherGet(int index)
+ * \brief Return a blockcipher by its index.
+ * \param index The requested blockcipher index.
+ * \return The requested blockcipher, or a null pointer, if the index
+ * was out of range.
+ */
 const blockCipher* blockCipherGet(int index)
 {
 	if ((index < 0) || (index >= BLOCKCIPHERS))
@@ -677,6 +709,12 @@ const blockCipher* blockCipherGet(int index)
 	return blockCipherList[index];
 }
 
+/*!\fn const blockCipher* blockCipherFind(const char* name)
+ * \brief Return a blockcipher by its name.
+ * \param name The requested blockcipher's name.
+ * \return The requested blockcipher, or a null pointer, if the name
+ * wasn't found.
+ */
 const blockCipher* blockCipherFind(const char* name)
 {
 	register int index;

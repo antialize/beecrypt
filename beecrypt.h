@@ -1,11 +1,5 @@
 /*
- * beecrypt.h
- *
- * BeeCrypt library hooks & stubs, header
- *
- * Copyright (c) 1999, 2000, 2001 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
+ * Copyright (c) 1999, 2000, 2001, 2002 Virtual Unlimited B.V.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,6 +17,15 @@
  *
  */
 
+/*!\file beecrypt.h
+ * \brief BeeCrypt API, headers.
+ *
+ * These API functions provide an abstract way for using most of
+ * the various algorithms implemented by the library.
+ *
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ */
+
 #ifndef _BEECRYPT_H
 #define _BEECRYPT_H
 
@@ -35,6 +38,10 @@
  * Entropy Sources
  */
 
+/*!\typedef entropyNext
+ * \brief Prototype definition for an entropy-generating function.
+ * \ingroup ES_m
+ */
 typedef int (*entropyNext)(uint32*, int);
 
 /*
@@ -51,9 +58,17 @@ typedef int (*entropyNext)(uint32*, int);
  * Return value is 0 on success, or -1 on failure.
  */
 
+/*!\brief This struct holds information and pointers to code specific to each source of entropy.
+ * \ingroup ES_m
+ */
 typedef struct
 {
+	/*!\var name
+	 * \brief The entropy source's name.
+	 */
 	const char*			name;
+	/*!\var next
+	 */
 	const entropyNext	next;
 } entropySource;
 
@@ -89,12 +104,16 @@ const entropySource*	entropySourceDefault();
  * the requested amount. It will only try multiple sources if variable
  * BEECRYPT_ENTROPY is not set.
  */
+
 BEECRYPTAPI
 int						entropyGatherNext(uint32*, int);
 
 #ifdef __cplusplus
 }
 #endif
+
+/* \}
+ */
 
 /*
  * Pseudo-random Number Generators
@@ -223,6 +242,9 @@ int randomGeneratorContextNext(randomGeneratorContext*, uint32*, int);
  * Hash Functions
  */
 
+/*!typedef void hashFunctionParam
+ * \ingroup HASH_m
+ */
 typedef void hashFunctionParam;
 
 typedef int (*hashFunctionReset )(hashFunctionParam*);
@@ -345,6 +367,9 @@ int hashFunctionContextDigestMatch(hashFunctionContext*, const mp32number*);
  * Keyed Hash Functions, a.k.a. Message Authentication Codes
  */
 
+/*!\typedef void keyedHashFunctionParam
+ * \ingroup HMAC_m
+ */
 typedef void keyedHashFunctionParam;
 
 typedef int (*keyedHashFunctionSetup  )(keyedHashFunctionParam*, const uint32*, int);
@@ -482,83 +507,139 @@ int keyedHashFunctionContextDigestMatch(keyedHashFunctionContext*, const mp32num
 }
 #endif
 
+/* \}
+ */
+
 /*
  * Block ciphers
  */
 
+/*!\enum cipherOperation
+ * \brief Specifies whether to perform encryption or decryption.
+ * \ingroup BC_m
+ */
 typedef enum
 {
 	ENCRYPT,
 	DECRYPT
 } cipherOperation;
 
+/*!\enum
+ * \brief Specifies which cipher mode to apply.
+ * \ingroup BC_m
+ */
 typedef enum
 {
 	ECB,
 	CBC
 } cipherMode;
 
+/*!\typedef void blockCipherParam
+ * \brief Placeholder type definition for blockcipher parameters.
+ * \sa aesParam, blowfishParam.
+ * \ingroup BC_m
+ */
 typedef void blockCipherParam;
 
+/*!\typedef blockModeEncrypt
+ * \brief Prototype definition for an encryption function in a specific mode.
+ * \ingroup BC_m
+ */
 typedef int (*blockModeEncrypt)(blockCipherParam*, int, uint32*, const uint32*);
+
+/*!\typedef blockModeDecrypt
+ * \brief Prototype definition for an encryption function in a specific mode.
+ * \ingroup BC_m
+ */
 typedef int (*blockModeDecrypt)(blockCipherParam*, int, uint32*, const uint32*);
 
+/*!\brief Holds information on which specific routines to use for each cipher mode.
+ * \ingroup BC_m
+ */
 typedef struct
 {
 	const blockModeEncrypt	encrypt;
 	const blockModeDecrypt	decrypt;
 } blockMode;
 
+/*!\brief Prototype definition for a setup function.
+ * \ingroup BC_m
+ */
 typedef int (*blockCipherSetup  )(blockCipherParam*, const uint32*, int, cipherOperation);
+
+/*!\typedef blockCipherSetIV
+ * \brief Prototype definition for an initialization vector setup function.
+ * \ingroup BC_m
+ */
 typedef int (*blockCipherSetIV  )(blockCipherParam*, const uint32*);
+
+/*!\typedef int (*blockCipherEncrypt)(blockCipherParam* bp, uint32* dst, const uint32* src)
+ * \brief Prototype for a \e raw encryption function.
+ * \param bp The blockcipher's parameters.
+ * \param dst The destination address.
+ * \param sec The source address.
+ * \note This is a raw encryption function.
+ * \note Type uint32* is used for dst and src to indicate that memory should be aligned on a 4-byte boundary.
+ * \retval 0 on success.
+ * \retval -1 on failure.
+ * \ingroup BC_m
+ */
 typedef int (*blockCipherEncrypt)(blockCipherParam*, uint32*, const uint32*);
+
+/*!\typedef blockCipherDecrypt
+ * \brief Prototype definition for a \e raw decryption function.
+ * \ingroup BC_m
+ */
 typedef int (*blockCipherDecrypt)(blockCipherParam*, uint32*, const uint32*);
 
-/*
- * The struct 'blockCipher' holds information and pointers to code specific
- * to each blockcipher. Specific block ciphers MAY be written to be
- * multithread-safe.
+/*!\brief Holds information and pointers to code specific to each cipher.
  *
- * The struct field 'keybitsmin' contains the minimum number of bits a key
- * must contains, 'keybitsmax' the maximum number of bits a key may contain,
- * 'keybitsinc', the increment in bits that may be used between min and max.
+ * Specific block ciphers \e may be written to be multithread-safe.
  *
- * The struct contains the following function(s):
- *
- * int (*setup)(blockCipherParam *param, const uint32* key, int keybits, cipherOperation);
- *
- * This function will setup the blockcipher parameters with the given secret
- * key for either encryption or decryption;
- * Return value is 0 on success, or -1 on failure.
- * NOTE: after use, it is recommended to wipe the parameters by calling setup
- * again with another (dummy) key.
- *
- * int (*encrypt)(blockCipherParam* param, uint32* block);
- *
- * This function will encrypt one block of data (with bit size equal to
- * 'blockbits')
- * Return value is 0 on success, or -1 on failure.
- * NOTE: this is raw encryption, without padding, etc.
- *
- * int (*decrypt)(blockCipherParam* param, uint32* block);
- *
- * This function will decrypt one block of data (with bit size equal to
- * 'blockbits')
- * Return value is 0 on success, or -1 on failure.
- * NOTE: this is raw decryption, without padding, etc.
+ * \ingroup BC_m
  */
- 
 typedef struct
 {
+	/*!\var name
+	 * \brief The blockcipher's name.
+	 */
 	const char*					name;
-	const unsigned int			paramsize;	/* in bytes */
-	const unsigned int			blocksize;	/* in bytes */
-	const unsigned int			keybitsmin;	/* in bits */
-	const unsigned int			keybitsmax;	/* in bits */
-	const unsigned int			keybitsinc;	/* in bits */
+	/*!\var paramsize
+	 * \brief The size of the parameters required by this cipher, in bytes.
+	 */
+	const unsigned int			paramsize;
+	/*!\var blocksize
+	 * \brief The size of one block of data, in bytes.
+	 */
+	const unsigned int			blocksize;
+	/*!\var keybitsmin
+	 * \brief The minimum number of key bits.
+	 */
+	const unsigned int			keybitsmin;
+	/*!\var keybitsmax
+	 * \brief The maximum number of key bits.
+	 */
+	const unsigned int			keybitsmax;
+	/*!\var keybitsinc
+	 * \brief The allowed increment in key bits between min and max.
+	 * \see keybitsmin and keybitsmax.
+	 */
+	const unsigned int			keybitsinc;
+	/*!\var setup
+	 * \brief Pointer to the cipher's setup function.
+	 */
 	const blockCipherSetup		setup;
+	/*!\var setiv
+	 * \brief Pointer to the cipher's initialization vector setup function.
+	 */
 	const blockCipherSetIV		setiv;
+	/*!\var encrypt
+	 * \brief Pointer to the cipher's encryption function.
+	 */
 	const blockCipherEncrypt	encrypt;
+	/*!\var decrypt
+	 * \brief Pointer to the cipher's decryption function.
+	 */
 	const blockCipherDecrypt	decrypt;
 	const blockMode*			mode;
 } blockCipher;
@@ -598,10 +679,19 @@ const blockCipher*		blockCipherDefault();
  * The struct 'blockCipherContext' is used to contain both the functional
  * part (the blockCipher), and its parameters.
  */
-
+/*!\brief Holds a pointer to a blockcipher as well as its parameters.
+ * \warning A context can be used by only one thread at the same time.
+ * \ingroup BC_m
+ */
 typedef struct
 {
+	/*!\var algo
+	 * \brief Pointer to a blockCipher.
+	 */
 	const blockCipher* algo;
+	/*!\var param
+	 * \brief Pointer to the parameters used by algo.
+	 */
 	blockCipherParam* param;
 } blockCipherContext;
 
@@ -617,10 +707,13 @@ extern "C" {
 
 BEECRYPTAPI
 int blockCipherContextInit(blockCipherContext*, const blockCipher*);
+
 BEECRYPTAPI
 int blockCipherContextSetup(blockCipherContext*, const uint32*, int, cipherOperation);
+
 BEECRYPTAPI
 int blockCipherContextSetIV(blockCipherContext*, const uint32*);
+
 BEECRYPTAPI
 int blockCipherContextFree(blockCipherContext*);
 
