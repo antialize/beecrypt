@@ -27,6 +27,8 @@
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/lang/NumberFormatException.h"
+using beecrypt::lang::NumberFormatException;
 #include "beecrypt/c++/lang/String.h"
 using beecrypt::lang::String;
 
@@ -38,12 +40,27 @@ namespace beecrypt {
 		 */
 		class BEECRYPTCXXAPI Long
 		{
+		private:
+			javalong _val;
+
 		public:
 			static const javalong MIN_VALUE;
 			static const javalong MAX_VALUE;
 
-			static const String& toString(javalong l) throw ();
 			static const String& toHexString(javalong l) throw ();
+			static const String& toOctalString(javalong l) throw ();
+			static const String& toString(javalong l) throw ();
+
+			static javalong parseLong(const String& s) throw (NumberFormatException);
+
+		public:
+			Long(javalong value);
+			Long(const String& s) throw (NumberFormatException);
+
+			javabyte byteValue() const throw ();
+			javashort shortValue() const throw ();
+			javaint intValue() const throw ();
+			javalong longValue() const throw ();
 		};
 	}
 }

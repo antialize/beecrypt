@@ -23,6 +23,10 @@
 #endif
 
 #include "beecrypt/c++/lang/Long.h"
+#include "beecrypt/c++/lang/String.h"
+using beecrypt::lang::String;
+
+#include <unicode/numfmt.h>
 
 namespace {
 	#if WIN32
@@ -39,12 +43,12 @@ namespace {
 
 using namespace beecrypt::lang;
 
-const javalong Long::MIN_VALUE = -0x8000000000000000L;
-const javalong Long::MAX_VALUE =  0x7FFFFFFFFFFFFFFFL;
+const javalong Long::MIN_VALUE = (((javalong) 1) << 63);
+const javalong Long::MAX_VALUE = ~MIN_VALUE;
 
 const String& Long::toString(javalong l) throw ()
 {
-	char tmp[22];
+	char tmp[21];
 
 	#if WIN32
 	sprintf(tmp, "%I64d", l);
@@ -84,4 +88,79 @@ const String& Long::toHexString(javalong l) throw ()
 	result = new String(tmp);
 
 	return *result;
+}
+
+const String& Long::toOctalString(javalong l) throw ()
+{
+	char tmp[24];
+
+	#if WIN32
+	sprintf(tmp, "%I64o", l);
+	#elif SIZEOF_LONG == 8
+	sprintf(tmp, "%lo", l);
+	#elif HAVE_LONG_LONG
+	sprintf(tmp, "%llo", l);
+	#else
+	# error
+	#endif
+
+	if (result)
+		delete result;
+
+	result = new String(tmp);
+
+	return *result;
+}
+
+javalong Long::parseLong(const String& s) throw (NumberFormatException)
+{
+	UErrorCode status = U_ZERO_ERROR;
+
+	NumberFormat* nf = NumberFormat::createInstance(status);
+
+	if (nf)
+	{
+		Formattable fmt((int64_t) 0);
+
+		nf->parse(s, fmt, status);
+
+		delete nf;
+
+		if (U_FAILURE(status))
+			throw NumberFormatException("unable to parse string to javalong value");
+
+		return fmt.getInt64();
+	}
+	else
+		throw RuntimeException("unable to create ICU NumberFormat instance");
+}
+
+Long::Long(javalong value)
+{
+	_val = value;
+}
+
+Long::Long(const String& s) throw (NumberFormatException)
+{
+	_val = parseLong(s);
+}
+
+javabyte Long::byteValue() const throw ()
+{
+	return (javabyte) _val;
+}
+
+javashort Long::shortValue() const throw ()
+{
+	return (javashort) _val;
+}
+
+javaint Long::intValue() const throw ()
+{
+	return (javaint) _val;
+}
+
+javalong Long::longValue() const throw ()
+{
+	return (javalong) _val;
 }
