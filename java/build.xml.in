@@ -1,0 +1,32 @@
+<project name="BeeCrypt Java" default="dist" basedir=".">
+  <property name="src" location="@srcdir@/src"/>
+  <property name="build" location="@builddir@/build"/>
+
+  <target name="init">
+    <mkdir dir="${build}"/>
+  </target>
+
+  <target name="compile" depends="init">
+    <javac srcdir="${src}" destdir="${build}"/>
+  </target>
+
+  <target name="dist" depends="compile">
+    <jar jarfile="@builddir@/beecrypt-java.jar" basedir="${build}"/>
+  </target>
+
+  <target name="headers" depends="dist">
+    <javah classpath="@builddir@/beecrypt-java.jar" destdir="@srcdir@">
+       <class name="beecrypt.provider.DHKeyPairGenerator"/>
+       <class name="beecrypt.provider.MD5"/>
+       <class name="beecrypt.provider.RSAKeyPairGenerator"/>
+       <class name="beecrypt.provider.SHA1"/>
+       <class name="beecrypt.provider.SHA256"/>
+       <class name="beecrypt.provider.SHA384"/>
+       <class name="beecrypt.provider.SHA512"/>
+    </javah>
+  </target>
+
+  <target name="clean">
+    <delete dir="${build}"/>
+  </target>
+</project>

@@ -30,8 +30,46 @@ libaltdir=$(prefix)/lib@LIBALT@
 
 libalt_LTLIBRARIES = libbeecrypt_java.la
 
-noinst_HEADERS = javaglue.h
+libbeecrypt_java_la_SOURCES = \
+beecrypt_tools.c \
+beecrypt_provider_MD5.c \
+beecrypt_provider_SHA1.c \
+beecrypt_provider_SHA256.c \
+beecrypt_provider_SHA384.c \
+beecrypt_provider_SHA512.c \
+beecrypt_provider_RSAKeyPairGenerator.c
 
-libbeecrypt_java_la_SOURCES = javaglue.c
 libbeecrypt_java_la_LIBADD = $(top_builddir)/libbeecrypt.la
 libbeecrypt_java_la_LDFLAGS = -no-undefined -version $(LIBBEECRYPT_JAVA_LT_CURRENT):$(LIBBEECRYPT_JAVA_LT_REVISION):$(LIBBEECRYPT_JAVA_LT_AGE)
+
+EXTRA_DIST = \
+src/beecrypt/beeyond/AnyEncodedKeySpec.java \
+src/beecrypt/beeyond/BeeCertificate.java \
+src/beecrypt/beeyond/BeeEncodedKeySpec.java \
+src/beecrypt/beeyond/PKCS12PBEKey.java \
+src/beecrypt/crypto/DHPrivateKeyImpl.java \
+src/beecrypt/crypto/DHPublicKeyImpl.java \
+src/beecrypt/crypto/spec/DHAESDecryptParameterSpec.java \
+src/beecrypt/crypto/spec/DHAESParameterSpec.java \
+src/beecrypt/io/BeeInputStream.java \
+src/beecrypt/io/BeeOutputStream.java \
+src/beecrypt/io/MacInputStream.java \
+src/beecrypt/io/MacOutputStream.java \
+src/beecrypt/provider/BaseProvider.java \
+src/beecrypt/provider/BeeKeyStore.java \
+src/beecrypt/provider/DHAESParameters.java \
+src/beecrypt/provider/DHKeyFactory.java \
+src/beecrypt/provider/DSAKeyFactory.java \
+src/beecrypt/provider/KeyProtector.java \
+src/beecrypt/provider/MD5.java \
+src/beecrypt/provider/RSAKeyFactory.java \
+src/beecrypt/provider/RSAKeyPairGenerator.java \
+src/beecrypt/provider/SHA1.java \
+src/beecrypt/provider/SHA256.java \
+src/beecrypt/provider/SHA384.java \
+src/beecrypt/provider/SHA512.java \
+src/beecrypt/security/DSAPrivateKeyImpl.java \
+src/beecrypt/security/DSAPublicKeyImpl.java \
+src/beecrypt/security/RSAPrivateCrtKeyImpl.java \
+src/beecrypt/security/RSAPrivateKeyImpl.java \
+src/beecrypt/security/RSAPublicKeyImpl.java
