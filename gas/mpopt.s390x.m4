@@ -21,7 +21,6 @@ dnl  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 include(config.m4) 
 
 
-divert(-1)
 dnl r2 contains count -> move elsewhere; return register = carry
 dnl r3 contains result
 dnl r4 contains data
@@ -45,8 +44,7 @@ LOCAL(mpaddmul_loop):
 	stg %r1,0(%r3,%r6)
 	lgr %r2,%r0
 	aghi %r6,-8
-	jle LOCAL(mpaddmul_loop)
+	jhe LOCAL(mpaddmul_loop)
 	lmg %r6,%r7,48(%r15)
 	br %r14
 C_FUNCTION_END(mpaddmul)
-divert(0)
