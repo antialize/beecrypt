@@ -222,6 +222,17 @@ int mpge (size_t size, const mpw* xdata, const mpw* ydata);
 BEECRYPTAPI
 int mple (size_t size, const mpw* xdata, const mpw* ydata);
 
+/*!\fn int mpcmp(size_t size, const mpw* xdata, const mpw* ydata)
+ * \brief This function performs a comparison of two multi-precision
+ *  integers of the same size.
+ * \note The comparison treats the arguments as unsigned.
+ * \retval -1 if x < y
+ * \retval 0 if x == y
+ * \retval 1 if x > y
+ */
+BEECRYPTAPI
+int mpcmp(size_t size, const mpw* xdata, const mpw* ydata);
+
 /*!\fn int mpeqx(size_t xsize, const mpw* xdata, size_t ysize, const mpw* ydata)
  * \brief This function tests if two multi-precision integers of different
  *  size are equal.
@@ -303,6 +314,17 @@ int mpgex(size_t xsize, const mpw* xdata, size_t ysize, const mpw* ydata);
  */
 BEECRYPTAPI
 int mplex(size_t xsize, const mpw* xdata, size_t ysize, const mpw* ydata);
+
+/*!\fn int mpcmpx(size_t xsize, const mpw* xdata, size_t ysize, const mpw* ydata)
+ * \brief This function performs a comparison of two multi-precision
+ *  integers of the different size.
+ * \note The comparison treats the arguments as unsigned.
+ * \retval -1 if x < y
+ * \retval 0 if x == y
+ * \retval 1 if x > y
+ */
+BEECRYPTAPI
+int mpcmpx(size_t xsize, const mpw* xdata, size_t ysize, const mpw* ydata);
 
 /*!\fn int mpisone(size_t size, const mpw* data)
  * \brief This functions tests if the value of a multi-precision integer is
@@ -450,11 +472,22 @@ void mpnot(size_t size, mpw* data);
  *  given word. The given value is copied into the least significant word,
  *  while the most significant words are zeroed.
  * \param size The size of the multi-precision integer.
- * \param xdata The first multi-precision integer.
- * \param y The multi-precision word.
+ * \param xdata The multi-precision integer data.
+ * \param y The value to be assigned.
  */
 BEECRYPTAPI
 void mpsetw(size_t size, mpw* xdata, mpw y);
+
+/*!\fn void mpsetws(size_t size, mpw* xdata, size_t y)
+ * \brief This function sets the value of a multi-precision integer to the
+ *  given word. The given value is copied into the least significant word(s),
+ *  while the most significant words are zeroed.
+ * \param size The size of the multi-precision integer.
+ * \param xdata The multi-precision integer data.
+ * \param y The value.
+ */
+BEECRYPTAPI
+void mpsetws(size_t size, mpw* xdata, size_t y);
 
 /*!\fn void mpsetx(size_t xsize, mpw* xdata, size_t ysize, const mpw* ydata)
  * \brief This function set the value of the first multi-precision integer
@@ -676,10 +709,10 @@ void mpfprintln(FILE* f, size_t size, const mpw* data);
  */
 
 BEECRYPTAPI
-int os2ip(mpw* idata, size_t isize, const byte* osdata, size_t ossize);
+int i2osp(byte* osdata, size_t ossize, const mpw* idata, size_t isize);
 
 BEECRYPTAPI
-int i2osp(byte* osdata, size_t ossize, const mpw* idata, size_t isize);
+int os2ip(mpw* idata, size_t isize, const byte* osdata, size_t ossize);
 
 BEECRYPTAPI
 int hs2ip(mpw* idata, size_t isize, const char* hsdata, size_t hssize);
