@@ -44,6 +44,8 @@
 #include "beecrypt/hmacmd5.h"
 #include "beecrypt/hmacsha1.h"
 #include "beecrypt/hmacsha256.h"
+#include "beecrypt/hmacsha384.h"
+#include "beecrypt/hmacsha512.h"
 
 #include "beecrypt/aes.h"
 #include "beecrypt/blowfish.h"
@@ -478,7 +480,9 @@ static const keyedHashFunction* keyedHashFunctionList[] =
 {
 	&hmacmd5,
 	&hmacsha1,
-	&hmacsha256
+	&hmacsha256,
+	&hmacsha384,
+	&hmacsha512
 };
 
 #define KEYEDHASHFUNCTIONS 	(sizeof(keyedHashFunctionList) / sizeof(keyedHashFunction*))
