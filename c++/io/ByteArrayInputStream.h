@@ -19,6 +19,7 @@
 /*!\file ByteArrayInputStream.h
  * \ingroup CXX_IO_m
  */
+
 #ifndef _CLASS_BYTEARRAYINPUTSTREAM_H
 #define _CLASS_BYTEARRAYINPUTSTREAM_H
 

@@ -17,7 +17,7 @@
  */
 
 /*!\file SecretKeyFactory.h
- * \ingroup CXX_SECURITY_m
+ * \ingroup CXX_CRYPTO_m
  */
 
 #ifndef _CLASS_SECRETKEYFACTORY_H

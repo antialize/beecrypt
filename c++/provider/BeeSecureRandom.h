@@ -16,6 +16,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+/*!\file BeeSecureRandom.h
+ * \ingroup CXX_PROVIDER_m
+ */
+
 #ifndef _CLASS_BEESECURERANDOM_H
 #define _CLASS_BEESECURERANDOM_H
 

@@ -17,6 +17,8 @@
  */
 
 /*!\file bstream.h
+ * \brief C++ Object-to-stream output.
+ * \author Bob Deblier <bob.deblier@telenet.be>
  */
 
 #ifndef _BEECRYPT_STREAM_H

@@ -17,6 +17,7 @@
  */
 
 /*!\file BeeEncodedKeySpec.h
+ * \ingroup CXX_BEEYOND_m
  */
 
 #ifndef _CLASS_BEEENCODEDKEYSPEC_H

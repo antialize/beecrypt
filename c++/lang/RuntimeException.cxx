@@ -18,6 +18,10 @@
 
 #define BEECRYPT_CXX_DLL_EXPORT
 
+#ifdef HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include "beecrypt/c++/lang/RuntimeException.h"
 using namespace beecrypt::lang;
 

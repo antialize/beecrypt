@@ -17,6 +17,7 @@
  */
 
 /*!\file resource.h
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup CXX_m
  */
 

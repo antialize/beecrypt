@@ -17,6 +17,7 @@
  */
 
 /*!\file AnyEncodedKeySpec.h
+ * \ingroup CXX_BEEYOND_m
  */
 
 #ifndef _CLASS_ANYENCODEDKEYSPEC_H

@@ -17,7 +17,7 @@
  */
 
 /*!\file PBEKey.h
- * \ingroup CXX_CRYPTO_IF_m
+ * \ingroup CXX_CRYPTO_INTERFACES_m
  */
 
 #ifndef _INTERFACE_PBEKEY_H

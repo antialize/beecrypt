@@ -17,6 +17,7 @@
  */
 
 /*!\file BeeKeyFactory.h
+ * \ingroup CXX_PROVIDER_m
  */
 
 #ifndef _CLASS_BEEKEYFACTORY_H

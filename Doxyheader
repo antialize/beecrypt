@@ -52,7 +52,9 @@ Included in the library are:
   </ul>
  <li>multi-precision integer library, with assembler-optimized routines
      for a range of processors; optimized to perform well on both 32-bit
-     and 64-bit machines
+     and 64-bit machines; uses Barrettt modular reduction instead of the
+     more common usual Montgomery algorithm; also implements sliding
+     windows.
  <li>probabilistic primality testing, with optimized small prime trial
      division
  <li>discrete logarithm parameter generation over a prime field
@@ -63,6 +65,10 @@ Included in the library are:
  <li>RSA keypair generation with chinese remainder theorem variables
  <li>RSA public & private key operations
 </ul>
+
+A new feature in version 4.x is the C++ API, built to resemble Java's security
+and cryptography API. At this moment the number of classes provided is just
+enough to build CSPs. If there is enough interest, we may expand this library.
 
 Planned for the future are:
 <ul>
@@ -161,6 +167,8 @@ provider and the counterpart of this library.
  */
 /*!\defgroup	PKCS1_m		PKCS#1
  */
+/*!\defgroup	PKCS12_m	PKCS#12
+ */
 /*!\defgroup	CXX_m	C++ API
  */
 /*!\defgroup	CXX_CRYPTO_m	C++ classes mimicking javax.crypto
@@ -177,7 +185,7 @@ provider and the counterpart of this library.
  */
 /*!\defgroup	CXX_SECURITY_m	C++ classes mimicking java.security
  */
-/*!\defgroup	CXX_SECURITY_CERT_m	C++ classes mimicking
+/*!\defgroup	CXX_SECURITY_CERT_m	C++ classes mimicking java.security.cert
  */
 /*!\defgroup	CXX_SECURITY_INTERFACES_m	C++ classes mimicking java.security.interfaces
  */

@@ -17,6 +17,8 @@
  */
 
 /*!\file array.h
+ * \brief Array template class.
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup CXX_m
  */
 

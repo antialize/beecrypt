@@ -18,6 +18,7 @@
 
 /*!\file adapter.h
  * \brief In-between layer for BeeCrypt C and C++ code.
+ * \author Bob Deblier <bob.deblier@telenet.be>
  */
 
 #ifndef _BEECRYPT_ADAPTER_H
@@ -31,9 +32,6 @@
 using beecrypt::security::SecureRandom;
 
 namespace beecrypt {
-
-//	extern SecureRandom systemsr;
-
 	/*!\brief Class which transforms a SecureRandom generator into a randomGeneratorContext.
 	*/
 	struct BEECRYPTCXXAPI randomGeneratorContextAdapter : randomGeneratorContext

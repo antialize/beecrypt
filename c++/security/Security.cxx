@@ -18,7 +18,7 @@
 
 #define BEECRYPT_CXX_DLL_EXPORT
 
-#if HAVE_CONFIG_H
+#ifdef HAVE_CONFIG_H
 # include "config.h"
 #endif
 

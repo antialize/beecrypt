@@ -17,7 +17,7 @@
  */
 
 /*!\file MacOutputStream.h
- * \ingroup CXX_SECURITY_m
+ * \ingroup CXX_CRYPTO_m
  */
 
 #ifndef _CLASS_MACOUTPUTSTREAM_H

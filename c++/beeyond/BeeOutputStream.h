@@ -17,6 +17,7 @@
  */
 
 /*!\file BeeOutputStream.h
+ * \ingroup CXX_BEEYOND_m
  */
 
 #ifndef _CLASS_BEEOUTPUTSTREAM_H
