@@ -34,7 +34,6 @@
 #endif
 
 #include "beecrypt/hmac.h"
-#include "beecrypt/endianness.h"
 
 /*!\addtogroup HMAC_m
  * \{
