@@ -56,9 +56,9 @@
 # if defined(__i386__)
 static inline uint32_t _rotl32(uint32_t x, const unsigned char n)
 {
-	__asm__("roll %[n],%[x]"
-		:	[x] "=r" (x)
-		:	"0" (x), [n] "I" (n));
+	__asm__("roll %2,%0"
+		:	"=r" (x)
+		:	"0" (x), "I" (n));
 
 	return x;
 }
@@ -67,9 +67,9 @@ static inline uint32_t _rotl32(uint32_t x, const unsigned char n)
 
 static inline uint32_t _rotr32(uint32_t x, const unsigned char n)
 {
-	__asm__("rorl %[n],%[x]"
-		:	[x] "=r" (x)
-		:	"0" (x), [n] "I" (n));
+	__asm__("rorl %2,%0"
+		:	"=r" (x)
+		:	"0" (x), "I" (n));
 
 	return x;
 }
