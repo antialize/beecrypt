@@ -3,8 +3,8 @@
 AC_INIT(beecrypt, 2.3.0pre, bob.deblier@pandora.be)
 AM_INIT_AUTOMAKE
 AC_CANONICAL_TARGET
-AC_CONFIG_SRCDIR([beecrypt.h])
-AM_CONFIG_HEADER([beecrypt.gnu.h])
+AC_CONFIG_SRCDIR(beecrypt.h)
+AM_CONFIG_HEADER(beecrypt.gnu.h)
 AC_LIBTOOL_WIN32_DLL
 
 # Checks for package options
@@ -76,7 +76,7 @@ AC_ARG_WITH(cpu,      [  --with-cpu              enable cpu-specific optimizatio
   [ ac_with_cpu=$target_cpu
   ])
 
-AC_ARG_ENABLE(threads, [  --enable-threads        enables multithread support [de fault=yes]],
+AC_ARG_ENABLE(threads, [  --enable-threads        enables multithread support [default=yes]],
   [ if test "$enableval" = no; then
       ac_enable_threads=no
     else
@@ -164,12 +164,6 @@ if test "$ac_cv_prog_gcc" != yes; then
 fi
 
 # Predefines for autoheader
-AH_TOP([
-#ifndef _REENTRANT
-#define _REENTRANT
-#endif
-])
-
 AH_TEMPLATE([AIX],[Define to 1 if you are using AIX])
 AH_TEMPLATE([CYGWIN],[Define to 1 if you are using Cygwin])
 AH_TEMPLATE([DARWIN],[Define to 1 if you are using Darwin/MacOS X])
@@ -266,8 +260,13 @@ AH_TEMPLATE([HAVE_64_BIT_INT], [Define to 1 if your compiler has a 64-bit signed
 AH_TEMPLATE([HAVE_64_BIT_UINT],[Define to 1 if your compiler has a 64-bit unsigned integer type])
 
 AH_BOTTOM([
-#if LINUX
-#define _LIBC_REENTRANT
+#if ENABLE_THREADS
+# ifndef _REENTRANT
+#  define _REENTRANT
+# endif
+# if LINUX
+#  define _LIBC_REENTRANT
+# endif
 #endif
 ])
 
