@@ -66,7 +66,6 @@ dnl	prepare modulo-scheduled loop
 	mov ar.ec = 1
 	mov pr.rot = (1 << 16);;
 
-	.body
 LOCAL(mpcopy_loop):
 	(p16) ld8 r32 = [src],-8
 	(p17) st8 [dst] = r33,-8
@@ -75,6 +74,7 @@ LOCAL(mpcopy_loop):
 dnl	epilogue
 	(p17) st8 [dst] = r33,-8
 	;;
+
 	mov pr = saved_pr, -1
 	mov ar.lc = saved_lc
 	mov ar.pfs = saved_pfs
@@ -84,9 +84,9 @@ C_FUNCTION_END(mpcopy)
 
 C_FUNCTION_BEGIN(mpadd)
 	.prologue
-	.save ar.lc, saved_lc
-	.save pr, saved_pr
 	alloc saved_pfs = ar.pfs,3,5,0,8
+	mov saved_lc = ar.lc
+	mov saved_pr = pr
 	sub sze = in0,r0,1;;
 
 dnl	adjust addresses
@@ -129,9 +129,9 @@ C_FUNCTION_END(mpadd)
 
 C_FUNCTION_BEGIN(mpsub)
 	.prologue
-	.save ar.lc, saved_lc
-	.save pr, saved_pr
 	alloc saved_pfs = ar.pfs,3,5,0,8
+	mov saved_lc = ar.lc
+	mov saved_pr = pr
 	sub sze = in0,r0,1;;
 
 dnl	adjust addresses
@@ -174,9 +174,9 @@ C_FUNCTION_END(mpsub)
 
 C_FUNCTION_BEGIN(mpsetmul)
 	.prologue
-	.save ar.lc, saved_lc
-	.save pr, saved_pr
 	alloc saved_pfs = ar.pfs,4,4,0,8
+	mov saved_lc = ar.lc
+	mov saved_pr = pr
 
 	setf.sig f6 = in3
 	setf.sig f7 = r0
@@ -211,9 +211,9 @@ C_FUNCTION_END(mpsetmul)
 
 C_FUNCTION_BEGIN(mpaddmul)
 	.prologue
-	.save ar.lc, saved_lc
-	.save pr, saved_pr
 	alloc saved_pfs = ar.pfs,4,4,0,8
+	mov saved_lc = ar.lc
+	mov saved_pr = pr
 
 	setf.sig f6 = in3
 	sub sze = in0,r0,1;;
@@ -267,8 +267,8 @@ C_FUNCTION_END(mpaddmul)
 divert(-1)
 C_FUNCTION_BEGIN(mpaddsqrtrc)
 	alloc saved_pfs = ar.pfs,4,4,0,8
-	.save ar.lc, saved_lc
-	.save pr, saved_pr
+	mov saved_pr = pr
+	mov saved_lc = ar.lc
 
 	setf.sig f6 = in3
 	sub sze = in0,r0,1;;
