@@ -46,12 +46,15 @@ namespace beecrypt {
 			int _opmode;
 			int _blmode;
 			int _padding;
-			bytearray _iv;
+			bytearray _key;
+			size_t _keybits;
 			bytearray _buffer;
 			size_t _bufcnt;
 			size_t _buflwm;
+			bytearray _iv;
 
 			size_t process(const byte* input, size_t inputLength, byte* output, size_t outputLength) throw (ShortBufferException);
+			void reset();
 
 		protected:
 			virtual bytearray* engineDoFinal(const byte* input, size_t inputOffset, size_t inputLength) throw (IllegalBlockSizeException, BadPaddingException);

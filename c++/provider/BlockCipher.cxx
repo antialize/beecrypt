@@ -24,12 +24,18 @@
 using beecrypt::lang::NullPointerException;
 #include "beecrypt/c++/lang/UnsupportedOperationException.h"
 using beecrypt::lang::UnsupportedOperationException;
+#include "beecrypt/c++/lang/Long.h"
+using beecrypt::lang::Long;
 #include "beecrypt/c++/crypto/Cipher.h"
 using beecrypt::crypto::Cipher;
 #include "beecrypt/c++/crypto/SecretKey.h"
 using beecrypt::crypto::SecretKey;
 #include "beecrypt/c++/crypto/spec/IvParameterSpec.h"
 using beecrypt::crypto::spec::IvParameterSpec;
+#include "beecrypt/c++/security/ProviderException.h"
+using beecrypt::security::ProviderException;
+#include "beecrypt/c++/security/Security.h"
+using beecrypt::security::Security;
 #include "beecrypt/c++/provider/BlockCipher.h"
 
 using namespace beecrypt::provider;
@@ -44,13 +50,47 @@ const int BlockCipher::PADDING_PKCS5 = 1;
 
 /*!\todo investigate getting buffer size from beecrypt.conf
  */
-BlockCipher::BlockCipher(const blockCipher& cipher) : _ctxt(&cipher), _buffer(BUFFER_SIZE), _iv(cipher.blocksize)
+BlockCipher::BlockCipher(const blockCipher& cipher) : _ctxt(&cipher), _iv(cipher.blocksize)
 {
+	size_t blocksize = _ctxt.algo->blocksize;
+
+	try
+	{
+		// check value of property blockcipher.buffer.size in beecrypt.conf
+		const String* tmp = Security::getProperty("blockcipher.buffer.size");
+		if (tmp)
+		{
+			// value was configured
+			javalong l = Long::parseLong(*tmp);
+
+			if (l <= 1024)
+				throw ProviderException("blockcipher.buffer.size must be greater than or equal to 1024");
+
+			if (l % blocksize)
+				throw ProviderException("blockcipher.buffer.size is not a multiple of this cipher's blocksize");
+
+			_buffer.resize((size_t) l);
+		}
+		else
+		{
+			// no value configured; use 1K blocks
+			_buffer.resize(1024 * blocksize);
+		}
+	}
+	catch (NumberFormatException)
+	{
+		throw ProviderException("blockcipher.buffer.size not set to a numeric value");
+	}
+
+	// clear the iv
+	memset(_iv.data(), 0, _iv.size());
+
 	_opmode = NOCRYPT;
 	_blmode = MODE_ECB;
 	_padding = PADDING_NONE;
 	_bufcnt = 0;
 	_buflwm = 0;
+
 }
 
 BlockCipher::~BlockCipher()
@@ -59,17 +99,13 @@ BlockCipher::~BlockCipher()
 
 bytearray* BlockCipher::engineDoFinal(const byte* input, size_t inputOffset, size_t inputLength) throw (IllegalBlockSizeException, BadPaddingException)
 {
-	// set _buflwm to zero before finishing the processing!
+	bytearray* tmp = 0;
 
 	size_t outputLength = engineGetOutputSize(inputLength);
 
-	if (outputLength == 0)
+	if (outputLength > 0)
 	{
-		return 0;
-	}
-	else
-	{
-		bytearray* tmp = new bytearray(outputLength);
+		tmp = new bytearray(outputLength);
 
 		size_t realLength = engineDoFinal(input, inputOffset, inputLength, *tmp, 0);
 
@@ -83,8 +119,11 @@ bytearray* BlockCipher::engineDoFinal(const byte* input, size_t inputOffset, siz
 		{
 			tmp->resize(realLength);
 		}
-		return tmp;
 	} 
+
+	reset();
+
+	return tmp;
 }
 
 size_t BlockCipher::engineDoFinal(const byte* input, size_t inputOffset, size_t inputLength, bytearray& output, size_t outputOffset) throw (ShortBufferException, IllegalBlockSizeException, BadPaddingException)
@@ -130,6 +169,8 @@ size_t BlockCipher::engineDoFinal(const byte* input, size_t inputOffset, size_t 
 
 		total -= unpadvalue;
 	}
+
+	reset();
 
 	return total;
 }
@@ -190,26 +231,16 @@ AlgorithmParameters* BlockCipher::engineGetParameters() throw ()
 
 void BlockCipher::engineInit(int opmode, const Key& key, SecureRandom* random) throw (InvalidKeyException)
 {
-	size_t keybits = engineGetKeySize(key);
+	_opmode = opmode;
 
-	if (blockCipherContextValidKeylen(&_ctxt, keybits) <= 0)
+	_keybits = engineGetKeySize(key);
+
+	if (blockCipherContextValidKeylen(&_ctxt, _keybits) <= 0)
 		throw InvalidKeyException("unsupported key length");
 
-	const bytearray* raw = dynamic_cast<const SecretKey&>(key).getEncoded();
+	_key = *(dynamic_cast<const SecretKey&>(key).getEncoded());
 
-	if (opmode == Cipher::ENCRYPT_MODE || opmode == Cipher::DECRYPT_MODE)
-	{
-		if (blockCipherContextSetup(&_ctxt, raw->data(), keybits, (cipherOperation) (_opmode = opmode)))
-			throw RuntimeException("BeeCrypt internal error in blockCipherContextSetup");
-
-		if (_opmode == Cipher::DECRYPT_MODE && _padding == PADDING_PKCS5)
-		{
-			// keep one block for unpadding
-			_buflwm = _ctxt.algo->blocksize;
-		}
-	}
-	else
-		throw UnsupportedOperationException("unsupported mode");
+	reset();
 }
 
 void BlockCipher::engineInit(int opmode, const Key& key, AlgorithmParameters* params, SecureRandom* random) throw (InvalidKeyException, InvalidAlgorithmParameterException)
@@ -234,7 +265,7 @@ void BlockCipher::engineInit(int opmode, const Key& key, AlgorithmParameterSpec*
 			throw InvalidAlgorithmParameterException("IV length must be equal to blocksize");
 
 		if (blockCipherContextSetIV(&_ctxt, iv->getIV().data()))
-			throw RuntimeException("BeeCrypt internal error in blockCipherContextSetIV");
+			throw ProviderException("BeeCrypt internal error in blockCipherContextSetIV");
 
 		_iv = iv->getIV();
 	}
@@ -398,4 +429,21 @@ size_t BlockCipher::process(const byte* input, size_t inputLength, byte* output,
 	} while (inputLength > 0);
 
 	return total;
+}
+
+void BlockCipher::reset()
+{
+	if (_opmode == Cipher::ENCRYPT_MODE || _opmode == Cipher::DECRYPT_MODE)
+	{
+		if (blockCipherContextSetup(&_ctxt, _key.data(), _keybits, (cipherOperation) _opmode))
+			throw ProviderException("BeeCrypt internal error in blockCipherContextSetup");
+
+		if (_opmode == Cipher::DECRYPT_MODE && _padding == PADDING_PKCS5)
+		{
+			// keep one block for unpadding
+			_buflwm = _ctxt.algo->blocksize;
+		}
+	}
+	else
+		throw UnsupportedOperationException("unsupported mode");
 }
