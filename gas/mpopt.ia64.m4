@@ -21,15 +21,71 @@ dnl  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 include(config.m4)
 include(ASM_SRCDIR/ia64.m4)
 
-define(`sze',`r16')
-define(`dst',`r17')
-define(`src',`r18')
-define(`alt',`r19')
+define(`sze',`r14')
+define(`dst',`r15')
+define(`src',`r16')
+define(`alt',`r17')
+
+
+C_FUNCTION_BEGIN(mpzero)
+	.prologue
+	alloc saved_pfs = ar.pfs,2,0,0,0
+	mov saved_lc = ar.lc
+	sub sze = in0,r0,1;;
+
+dnl	adjust address
+	shladd dst = sze,3,in1
+
+dnl	prepare loop
+	mov ar.lc = sze;;
+
+	.body
+LOCAL(mpzero_loop):
+	st8 [dst] = r0,-8
+	br.ctop.dptk LOCAL(mpzero_loop);;
+
+	mov ar.lc = saved_lc
+	mov ar.pfs = saved_pfs
+	br.ret.sptk b0
+C_FUNCTION_END(mpzero)
+
+
+C_FUNCTION_BEGIN(mpcopy)
+	.prologue
+	alloc saved_pfs = ar.pfs,3,6,0,8
+	mov saved_lc = ar.lc
+	mov saved_pr = pr
+	sub sze = in0,r0,1;;
+
+dnl	adjust addresses
+	shladd dst = sze,3,in1
+	shladd src = sze,3,in2
+
+dnl	prepare modulo-scheduled loop
+	mov ar.lc = sze
+	mov ar.ec = 1
+	mov pr.rot = (1 << 16);;
+
+	.body
+LOCAL(mpcopy_loop):
+	(p16) ld8 r32 = [src],-8
+	(p17) st8 [dst] = r33,-8
+	br.ctop.dptk LOCAL(mpcopy_loop);;
+
+dnl	epilogue
+	(p17) st8 [dst] = r33,-8
+	;;
+	mov pr = saved_pr, -1
+	mov ar.lc = saved_lc
+	mov ar.pfs = saved_pfs
+	br.ret.sptk b0
+C_FUNCTION_END(mpcopy)
 
 
 C_FUNCTION_BEGIN(mpadd)
 	.prologue
 	.save ar.lc, saved_lc
+	.save pr, saved_pr
 	alloc saved_pfs = ar.pfs,3,5,0,8
 	sub sze = in0,r0,1;;
 
@@ -64,6 +120,7 @@ dnl	return carry
 	(p20) add ret0 = r0,r0
 	(p22) add ret0 = r0,r0,1
 	;;
+	mov pr = saved_pr, -1
 	mov ar.lc = saved_lc
 	mov ar.pfs = saved_pfs
 	br.ret.sptk b0
@@ -73,6 +130,7 @@ C_FUNCTION_END(mpadd)
 C_FUNCTION_BEGIN(mpsub)
 	.prologue
 	.save ar.lc, saved_lc
+	.save pr, saved_pr
 	alloc saved_pfs = ar.pfs,3,5,0,8
 	sub sze = in0,r0,1;;
 
@@ -107,6 +165,7 @@ dnl	return carry
 	(p20) add ret0 = r0,r0
 	(p22) add ret0 = r0,r0,1
 	;;
+	mov pr = saved_pr, -1
 	mov ar.lc = saved_lc
 	mov ar.pfs = saved_pfs
 	br.ret.sptk b0
@@ -116,6 +175,7 @@ C_FUNCTION_END(mpsub)
 C_FUNCTION_BEGIN(mpsetmul)
 	.prologue
 	.save ar.lc, saved_lc
+	.save pr, saved_pr
 	alloc saved_pfs = ar.pfs,4,4,0,8
 
 	setf.sig f6 = in3
@@ -142,6 +202,7 @@ LOCAL(mpsetmul_loop):
 dnl	return carry
 	getf.sig ret0 = f7;;
 
+	mov pr = saved_pr, -1
 	mov ar.lc = saved_lc
 	mov ar.pfs = saved_pfs
 	br.ret.sptk b0
@@ -151,6 +212,7 @@ C_FUNCTION_END(mpsetmul)
 C_FUNCTION_BEGIN(mpaddmul)
 	.prologue
 	.save ar.lc, saved_lc
+	.save pr, saved_pr
 	alloc saved_pfs = ar.pfs,4,4,0,8
 
 	setf.sig f6 = in3
@@ -195,6 +257,7 @@ dnl	return carry
 	(p24) add ret0 = r35,r0
 	(p26) add ret0 = r35,r0,1
 
+	mov pr = saved_pr, -1
 	mov ar.lc = saved_lc
 	mov ar.pfs = saved_pfs
 	br.ret.sptk b0
@@ -204,7 +267,8 @@ C_FUNCTION_END(mpaddmul)
 divert(-1)
 C_FUNCTION_BEGIN(mpaddsqrtrc)
 	alloc saved_pfs = ar.pfs,4,4,0,8
-	mov saved_lc = ar.lc
+	.save ar.lc, saved_lc
+	.save pr, saved_pr
 
 	setf.sig f6 = in3
 	sub sze = in0,r0,1;;
