@@ -877,8 +877,10 @@ EOF
       if test "$ac_cv_cxx_compiler_gnu" = yes; then
          CXXFLAGS="$CXXFLAGS -Wa,--noexecstack"
       fi
+      bc_gnu_stack='.section .note.GNU-stack,"",@progbits; .previous'
     else
       bc_cv_as_noexecstack=no
+      bc_gnu_stack=''
     fi
     ])
   AC_CACHE_CHECK([whether the linker can use noexecstack],bc_cv_ld_noexecstack,[
@@ -985,6 +987,7 @@ AC_DEFUN([BEECRYPT_ASM_DEFS],[
   AC_SUBST(ASM_CPU,$bc_target_cpu)
   AC_SUBST(ASM_ARCH,$bc_target_arch)
   AC_SUBST(ASM_BIGENDIAN,$ac_cv_c_bigendian)
+  AC_SUBST(ASM_GNU_STACK,$bc_gnu_stack)
   ])
 
 
