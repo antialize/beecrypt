@@ -233,9 +233,9 @@ mp32multwo proc
 
 	align 4
 @mp32multwo_loop:
-        mov eax,dword ptr [edi+ecx*4]
-        adc eax,eax
-        mov dword ptr [edi+ecx*4],eax
+	mov eax,dword ptr [edi+ecx*4]
+	adc eax,eax
+	mov dword ptr [edi+ecx*4],eax
 	dec ecx
 	jns @mp32multwo_loop
 	
