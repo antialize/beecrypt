@@ -29,75 +29,6 @@
 
 /* ARM uses up to four registers for parameter passing */
 
-#if 0
-C_FUNCTION_BEGIN(mp32addw)
-LABEL(mp32addw)
-	/* r0 is xsize and must be at least one, r1 = xdata, r2 = y */
-	stmfd sp!, {r4, lr}
-	add r1, r1, r0, asl #2
-	mov r3, #0
-LOCAL(mp32addw_loop):
-	ldr r4, [r1, #-4]
-	adds r4, r4, r2
-	adc r2, r3, r3
-	str r4, [r1, #-4]!
-	subs r0, r0, #1
-	bne LOCAL(mp32addw_loop)
-	mov r0, r2
-	ldmfd sp!, {r4, pc}
-C_FUNCTION_END(mp32addw, LOCAL(mp32addw_size))
-
-
-C_FUNCTION_BEGIN(mp32subw)
-LABEL(mp32subw)
-	/* r0 is xsize and must be at least one, r1 = xdata, r2 = y */
-	stmfd sp!, {r4, lr}
-	add r1, r1, r0, asl #2
-	mov r3, #0
-LOCAL(mp32subw_loop):
-	ldr r4, [r1, #-4]
-	subs r4, r4, r2
-	adc r2, r3, r3
-	str r4, [r1, #-4]!
-	subs r0, r0, #1
-	bne LOCAL(mp32subw_loop)
-	mov r0, r2
-	ldmfd sp!, {r4, pc}
-C_FUNCTION_END(mp32subw, LOCAL(mp32subw_size))
-
-
-C_FUNCTION_BEGIN(mp32add)
-LABEL(mp32add)
-	/* r0 is size, r1 = xdata, r2 = ydata */
-	stmfd sp!, {r4, r5, lr}
-	/* copy cpsr to r5 and clear the carry bit */
-	mrs r5, cpsr
-	bic r5, r5, #0x20000000
-	/* adjust the addresses */
-	add r1, r1, r0, asl #2
-	add r2, r2, r0, asl #2
-LOCAL(mp32add_loop):
-	/* restore the carry bit */
-	msr cpsr_c, r5
-	ldr r3, [r1, #-4]!
-	ldr r4, [r2, #-4]!
-	adcs r3, r3, r2
-	str r3, [r1, #0]
-	/* save the carry bit */
-	mrs r5, cpsr
-	subs r0, r0, #1
-	bne LOCAL(mp32add_loop)
-
-	/* restore the carry bit */
-	msr cpsr_c, r5
-
-	/* set the result to the proper value */
-	adc r0, r0, r0
-	ldmfd sp!, {r4, r5, pc}
-C_FUNCTION_END(mp32add, LOCAL(mp32add_size))
-#endif
-
-
 C_FUNCTION_BEGIN(mp32setmul)
 LABEL(mp32setmul)
 	stmfd sp!, {r4, r5, lr}
@@ -138,8 +69,7 @@ LOCAL(mp32addmul_loop):
 	str r5, [r1, #-4]!
 	subs r0, r0, #1
 	bne LOCAL(mp32addmul_loop)
-	/* return carry */
-	mov r0, ip
+	mov r0, ip /* return carry */
 	ldmfd sp!, {r4, r5, r6, pc}
 C_FUNCTION_END(mp32addmul, LOCAL(mp32addmul_size))
 
@@ -166,7 +96,6 @@ LOCAL(mp32addsqrtrc_loop):
 	adc ip, r3, #0 /* set carry */
 	subs r0, r0, #1
 	bne LOCAL(mp32addsqrtrc_loop)
-	/* return carry */
-	mov r0, ip
+	mov r0, ip /* return carry */
 	ldmfd sp!, {r4, r5, r6, pc}
 C_FUNCTION_END(mp32addsqrtrc, LOCAL(mp32addsqrtrc_size))
