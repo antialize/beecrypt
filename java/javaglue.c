@@ -411,12 +411,12 @@ void JNICALL Java_beecrypt_crypto_NativeBlockCipher_encryptECB(JNIEnv* env, jcla
 			return;
 		}
 		memcpy(datain, input+inputOffset, blocks * sizeof(uint32_t));
-		blockEncryptECB((const blockCipher*) ciph, (blockCipherParam*) param, blocks, dataout, datain);
+		blockEncryptECB((const blockCipher*) ciph, (blockCipherParam*) param, dataout, datain, blocks);
 		memcpy(output+outputOffset, dataout, blocks * sizeof(uint32_t));
 	}
 	else
 	{	/* aligned */
-		blockEncryptECB((const blockCipher*) ciph, (blockCipherParam*) param, blocks, (uint32_t*)(output+outputOffset), (uint32_t*) (input+inputOffset));
+		blockEncryptECB((const blockCipher*) ciph, (blockCipherParam*) param, (uint32_t*)(output+outputOffset), (uint32_t*) (input+inputOffset), blocks);
 	}
 
 	(*env)->ReleaseByteArrayElements(env, inputArray, input, JNI_ABORT);
@@ -473,12 +473,12 @@ void JNICALL Java_beecrypt_crypto_NativeBlockCipher_decryptECB(JNIEnv* env, jcla
 			return;
 		}
 		memcpy(datain, input+inputOffset, blocks * sizeof(uint32_t));
-		blockDecryptECB((const blockCipher*) ciph, (blockCipherParam*) param, blocks, dataout, datain);
+		blockDecryptECB((const blockCipher*) ciph, (blockCipherParam*) param, dataout, datain, blocks);
 		memcpy(output+outputOffset, dataout, blocks * sizeof(uint32_t));
 	}
 	else
 	{	/* aligned */
-		blockDecryptECB((const blockCipher*) ciph, (blockCipherParam*) param, blocks, (uint32_t*)(output+outputOffset), (uint32_t*) (input+inputOffset));
+		blockDecryptECB((const blockCipher*) ciph, (blockCipherParam*) param, (uint32_t*)(output+outputOffset), (uint32_t*) (input+inputOffset), blocks);
 	}
 
 	(*env)->ReleaseByteArrayElements(env, inputArray, input, JNI_ABORT);
@@ -535,12 +535,12 @@ void JNICALL Java_beecrypt_crypto_NativeBlockCipher_encryptCBC(JNIEnv* env, jcla
 			return;
 		}
 		memcpy(datain, input+inputOffset, blocks * sizeof(uint32_t));
-		blockEncryptCBC((const blockCipher*) ciph, (blockCipherParam*) param, blocks, dataout, datain);
+		blockEncryptCBC((const blockCipher*) ciph, (blockCipherParam*) param, dataout, datain, blocks);
 		memcpy(output+outputOffset, dataout, blocks * sizeof(uint32_t));
 	}
 	else
 	{	/* aligned */
-		blockEncryptCBC((const blockCipher*) ciph, (blockCipherParam*) param, blocks, (uint32_t*)(output+outputOffset), (uint32_t*) (input+inputOffset));
+		blockEncryptCBC((const blockCipher*) ciph, (blockCipherParam*) param, (uint32_t*)(output+outputOffset), (uint32_t*) (input+inputOffset), blocks);
 	}
 
 	(*env)->ReleaseByteArrayElements(env, inputArray, input, JNI_ABORT);
@@ -597,12 +597,12 @@ void JNICALL Java_beecrypt_crypto_NativeBlockCipher_decryptCBC(JNIEnv* env, jcla
 			return;
 		}
 		memcpy(datain, input+inputOffset, blocks * sizeof(uint32_t));
-		blockDecryptCBC((const blockCipher*) ciph, (blockCipherParam*) param, blocks, dataout, datain);
+		blockDecryptCBC((const blockCipher*) ciph, (blockCipherParam*) param, dataout, datain, blocks);
 		memcpy(output+outputOffset, dataout, blocks * sizeof(uint32_t));
 	}
 	else
 	{	/* aligned */
-		blockDecryptCBC((const blockCipher*) ciph, (blockCipherParam*) param, blocks, (uint32_t*)(output+outputOffset), (uint32_t*) (input+inputOffset));
+		blockDecryptCBC((const blockCipher*) ciph, (blockCipherParam*) param, (uint32_t*)(output+outputOffset), (uint32_t*) (input+inputOffset), blocks);
 	}
 
 	(*env)->ReleaseByteArrayElements(env, inputArray, input, JNI_ABORT);
