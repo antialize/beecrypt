@@ -19,7 +19,7 @@
 
 /*!\file md5.h
  * \brief MD5 hash function, headers.
- * \author Bob Deblier <bob@virtualunmited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup HASH_m HASH_md5_m 
  */
 
@@ -32,10 +32,16 @@
  */
 typedef struct
 {
-	uint32 h[4];
-	uint32 data[16];
-	uint64 length;
-	uint8  offset;
+	uint32_t h[4];
+	uint32_t data[16];
+	#if (MP_WBITS == 64)
+	mpw length[1];
+	#elif (MP_WBITS == 32)
+	mpw length[2];
+	#else
+	# error
+	#endif
+	short offset;
 } md5Param;
 
 #ifdef __cplusplus
@@ -49,9 +55,9 @@ void md5Process(md5Param*);
 BEECRYPTAPI
 int md5Reset   (md5Param*);
 BEECRYPTAPI
-int md5Update  (md5Param*, const byte*, int);
+int md5Update  (md5Param*, const byte*, size_t);
 BEECRYPTAPI
-int md5Digest  (md5Param*, uint32*);
+int md5Digest  (md5Param*, byte*);
 
 #ifdef __cplusplus
 }

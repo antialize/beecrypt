@@ -19,7 +19,7 @@
 
 /*!\file sha256.h
  * \brief SHA-256 hash function, headers.
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup HASH_m HASH_sha256_m
  */
 
@@ -30,10 +30,16 @@
 
 typedef struct
 {
-	uint32 h[8];
-	uint32 data[64];
-	uint64 length;
-	uint8  offset;
+	uint32_t h[8];
+	uint32_t data[64];
+	#if (MP_WBITS == 64)
+	mpw length[1];
+	#elif (MP_WBITS == 32)
+	mpw length[2];
+	#else
+	# error
+	#endif
+	short offset;
 } sha256Param;
 
 #ifdef __cplusplus
@@ -47,9 +53,9 @@ void sha256Process(sha256Param*);
 BEECRYPTAPI
 int  sha256Reset  (sha256Param*);
 BEECRYPTAPI
-int  sha256Update (sha256Param*, const byte*, int);
+int  sha256Update (sha256Param*, const byte*, size_t);
 BEECRYPTAPI
-int  sha256Digest (sha256Param*, uint32*);
+int  sha256Digest (sha256Param*, byte*);
 
 #ifdef __cplusplus
 }

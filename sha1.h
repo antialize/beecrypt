@@ -19,7 +19,7 @@
 
 /*!\file sha1.h
  * \brief SHA-1 hash function, headers.
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup HASH_m HASH_sha1_m
  */
 
@@ -33,10 +33,16 @@
  */
 typedef struct
 {
-	uint32 h[5];
-	uint32 data[80];
-	uint64 length;
-	uint8  offset;
+	uint32_t h[5];
+	uint32_t data[80];
+	#if (MP_WBITS == 64)
+	mpw length[1];
+	#elif (MP_WBITS == 32)
+	mpw length[2];
+	#else
+	# error
+	#endif
+	short offset;
 } sha1Param;
 
 #ifdef __cplusplus
@@ -50,9 +56,9 @@ void sha1Process(sha1Param*);
 BEECRYPTAPI
 int  sha1Reset  (sha1Param*);
 BEECRYPTAPI
-int  sha1Update (sha1Param*, const byte*, int);
+int  sha1Update (sha1Param*, const byte*, size_t);
 BEECRYPTAPI
-int  sha1Digest (sha1Param*, uint32*);
+int  sha1Digest (sha1Param*, byte*);
 
 #ifdef __cplusplus
 }
