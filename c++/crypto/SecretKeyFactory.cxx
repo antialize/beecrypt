@@ -22,16 +22,20 @@
 # include "config.h"
 #endif
 
+#if HAVE_ASSERT_H
+# include <assert.h>
+#endif
+
 #include "beecrypt/c++/crypto/SecretKeyFactory.h"
 #include "beecrypt/c++/security/Security.h"
 using beecrypt::security::Security;
 
 using namespace beecrypt::crypto;
 
-SecretKeyFactory::SecretKeyFactory(SecretKeyFactorySpi* spi, const Provider& provider, const String& algorithm)
+SecretKeyFactory::SecretKeyFactory(SecretKeyFactorySpi* spi, const Provider* provider, const String& algorithm)
 {
 	_kspi = spi;
-	_prov = &provider;
+	_prov = provider;
 	_algo = algorithm;
 }
 
@@ -44,6 +48,10 @@ SecretKeyFactory* SecretKeyFactory::getInstance(const String& algorithm) throw (
 {
     Security::spi* tmp = Security::getSpi(algorithm, "SecretKeyFactory");
 
+	#if HAVE_ASSERT_H
+	assert(dynamic_cast<SecretKeyFactorySpi*>((SecretKeyFactorySpi*) tmp->cspi));
+	#endif
+
     SecretKeyFactory* result = new SecretKeyFactory((SecretKeyFactorySpi*) tmp->cspi, tmp->prov, tmp->name);
 
     delete tmp;
@@ -55,6 +63,10 @@ SecretKeyFactory* SecretKeyFactory::getInstance(const String& algorithm, const S
 {
     Security::spi* tmp = Security::getSpi(algorithm, "SecretKeyFactory", provider);
 
+	#if HAVE_ASSERT_H
+	assert(dynamic_cast<SecretKeyFactorySpi*>((SecretKeyFactorySpi*) tmp->cspi));
+	#endif
+
     SecretKeyFactory* result = new SecretKeyFactory((SecretKeyFactorySpi*) tmp->cspi, tmp->prov, tmp->name);
 
     delete tmp;
@@ -65,6 +77,10 @@ SecretKeyFactory* SecretKeyFactory::getInstance(const String& algorithm, const S
 SecretKeyFactory* SecretKeyFactory::getInstance(const String& algorithm, const Provider& provider) throw (NoSuchAlgorithmException)
 {
     Security::spi* tmp = Security::getSpi(algorithm, "SecretKeyFactory", provider);
+
+	#if HAVE_ASSERT_H
+	assert(dynamic_cast<SecretKeyFactorySpi*>((SecretKeyFactorySpi*) tmp->cspi));
+	#endif
 
     SecretKeyFactory* result = new SecretKeyFactory((SecretKeyFactorySpi*) tmp->cspi, tmp->prov, tmp->name);
 
