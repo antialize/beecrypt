@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2000, 2001, 2002 Virtual Unlimited B.V.
+ * Copyright (c) 1999, 2000, 2001, 2002, 2004 Beeyond Software Holding BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -38,6 +38,7 @@
 #include "beecrypt/md5.h"
 #include "beecrypt/sha1.h"
 #include "beecrypt/sha256.h"
+#include "beecrypt/sha512.h"
 
 #include "beecrypt/hmacmd5.h"
 #include "beecrypt/hmacsha1.h"
@@ -242,7 +243,8 @@ static const hashFunction* hashFunctionList[] =
 {
 	&md5,
 	&sha1,
-	&sha256
+	&sha256,
+	&sha512
 };
 
 #define HASHFUNCTIONS (sizeof(hashFunctionList) / sizeof(hashFunction*))
