@@ -293,6 +293,12 @@ AC_DEFUN(BEECRYPT_GNU_CC,[
     pentium*)
       CFLAGS="$CFLAGS -march=$bc_target_arch"
       ;;
+   sparcv8)
+      CFLAGS="$CFLAGS -mv8"
+      ;;
+   sparcv8plus)
+      CFLAGS="$CFLAGS -mv8plus"
+      ;;
     esac
   fi
   ])
@@ -528,6 +534,11 @@ AC_DEFUN(BEECRYPT_ASM_LSYM_PREFIX,[
 dnl  BEECRYPT_ASM_SOURCES
 AC_DEFUN(BEECRYPT_ASM_SOURCES,[
   case $bc_target_arch in
+  arm)
+    AC_CONFIG_COMMANDS([mpopt.arm],[
+      m4 $srcdir/gas/mpopt.arm.m4 > $srcdir/mpopt.s
+      ])
+    ;;
   alpha*)
     AC_CONFIG_COMMANDS([mpopt.alpha],[
       m4 $srcdir/gas/mpopt.alpha.m4 > $srcdir/mpopt.s

@@ -108,6 +108,9 @@ AC_ARG_WITH(arch,[  --with-arch             optimize for specific architecture (
   alpha*)
     bc_target_arch=alpha
     ;;
+  arm*)
+    bc_target_arch=arm
+    ;;
   i[[3456]]86)
     bc_target_arch=i386
     ;;
