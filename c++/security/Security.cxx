@@ -402,3 +402,8 @@ const Provider* Security::getProvider(const String& name)
 
 	return 0;
 }
+
+const String* Security::getProperty(const String& key) throw ()
+{
+	return _props.getProperty(key);
+}

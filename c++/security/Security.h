@@ -39,6 +39,8 @@ using beecrypt::security::NoSuchProviderException;
 using beecrypt::security::cert::CertificateFactory;
 #include "beecrypt/c++/security/cert/CertPathValidator.h"
 using beecrypt::security::cert::CertPathValidator;
+#include "beecrypt/c++/crypto/Cipher.h"
+using beecrypt::crypto::Cipher;
 #include "beecrypt/c++/crypto/KeyAgreement.h"
 using beecrypt::crypto::KeyAgreement;
 #include "beecrypt/c++/crypto/Mac.h"
@@ -59,6 +61,7 @@ namespace beecrypt {
 			friend class AlgorithmParameters;
 			friend class CertificateFactory;
 			friend class CertPathValidator;
+			friend class Cipher;
 			friend class KeyAgreement;
 			friend class KeyFactory;
 			friend class KeyPairGenerator;
@@ -103,6 +106,8 @@ namespace beecrypt {
 			static void removeProvider(const String& name);
 			static const Provider* getProvider(const String& name);
 			static const provider_vector& getProviders();
+
+			static const String* getProperty(const String& key) throw ();
 		};
 	}
 }
