@@ -102,7 +102,7 @@
 	.endm
 
 	.align	4
-	.globl	sha1Process
+	.global	sha1Process
 	.type	sha1Process,@function
 
 sha1Process:

@@ -29,7 +29,7 @@
 	.text
 
 	.align	4
-	.globl	mp32addw
+	.global	mp32addw
 	.type	mp32addw,@function
 
 mp32addw:
@@ -60,7 +60,7 @@ mp32addw:
 	ret
 
 	.align	4
-	.globl	mp32subw
+	.global	mp32subw
 	.type	mp32subw,@function
 
 mp32subw:
@@ -90,7 +90,7 @@ mp32subw:
 	ret
 
 	.align	4
-	.globl	mp32add
+	.global	mp32add
 	.type	mp32add,@function
 
 mp32add:
@@ -119,7 +119,7 @@ mp32add:
 	ret
 
 	.align	4
-	.globl	mp32sub
+	.global	mp32sub
 	.type	mp32sub,@function
 
 mp32sub:
@@ -147,8 +147,7 @@ mp32sub:
 	ret
 
 	.align	4
-	.globl	mp32multwo
-	.type	mp32multwo,@function
+	.global	mp32multwo
 
 mp32multwo:
 	pushl %edi
@@ -173,7 +172,7 @@ mp32multwo:
 	ret
 
 	.align	4
-	.globl	mp32setmul
+	.global	mp32setmul
 	.type	mp32setmul,@function
 
 mp32setmul:
@@ -210,7 +209,7 @@ mp32setmul:
 	ret
 
 	.align	4
-	.globl	mp32addmul
+	.global	mp32addmul
 	.type	mp32addmul,@function
 
 mp32addmul:
@@ -249,7 +248,7 @@ mp32addmul:
 	ret
 
 	.align	4
-	.globl	mp32addsqrtrc
+	.global	mp32addsqrtrc
 	.type	mp32addsqrtrc,@function
 
 mp32addsqrtrc:

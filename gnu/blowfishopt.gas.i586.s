@@ -83,7 +83,7 @@
 	.endm
 
 	.align	4
-	.globl	blowfishEncrypt
+	.global	blowfishEncrypt
 	.type	blowfishEncrypt,@function
 
 blowfishEncrypt:
@@ -93,7 +93,7 @@ blowfishEncrypt:
 	pushl %ebx
 
 	movl 16(%esp),%esi # esi now contains bp
-	movl 20(%esp),%edi # edi now contains bl
+	movl 24(%esp),%edi # edi now contains src
 
 	xorl %eax,%eax
 	xorl %ebx,%ebx
@@ -113,7 +113,7 @@ blowfishEncrypt:
 	etworounds p=48
 	etworounds p=56
 
-	movl 20(%esp),%edi
+	movl 20(%esp),%edi	# edi now contains dst
 	xorl 64(%esi),%ecx
 	xorl 68(%esi),%edx
 
@@ -130,7 +130,7 @@ blowfishEncrypt:
 	ret
 
 	.align	4
-	.globl	blowfishDecrypt
+	.global	blowfishDecrypt
 	.type	blowfishDecrypt,@function
 
 blowfishDecrypt:
@@ -140,7 +140,7 @@ blowfishDecrypt:
 	pushl %ebx
 
 	movl 16(%esp),%esi # esi now contains bp
-	movl 20(%esp),%edi # edi now contains bl
+	movl 24(%esp),%edi # edi now contains dst
 
 	xorl %eax,%eax
 	xorl %ebx,%ebx
@@ -160,7 +160,7 @@ blowfishDecrypt:
 	dtworounds p=16
 	dtworounds p= 8
 
-	movl 20(%esp),%edi
+	movl 20(%esp),%edi	# edi now contains dst
 	xorl 4(%esi),%ecx
 	xorl 0(%esi),%edx
 	

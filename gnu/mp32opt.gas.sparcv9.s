@@ -26,9 +26,9 @@
 
 	.file "mp32opt.gas.sparcv9.s"
 
-	.section	".text"
+	.text
 
-	.align	4
+	.align	8
 	.globl	mp32addw
 	.type	mp32addw,@function
 
@@ -56,7 +56,7 @@ mp32addw:
 	retl
 	movcs %icc,1,%o0
 
-	.align	4
+	.align	8
 	.globl	mp32subw
 	.type	mp32subw,@function
 
@@ -79,7 +79,7 @@ mp32subw:
 	retl
 	movcs %icc,1,%o0
 
-	.align	4
+	.align	8
 	.globl	mp32add
 	.type	mp32add,@function
 
@@ -97,7 +97,7 @@ mp32add:
 	retl
 	movcs %icc,1,%o0
 
-	.align	4
+	.align	8
 	.globl	mp32sub
 	.type	mp32sub,@function
 
@@ -115,7 +115,7 @@ mp32sub:
 	retl
 	movcs %icc,1,%o0
 
-	.align	4
+	.align	8
 	.globl	mp32setmul
 	.type	mp32setmul,@function
 
@@ -134,7 +134,7 @@ mp32setmul:
 	retl
 	nop
 
-	.align	4
+	.align	8
 	.globl	mp32addmul
 	.type	mp32addmul,@function
 
@@ -155,7 +155,7 @@ mp32addmul:
 	retl
 	nop
 
-	.align	4
+	.align	8
 	.globl	mp32addsqrtrc
 	.type	mp32addsqrtrc,@function
 

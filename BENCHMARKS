@@ -11,6 +11,7 @@ The tests:
 Modular exponentiations, (1024 bits ^ 1024 bits) mod 1024 bits, 100 times, sorted according to speed (less is better)
 
 BeeCrypt 1.0.1/RedHat Linux 6.1    /Pentium III 600/256 MB:  4.4 sec
+BeeCrypt 1.0.2/Windows 2000        /Pentium III 450/128 MB:  5.8 sec
 BeeCrypt 1.0.1/Windows NT 4.0      /Pentium III 450/128 MB:  5.8 sec
 BeeCrypt 1.0.1/Windows 98          /Pentium III 450/128 MB:  5.8 sec
 BeeCrypt 1.0.1/RedHat Linux 6.2    /Pentium III 450/128 MB:  5.8 sec

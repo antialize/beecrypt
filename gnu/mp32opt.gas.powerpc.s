@@ -48,7 +48,6 @@ mp32addw:
 	addze %r3,%r0
 	blr
 
-	.if 0	# doesn't work yet
 	.align	4
 	.globl	mp32subw
 	.type	mp32subw,@function
@@ -68,9 +67,9 @@ mp32subw:
 	stwu %r6, -4(%r4)
 	bdnz .L10
 .L11:	# return the carry
-	addze %r3,%r0
+	subfe %r3,%r0,%r0
+	neg %r3,%r3
 	blr
-	.endif
 
 	.align	4
 	.globl	mp32add
@@ -97,7 +96,6 @@ mp32add:
 	addze %r3,%r0
 	blr
 
-	.if 0	# doesn't work yet
 	.align	4
 	.globl	mp32sub
 	.type	mp32sub,@function
@@ -120,9 +118,9 @@ mp32sub:
 	stwu %r6,-4(%r4)
 	bdnz .L30
 .L31:	# return the carry
-	addze %r3,%r0
+	subfe %r3,%r0,%r0
+	neg %r3,%r3
 	blr
-	.endif
 
 	.align	4
 	.globl	mp32setmul
