@@ -126,7 +126,7 @@ The library has been tested on the following platforms:
 The library is currently in the process of being ported to:
     - Darwin (apparently Apple has decided to change the PPC assembler format;
       this will need a fix)
-    - Cygwin (the DLL builds now, but needs to be tested)
+    - Cygwin (Can't seem to get the DLL to build properly with the current version of the autotools)
 
 For more information, refer to the HTML documentation in the docs directory.
 
