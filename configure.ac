@@ -4,7 +4,7 @@ AC_INIT([beecrypt],[3.0.0pre],[bob.deblier@pandora.be])
 AM_INIT_AUTOMAKE
 AC_CANONICAL_TARGET
 AC_CONFIG_SRCDIR(beecrypt.h)
-AC_CONFIG_HEADERS([beecrypt.gnu.h])
+AC_CONFIG_HEADERS([config.h])
 AC_LIBTOOL_WIN32_DLL
 
 # Checks for package options
@@ -351,19 +351,29 @@ if test "$ac_with_mtmalloc" = yes; then
 fi
 
 # Checks for libraries.
+bc_include_synch_h=
+bc_include_pthread_h=
+bc_typedef_bc_lock_t=
 if test "$ac_enable_threads" = yes; then
-  if test "$ac_cv_header_thread_h" = yes; then
+  if test "$ac_cv_header_thread_h" = yes -a "$ac_cv_header_synch_h" = yes; then
     AC_SEARCH_LIBS([mutex_lock],[thread],[
       AC_DEFINE([ENABLE_THREADS],1)
+      bc_include_synch_h="#include <synch.h>"
+      bc_typedef_bc_lock_t="typedef mutex_t bc_lock_t;"
       ])
   elif test "$ac_cv_header_pthread_h" = yes; then
     AC_SEARCH_LIBS([pthread_mutex_lock],[pthread],[
       AC_DEFINE([ENABLE_THREADS],1)
+      bc_include_pthread_h="#include <pthread.h>"
+      bc_typedef_bc_lock_t="typedef pthread_mutex_t bc_lock_t;"
       ])
   else
     AC_MSG_WARN([Don't know which thread library to check for])
   fi
 fi
+AC_SUBST(INCLUDE_SYNCH_H,$bc_include_synch_h)
+AC_SUBST(INCLUDE_PTHREAD_H,$bc_include_pthread_h)
+AC_SUBST(TYPEDEF_BC_LOCK_T,$bc_typedef_bc_lock_t)
 
 if test "$ac_enable_aio" = yes; then
   BEECRYPT_WORKING_AIO
@@ -614,7 +624,6 @@ else
 fi
 
 # Check for standard types and integers of specific sizes
-AC_TYPE_SIZE_T
 BEECRYPT_INT_TYPES
 BEECRYPT_CPU_BITS
 
@@ -647,6 +656,7 @@ fi
 # Generate output files.
 AC_CONFIG_FILES([Makefile
                  Doxyfile
+                 beecrypt.gnu.h
                  config.m4
                  docs/Makefile
                  gas/Makefile
