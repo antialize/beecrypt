@@ -1,6 +1,0 @@
-Until I can come up with alternative, you will have to build this library with GNU make.
-
-The problem is this: BSD's make utility doesn't seem to accept the overrides for assembler
-optimizations.
-
-If you have suggestions on how to get this to work, please contact me at beecrypt@virtualunlimited.com

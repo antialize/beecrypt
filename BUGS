@@ -3,7 +3,6 @@ Legend:
 	* = fixed bug
 
 1.1.0:
-	- FreeBSD's make utility doesn't handle the assembler optimizations. As a workaround, you should install and use GNU make.
 
 1.0.2:
 
