@@ -68,12 +68,27 @@ inline int64_t swap64(int64_t n)
 				((n & ((int64_t) 0xff) << 48) >> 40) |
 				((n & ((int64_t) 0xff) << 56) >> 56) );
 }
+
+inline uint64_t swapu64(uint64_t n)
+{
+	return (    ((n & ((uint64_t) 0xff)      ) << 56) |
+				((n & ((uint64_t) 0xff) <<  8) << 40) |
+				((n & ((uint64_t) 0xff) << 16) << 24) |
+				((n & ((uint64_t) 0xff) << 24) <<  8) |
+				((n & ((uint64_t) 0xff) << 32) >>  8) |
+				((n & ((uint64_t) 0xff) << 40) >> 24) |
+				((n & ((uint64_t) 0xff) << 48) >> 40) |
+				((n & ((uint64_t) 0xff) << 56) >> 56) );
+}
+
+
 #else
  int16_t swap16 (int16_t);
 uint16_t swapu16(uint16_t);
  int32_t swap32 (int32_t);
 uint32_t swapu32(uint32_t);
  int64_t swap64 (int64_t);
+uint64_t swapu64(uint64_t);
 #endif
 
 #ifdef __cplusplus
