@@ -54,57 +54,59 @@ The library is currently in the process of being ported to:
       this will need a fix)
     - Cygwin (the DLL builds now, but needs to be tested)
 
-/** \defgroup	ES_m	Entropy sources
  */
-/** \defgroup	ES_audio_m	Entropy sources: /dev/audio
+
+/*! \defgroup	ES_m	Entropy sources
  */
-/** \defgroup	ES_dsp_m	Entropy sources: /dev/dsp
+/*! \defgroup	ES_audio_m	Entropy sources: /dev/audio
  */
-/** \defgroup	ES_random_m	Entropy sources: /dev/random
+/*! \defgroup	ES_dsp_m	Entropy sources: /dev/dsp
  */
-/** \defgroup	ES_urandom_m	Entropy sources: /dev/urandom
+/*! \defgroup	ES_random_m	Entropy sources: /dev/random
  */
-/** \defgroup	ES_tty_m	Entropy sources: /dev/tty
+/*! \defgroup	ES_urandom_m	Entropy sources: /dev/urandom
  */
-/** \defgroup	PRNG_m	Pseudo-Random Number Generators
+/*! \defgroup	ES_tty_m	Entropy sources: /dev/tty
  */
-/** \defgroup	PRNG_fips186_m	Pseudo-Random Number Generator: FIPS-186
+/*! \defgroup	PRNG_m	Pseudo-Random Number Generators
  */
-/** \defgroup	HASH_m	Hash Functions
+/*! \defgroup	PRNG_fips186_m	Pseudo-Random Number Generators: FIPS-186
  */
-/** \defgroup	HASH_md5_m	Hash Functions: md5
+/*! \defgroup	HASH_m	Hash Functions
  */
-/** \defgroup	HASH_sha1_m	Hash Functions: sha1
+/*! \defgroup	HASH_md5_m	Hash Functions: MD5
  */
-/** \defgroup	HASH_sha256_m	Hash Functions: sha256
+/*! \defgroup	HASH_sha1_m	Hash Functions: SHA-1
  */
-/** \defgroup	HMAC_m	Keyed Hash Functions, a.k.a. Message Authentication Codes
+/*! \defgroup	HASH_sha256_m	Hash Functions: SHA-256
  */
-/** \defgroup	HMAC_md5_m	Keyed Hash Functions: md5
+/*! \defgroup	HMAC_m	Keyed Hash Functions, a.k.a. Message Authentication Codes
  */
-/** \defgroup	HMAC_sha1_m	Keyed Hash Functions: sha1
+/*! \defgroup	HMAC_md5_m	Keyed Hash Functions: HMAC-MD5
  */
-/** \defgroup	HMAC_sha256_m	Keyed Hash Functions: sha256
+/*! \defgroup	HMAC_sha1_m	Keyed Hash Functions: HMAC-SHA-1
  */
-/** \defgroup	BC_m	Block ciphers
+/*! \defgroup	HMAC_sha256_m	Keyed Hash Functions: HMAC-SHA-256
  */
-/** \defgroup	BC_aes_m	Block ciphers: AES
+/*! \defgroup	BC_m	Block ciphers
  */
-/** \defgroup	BC_blowfish_m	Block ciphers: Blowfish
+/*! \defgroup	BC_aes_m	Block ciphers: AES
  */
-/** \defgroup	RSA_m	RSA Encryption/Signature Primitives
+/*! \defgroup	BC_blowfish_m	Block ciphers: Blowfish
  */
-/** \defgroup	DSA_m	DSA Encryption/Signature Primitives
+/*! \defgroup	DL_m	Discrete Logarithm Primitives
  */
-/** \defgroup	ELGAMAL_m	ElGamal Signature Primitives
+/*! \defgroup	DH_m	Diffie-Hellman Primitives
  */
-/** \defgroup	DH_m	Diffie-Hellman Encryption
+/*! \defgroup	DSA_m	DSA Encryption/Signature Primitives
  */
-/** \defgroup	DL_m	Discrete Logartithms
+/*! \defgroup	RSA_m	RSA Encryption/Signature Primitives
  */
-/** \defgroup	MP32_m	Multiple Precision Integer Arithmetic (32 bit)
+/*! \defgroup	ELGAMAL_m	ElGamal Signature Primitives
  */
-/** \defgroup	MP64_m	Multiple Precision Integer Arithmetic (64 bit)
+/*! \defgroup	MP32_m	Multiple Precision Integer Arithmetic (32 bit)
  */
-/** \defgroup	JAVA_m	Java API
+/*! \defgroup	MP64_m	Multiple Precision Integer Arithmetic (64 bit)
+ */
+/*! \defgroup	JAVA_m	Java API
  */
