@@ -37,13 +37,14 @@ int blockEncryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, 
 
 	while (nblocks > 0)
 	{
-		bc->encrypt(bp, dst, src);
+		bc->raw.encrypt(bp, dst, src);
 
 		dst += blockwords;
 		src += blockwords;
 
 		nblocks--;
 	}
+
 	return 0;
 }
 
@@ -53,13 +54,14 @@ int blockDecryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, 
 
 	while (nblocks > 0)
 	{
-		bc->decrypt(bp, dst, src);
+		bc->raw.decrypt(bp, dst, src);
 
 		dst += blockwords;
 		src += blockwords;
 
 		nblocks--;
 	}
+
 	return 0;
 }
 
@@ -75,7 +77,7 @@ int blockEncryptCBC(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, 
 		for (i = 0; i < blockwords; i++)
 			dst[i] = src[i] ^ fdback[i];
 
-		bc->encrypt(bp, dst, dst);
+		bc->raw.encrypt(bp, dst, dst);
 
 		src += blockwords;
 
@@ -88,7 +90,7 @@ int blockEncryptCBC(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, 
 
 			dst += blockwords;
 
-			bc->encrypt(bp, dst, dst);
+			bc->raw.encrypt(bp, dst, dst);
 
 			src += blockwords;
 
@@ -100,12 +102,12 @@ int blockEncryptCBC(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, 
 		for (i = 0; i < blockwords; i++)
 			fdback[i] = dst[i];
 	}
+
 	return 0;
 }
 
 int blockDecryptCBC(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, unsigned int nblocks)
 {
-	/* assumes that every blockcipher's blocksize is a multiple of 32 bits */
 	register const unsigned int blockwords = bc->blocksize >> 2;
 	register uint32_t* fdback = bc->getfb(bp);
 	register uint32_t* buf = (uint32_t*) malloc(blockwords * sizeof(uint32_t));
@@ -117,7 +119,7 @@ int blockDecryptCBC(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, 
 			register uint32_t tmp;
 			register unsigned int i;
 
-			bc->decrypt(bp, buf, src);
+			bc->raw.decrypt(bp, buf, src);
 
 			for (i = 0; i < blockwords; i++)
 			{
@@ -134,5 +136,6 @@ int blockDecryptCBC(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, 
 		free(buf);
 		return 0;
 	}
+
 	return -1;
 }
