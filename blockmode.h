@@ -44,7 +44,7 @@ extern "C" {
  * \retval 0 on success.
  */
 BEECRYPTAPI
-int blockEncryptECB(const blockCipher* bc, blockCipherParam*i bp, uint32_t* dst, const uint32_t* src, int nblocks);
+int blockEncryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, int nblocks);
 
 /*!\fn int blockDecryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, int nblocks)
  * \brief This function decrypts a number of data blocks in Electronic Code
