@@ -53,12 +53,15 @@ void DataOutputStream::write(byte b) throw (IOException)
 	_lock.unlock();
 }
 
-void DataOutputStream::write(const byte* data, size_t offset, size_t len) throw (IOException)
+void DataOutputStream::write(const byte* data, size_t offset, size_t length) throw (IOException)
 {
-	_lock.lock();
-	out.write(data, offset, len);
-	written += len;
-	_lock.unlock();
+	if (length)
+	{
+		_lock.lock();
+		out.write(data, offset, length);
+		written += length;
+		_lock.unlock();
+	}
 }
 
 void DataOutputStream::write(const bytearray& b) throw (IOException)
