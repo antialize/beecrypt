@@ -71,7 +71,7 @@ extern "C" {
  * \return The number of entropy sources implemented.
  */
 BEECRYPTAPI
-int						entropySourceCount();
+int						entropySourceCount(void);
 
 /*!\fn const entropySource* entropySourceGet(int n)
  * \brief This function returns the \a n -th entropy source implemented by
@@ -98,7 +98,7 @@ const entropySource*	entropySourceFind(const char* name);
  * \return A pointer to an entropy source or null, in case an error occured.
  */
 BEECRYPTAPI
-const entropySource*	entropySourceDefault();
+const entropySource*	entropySourceDefault(void);
 
 /*!\fn int entropyGatherNext(byte* data, size_t size)
  * \brief This function gathers \a size bytes of entropy into \a data.
@@ -198,13 +198,13 @@ extern "C" {
 #endif
 
 BEECRYPTAPI
-int						randomGeneratorCount();
+int						randomGeneratorCount(void);
 BEECRYPTAPI
 const randomGenerator*	randomGeneratorGet(int);
 BEECRYPTAPI
 const randomGenerator*	randomGeneratorFind(const char*);
 BEECRYPTAPI
-const randomGenerator*	randomGeneratorDefault();
+const randomGenerator*	randomGeneratorDefault(void);
 
 #ifdef __cplusplus
 }
@@ -296,13 +296,13 @@ extern "C" {
 #endif
 
 BEECRYPTAPI
-int					hashFunctionCount();
+int					hashFunctionCount(void);
 BEECRYPTAPI
 const hashFunction*	hashFunctionGet(int);
 BEECRYPTAPI
 const hashFunction*	hashFunctionFind(const char*);
 BEECRYPTAPI
-const hashFunction*	hashFunctionDefault();
+const hashFunction*	hashFunctionDefault(void);
 
 #ifdef __cplusplus
 }
@@ -415,13 +415,13 @@ extern "C" {
 #endif
 
 BEECRYPTAPI
-int							keyedHashFunctionCount();
+int							keyedHashFunctionCount(void);
 BEECRYPTAPI
 const keyedHashFunction*	keyedHashFunctionGet(int);
 BEECRYPTAPI
 const keyedHashFunction*	keyedHashFunctionFind(const char*);
 BEECRYPTAPI
-const keyedHashFunction*	keyedHashFunctionDefault();
+const keyedHashFunction*	keyedHashFunctionDefault(void);
 
 #ifdef __cplusplus
 }
@@ -604,13 +604,13 @@ extern "C" {
 #endif
 
 BEECRYPTAPI
-int						blockCipherCount();
+int						blockCipherCount(void);
 BEECRYPTAPI
 const blockCipher*		blockCipherGet(int);
 BEECRYPTAPI
 const blockCipher*		blockCipherFind(const char*);
 BEECRYPTAPI
-const blockCipher*		blockCipherDefault();
+const blockCipher*		blockCipherDefault(void);
 
 #ifdef __cplusplus
 }
