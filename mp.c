@@ -1404,9 +1404,10 @@ void mpfprintln(FILE* f, size_t size, const mpw* data)
 
 int i2osp(byte *osdata, size_t ossize, const mpw* idata, size_t isize)
 {
+	#if WORDS_BIGENDIAN
 	size_t max_bytes = MP_WORDS_TO_BYTES(isize);
+	#endif
 	size_t significant_bytes = (mpbits(isize, idata) + 7) >> 3;
-	size_t zero_bytes = max_bytes - significant_bytes;
 
 	/* verify that ossize is large enough to contain the significant bytes */
 	if (ossize >= significant_bytes)
@@ -1430,13 +1431,13 @@ int i2osp(byte *osdata, size_t ossize, const mpw* idata, size_t isize)
 				shift += 8;
 				if (shift == MP_WBITS)
 				{
-					shift == 0;
+					shift = 0;
 					w = idata[--isize];
 				}
 			} while (significant_bytes);
 			#else
-			/* just copy */
-			memcpy(osdata, ((byte*) idata) + zero_bytes, significant_bytes);
+			/* just copy data past zero bytes */
+			memcpy(osdata, ((byte*) idata) + (max_bytes - significant_bytes), significant_bytes);
 			#endif
 		}
 		return 0;
