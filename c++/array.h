@@ -36,7 +36,7 @@ namespace beecrypt {
 	template <typename T>
 		class array
 		{
-		private:
+		protected:
 			T* _data;
 			size_t _size;
 
@@ -84,6 +84,11 @@ namespace beecrypt {
 					free(_data);
 			}
 
+			array* clone() const throw (std::bad_alloc)
+			{
+				return new array(*this);
+			}
+
 			const array& operator=(const array& _set) throw (std::bad_alloc)
 			{
 				resize(_set._size);
@@ -95,7 +100,7 @@ namespace beecrypt {
 
 			bool operator==(const array& _cmp) const throw ()
 			{
-				if (_size != _cmp.size)
+				if (_size != _cmp._size)
 					return false;
 
 				if (_size == 0 && _cmp._size == 0)
@@ -143,9 +148,12 @@ namespace beecrypt {
 			{
 				if (_newsize)
 				{
-					_data = (T*) (_data ? realloc(_data, _newsize * sizeof(T)) : malloc(_newsize * sizeof(T)));
-					if (_data == 0)
-						throw std::bad_alloc();
+					if (_newsize != _size)
+					{
+						_data = (T*) (_data ? realloc(_data, _newsize * sizeof(T)) : malloc(_newsize * sizeof(T)));
+						if (_data == 0)
+							throw std::bad_alloc();
+					}
 				}
 				else
 				{
