@@ -5,7 +5,7 @@
  *
  * Compile target is GNU Assembler
  *
- * Copyright (c) 1998, 1999, 2000, 2001 Virtual Unlimited B.V.
+ * Copyright (c) 1998, 1999, 2000, 2001, 2003 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob.deblier@pandora.be>
  *
@@ -157,7 +157,9 @@ LABEL(mp32add)
 	.align 4
 LOCAL(mp32add_loop):
 	movl (%esi,%ecx,4),%eax
-	adcl %eax,(%edi,%ecx,4)
+	movl (%edi,%ecx,4),%edx
+	adcl %eax,%edx
+	movl %edx,(%edi,%ecx,4)
 	decl %ecx
 	jns LOCAL(mp32add_loop)
 
@@ -185,7 +187,9 @@ LABEL(mp32sub)
 	.align 4
 LOCAL(mp32sub_loop):
 	movl (%esi,%ecx,4),%eax
-	sbbl %eax,(%edi,%ecx,4)
+	movl (%edi,%ecx,4),%edx
+	sbbl %eax,%edx
+	movl %edx,(%edi,%ecx,4)
 	decl %ecx
 	jns LOCAL(mp32sub_loop)
 
@@ -206,7 +210,7 @@ LABEL(mp32divtwo)
 
 	leal (%edi,%ecx,4),%edi
 	negl %ecx
-	clc
+	xorl %eax,%eax
 
 	.align 4
 LOCAL(mp32divtwo_loop):
@@ -226,12 +230,14 @@ LABEL(mp32multwo)
 	movl 8(%esp),%ecx
 	movl 12(%esp),%edi
 
-	clc
+	xorl %edx,%edx
 	decl %ecx
 
 	.align 4
 LOCAL(mp32multwo_loop):
-	rcll $1,(%edi,%ecx,4)
+	movl (%edi,%ecx,4),%eax
+	adcl %eax,%eax
+	movl %eax,(%edi,%ecx,4)
 	decl %ecx 
 	jns LOCAL(mp32multwo_loop)
 
@@ -316,7 +322,7 @@ LOCAL(mp32addmul_loop):
 	popl %edi
 	ret
 C_FUNCTION_END(mp32addmul, LOCAL(mp32addmul_size))
-#endif
+
 
 C_FUNCTION_BEGIN(mp32addsqrtrc)
 LABEL(mp32addsqrtrc)
@@ -351,3 +357,4 @@ LOCAL(mp32addsqrtrc_loop):
 	popl %edi
 	ret
 C_FUNCTION_END(mp32addsqrtrc, LOCAL(mp32addsqrtrc_size))
+#endif

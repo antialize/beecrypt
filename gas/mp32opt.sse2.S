@@ -93,3 +93,41 @@ LOCAL(mp32addmul_loop):
 	popl %edi
 	ret
 C_FUNCTION_END(mp32addmul, LOCAL(mp32addmul_size))
+
+
+C_FUNCTION_BEGIN(mp32addsqrtrc)
+LABEL(mp32addsqrtrc)
+	pushl %edi
+	pushl %esi
+
+	movl 12(%esp),%ecx
+	movl 16(%esp),%edi
+	movl 20(%esp),%esi
+
+	pxor %mm0,%mm0
+	decl %ecx
+
+	.align 4
+LOCAL(mp32addsqrtrc_loop):
+@mp32addsqrtrc_loop:
+	movd (%esi,%ecx,4),%mm2
+	pmuludq %mm2,%mm2
+	movd 4(%edi,%ecx,8),%mm3
+	paddq %mm2,%mm3
+	movd 0(%edi,%ecx,8),%mm4
+	paddq %mm3,%mm0
+	movd %mm0,4(%edi,%ecx,8)
+	psrlq $32,%mm0
+	paddq %mm4,%mm0
+	movd %mm0,0(%edi,%ecx,8)
+	psrlq $32,%mm0
+	decl %ecx
+	jns LOCAL(mp32addsqrtrc_loop)
+
+	movd %mm0,%eax
+	emms
+
+	popl %esi
+	popl %edi
+	ret
+C_FUNCTION_END(mp32addsqrtrc, LOCAL(mp32addsqrtrc_size))
