@@ -526,7 +526,7 @@ void mpsdivtwo(size_t size, mpw* data);
  * \param result The place where result will be accumulated.
  * \param data The multi-precision integer multiplier.
  * \param y The multiplicand.
- * \retrun The carry-over multi-precision word.
+ * \return The carry-over multi-precision word.
  */
 BEECRYPTAPI
 mpw mpsetmul   (size_t size, mpw* result, const mpw* data, mpw y);
