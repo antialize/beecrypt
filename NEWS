@@ -1,5 +1,5 @@
 2.1.0:
-	- Added support for automake autoheader and libtool, which should make compiling the library even easier.
+	- Added support for automake, autoheader and libtool, which should make compiling the library even easier.
 	- Changed DHAES API to conform to IEEE P.1363 submission and to allow for uneven key splitting.
 	- Improved PKCS#5 padding routines.
 	- Added a hash reset to the hashFunctionContextInit function. This was pointed out by Marko Kreen.
