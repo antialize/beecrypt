@@ -41,7 +41,7 @@ AC_DEFUN([BEECRYPT_WITH_CPU],[
     ;;
   sparc | sparc64)
     case $withval in
-    sparcv8 | sparcv8plus | sparcv8plus[[ab]] | sparcv9 | sparcv9[[ab]])
+    sparcv8 | sparcv8plus | sparcv8plusa | sparcv9 | sparcv9a)
       ;;
     *)
       AC_MSG_WARN([invalid cpu type])
@@ -65,6 +65,7 @@ AC_DEFUN([BEECRYPT_WITH_CPU],[
     ;;
   esac
   ])
+
 
 dnl  BEECRYPT_WITHOUT_CPU
 AC_DEFUN([BEECRYPT_WITHOUT_CPU],[
@@ -94,7 +95,6 @@ AC_DEFUN([BEECRYPT_WITH_ARCH],[
     powerpc)
       ;;
     powerpc64)
-      bc_target_arch=powerpc64
       ;;
     *)
       AC_MSG_WARN([unsupported on invalid arch type])
@@ -376,6 +376,20 @@ EOF
   ])
 
 
+dnl  BEECRYPT_AGGRESSIVE_OPT
+AC_DEFUN([BEECRYPT_AGGRESSIVE_OPT],[
+  if test "$CFLAGS" = ""; then
+    bc_cv_c_aggressive_opt=yes
+  else
+    bc_cv_c_aggressive_opt=no
+  fi
+  if test "$CXXFLAGS" = ""; then
+    bc_cv_cxx_aggressive_opt=yes
+  else
+    bc_cv_cxx_aggressive_opt=no
+  fi
+  ])
+
 dnl  BEECRYPT_CFLAGS_REM
 AC_DEFUN([BEECRYPT_CFLAGS_REM],[
   if test "$CFLAGS" != ""; then
@@ -410,6 +424,12 @@ dnl  BEECRYPT_GNU_CC
 AC_DEFUN([BEECRYPT_GNU_CC],[
   AC_REQUIRE([AC_PROG_CC])
   case $bc_target_arch in
+  i[[3456]]86 | \
+  pentium | pentium-mmx | pentiumpro | pentium[[234]] | \
+  athlon | athlon-tbird | athlon-4 | athlon-xp | athlon-mp)
+    CC="$CC -m32"
+    CXX="$CXX -m32"
+    ;;
   ia64)
     case $target_os in
     # HP/UX on Itanium needs to be told that a long is 64-bit!
@@ -434,6 +454,14 @@ AC_DEFUN([BEECRYPT_GNU_CC],[
       CXX="$CXX -m64"
       ;;
     esac
+    ;;
+  sparc | sparcv8*)
+    CC="$CC -m32"
+    CXX="$CXX -m32"
+    ;;
+  sparc64 | sparcv9*)
+    CC="$CC -m64"
+    CXX="$CXX -m64"
     ;;
   x86_64)
     CC="$CC -m64"
@@ -499,27 +527,40 @@ AC_DEFUN([BEECRYPT_GNU_CC],[
       case $bc_target_arch in
       athlon64)
         # -march=athlon64 degrades performance
+		# -msse2 also doesn't help
         ;;
       athlon*)
-        CFLAGS="$CFLAGS -march=$bc_target_arch"
+        CFLAGS="$CFLAGS -march=$bc_target_arch -mmmx"
         ;;
-      i586)
+      i586 | pentium)
         CFLAGS="$CFLAGS -march=pentium"
         ;;
-      i686)
+      i686 | pentiumpro)
         CFLAGS="$CFLAGS -march=pentiumpro"
         ;;
-      pentium*)
-        CFLAGS="$CFLAGS -march=$bc_target_arch"
+      pentium-mmx)
+        CFLAGS="$CFLAGS -march=pentium-mmx -mmmx"
+        ;;
+      pentium2)
+        CFLAGS="$CFLAGS -march=pentium2 -mmmx"
+        ;;
+      pentium3)
+        CFLAGS="$CFLAGS -march=pentium3 -msse"
+        ;;
+      pentium4)
+        CFLAGS="$CFLAGS -march=pentium4 -msse2"
         ;;
       powerpc | powerpc64)
         CFLAGS="$CFLAGS -mcpu=$bc_target_arch"
         ;;
       sparcv8)
-        CFLAGS="$CFLAGS -mv8"
+        CFLAGS="$CFLAGS -mcpu=v8"
         ;;
       sparcv8plus)
-        CFLAGS="$CFLAGS -mv8plus"
+        CFLAGS="$CFLAGS -mcpu=v9"
+        ;;
+      sparcv8plusa | sparcv9 | sparcv9a)
+        CFLAGS="$CFLAGS -mcpu=ultrasparc"
         ;;
       esac
     fi
@@ -557,12 +598,10 @@ AC_DEFUN([BEECRYPT_GNU_CXX],[
     case $target_os in
     freebsd*)
       CXXFLAGS="$CXXFLAGS -pthread"
-      CXXCPPFLAGS="$CXXCPPFLAGS -pthread"
       LDFLAGS="$LDFLAGS -pthread"
       ;;
     osf*)
       CXXFLAGS="$CXXFLAGS -pthread"
-      CXXCPPFLAGS="$CXXCPPFLAGS -pthread"
       ;;
     esac
   fi
@@ -609,10 +648,10 @@ AC_DEFUN([BEECRYPT_GNU_CXX],[
         CXXFLAGS="$CXXFLAGS -mcpu=$bc_target_arch"
         ;;
       sparcv8)
-        CXXFLAGS="$CXXFLAGS -mv8"
+        CXXFLAGS="$CXXFLAGS -mcpu=v8"
         ;;
       sparcv8plus)
-        CXXFLAGS="$CXXFLAGS -mv8plus"
+        CXXFLAGS="$CXXFLAGS -mcpu=v9"
         ;;
       esac
     fi
@@ -712,7 +751,7 @@ dnl  BEECRYPT_INTEL_CC
 AC_DEFUN([BEECRYPT_INTEL_CC],[
   AC_REQUIRE([AC_PROG_CC])
   AC_REQUIRE([AC_PROG_CPP])
-  AC_CACHE_CHECK([whether we are using Intel C++],bc_cv_prog_INTEL_CC,[
+  AC_CACHE_CHECK([whether we are using Intel C],bc_cv_prog_INTEL_CC,[
     AC_EGREP_CPP(yes,[
       #ifdef __INTEL_COMPILER
         yes;
@@ -761,6 +800,50 @@ AC_DEFUN([BEECRYPT_INTEL_CC],[
 
 dnl  BEECRYPT_INTEL_CXX
 AC_DEFUN([BEECRYPT_INTEL_CXX],[
+  AC_REQUIRE([AC_PROG_CXX])
+  AC_REQUIRE([AC_PROG_CPP])
+  AC_CACHE_CHECK([whether we are using Intel C++],bc_cv_prog_INTEL_CXX,[
+    AC_EGREP_CPP(yes,[
+      #ifdef __INTEL_COMPILER
+        yes;
+      #endif
+      ],bc_cv_prog_INTEL_CXX=yes,bc_cv_prog_INTEL_CXX=no)
+    ])
+  if test "$bc_cv_prog_INTEL_CXX" = yes; then
+    if test "$ac_enable_debug" != yes; then
+      BEECRYPT_CXXFLAGS_REM([-g])
+      if test "$bc_cv_c_aggressive_opt" = yes; then
+        case $bc_target_cpu in
+        i586 | pentium | pentium-mmx)
+          CXXFLAGS="$CXXFLAGS -mcpu=pentium"
+          ;;
+        i686 | pentiumpro | pentium[[23]])
+          CXXFLAGS="$CXXFLAGS -mcpu=pentiumpro"
+          ;;
+        pentium4)
+          CXXFLAGS="$CXXFLAGS -mcpu=pentium4"
+          ;;
+        esac
+        case $bc_target_arch in
+        i586 | pentium | pentium-mmx)
+          CXXFLAGS="$CXXFLAGS -tpp5"
+          ;;
+        i686 | pentiumpro)
+          CXXFLAGS="$CXXFLAGS -tpp6 -march=pentiumpro"
+          ;;
+        pentium2)
+          CXXFLAGS="$CXXFLAGS -tpp6 -march=pentiumii"
+          ;;
+        pentium3)
+          CXXFLAGS="$CXXFLAGS -tpp6 -march=pentiumiii"
+          ;;
+        pentium4)
+          CXXFLAGS="$CXXFLAGS -tpp7 -march=pentium4"
+          ;;
+        esac
+      fi
+    fi
+  fi
   ])
 
 
@@ -810,11 +893,6 @@ AC_DEFUN([BEECRYPT_SUN_FORTE_CXX],[
 
 dnl  BEECRYPT_CC
 AC_DEFUN([BEECRYPT_CC],[
-  if test "$CFLAGS" = ""; then
-    bc_cv_c_aggressive_opt=yes
-  else
-    bc_cv_c_aggressive_opt=no
-  fi
   # set flags for large file support
   case $target_os in
   linux* | solaris*)
@@ -856,11 +934,6 @@ AC_DEFUN([BEECRYPT_CC],[
 
 dnl  BEECRYPT_CXX
 AC_DEFUN([BEECRYPT_CXX],[
-  if test "$CXXFLAGS" = ""; then
-    bc_cv_cxx_aggressive_opt=yes
-  else
-    bc_cv_cxx_aggressive_opt=no
-  fi
   if test "$ac_cv_cxx_compiler_gnu" = yes; then
     # Intel's icc can be mistakenly identified as gcc
     case $target_os in
@@ -897,11 +970,16 @@ dnl BEECRYPT_NOEXECSTACK
 AC_DEFUN([BEECRYPT_NOEXECSTACK],[
   AC_CACHE_CHECK([whether the assembler can use noexecstack],bc_cv_as_noexecstack,[
     CFLAGS_save=$CFLAGS
-    CFLAGS="$CFLAGS -Wa,--noexecstack"
     CXXFLAGS_save=$CXXFLAGS
-    CXXFLAGS="$CXXFLAGS -Wa,--noexecstack"
+    if test "$bc_cv_prog_INTEL_CC" = yes; then
+      CFLAGS="$CFLAGS -Qoption,asm,--noexecstack"
+      CXXFLAGS="$CXXFLAGS -Qoption,asm,--noexecstack"
+    else
+      CFLAGS="$CFLAGS -Wa,--noexecstack"
+      CXXFLAGS="$CXXFLAGS -Wa,--noexecstack"
+    fi
     AC_LANG_PUSH(C)
-    AC_COMPILE_IFELSE([AC_LANG_SOURCE([[][]])],[
+    AC_COMPILE_IFELSE([AC_LANG_SOURCE([[][int x;]])],[
       bc_cv_as_noexecstack=yes
       # convert conftest.c to conftest.s
       $CCAS $CFLAGS -S conftest.c
@@ -1214,59 +1292,79 @@ AC_DEFUN([BEECRYPT_MULTITHREAD],[
   AH_TEMPLATE([HAVE_PTHREAD_H],[.])
   AH_TEMPLATE([HAVE_SYNCH_H],[.])
   AH_TEMPLATE([HAVE_SEMAPHORE_H],[.])
+  AH_TEMPLATE([HAVE_SCHED_H],[.])
 
   if test "$ac_enable_threads" = yes; then
-    AC_CHECK_HEADERS([synch.h thread.h pthread.h semaphore.h])
+    AC_CHECK_HEADERS([synch.h thread.h pthread.h semaphore.h sched.h])
   fi
 
   bc_include_synch_h=
   bc_include_thread_h=
   bc_include_pthread_h=
+  bc_include_semaphore_h=
+  bc_include_sched_h=
   bc_typedef_bc_cond_t=
   bc_typedef_bc_mutex_t=
+  bc_typedef_bc_sema_t=
   bc_typedef_bc_thread_t=
+  bc_typedef_bc_threadid_t=
   if test "$ac_enable_threads" = yes; then
     if test "$ac_cv_header_thread_h" = yes -a "$ac_cv_header_synch_h" = yes; then
       bc_include_synch_h="#include <synch.h>"
       bc_include_thread_h="#include <thread.h>"
       bc_typedef_bc_cond_t="typedef cond_t bc_cond_t;"
       bc_typedef_bc_mutex_t="typedef mutex_t bc_mutex_t;"
+      bc_typedef_bc_sema_t="typedef sema_t bc_sema_t;"
       bc_typedef_bc_thread_t="typedef thread_t bc_thread_t;"
+      bc_typedef_bc_threadid_t="typedef thread_t bc_threadid_t;"
       AC_SEARCH_LIBS([mutex_lock],[thread],[
         AC_DEFINE([ENABLE_THREADS],1)
         ])
-    elif test "$ac_cv_header_pthread_h" = yes; then
-      bc_include_pthread_h="#include <pthread.h>"
-      bc_typedef_bc_cond_t="typedef pthread_cond_t bc_cond_t;"
-      bc_typedef_bc_mutex_t="typedef pthread_mutex_t bc_mutex_t;"
-      bc_typedef_bc_thread_t="typedef pthread_t bc_thread_t;"
-      # On most systems this tests will say 'none required', but that doesn't
-      # mean that the linked code will work correctly!
-      case $target_os in
-      linux* | solaris* )
-        AC_DEFINE([ENABLE_THREADS],1)
-        LIBS="-lpthread $LIBS"
-        ;;
-      osf*)
-        AC_DEFINE([ENABLE_THREADS],1)
-        LIBS="-lpthread -lmach -lexc $LIBS"
-        ;;
-      *)
-        AC_SEARCH_LIBS([pthread_mutex_lock],[pthread],[
-          AC_DEFINE([ENABLE_THREADS],1)
-          ])
-        ;;
-      esac
     else
-      AC_MSG_WARN([Don't know which thread library to check for])
+      if test "$ac_cv_header_semaphore_h" = yes; then
+        bc_include_semaphore_h="#include <semaphore.h>"
+        bc_typedef_bc_sema_t="typedef sem_t bc_sema_t;"
+      fi
+      if test "$ac_cv_header_sched_h" = yes; then
+        bc_include_sched_h="#include <sched.h>"
+      fi
+      if test "$ac_cv_header_pthread_h" = yes; then
+        bc_include_pthread_h="#include <pthread.h>"
+        bc_typedef_bc_cond_t="typedef pthread_cond_t bc_cond_t;"
+        bc_typedef_bc_mutex_t="typedef pthread_mutex_t bc_mutex_t;"
+        bc_typedef_bc_thread_t="typedef pthread_t bc_thread_t;"
+        bc_typedef_bc_threadid_t="typedef pthread_t bc_threadid_t;"
+        # On most systems this tests will say 'none required', but that doesn't
+        # mean that the linked code will work correctly!
+        case $target_os in
+        linux* | solaris* )
+          AC_DEFINE([ENABLE_THREADS],1)
+          LIBS="-lpthread $LIBS"
+          ;;
+        osf*)
+          AC_DEFINE([ENABLE_THREADS],1)
+          LIBS="-lpthread -lmach -lexc $LIBS"
+          ;;
+        *)
+          AC_SEARCH_LIBS([pthread_mutex_lock],[pthread],[
+            AC_DEFINE([ENABLE_THREADS],1)
+            ])
+          ;;
+        esac
+      else
+        AC_MSG_WARN([Don't know which thread library to check for])
+      fi
     fi
   fi
   AC_SUBST(INCLUDE_SYNCH_H,$bc_include_synch_h)
   AC_SUBST(INCLUDE_THREAD_H,$bc_include_thread_h)
   AC_SUBST(INCLUDE_PTHREAD_H,$bc_include_pthread_h)
+  AC_SUBST(INCLUDE_SEMAPHORE_H,$bc_include_semaphore_h)
+  AC_SUBST(INCLUDE_SCHED_H,$bc_include_sched_h)
   AC_SUBST(TYPEDEF_BC_COND_T,$bc_typedef_bc_cond_t)
   AC_SUBST(TYPEDEF_BC_MUTEX_T,$bc_typedef_bc_mutex_t)
   AC_SUBST(TYPEDEF_BC_THREAD_T,$bc_typedef_bc_thread_t)
+  AC_SUBST(TYPEDEF_BC_THREADID_T,$bc_typedef_bc_threadid_t)
   ])
 
 AH_BOTTOM([

@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([beecrypt],[4.1.2],[bob.deblier@telenet.be])
+AC_INIT([beecrypt],[4.2.0-pre],[bob.deblier@telenet.be])
 AM_INIT_AUTOMAKE
 AC_CANONICAL_TARGET
 AC_CONFIG_SRCDIR(beecrypt.h)
@@ -77,6 +77,9 @@ AC_ARG_WITH(python,[  --with-python           creates the Python module [[defaul
   fi
   ],[ac_with_python=yes])
 
+# Check for aggressive optimization
+BEECRYPT_AGGRESSIVE_OPT
+
 # Check for Unix variants
 AC_AIX
 
@@ -112,6 +115,7 @@ AH_TEMPLATE([HAVE_ASSERT_H],[.])
 AH_TEMPLATE([HAVE_CTYPE_H],[.])
 AH_TEMPLATE([HAVE_ERRNO_H],[.])
 AH_TEMPLATE([HAVE_FCNTL_H],[.])
+AH_TEMPLATE([HAVE_STDIO_H],[.])
 AH_TEMPLATE([HAVE_TERMIO_H],[.])
 AH_TEMPLATE([HAVE_TERMIOS_H],[.])
 AH_TEMPLATE([HAVE_TIME_H],[.])
@@ -124,6 +128,7 @@ AH_TEMPLATE([HAVE_SYS_SOUNDCARD_H],[.])
 AH_TEMPLATE([HAVE_SYS_STAT_H],[.])
 AH_TEMPLATE([HAVE_SYS_TIME_H],[.])
 AH_TEMPLATE([HAVE_SYS_TYPES_H],[.])
+AH_TEMPLATE([HAVE_ENDIAN_H],[.])
 AH_TEMPLATE([HAVE_ASM_BYTEORDER_H],[.])
 
 AH_TEMPLATE([HAVE_AIO_H],[.])
@@ -138,7 +143,7 @@ AH_TEMPLATE([HAVE_DEV_TTY],[Define to 1 if your system has device /dev/tty])
 AC_HEADER_STDC
 AC_CHECK_HEADERS([time.h sys/time.h])
 AC_HEADER_TIME
-AC_CHECK_HEADERS([assert.h stdio.h ctype.h errno.h fcntl.h malloc.h termio.h termios.h])
+AC_CHECK_HEADERS([assert.h ctype.h errno.h fcntl.h malloc.h stdio.h termio.h termios.h])
 AC_CHECK_HEADERS([sys/ioctl.h sys/mman.h sys/audioio.h sys/soundcard.h])
 AC_CHECK_HEADERS([endian.h asm/byteorder.h])
 
@@ -220,9 +225,11 @@ AC_FUNC_MEMCMP
 AC_FUNC_STAT
 AC_CHECK_FUNCS([memset memcmp memmove strcspn strerror strspn])
 
+AH_TEMPLATE([HAVE_NANOSLEEP],[.])
 AH_TEMPLATE([HAVE_GETHRTIME],[.])
 AH_TEMPLATE([HAVE_GETTIMEOFDAY],[.])
 if test "$ac_cv_header_sys_time_h" = yes; then
+  AC_CHECK_FUNCS([nanosleep])
   AC_CHECK_FUNCS([gethrtime])
   # gettimeofday detection fails on HP/UX!
   AC_MSG_CHECKING([for gettimeofday])
@@ -502,8 +509,7 @@ if test "$ac_enable_debug" != yes; then
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_ARM"
     ;;
   athlon*)
-    CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I386 -DOPTIMIZE_MMX"
-    CFLAGS="$CFLAGS -mmmx"
+    CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I686 -DOPTIMIZE_MMX"
     ;;
   i386)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I386"
@@ -528,22 +534,18 @@ if test "$ac_enable_debug" != yes; then
     ;;
   pentium-mmx)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I586 -DOPTIMIZE_MMX"
-    CFLAGS="$CFLAGS -mmmx"
     ;;
   pentiumpro)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I686"
     ;;
   pentium2)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I686 -DOPTIMIZE_MMX"
-    CFLAGS="$CFLAGS -mmmx"
     ;;
   pentium3)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I686 -DOPTIMIZE_MMX -DOPTIMIZE_SSE"
-    CFLAGS="$CFLAGS -msse"
     ;;
   pentium4)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I686 -DOPTIMIZE_MMX -DOPTIMIZE_SSE -DOPTIMIZE_SSE2"
-    CFLAGS="$CFLAGS -msse2"
     ;;
   powerpc)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_POWERPC"
@@ -556,15 +558,12 @@ if test "$ac_enable_debug" != yes; then
     ;;
   sparcv8)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_SPARCV8"
-    CFLAGS="$CFLAGS -Wa,-xarch=v8"
     ;;
   sparcv8plus*)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_SPARCV8PLUS"
-    CFLAGS="$CFLAGS -Wa,-xarch=v8plus"
     ;;
   sparcv9*)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_SPARCV9"
-    CFLAGS="$CFLAGS -Wa,-xarch=v9"
     ;;
   x86_64)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_X86_64"
@@ -628,15 +627,18 @@ AC_CONFIG_FILES([
     Doxyfile
     config.m4
     c++/Makefile
+	c++/Doxyfile
     c++/beeyond/Makefile
     c++/crypto/Makefile
     c++/crypto/interfaces/Makefile
     c++/crypto/spec/Makefile
     c++/io/Makefile
-    c++/nio/Makefile
     c++/lang/Makefile
+    c++/math/Makefile
+    c++/nio/Makefile
     c++/provider/Makefile
     c++/security/Makefile
+	c++/security/auth/Makefile
     c++/security/cert/Makefile
     c++/security/interfaces/Makefile
     c++/security/spec/Makefile
@@ -644,6 +646,7 @@ AC_CONFIG_FILES([
     docs/Makefile
     gas/Makefile
     java/Makefile
+    java/build.xml
     masm/Makefile
     python/Makefile
     python/test/Makefile
