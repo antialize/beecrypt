@@ -41,14 +41,6 @@
 # define BEECRYPTAPI
 #endif
 
-#if HAVE_INTTYPES_H
-# include <inttypes.h>
-#else
-# if HAVE_STDINT_H
-# include <stdint.h>
-# endif
-#endif
-
 /* Starting from GCC 3.2, the compiler seems smart enough to figure
  * out that we're trying to do a rotate without having to specify it.
  */
