@@ -389,6 +389,7 @@ AC_DEFUN(BEECRYPT_INTEL_CC,[
     ])
   if test "$bc_cv_prog_INTEL_CC" = yes; then
     if test "$ac_enable_debug" != yes; then
+      BEECRYPT_CFLAGS_REM([-g])
       CFLAGS="$CFLAGS -O3"
       case $bc_target_cpu in
       i586 | pentium | pentium-mmx)
