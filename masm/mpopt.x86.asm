@@ -1,13 +1,11 @@
 ;
-; mp32opt.i386.asm
+; mpopt.x86.asm
 ;
-; Assembler optimized multiprecision integer routines for Intel 386
+; Assembler optimized multiprecision integer routines for Intel x86 processors
 ;
-; Compile target is Microsoft Macro Assembler
+; Copyright (c) 2003 Bob Deblier
 ;
-; Copyright (c) 1998, 1999, 2000, 2001, 2003 Virtual Unlimited B.V.
-;
-; Author: Bob Deblier <bob@virtualunlimited.com>
+; Author: Bob Deblier <bob.deblier@pandora.be>
 ;
 ; This library is free software; you can redistribute it and/or
 ; modify it under the terms of the GNU Lesser General Public
@@ -27,11 +25,10 @@
 	.586
 	.model flat,C
 	.xmm
-
 	.code
 
 	align 8
-mp32zero proc
+mpzero proc c export
 	push edi
 
 	mov ecx,dword ptr [esp+8]
@@ -42,11 +39,11 @@ mp32zero proc
 
 	pop edi
 	ret
-mp32zero endp
+mpzero endp
 
 
 	align 8
-mp32fill proc
+mpfill proc c export
 	push edi
 
 	mov ecx,dword ptr [esp+8]
@@ -57,32 +54,32 @@ mp32fill proc
 
 	pop edi
 	ret
-mp32fill endp
+mpfill endp
 
 
 	align 8
-mp32odd proc
+mpodd proc c export
 	mov ecx,dword ptr [esp+4]
 	mov eax,dword ptr [esp+8]
 	mov eax,dword ptr [eax+ecx*4-4]
 	and eax,1
 	ret
-mp32odd endp
+mpodd endp
 
 
 	align 8
-mp32even proc
+mpeven proc c export
 	mov ecx,dword ptr [esp+4]
 	mov eax,dword ptr [esp+8]
 	mov eax,dword ptr [eax+ecx*4-4]
 	not eax
 	and eax,1
 	ret
-mp32even endp
+mpeven endp
 
 
 	align 8
-mp32addw proc
+mpaddw proc c export
 	push edi
 
 	mov ecx,dword ptr [esp+8]
@@ -92,27 +89,27 @@ mp32addw proc
 	lea edi,dword ptr [edi+ecx*4-4]
 	add dword ptr [edi],eax
 	dec ecx
-	jz @mp32addw_end
+	jz @mpaddw_end
 	sub edi,4
 	xor edx,edx
 
 	align 4
-@mp32addw_loop:
+@mpaddw_loop:
 	adc dword ptr [edi],edx
 	sub edi,4
 	dec ecx
-	jnz @mp32addw_loop
-@mp32addw_end:
+	jnz @mpaddw_loop
+@mpaddw_end:
 	sbb eax,eax
 	neg eax
 
 	pop edi
 	ret
-mp32addw endp
+mpaddw endp
 
 
 	align 8
-mp32subw proc
+mpsubw proc c export
 	push edi
 
 	mov ecx,dword ptr [esp+8]
@@ -122,27 +119,27 @@ mp32subw proc
 	lea edi,dword ptr [edi+ecx*4-4]
 	sub dword ptr [edi],eax
 	dec ecx
-	jz @mp32subw_end
+	jz @mpsubw_end
 	sub edi,4
 	xor edx,edx
 
 	align 4
-@mp32subw_loop:
+@mpsubw_loop:
 	sbb dword ptr [edi],edx
 	sub edi,4
 	dec ecx
-	jnz @mp32subw_loop
-@mp32subw_end:
+	jnz @mpsubw_loop
+@mpsubw_end:
 	sbb eax,eax
 	neg eax
 
 	pop edi
 	ret
-mp32subw endp
+mpsubw endp
 
 
 	align 8
-mp32add proc
+mpadd proc c export
 	push edi
 	push esi
 	
@@ -154,13 +151,13 @@ mp32add proc
 	dec ecx
 
 	align 4
-@mp32add_loop:
+@mpadd_loop:
 	mov eax,dword ptr [esi+ecx*4]
 	mov edx,dword ptr [edi+ecx*4]
 	adc edx,eax
 	mov dword ptr [edi+ecx*4],edx
 	dec ecx
-	jns @mp32add_loop
+	jns @mpadd_loop
 	
 	sbb eax,eax
 	neg eax
@@ -168,10 +165,11 @@ mp32add proc
 	pop esi
 	pop edi
 	ret
-mp32add endp
+mpadd endp
+
 
 	align 8
-mp32sub proc
+mpsub proc c export
 	push edi
 	push esi
 	
@@ -183,13 +181,13 @@ mp32sub proc
 	dec ecx
 
 	align 4
-@mp32sub_loop:
+@mpsub_loop:
 	mov eax,dword ptr [esi+ecx*4]
 	mov edx,dword ptr [edi+ecx*4]
 	sbb edx,eax
 	mov dword ptr [edi+ecx*4],edx
 	dec ecx
-	jns @mp32sub_loop
+	jns @mpsub_loop
 	
 	sbb eax,eax
 	neg eax
@@ -197,11 +195,11 @@ mp32sub proc
 	pop esi
 	pop edi
 	ret
-mp32sub endp
+mpsub endp
 
-	
+
 	align 8
-mp32divtwo proc
+mpdivtwo proc c export
 	push edi
 
 	mov ecx,dword ptr [esp+8]
@@ -211,18 +209,18 @@ mp32divtwo proc
 	neg ecx
 	clc
 
-@mp32divtwo_loop:
+@mpdivtwo_loop:
 	rcr dword ptr [edi+ecx*4],1
 	inc ecx
-	jnz @mp32divtwo_loop
+	jnz @mpdivtwo_loop
 	
 	pop edi
 	ret
-mp32divtwo endp
+mpdivtwo endp
 
 
 	align 8
-mp32multwo proc
+mpmultwo proc c export
 	push edi
 	
 	mov ecx,dword ptr [esp+8]
@@ -232,27 +230,27 @@ mp32multwo proc
 	clc
 
 	align 4
-@mp32multwo_loop:
+@mpmultwo_loop:
 	mov eax,dword ptr [edi+ecx*4]
 	adc eax,eax
 	mov dword ptr [edi+ecx*4],eax
 	dec ecx
-	jns @mp32multwo_loop
+	jns @mpmultwo_loop
 	
 	sbb eax,eax
 	neg eax
 
 	pop edi
 	ret
-mp32multwo endp
+mpmultwo endp
 
 
 	align 8
-mp32setmul proc
+mpsetmul proc c export
 	push edi
 	push esi
 
-	ifdef OPTIMIZE_SSE2
+	ifdef USE_SSE2
 
 	mov ecx,dword ptr [esp+12]
 	mov edi,dword ptr [esp+16]
@@ -263,14 +261,14 @@ mp32setmul proc
 	dec ecx
 
 	align 4
-@mp32setmul_loop:
+@mpsetmul_loop:
 	movd mm2,dword ptr [esi+ecx*4]
 	pmuludq mm2,mm1
 	paddq mm0,mm2
 	movd dword ptr [edi+ecx*4],mm0
 	dec ecx
 	psrlq mm0,32
-	jns @mp32setmul_loop
+	jns @mpsetmul_loop
 
 	movd eax,mm0
 	emms
@@ -289,7 +287,7 @@ mp32setmul proc
 	dec ecx
 	
 	align 4
-@mp32setmul_loop:
+@mpsetmul_loop:
 	mov ebx,edx
 	mov eax,dword ptr [esi+ecx*4]
 	mul ebp
@@ -297,7 +295,7 @@ mp32setmul proc
 	adc edx,0
 	mov dword ptr [edi+ecx*4],eax
 	dec ecx
-	jns @mp32setmul_loop
+	jns @mpsetmul_loop
 
 	mov eax,edx
 
@@ -309,15 +307,15 @@ mp32setmul proc
 	pop esi
 	pop edi
 	ret
-mp32setmul endp
+mpsetmul endp
 
 
 	align 8
-mp32addmul proc
+mpaddmul proc c export
 	push edi
 	push esi
 
-	ifdef OPTIMIZE_SSE2
+	ifdef USE_SSE2
 
 	mov ecx,dword ptr [esp+12]
 	mov edi,dword ptr [esp+16]
@@ -327,7 +325,7 @@ mp32addmul proc
 	pxor mm0,mm0
 	dec ecx
 
-@mp32addmul_loop:
+@mpaddmul_loop:
 	movd mm2,dword ptr [esi+ecx*4]
 	pmuludq mm2,mm1
 	movd mm3,dword ptr [edi+ecx*4]
@@ -336,7 +334,7 @@ mp32addmul proc
 	movd dword ptr [edi+ecx*4],mm0
 	dec ecx
 	psrlq mm0,32
-	jns @mp32addmul_loop
+	jns @mpaddmul_loop
 
 	movd eax,mm0
 	emms
@@ -355,7 +353,7 @@ mp32addmul proc
 	dec ecx
 
 	align 4
-@mp32addmul_loop:
+@mpaddmul_loop:
 	mov ebx,edx
 	mov eax,dword ptr [esi+ecx*4]
 	mul ebp
@@ -364,7 +362,7 @@ mp32addmul proc
 	add dword ptr [edi+ecx*4],eax
 	adc edx,0
 	dec ecx
-	jns @mp32addmul_loop
+	jns @mpaddmul_loop
 
 	mov eax,edx
 
@@ -376,15 +374,15 @@ mp32addmul proc
 	pop esi
 	pop edi
 	ret
-mp32addmul endp
+mpaddmul endp
 
 
 	align 8
-mp32addsqrtrc proc
+mpaddsqrtrc proc c export
 	push edi
 	push esi
 
-	ifdef OPTIMIZE_SSE2
+	ifdef USE_SSE2
 	mov ecx,dword ptr [esp+12]
 	mov edi,dword ptr [esp+16]
 	mov esi,dword ptr [esp+20]
@@ -393,7 +391,7 @@ mp32addsqrtrc proc
 	dec ecx
 
 	align 4
-@mp32addsqrtrc_loop:
+@mpaddsqrtrc_loop:
 	movd mm2,dword ptr [esi+ecx*4]
 	pmuludq mm2,mm2
 	movd mm3,dword ptr [edi+ecx*8+4]
@@ -406,7 +404,7 @@ mp32addsqrtrc proc
 	movd dword ptr [edi+ecx*8+0],mm0
 	psrlq mm0,32
 	dec ecx
-	jns @mp32addsqrtrc_loop
+	jns @mpaddsqrtrc_loop
 
 	movd eax,mm0
 	emms
@@ -423,7 +421,7 @@ mp32addsqrtrc proc
 	dec ecx
 
 	align 4
-@mp32addsqrtrc_loop:
+@mpaddsqrtrc_loop:
 	mov eax,dword ptr [esi+ecx*4]
 	mul eax
 	add eax,ebx
@@ -433,7 +431,7 @@ mp32addsqrtrc proc
 	sbb ebx,ebx
 	neg ebx
 	dec ecx
-	jns @mp32addsqrtrc_loop
+	jns @mpaddsqrtrc_loop
 
 	mov eax,ebx
 
@@ -444,29 +442,6 @@ mp32addsqrtrc proc
 	pop esi
 	pop edi
 	ret
-mp32addsqrtrc endp
+mpaddsqrtrc endp
 
-;	ifdef OPTIMIZE_SSE2
-;
-;	align 8
-;mp32mul proc ; 5 params: result, xsize, xdata, ysize, ydata
-;	push ebp
-;	push edi
-;	push esi
-;
-;	mov ebp,dword ptr [esp+16]
-;	mov edx,dword ptr [esp+20]
-;	mov edi,dword ptr [esp+24]
-;	mov esi,dword ptr [esp+32]
-;
-;	mov 	
-;	emms
-;
-;	pop esi
-;	pop edi
-;	pop ebp
-;mp32mul endp
-;
-;	endif
-	
 	end
