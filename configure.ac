@@ -350,6 +350,12 @@ if test "$ac_with_mtmalloc" = yes; then
   fi
 fi
 
+case $target_os in
+  cygwin*)
+    AC_HAVE_LIBRARY([winmm])
+    ;;
+esac
+
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_BIGENDIAN
 AC_C_CONST
