@@ -54,6 +54,8 @@ int rsapub(const rsapk* pk, const mpnumber* m, mpnumber* c)
 
 		mpbpowmod_w(&pk->n, m->size, m->data, pk->e.size, pk->e.data, c->data, temp);
 
+		free(temp);
+
 		return 0;
 	}
 	return -1;
