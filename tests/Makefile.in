@@ -107,9 +107,9 @@ AUTOMAKE_OPTIONS = gnu no-dependencies
 INCLUDES = -I$(top_srcdir)
 LDADD = $(top_builddir)/libbeecrypt.la
 
-TESTS = testmd5 testsha1 testsha256 testhmacmd5 
+TESTS = testmd5 testsha1 testsha256 testhmacmd5 testhmacsha1
 
-check_PROGRAMS = testmd5 testsha1 testsha256 testhmacmd5 
+check_PROGRAMS = testmd5 testsha1 testsha256 testhmacmd5 testhmacsha1
 
 testmd5_SOURCES = testmd5.c
 
@@ -118,6 +118,8 @@ testsha1_SOURCES = testsha1.c
 testsha256_SOURCES = testsha256.c
 
 testhmacmd5_SOURCES = testhmacmd5.c
+
+testhmacsha1_SOURCES = testhmacsha1.c
 
 EXTRA_PROGRAMS = beetest
 
@@ -150,6 +152,10 @@ testhmacmd5_OBJECTS =  testhmacmd5.o
 testhmacmd5_LDADD = $(LDADD)
 testhmacmd5_DEPENDENCIES =  $(top_builddir)/libbeecrypt.la
 testhmacmd5_LDFLAGS = 
+testhmacsha1_OBJECTS =  testhmacsha1.o
+testhmacsha1_LDADD = $(LDADD)
+testhmacsha1_DEPENDENCIES =  $(top_builddir)/libbeecrypt.la
+testhmacsha1_LDFLAGS = 
 CFLAGS = @CFLAGS@
 COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -162,8 +168,8 @@ DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
 TAR = tar
 GZIP_ENV = --best
-SOURCES = $(beetest_SOURCES) $(testmd5_SOURCES) $(testsha1_SOURCES) $(testsha256_SOURCES) $(testhmacmd5_SOURCES)
-OBJECTS = $(beetest_OBJECTS) $(testmd5_OBJECTS) $(testsha1_OBJECTS) $(testsha256_OBJECTS) $(testhmacmd5_OBJECTS)
+SOURCES = $(beetest_SOURCES) $(testmd5_SOURCES) $(testsha1_SOURCES) $(testsha256_SOURCES) $(testhmacmd5_SOURCES) $(testhmacsha1_SOURCES)
+OBJECTS = $(beetest_OBJECTS) $(testmd5_OBJECTS) $(testsha1_OBJECTS) $(testsha256_OBJECTS) $(testhmacmd5_OBJECTS) $(testhmacsha1_OBJECTS)
 
 all: all-redirect
 .SUFFIXES:
@@ -242,6 +248,10 @@ testsha256: $(testsha256_OBJECTS) $(testsha256_DEPENDENCIES)
 testhmacmd5: $(testhmacmd5_OBJECTS) $(testhmacmd5_DEPENDENCIES)
 	@rm -f testhmacmd5
 	$(LINK) $(testhmacmd5_LDFLAGS) $(testhmacmd5_OBJECTS) $(testhmacmd5_LDADD) $(LIBS)
+
+testhmacsha1: $(testhmacsha1_OBJECTS) $(testhmacsha1_DEPENDENCIES)
+	@rm -f testhmacsha1
+	$(LINK) $(testhmacsha1_LDFLAGS) $(testhmacsha1_OBJECTS) $(testhmacsha1_LDADD) $(LIBS)
 
 tags: TAGS
 
