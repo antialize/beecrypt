@@ -61,7 +61,7 @@ int dsasign(const mp32barrett* p, const mp32barrett* q, const mp32number* g, ran
 	register uint32* qtemp;
 
 	register uint32* pwksp;
-	register uint32* qwksp = qtemp+3*qsize;
+	register uint32* qwksp;
 
 	register int rc = -1;
 
@@ -79,11 +79,11 @@ int dsasign(const mp32barrett* p, const mp32barrett* q, const mp32number* g, ran
 	pwksp = ptemp+psize;
 	qwksp = qtemp+3*qsize;
 
-	// allocate r
+	/* allocate r */
 	mp32nfree(r);
 	mp32nsize(r, qsize);
 
-	// get a random k, invertible modulo q
+	/* get a random k, invertible modulo q */
 	mp32brndinv_w(q, rgc, qtemp, qtemp+qsize, qwksp);
 
 /* FIPS 186 test vectors
@@ -96,24 +96,24 @@ int dsasign(const mp32barrett* p, const mp32barrett* q, const mp32number* g, ran
 	mp32binv_w(q, qsize, qtemp, qtemp+qsize, qwksp);
 */
 
-	// g^k mod p
+	/* g^k mod p */
 	mp32bpowmod_w(p, g->size, g->data, qsize, qtemp, ptemp, pwksp);
 
-	// (g^k mod p) mod q - simple modulo
+	/* (g^k mod p) mod q - simple modulo */
 	mp32nmod(qtemp+2*qsize, psize, ptemp, qsize, q->modl, pwksp);
 	mp32copy(qsize, r->data, qtemp+psize+qsize);
 
-	// allocate s
+	/* allocate s */
 	mp32nfree(s);
 	mp32nsize(s, qsize);
 
-	// x*r mod q
+	/* x*r mod q */
 	mp32bmulmod_w(q, x->size, x->data, r->size, r->data, qtemp, qwksp);
 
-	// add h(m) mod q
+	/* add h(m) mod q */
 	mp32baddmod_w(q, qsize, qtemp, hm->size, hm->data, qtemp+2*qsize, qwksp);
 
-	// multiply inv(k) mod q
+	/* multiply inv(k) mod q */
 	mp32bmulmod_w(q, qsize, qtemp+qsize, qsize, qtemp+2*qsize, s->data, qwksp);
 
 	rc = 0;
@@ -167,25 +167,25 @@ int dsavrfy(const mp32barrett* p, const mp32barrett* q, const mp32number* g, con
 	pwksp = ptemp+2*psize;
 	qwksp = qtemp+2*qsize;
 
-	// compute w = inv(s) mod q
+	/* compute w = inv(s) mod q */
 	if (mp32binv_w(q, s->size, s->data, qtemp, qwksp))
 	{
-		// compute u1 = h(m)*w mod q
+		/* compute u1 = h(m)*w mod q */
 		mp32bmulmod_w(q, hm->size, hm->data, qsize, qtemp, qtemp+qsize, qwksp);
 
-		// compute u2 = r*w mod q
+		/* compute u2 = r*w mod q */
 		mp32bmulmod_w(q, r->size, r->data, qsize, qtemp, qtemp, qwksp);
 
-		// compute g^u1 mod p
+		/* compute g^u1 mod p */
 		mp32bpowmod_w(p, g->size, g->data, qsize, qtemp+qsize, ptemp, pwksp);
 
-		// compute y^u2 mod p
+		/* compute y^u2 mod p */
 		mp32bpowmod_w(p, y->size, y->data, qsize, qtemp, ptemp+psize, pwksp);
 
-		// multiply mod p
+		/* multiply mod p */
 		mp32bmulmod_w(p, psize, ptemp, psize, ptemp+psize, ptemp, pwksp);
 
-		// modulo q
+		/* modulo q */
 		mp32nmod(ptemp+psize, psize, ptemp, qsize, q->modl, pwksp);
 
 		rc = mp32eqx(r->size, r->data, psize, ptemp+psize);
