@@ -39,8 +39,8 @@ LABEL(mp32setmul)
 	movl 20(%esp),%esi
 	movd 24(%esp),%mm1
 
-	pxor %mm0,%mm0
 	decl %ecx
+	pxor %mm0,%mm0
 
 	.align 4
 LOCAL(mp32setmul_loop):
@@ -71,8 +71,8 @@ LABEL(mp32addmul)
 	movl 20(%esp),%esi
 	movd 24(%esp),%mm1
 
-	pxor %mm0,%mm0
 	decl %ecx
+	pxor %mm0,%mm0
 
 	.align 4
 LOCAL(mp32addmul_loop):
