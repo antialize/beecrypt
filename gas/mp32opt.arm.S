@@ -1,13 +1,5 @@
 /*
- * mp32opt.arm.S
- *
- * Assembler optimized multiprecision integer routines for ARM processors
- *
- * Compile target is GNU Assembler
- *
  * Copyright (c) 2001, 2002 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,6 +15,10 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ */
+/*!\file mp32opt.arm.S
+ * \brief
+ * \author Bob Deblier <bob@virtualunlimited.com>
  */
 
 #include "beecrypt.gas.h"
@@ -148,14 +144,11 @@ LOCAL(mp32addmul_loop):
 C_FUNCTION_END(mp32addmul, LOCAL(mp32addmul_size))
 
 
-#if 0
-/* this routine needs fixing; it causes a core dump for some reason */
-/* unfortunately the system I test this on has no debugger */
 C_FUNCTION_BEGIN(mp32addsqrtrc)
-LABEL(mp32addsqrtrc):
+LABEL(mp32addsqrtrc)
 	stmfd sp!, {r4, r5, r6, lr}
 	/* adjust the addresses */
-	add r1, r1, r0, asl #2
+	add r1, r1, r0, asl #3
 	add r2, r2, r0, asl #2
 	/* r3 is a zero register, ip is the carry */
 	mov r3, #0
@@ -177,4 +170,3 @@ LOCAL(mp32addsqrtrc_loop):
 	mov r0, ip
 	ldmfd sp!, {r4, r5, r6, pc}
 C_FUNCTION_END(mp32addsqrtrc, LOCAL(mp32addsqrtrc_size))
-#endif
