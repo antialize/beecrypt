@@ -487,6 +487,7 @@ int mpaddx(size_t xsize, mpw* xdata, size_t ysize, const mpw* ydata);
  * \param xdata The first multi-precision integer.
  * \param y The multi-precision word.
  * \return The carry-over value of the operation; this value is either 0 or 1.
+ */
 BEECRYPTAPI
 int mpsubw(size_t size, mpw* xdata, mpw y);
 
