@@ -31,10 +31,6 @@
 
 #include "dlkp.h"
 
-/*!\addtogroup DL_m
- * \{
- */
-
 int dlkp_pPair(dlkp_p* kp, randomGeneratorContext* rgc, const dldp_p* param)
 {
 	/* copy the parameters */
@@ -61,6 +57,7 @@ int dlkp_pInit(dlkp_p* kp)
 int dlkp_pFree(dlkp_p* kp)
 {
 	if (dldp_pFree(&kp->param) < 0)
+		return -1;
 
 	mpnfree(&kp->y);
 	mpnfree(&kp->x);
@@ -78,6 +75,3 @@ int dlkp_pCopy(dlkp_p* dst, const dlkp_p* src)
 
 	return 0;
 }
-
-/*!\}
- */
