@@ -190,8 +190,6 @@ void BeeCertificate::ParentCertificateField::decode(DataInputStream& in) throw (
 
 		parent = cf->generateCertificate(bin);
 
-		throw RuntimeException();
-
 		delete cf;
 	}
 	catch (...)
@@ -226,16 +224,18 @@ BeeCertificate::Field* BeeCertificate::instantiateField(javaint type)
 	}
 }
 
-const Date BeeCertificate::FOREVER((javalong) -1L);
+const Date BeeCertificate::FOREVER((javalong) 0x7FFFFFFFFFFFFFFFL);
 
 BeeCertificate::BeeCertificate() : Certificate("BEE")
 {
 	enc = 0;
+	str = 0;
 }
 
 BeeCertificate::BeeCertificate(InputStream& in) throw (IOException) : Certificate("BEE")
 {
 	enc = 0;
+	str = 0;
 
 	DataInputStream dis(in);
 
@@ -375,7 +375,7 @@ const PublicKey& BeeCertificate::getPublicKey() const
 		}
 	}
 
-	throw CertificateException("BeeCertificate doesn't contain a PublicKey");
+	throw RuntimeException("no PublicKeyField in this certificate; test first with hasPublicKey()");
 }
 
 const Certificate& BeeCertificate::getParentCertificate() const
@@ -393,10 +393,10 @@ const Certificate& BeeCertificate::getParentCertificate() const
 		}
 	}
 
-	throw CertificateException("BeeCertificate doesn't contain a parent Certificate");
+	throw RuntimeException("no ParentCertificateField in this certificate; test first with hasParentCertificate()");
 }
 
-void BeeCertificate::verify(const PublicKey& pub) throw (CertificateException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException, SignatureException)
+void BeeCertificate::verify(const PublicKey& pub) const throw (CertificateException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException, SignatureException)
 {
 	Signature* sig = Signature::getInstance(signature_algorithm);
 
@@ -429,7 +429,7 @@ void BeeCertificate::verify(const PublicKey& pub) throw (CertificateException, N
 	}
 }
 
-void BeeCertificate::verify(const PublicKey& pub, const String& sigProvider) throw (CertificateException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException, SignatureException)
+void BeeCertificate::verify(const PublicKey& pub, const String& sigProvider) const throw (CertificateException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException, SignatureException)
 {
 	Signature* sig = Signature::getInstance(signature_algorithm, sigProvider);
 
@@ -465,8 +465,27 @@ void BeeCertificate::verify(const PublicKey& pub, const String& sigProvider) thr
 const String& BeeCertificate::toString() const throw ()
 {
 	if (!str)
+	{
 		str = new String();
 
+		str->append("Bee Certificate");
+		str->append("\nIssuer: ");
+		str->append(issuer);
+		str->append("\nSubject: ");
+		str->append(subject);
+		str->append("\nValid from: ");
+		str->append(created.toString());
+		str->append(" until: ");
+		if (expires == FOREVER)
+			str->append("-");
+		else
+			str->append(expires.toString());
+
+		for (fields_const_iterator it = fields.begin(); it != fields.end(); it++)
+		{
+		}
+	}
+	
 	return *str;
 }
 
@@ -475,6 +494,15 @@ void BeeCertificate::checkValidity() const throw (CertificateExpiredException, C
 	Date now;
 
 	checkValidity(now);
+
+	if (hasParentCertificate())
+	{
+		const BeeCertificate* tmp = dynamic_cast<const BeeCertificate*>(&getParentCertificate());
+		if (tmp)
+		{
+			tmp->checkValidity(now);
+		}
+	}
 }
 
 void BeeCertificate::checkValidity(const Date& at) const throw (CertificateExpiredException, CertificateNotYetValidException)
@@ -585,6 +613,61 @@ BeeCertificate* BeeCertificate::self(const PublicKey& pub, const PrivateKey& pri
 			cert->expires = FOREVER;
 			cert->signature_algorithm = signatureAlgorithm;
 			cert->fields.push_back(new PublicKeyField(pub));
+
+			bytearray* tmp = cert->encodeTBS();
+
+			try
+			{
+				sig->update(*tmp);
+				delete tmp;
+			}
+			catch (...)
+			{
+				delete tmp;
+				throw;
+			}
+
+			sig->sign(cert->signature);
+		}
+		catch (...)
+		{
+			delete cert;
+			throw;
+		}
+
+		delete sig;
+
+		return cert;
+	}
+	catch (...)
+	{
+		delete sig;
+		throw;
+	}
+}
+
+BeeCertificate* BeeCertificate::make(const PublicKey& pub, const PrivateKey& pri, const String& signatureAlgorithm, const Certificate& parent) throw (InvalidKeyException, NoSuchAlgorithmException)
+{
+	// if the public key doesn't have an encoding, it's not worth going through the effort
+	if (!pub.getEncoded())
+		throw InvalidKeyException("PublicKey doesn't have an encoding");
+
+	Signature* sig = Signature::getInstance(signatureAlgorithm);
+
+	try
+	{
+		sig->initSign(pri);
+
+		BeeCertificate* cert = new BeeCertificate();
+
+		try
+		{
+			// issuer is kept blank
+			cert->subject = "PublicKey Certificate";
+			cert->expires = FOREVER;
+			cert->signature_algorithm = signatureAlgorithm;
+			cert->fields.push_back(new PublicKeyField(pub));
+			cert->fields.push_back(new ParentCertificateField(parent));
 
 			bytearray* tmp = cert->encodeTBS();
 
