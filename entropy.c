@@ -1,11 +1,5 @@
 /*
- * entropy.c
- *
- * entropy gathering routine for pseudo-random generator initialization
- *
  * Copyright (c) 1998, 1999, 2000, 2001, 2002 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,6 +15,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ */
+
+/*!\file entropy.c
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup ES_m
  */
 
 #define BEECRYPT_DLL_EXPORT
@@ -61,7 +60,7 @@
 # elif HAVE_TERMIO_H
 #  include <termio.h>
 # endif
-# if HAVE_SYNCH_H
+# if HAVE_THREAD_H && HAVE_SYNCH_H
 #  include <synch.h>
 # elif HAVE_PTHREAD_H
 #  include <pthread.h>
@@ -726,10 +725,13 @@ int entropy_wincrypt(uint32* data, int size)
 #else
 
 #if HAVE_DEV_AUDIO
+/*!\addtogroup ES_audio_m
+ * \{
+ */
 static const char* name_dev_audio = "/dev/audio";
 static int dev_audio_fd = -1;
 # ifdef _REENTRANT
-#  if HAVE_SYNCH_H
+#  if HAVE_THREAD_H && HAVE_SYNCH_H
 static mutex_t dev_audio_lock = DEFAULTMUTEX;
 #  elif HAVE_PTHREAD_H
 static pthread_mutex_t dev_audio_lock = PTHREAD_MUTEX_INITIALIZER;
@@ -737,13 +739,18 @@ static pthread_mutex_t dev_audio_lock = PTHREAD_MUTEX_INITIALIZER;
 #   error Need locking mechanism
 #  endif
 # endif
+/* \}
+ */
 #endif
 
 #if HAVE_DEV_DSP
+/*!\addtogroup ES_dsp_m
+ * \{
+ */
 static const char* name_dev_dsp = "/dev/dsp";
 static int dev_dsp_fd = -1;
 # ifdef _REENTRANT
-#  if HAVE_SYNCH_H
+#  if HAVE_THREAD_H && HAVE_SYNCH_H
 static mutex_t dev_dsp_lock = DEFAULTMUTEX;
 #  elif HAVE_PTHREAD_H
 static pthread_mutex_t dev_dsp_lock = PTHREAD_MUTEX_INITIALIZER;
@@ -751,13 +758,18 @@ static pthread_mutex_t dev_dsp_lock = PTHREAD_MUTEX_INITIALIZER;
 #   error Need locking mechanism
 #  endif
 # endif
+/* \}
+ */
 #endif
 
 #if HAVE_DEV_RANDOM
+/*!\addtogroup ES_random_m
+ * \{
+ */
 static const char* name_dev_random = "/dev/random";
 static int dev_random_fd = -1;
 # ifdef _REENTRANT
-#  if HAVE_SYNCH_H
+#  if HAVE_THREAD_H && HAVE_SYNCH_H
 static mutex_t dev_random_lock = DEFAULTMUTEX;
 #  elif HAVE_PTHREAD_H
 static pthread_mutex_t dev_random_lock = PTHREAD_MUTEX_INITIALIZER;
@@ -765,13 +777,18 @@ static pthread_mutex_t dev_random_lock = PTHREAD_MUTEX_INITIALIZER;
 #   error Need locking mechanism
 #  endif
 # endif
+/* \}
+ */
 #endif
 
 #if HAVE_DEV_URANDOM
+/*!\addtogroup ES_urandom_m
+ * \{
+ */
 static const char* name_dev_urandom = "/dev/urandom";
 static int dev_urandom_fd = -1;
 # ifdef _REENTRANT
-#  if HAVE_SYNCH_H
+#  if HAVE_THREAD_H && HAVE_SYNCH_H
 static mutex_t dev_urandom_lock = DEFAULTMUTEX;
 #  elif HAVE_PTHREAD_H
 static pthread_mutex_t dev_urandom_lock = PTHREAD_MUTEX_INITIALIZER;
@@ -779,13 +796,18 @@ static pthread_mutex_t dev_urandom_lock = PTHREAD_MUTEX_INITIALIZER;
 #   error Need locking mechanism
 #  endif
 # endif
+/* \}
+ */
 #endif
 
 #if HAVE_DEV_TTY
+/*!\addtogroup ES_tty_m
+ * \{
+ */
 static const char *dev_tty_name = "/dev/tty";
 static int dev_tty_fd = -1;
 # ifdef _REENTRANT
-#  if HAVE_SYNCH_H
+#  if HAVE_THREAD_H && HAVE_SYNCH_H
 static mutex_t dev_tty_lock = DEFAULTMUTEX;
 #  elif HAVE_PTHREAD_H
 static pthread_mutex_t dev_tty_lock = PTHREAD_MUTEX_INITIALIZER;
@@ -793,6 +815,8 @@ static pthread_mutex_t dev_tty_lock = PTHREAD_MUTEX_INITIALIZER;
 #   error Need locking mechanism
 #  endif
 # endif
+/* \}
+ */
 #endif
 
 #if HAVE_SYS_STAT_H
@@ -833,6 +857,8 @@ static int opendevice(const char *device)
 
 #if HAVE_DEV_RANDOM || HAVE_DEV_URANDOM
 /* timeout is in milliseconds */
+/*!\ingroup ES_random_m ES_urandom_m
+ */
 static int entropy_randombits(int fd, int timeout, uint32* data, int size)
 {
 	register byte* bytedata = (byte*) data;
@@ -932,6 +958,8 @@ static int entropy_randombits(int fd, int timeout, uint32* data, int size)
 #endif
 
 #if HAVE_DEV_TTY
+/*!\ingroup ES_tty_m
+ */
 static int entropy_ttybits(int fd, uint32* data, int size)
 {
 	uint32 randombits = size << 5;
@@ -1068,6 +1096,8 @@ static int entropy_ttybits(int fd, uint32* data, int size)
 #endif
 
 #if HAVE_DEV_AUDIO
+/*!\ingroup ES_audio_m
+ */
 int entropy_dev_audio(uint32 *data, int size)
 {
 	const char* timeout_env = getenv("BEECRYPT_ENTROPY_AUDIO_TIMEOUT");
@@ -1075,7 +1105,7 @@ int entropy_dev_audio(uint32 *data, int size)
 	register int rc;
 
 	#ifdef _REENTRANT
-	# if HAVE_SYNCH_H
+	# if HAVE_THREAD_H && HAVE_SYNCH_H
 	if (mutex_lock(&dev_audio_lock))
 		return -1;
 	# elif HAVE_PTHREAD_H
@@ -1147,7 +1177,7 @@ int entropy_dev_audio(uint32 *data, int size)
 
 dev_audio_end:
 	#ifdef _REENTRANT
-	# if HAVE_SYNCH_H
+	# if HAVE_THREAD_H && HAVE_SYNCH_H
 	mutex_unlock(&dev_audio_lock);
 	# elif HAVE_PTHREAD_H
 	pthread_mutex_unlock(&dev_audio_lock);
@@ -1158,6 +1188,8 @@ dev_audio_end:
 #endif
 
 #if HAVE_DEV_DSP
+/*!\ingroup ES_dsp_m
+ */
 int entropy_dev_dsp(uint32 *data, int size)
 {
 	const char* timeout_env = getenv("BEECRYPT_ENTROPY_DSP_TIMEOUT");
@@ -1165,7 +1197,7 @@ int entropy_dev_dsp(uint32 *data, int size)
 	register int rc;
 
 	#ifdef _REENTRANT
-	# if HAVE_SYNCH_H
+	# if HAVE_THREAD_H && HAVE_SYNCH_H
 	if (mutex_lock(&dev_dsp_lock))
 		return -1;
 	# elif HAVE_PTHREAD_H
@@ -1266,7 +1298,7 @@ int entropy_dev_dsp(uint32 *data, int size)
 
 dev_dsp_end:
 	#ifdef _REENTRANT
-	# if HAVE_SYNCH_H
+	# if HAVE_THREAD_H && HAVE_SYNCH_H
 	mutex_unlock(&dev_dsp_lock);
 	# elif HAVE_PTHREAD_H
 	pthread_mutex_unlock(&dev_dsp_lock);
@@ -1278,6 +1310,8 @@ dev_dsp_end:
 #endif
 
 #if HAVE_DEV_RANDOM
+/*!\ingroup ES_random_m
+ */
 int entropy_dev_random(uint32* data, int size)
 {
 	const char* timeout_env = getenv("BEECRYPT_ENTROPY_RANDOM_TIMEOUT");
@@ -1285,7 +1319,7 @@ int entropy_dev_random(uint32* data, int size)
 	int rc;
 
 	#ifdef _REENTRANT
-	# if HAVE_SYNCH_H
+	# if HAVE_THREAD_H && HAVE_SYNCH_H
 	if (mutex_lock(&dev_random_lock))
 		return -1;
 	# elif HAVE_PTHREAD_H
@@ -1309,7 +1343,7 @@ int entropy_dev_random(uint32* data, int size)
 
 dev_random_end:
 	#ifdef _REENTRANT
-	# if HAVE_SYNCH_H
+	# if HAVE_THREAD_H && HAVE_SYNCH_H
 	mutex_unlock(&dev_random_lock);
 	# elif HAVE_PTHREAD_H
 	pthread_mutex_unlock(&dev_random_lock);
@@ -1320,6 +1354,8 @@ dev_random_end:
 #endif
 
 #if HAVE_DEV_URANDOM
+/*!\ingroup ES_urandom_m
+ */
 int entropy_dev_urandom(uint32* data, int size)
 {
 	const char* timeout_env = getenv("BEECRYPT_ENTROPY_URANDOM_TIMEOUT");
@@ -1327,7 +1363,7 @@ int entropy_dev_urandom(uint32* data, int size)
 	register int rc;
 
 	#ifdef _REENTRANT
-	# if HAVE_SYNCH_H
+	# if HAVE_THREAD_H && HAVE_SYNCH_H
 	if (mutex_lock(&dev_urandom_lock))
 		return -1;
 	# elif HAVE_PTHREAD_H
@@ -1351,7 +1387,7 @@ int entropy_dev_urandom(uint32* data, int size)
 
 dev_urandom_end:
 	#ifdef _REENTRANT
-	# if HAVE_SYNCH_H
+	# if HAVE_THREAD_H && HAVE_SYNCH_H
 	mutex_unlock(&dev_urandom_lock);
 	# elif HAVE_PTHREAD_H
 	pthread_mutex_unlock(&dev_urandom_lock);
@@ -1362,12 +1398,14 @@ dev_urandom_end:
 #endif
 
 #if HAVE_DEV_TTY
+/*!\ingroup ES_tty_m
+ */
 int entropy_dev_tty(uint32* data, int size)
 {
 	register int rc;
 
 	#ifdef _REENTRANT
-	# if HAVE_SYNCH_H
+	# if HAVE_THREAD_H && HAVE_SYNCH_H
 	if (mutex_lock(&dev_tty_lock))
 		return -1;
 	# elif HAVE_PTHREAD_H
@@ -1390,7 +1428,7 @@ int entropy_dev_tty(uint32* data, int size)
 
 dev_tty_end:
 	#ifdef _REENTRANT
-	# if HAVE_SYNCH_H
+	# if HAVE_THREAD_H && HAVE_SYNCH_H
 	mutex_unlock(&dev_tty_lock);
 	# elif HAVE_PTHREAD_H
 	pthread_mutex_unlock(&dev_tty_lock);
