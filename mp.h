@@ -341,7 +341,7 @@ int mpistwo(size_t size, const mpw* data);
  * \retval 0 if greater than one.
  */
 BEECRYPTAPI
-int mpeqmone(size_t size, const mpw* data);
+int mpleone(size_t size, const mpw* data);
 
 /*!\fn int mpeqmone(size_t size, const mpw* xdata, const mpw* ydata);
  * \brief This function tests if multi-precision integer x is equal to y
