@@ -60,7 +60,7 @@ int main()
 
 	mp32nfree(&gq);
 
-	printf("(%d bits) ^ (%d bits) mod (%d bits): %d times in %d seconds\n", params.g.size << 5, params.q.size << 5, params.p.size << 5, iterations, SECONDS);
+	printf("(%d bits ^ %d bits) mod (%d bits): %d times in %d seconds\n", params.g.size << 5, params.q.size << 5, params.p.size << 5, iterations, SECONDS);
 
 	dldp_pFree(&params);
 
