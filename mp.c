@@ -1219,6 +1219,14 @@ int mpextgcd_w(size_t size, const mpw* xdata, const mpw* ndata, mpw* result, mpw
 						/* keep adding the modulus until we get a carry */
 						while (!mpaddx(sizep, ddata, size, ndata));
 					} 
+					else
+					{
+						/* in some computations, d ends up > n, hence:
+						 * keep subtracting n from d until d < n
+						 */
+						while (mpgtx(sizep, ddata, size, ndata))
+							mpsubx(sizep, ddata, size, ndata);
+					}
 					mpsetx(size, result, sizep, ddata);
 				}
 				return 1; 
@@ -1400,34 +1408,39 @@ void mpfprintln(FILE* f, size_t size, const mpw* data)
 
 int i2osp(byte *osdata, size_t ossize, const mpw* idata, size_t isize)
 {
-	size_t required = MP_WORDS_TO_BYTES(isize);
+	size_t max_bytes = MP_WORDS_TO_BYTES(isize);
+	size_t significant_bytes = (mpbits(isize, idata) + 7) >> 3;
+	size_t zero_bytes = max_bytes - significant_bytes;
 
-	/* check if size is large enough */
-	if (ossize >= required)
+	/* verify that ossize is large enough to contain the significant bytes */
+	if (ossize >= significant_bytes)
 	{
-		/* yes, we can proceed */
-		if (ossize > required)
-		{	/* fill initial bytes with zero */
-			memset(osdata, 0, ossize-required);
-			osdata += ossize-required;
+		/* looking good; check if we have more space than significant bytes */
+		if (ossize > significant_bytes)
+		{	/* fill most significant bytes with zero */
+			memset(osdata, 0, ossize - significant_bytes);
+			osdata += ossize - significant_bytes;
 		}
-		if (required)
+		if (significant_bytes)
 		{	/* fill remaining bytes with endian-adjusted data */
 			#if !WORDS_BIGENDIAN
-			while (required)
-			{
-				mpw w = *(idata++);
-				byte shift = MP_WBITS;
+			mpw w = idata[--isize];
+			byte shift = 0;
 
-				while (shift)
+			/* fill right-to-left; much easier than left-to-right */
+			do	
+			{
+				osdata[--significant_bytes] = (byte)(w >> shift);
+				shift += 8;
+				if (shift == MP_WBITS)
 				{
-					shift -= 8;
-					*(osdata++) = (byte)(w >> shift);
+					shift == 0;
+					w = idata[--isize];
 				}
-				required -= MP_WBYTES;
-			}
+			} while (significant_bytes);
 			#else
-			memcpy(osdata, idata, required);
+			/* just copy */
+			memcpy(osdata, ((byte*) idata) + zero_bytes, significant_bytes);
 			#endif
 		}
 		return 0;
