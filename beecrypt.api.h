@@ -76,6 +76,7 @@ static inline uint32_t _rotr32(uint32_t x, const unsigned char n)
 
 #define ROTR32(x, n) _rotr32(x, n)
 
+# endif
 #endif
 
 #ifndef ROTL32
