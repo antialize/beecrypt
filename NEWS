@@ -11,6 +11,7 @@
 	- Added multi-precision integer assembler routines for PowerPC 64-bit.
 	- Added multi-precision integer assembler routines for Alpha.
 	- Added multi-precision integer assembler routines for Opteron.
+	- Added multi-precision integer assembler routines for IBM zSeries 64-bit.
 	- Added multi-precision integer assembler routines for M68K.
 	- Added Jeff Johnson's python bindings.
 	- Added new unit tests.
