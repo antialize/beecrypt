@@ -34,12 +34,6 @@
 #include "blockmode.h"
 #include "blockpad.h"
 
-#if HAVE_STDLIB_H
-# include <stdlib.h>
-#elif HAVE_MALLOC_H
-# include <malloc.h>
-#endif
-
 /*
  * Good combinations will be:
  *

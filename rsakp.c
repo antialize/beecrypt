@@ -32,15 +32,6 @@
 #include "rsakp.h"
 #include "mpprime.h"
 
-#if HAVE_STDLIB_H
-# include <stdlib.h>
-#elif HAVE_MALLOC_H
-# include <malloc.h>
-#endif
-#if HAVE_STRING_H
-# include <string.h>
-#endif
-
 /*!\addtogroup IF_rsa_m
  * \{
  */

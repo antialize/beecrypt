@@ -29,15 +29,6 @@
 
 #include "memchunk.h"
 
-#if HAVE_STDLIB_H
-# include <stdlib.h>
-#elif HAVE_MALLOC_H
-# include <malloc.h>
-#endif
-#if HAVE_STRING_H
-# include <string.h>
-#endif
-
 memchunk* memchunkAlloc(size_t size)
 {
 	memchunk* tmp = (memchunk*) calloc(1, sizeof(memchunk));

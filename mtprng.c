@@ -42,12 +42,6 @@
 
 #include "mtprng.h"
 
-#if HAVE_STDLIB_H
-# include <stdlib.h>
-#elif HAVE_MALLOC_H
-# include <malloc.h>
-#endif
-
 #define hiBit(a)		((a) & 0x80000000U)
 #define loBit(a)		((a) & 0x1U)
 #define loBits(a)		((a) & 0x7FFFFFFFU)

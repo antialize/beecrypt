@@ -32,8 +32,6 @@
 #include "blowfish.h"
 #include "endianness.h"
 
-#include <string.h>
-
 static uint32_t _bf_p[BLOWFISHPSIZE] = {
 	0x243f6a88, 0x85a308d3, 0x13198a2e, 0x03707344,
 	0xa4093822, 0x299f31d0, 0x082efa98, 0xec4e6c89,
@@ -380,6 +378,20 @@ int blowfishSetIV(blowfishParam* bp, const byte* iv)
 	return 0;
 }
 #endif
+
+int blowfishBlowit(blowfishParam* bp, uint32_t* dst, const uint32_t* src)
+{
+	register uint32_t xl = src[0], xr = src[1];
+	register uint32_t* p = bp->p;
+	register uint32_t* s = bp->s;
+
+	EROUND(xl, xr); EROUND(xr, xl);
+
+	dst[1] = xr;
+	dst[0] = xl;
+
+	return 0;
+}
 
 #ifndef ASM_BLOWFISHENCRYPT
 int blowfishEncrypt(blowfishParam* bp, uint32_t* dst, const uint32_t* src)

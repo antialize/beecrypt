@@ -31,12 +31,6 @@
 
 #include "rsa.h"
 
-#if HAVE_STDLIB_H
-# include <stdlib.h>
-#elif HAVE_MALLOC_H
-# include <malloc.h>
-#endif
-
 int rsapub(const rsapk* pk, const mpnumber* m, mpnumber* c)
 {
 	register size_t size = pk->n.size;

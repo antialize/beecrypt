@@ -31,10 +31,6 @@
 
 #include "rsapk.h"
 
-#if HAVE_STRING_H
-# include <string.h>
-#endif
-
 /*!\addtogroup IF_rsa_m
  * \{
  */

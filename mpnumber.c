@@ -31,12 +31,6 @@
 
 #include "mpnumber.h"
 
-#if HAVE_STDLIB_H
-# include <stdlib.h>
-#elif HAVE_MALLOC_H
-# include <malloc.h>
-#endif
-
 void mpnzero(mpnumber* n)
 {
 	n->size = 0;

@@ -31,15 +31,6 @@
 
 #include "blockpad.h"
 
-#if HAVE_STDLIB_H
-# include <stdlib.h>
-#elif HAVE_MALLOC_H
-# include <malloc.h>
-#endif
-#if HAVE_STRING_H
-# include <string.h>
-#endif
-
 memchunk* pkcs5Pad(size_t blockbytes, memchunk* tmp)
 {
 	if (tmp)

@@ -44,10 +44,6 @@
 #include "beecrypt.api.h"
 #include "mpopt.h"
 
-#if HAVE_STRING_H
-# include <string.h>
-#endif
-
 #include <stdio.h>
 
 #define MP_HWBITS	(MP_WBITS >> 1)

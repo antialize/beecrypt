@@ -33,12 +33,6 @@
 #include "mp.h"
 #include "mpprime.h"
 
-#if HAVE_STDLIB_H
-# include <stdlib.h>
-#elif HAVE_MALLOC
-# include <malloc.h>
-#endif
-
 /*!\addtogroup DL_m
  * \{
  */

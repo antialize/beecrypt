@@ -30,10 +30,6 @@
 
 #include "endianness.h"
 
-#if HAVE_STRING_H
-# include <string.h>
-#endif
-
 #include <stdio.h>
 
 int16_t swap16(int16_t n)
@@ -66,12 +62,12 @@ uint32_t swapu32(uint32_t n)
 
 int64_t swap64(int64_t n)
 {
-	return (    ((n & ((int64_t) 0xff)      ) << 56) |
-				((n & ((int64_t) 0xff) <<  8) << 40) |
-				((n & ((int64_t) 0xff) << 16) << 24) |
-				((n & ((int64_t) 0xff) << 24) <<  8) |
-				((n & ((int64_t) 0xff) << 32) >>  8) |
-				((n & ((int64_t) 0xff) << 40) >> 24) |
-				((n & ((int64_t) 0xff) << 48) >> 40) |
-				((n & ((int64_t) 0xff) << 56) >> 56) );
+	return (    ((n & (((int64_t) 0xff)      )) << 56) |
+				((n & (((int64_t) 0xff) <<  8)) << 40) |
+				((n & (((int64_t) 0xff) << 16)) << 24) |
+				((n & (((int64_t) 0xff) << 24)) <<  8) |
+				((n & (((int64_t) 0xff) << 32)) >>  8) |
+				((n & (((int64_t) 0xff) << 40)) >> 24) |
+				((n & (((int64_t) 0xff) << 48)) >> 40) |
+				((n & (((int64_t) 0xff) << 56)) >> 56) );
 }

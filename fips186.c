@@ -31,12 +31,6 @@
 
 #include "fips186.h"
 
-#if HAVE_STDLIB_H
-# include <stdlib.h>
-#elif HAVE_MALLOC_H
-# include <malloc.h>
-#endif
-
 /*!\addtogroup PRNG_fips186_m
  * \{
  */

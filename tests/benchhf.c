@@ -27,9 +27,6 @@
 
 #include <stdio.h>
 
-extern void *malloc(size_t);
-extern void free(void*);
-
 #define SECONDS	10
 
 void validnames()

@@ -30,18 +30,6 @@
 
 #include "beecrypt.h"
 
-#if HAVE_STDLIB_H
-# include <stdlib.h>
-#elif HAVE_MALLOC_H
-# include <malloc.h>
-#endif
-#if HAVE_STRING_H
-# include <string.h>
-#endif
-#if WIN32
-# include <windows.h>
-#endif
-
 #include "entropy.h"
 
 #include "fips186.h"

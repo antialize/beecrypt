@@ -35,8 +35,6 @@
 #include "aes.h"
 #include "endianness.h"
 
-#include <string.h>
-
 const uint32_t _ae0[256] = {
     0xc66363a5, 0xf87c7c84, 0xee777799, 0xf67b7b8d,
     0xfff2f20d, 0xd66b6bbd, 0xde6f6fb1, 0x91c5c554,

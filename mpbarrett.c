@@ -38,12 +38,6 @@
 #include "mpnumber.h"
 #include "mpbarrett.h"
 
-#if HAVE_STDLIB_H
-# include <stdlib.h>
-#elif HAVE_MALLOC_H
-# include <malloc.h>
-#endif
-
 #include <stdio.h>
 
 /*
