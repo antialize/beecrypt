@@ -69,3 +69,36 @@ define(C_FUNCTION_END,`
 	.set r30,30
 	.set r31,31
 ')
+
+ifelse(substr(ASM_OS,0,5),linux,`
+dnl trampoline definitions from glibc-2.3.2/sysdeps/powerpc/powerpc64/dl-machine.h
+undefine(`C_FUNCTION_BEGIN')
+define(C_FUNCTION_BEGIN,`
+	.section .text
+	.align	2
+	.globl .$1
+	.type .$1,@function
+	.section ".opd","aw"
+	.align 3
+	.globl $1
+	.size $1,24
+$1:
+	.quad .$1,.TOC.@tocbase,0
+	.previous
+.$1:
+')
+undefine(`C_FUNCTION_END')
+define(C_FUNCTION_END,`
+.LT_$1:
+	.long 0
+	.byte 0x00,0x0c,0x24,0x40,0x00,0x00,0x00,0x00
+	.long .LT_$1 - .$1
+	.short .LT_$1_name_end-.LT_$1_name_start
+.LT_$1_name_start:
+	.ascii "$1"
+.LT_$1_name_end:
+	.align 2
+	.size .$1,. - .$1
+	.previous
+')
+')
