@@ -57,6 +57,6 @@ libbeecrypt_la_LDFLAGS = -no-undefined -version-info $(LIBBEECRYPT_LT_CURRENT):$
 
 pkginclude_HEADERS = aes.h aesopt.h base64.h beecrypt.h beecrypt.api.h beecrypt.gnu.h beecrypt.win.h blockmode.h blockpad.h blowfish.h blowfishopt.h dhaes.h dldp.h dlkp.h dlpk.h dlsvdp-dh.h dsa.h elgamal.h endianness.h entropy.h fips186.h hmac.h hmacmd5.h hmacsha1.h hmacsha256.h md5.h memchunk.h mp.h mpbarrett.h mpnumber.h mpopt.h mpprime.h mtprng.h rsa.h rsakp.h rsapk.h sha1.h sha1opt.h sha256.h timestamp.h
 
-EXTRA_DIST = BENCHMARKS BUGS CONTRIBUTORS README.DLL README.WIN32 beecrypt.rc javaglue.h installgen.sh Makefile.mak
+EXTRA_DIST = BENCHMARKS BUGS CONTRIBUTORS README.DLL README.WIN32 beecrypt.rc javaglue.h autogen.sh Makefile.mak
 
 DISTCLEANFILES = mpopt.s aesopt.s blowfishopt.s sha1opt.s
