@@ -21,13 +21,13 @@ dnl  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 include(config.m4)
 include(ASM_SRCDIR/x86.m4)
 
-	.equ	K00,	0x5a827999
-	.equ	K20,	0x6ed9eba1
-	.equ	K40,	0x8f1bbcdc
-	.equ	K60,	0xca62c1d6
+	.set	K00,	0x5a827999
+	.set	K20,	0x6ed9eba1
+	.set	K40,	0x8f1bbcdc
+	.set	K60,	0xca62c1d6
 
-	.equ	PARAM_H,		0
-	.equ	PARAM_DATA,		20
+	.set	PARAM_H,		0
+	.set	PARAM_DATA,		20
 
 define(`subround1',`
 	movl $2,%ecx
