@@ -242,7 +242,10 @@ static void sha1Finish(register sha1Param* p)
 	while (p->offset++ < 56)
 		*(ptr++) = 0;
 
-	#if (MP_WBITS == 64)
+	#if WORDS_BIGENDIAN
+	memcpy(ptr, p->length, 8);
+	#else
+	# if (MP_WBITS == 64)
 	ptr[0] = (byte)(p->length[0] >> 56);
 	ptr[1] = (byte)(p->length[0] >> 48);
 	ptr[2] = (byte)(p->length[0] >> 40);
@@ -260,8 +263,9 @@ static void sha1Finish(register sha1Param* p)
 	ptr[5] = (byte)(p->length[1] >> 16);
 	ptr[6] = (byte)(p->length[1] >>  8);
 	ptr[7] = (byte)(p->length[1]      );
-	#else
-	# error
+	# else
+	#  error
+	# endif
 	#endif
 
 	sha1Process(p);
@@ -272,6 +276,10 @@ static void sha1Finish(register sha1Param* p)
 int sha1Digest(register sha1Param* p, byte* data)
 {
 	sha1Finish(p);
+
+	#if WORDS_BIGENDIAN
+	memcpy(data, p->h, 20);
+	#else
 	/* encode 5 integers big-endian style */
 	data[ 0] = (byte)(p->h[0] >> 24);
 	data[ 1] = (byte)(p->h[0] >> 16);
@@ -293,8 +301,10 @@ int sha1Digest(register sha1Param* p, byte* data)
 	data[17] = (byte)(p->h[4] >> 16);
 	data[18] = (byte)(p->h[4] >>  8);
 	data[19] = (byte)(p->h[4] >>  0);
+	#endif
 
 	sha1Reset(p);
+
 	return 0;
 }
 
