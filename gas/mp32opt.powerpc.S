@@ -1,11 +1,11 @@
 /*
- * mp32opt.gas.powerpc.S
+ * mp32opt.powerpc.S
  *
  * Assembler optimized multiprecision integer routines for PowerPC
  *
- * Compile target is GNU AS
+ * Compile target is GNU Assembler
  *
- * Copyright (c) 2000 Virtual Unlimited B.V.
+ * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -25,9 +25,9 @@
  *
  */
 
-#include <gnu/config.gas.h>
+#include "config.gas.h"
 
-	.file "mp32opt.gas.powerpc.S"
+	.file "mp32opt.powerpc.S"
 
 	.text
 
@@ -51,13 +51,7 @@
 # define reg9	%r9
 #endif
 
-	#if DARWIN
-	.align	ALIGNMENT
-	.globl	_mp32addw
-_mp32addw:
-	#else
-C_FUNCTION(mp32addw)
-	#endif
+C_FUNCTION_BEGIN(mp32addw)
 	mtctr reg3
 	slwi reg0,reg3,2
 	add reg4,reg4,reg0
@@ -65,23 +59,20 @@ C_FUNCTION(mp32addw)
 	lwzu reg6,-4(reg4)
 	addc reg6,reg6,reg5
 	stw reg6,0(reg4)
-	bdz .L01
-.L00:
+	bdz .Lmp32addw_skip
+.Lmp32addw_loop:
 	lwzu reg6,-4(reg4)
 	adde reg6,reg0,reg6
 	stw reg6,0(reg4)
-	bdnz .L00
-.L01:	# return the carry
+	bdnz .Lmp32addw_loop
+.Lmp32addw_skip:
+	/* return the carry */
 	addze reg3,reg0
 	blr
+C_FUNCTION_END(mp32addw, .Lmp32addw_size)
 
-	#if DARWIN
-	.align	ALIGNMENT
-	.globl	_mp32subw
-_mp32subw:
-	#else
-C_FUNCTION(mp32subw)
-	#endif
+
+C_FUNCTION_BEGIN(mp32subw)
 	mtctr reg3
 	slwi reg0,reg3,2
 	add reg4,reg4,reg0
@@ -89,24 +80,21 @@ C_FUNCTION(mp32subw)
 	lwz reg6,-4(reg4)
 	subfc reg6,reg5,reg6
 	stwu reg6,-4(reg4)
-	bdz .L11
-.L10:
+	bdz .Lmp32subw_skip
+.Lmp32subw_loop:
 	lwz reg6,-4(reg4)
 	subfe reg6,reg0,reg6
 	stwu reg6, -4(reg4)
-	bdnz .L10
-.L11:	# return the carry
+	bdnz .Lmp32subw_loop
+.Lmp32subw_skip:
+	/* return the carry */
 	subfe reg3,reg0,reg0
 	neg reg3,reg3
 	blr
+C_FUNCTION_END(mp32subw, .Lmp32subw_size)
 
-	#if DARWIN
-	.align	ALIGNMENT
-	.globl	_mp32add
-_mp32add:
-	#else
-C_FUNCTION(mp32add)
-	#endif
+
+C_FUNCTION_BEGIN(mp32add)
 	mtctr reg3
 	slwi reg0,reg3,2
 	add reg4,reg4,reg0
@@ -116,24 +104,21 @@ C_FUNCTION(mp32add)
 	lwzu reg7,-4(reg5)
 	addc reg6,reg7,reg6
 	stwu reg6,-4(reg4)
-	bdz .L21
-.L20:
+	bdz .Lmp32add_skip
+.Lmp32add_loop:
 	lwz reg6,-4(reg4)
 	lwzu reg7,-4(reg5)
 	adde reg6,reg7,reg6
 	stwu reg6,-4(reg4)
-	bdnz .L20
-.L21:	# return the carry
+	bdnz .Lmp32add_loop
+.Lmp32add_skip:
+	/* return the carry */
 	addze reg3,reg0
 	blr
+C_FUNCTION_END(mp32add, .Lmp32add_size)
 
-	#if DARWIN
-	.align	ALIGNMENT
-	.globl	_mp32sub
-_mp32sub:
-	#else
-C_FUNCTION(mp32sub)
-	#endif
+
+C_FUNCTION_BEGIN(mp32sub)
 	mtctr reg3
 	slwi reg0,reg3,2
 	add reg4,reg4,reg0
@@ -143,53 +128,46 @@ C_FUNCTION(mp32sub)
 	lwzu reg7,-4(reg5)
 	subfc reg6,reg7,reg6
 	stwu reg6,-4(reg4)
-	bdz .L31
-.L30:
+	bdz .Lmp32sub_skip
+.Lmp32sub_loop:
 	lwz reg6,-4(reg4)
 	lwzu reg7,-4(reg5)
 	subfe reg6,reg7,reg6
 	stwu reg6,-4(reg4)
-	bdnz .L30
-.L31:	# return the carry
+	bdnz .Lmp32sub_loop
+.Lmp32sub_skip:
+	/* return the carry */
 	subfe reg3,reg0,reg0
 	neg reg3,reg3
 	blr
+C_FUNCTION_END(mp32sub, .Lmp32sub_size)
 
-	#if DARWIN
-	.align	ALIGNMENT
-	.globl	_mp32setmul
-_mp32setmul:
-	#else
-C_FUNCTION(mp32setmul)
-	#endif
+
+C_FUNCTION_BEGIN(mp32setmul)
 	mtctr reg3
 	slwi reg0,reg3,2
 	add reg4,reg4,reg0
 	add reg5,reg5,reg0
 	li reg3,0
-.L40:
+.Lmp32setmul_loop:
 	lwzu reg7,-4(reg5)
 	mullw reg8,reg7,reg6
 	addc reg8,reg8,reg3
 	mulhwu reg3,reg7,reg6
 	addze reg3,reg3
 	stwu reg8,-4(reg4)
-	bdnz .L40
+	bdnz .Lmp32setmul_loop
 	blr
+C_FUNCTION_END(mp32setmul, .Lmp32setmul_size)
 
-	#if DARWIN
-	.align	ALIGNMENT
-	.globl	_mp32addmul
-_mp32addmul:
-	#else
-C_FUNCTION(mp32addmul)
-	#endif
+
+C_FUNCTION_BEGIN(mp32addmul)
 	mtctr reg3
 	slwi reg0,reg3,2
 	add reg4,reg4,reg0
 	add reg5,reg5,reg0
 	li reg3,0
-.L50:
+.Lmp32addmul_loop:
 	lwzu reg7,-4(reg4)
 	lwzu reg8,-4(reg5)
 	mullw reg9,reg8,reg6
@@ -199,23 +177,19 @@ C_FUNCTION(mp32addmul)
 	addc reg9,reg9,reg7
 	addze reg3,reg3
 	stw reg9,0(reg4)
-	bdnz .L50
+	bdnz .Lmp32addmul_loop
 	blr
+C_FUNCTION_END(mp32addmul, .Lmp32addmul_size)
 
-	#if DARWIN
-	.align	ALIGNMENT
-	.globl	_mp32addsqrtrc
-_mp32addsqrtrc:
-	#else
-C_FUNCTION(mp32addsqrtrc)
-	#endif
+
+C_FUNCTION_BEGIN(mp32addsqrtrc)
 	mtctr reg3
 	slwi reg0,reg3,2
 	add reg4,reg4,reg0
 	add reg5,reg5,reg0
 	add reg4,reg4,reg0
 	li reg3,0
-.L60:
+.Lmp32addsqrtrc_loop:
 	lwzu reg0,-4(reg5)
 	lwz reg6,-8(reg4)
 	lwz reg7,-4(reg4)
@@ -229,5 +203,6 @@ C_FUNCTION(mp32addsqrtrc)
 	addze reg3,reg3
 	stw reg7,-4(reg4)
 	stwu reg6,-8(reg4)
-	bdnz .L60
+	bdnz .Lmp32addsqrtrc_loop
 	blr
+C_FUNCTION_END(mp32addsqrtrc, .Lmp32addsqrtrc_size)

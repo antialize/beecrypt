@@ -29,8 +29,12 @@
 #include "mp32.h"
 
 #if HAVE_STDLIB_H
-# include "stdlib.h"
+# include <stdlib.h>
 #endif
+#if HAVE_MALLOC_H
+# include <malloc.h>
+#endif
+
 int rsapri(const rsakp* kp, const mp32number* m, mp32number* c)
 {
 	register uint32  size = kp->n.size;

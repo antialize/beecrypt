@@ -30,7 +30,10 @@
 #include "mp32opt.h"
 
 #if HAVE_STDLIB_H
-#include <stdlib.h>
+# include <stdlib.h>
+#endif
+#if HAVE_MALLOC_H
+# include <malloc.h>
 #endif
 
 static uint32 fips186hinit[5] = { 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0, 0x67452301 };
@@ -47,17 +50,15 @@ int fips186Setup(fips186Param* fp)
 {
 	if (fp)
 	{
-		const entropySource* es = entropySourceDefault();
-
 		#ifdef _REENTRANT
 		# if WIN32
 		if (!(fp->lock = CreateMutex(NULL, FALSE, NULL)))
 			return -1;
 		# else
-		#  if HAVE_SYNCH_H
+		#  if defined(HAVE_SYNCH_H)
 		if (mutex_init(&fp->lock, USYNC_THREAD, (void *) 0))
 			return -1;
-		#  elif HAVE_PTHREAD_H
+		#  elif defined(HAVE_PTHREAD_H)
 		if (pthread_mutex_init(&fp->lock, (pthread_mutexattr_t *) 0))
 			return -1;
 		#  else
@@ -65,12 +66,10 @@ int fips186Setup(fips186Param* fp)
 		#  endif
 		# endif
 		#endif
-		if (es)
-		{
-			fp->digestsize = 0;
 
-			return es->next(fp->state, FIPS186_STATE_SIZE);
-		}
+		fp->digestsize = 0;
+
+		return entropyGatherNext(fp->state, FIPS186_STATE_SIZE);
 	}
 	return -1;
 }
@@ -84,10 +83,10 @@ int fips186Seed(fips186Param* fp, const uint32* data, int size)
 		if (WaitForSingleObject(fp->lock, INFINITE) != WAIT_OBJECT_0)
 			return -1;
 		# else
-		#  if HAVE_SYNCH_H
+		#  if defined(HAVE_SYNCH_H)
 		if (mutex_lock(&fp->lock))
 			return -1;
-		#  elif HAVE_PTHREAD_H
+		#  elif defined(HAVE_PTHREAD_H)
 		if (pthread_mutex_lock(&fp->lock))
 			return -1;
 		#  else
@@ -102,10 +101,10 @@ int fips186Seed(fips186Param* fp, const uint32* data, int size)
 		if (!ReleaseMutex(fp->lock))
 			return -1;
 		# else
-		#  if HAVE_SYNCH_H
+		#  if defined(HAVE_SYNCH_H)
 		if (mutex_unlock(&fp->lock))
 			return -1;
-		#  elif HAVE_PTHREAD_H
+		#  elif defined(HAVE_PTHREAD_H)
 		if (pthread_mutex_unlock(&fp->lock))
 			return -1;
 		#  else
@@ -127,10 +126,10 @@ int fips186Next(fips186Param* fp, uint32* data, int size)
 		if (WaitForSingleObject(fp->lock, INFINITE) != WAIT_OBJECT_0)
 			return -1;
 		# else
-		#  if HAVE_SYNCH_H
+		#  if defined(HAVE_SYNCH_H)
 		if (mutex_lock(&fp->lock))
 			return -1;
-		#  elif HAVE_PTHREAD_H
+		#  elif defined(HAVE_PTHREAD_H)
 		if (pthread_mutex_lock(&fp->lock))
 			return -1;
 		#  else
@@ -167,10 +166,10 @@ int fips186Next(fips186Param* fp, uint32* data, int size)
 		if (!ReleaseMutex(fp->lock))
 			return -1;
 		# else
-		#  if HAVE_SYNCH_H
+		#  if defined(HAVE_SYNCH_H)
 		if (mutex_unlock(&fp->lock))
 			return -1;
-		#  elif HAVE_PTHREAD_H
+		#  elif defined(HAVE_PTHREAD_H)
 		if (pthread_mutex_unlock(&fp->lock))
 			return -1;
 		#  else
@@ -192,10 +191,10 @@ int fips186Cleanup(fips186Param* fp)
 		if (!CloseHandle(fp->lock))
 			return -1;
 		# else
-		#  if HAVE_SYNCH_H
+		#  if defined(HAVE_SYNCH_H)
 		if (mutex_destroy(&fp->lock))
 			return -1;
-		#  elif HAVE_PTHREAD_H
+		#  elif defined(HAVE_PTHREAD_H)
 		if (pthread_mutex_destroy(&fp->lock))
 			return -1;
 		#  else

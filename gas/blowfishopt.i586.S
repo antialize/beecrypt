@@ -1,11 +1,11 @@
 /*
- * blowfishopt.gas.i586.S
+ * blowfishopt.i586.S
  *
  * Assembler optimized blowfish routines for Intel Pentium processors
  *
  * Compile target is GNU Assembler
  *
- * Copyright (c) 2000 Virtual Unlimited B.V.
+ * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -25,9 +25,9 @@
  *
  */
 
-#include <gnu/config.gas.h>
+#include "config.gas.h"
 
-	.file "blowfishopt.gas.i586.S"
+	.file "blowfishopt.i586.S"
 
 	.text
 
@@ -85,7 +85,7 @@
 	xorl %edi,%ecx
 	.endm
 
-C_FUNCTION(blowfishEncrypt)
+C_FUNCTION_BEGIN(blowfishEncrypt)
 	/* parameter one is the blowfish parameters; need to extract bp and set it up in esi */
 	pushl %edi
 	pushl %esi
@@ -127,8 +127,10 @@ C_FUNCTION(blowfishEncrypt)
 	popl %esi
 	popl %edi
 	ret
+C_FUNCTION_END(blowfishEncrypt, .LblowfishEncrypt_size)
 
-C_FUNCTION(blowfishDecrypt)
+
+C_FUNCTION_BEGIN(blowfishDecrypt)
 	/* parameter one is the blowfish parameters; need to extract bp and set it up in ebp */
 	pushl %edi
 	pushl %esi
@@ -171,4 +173,4 @@ C_FUNCTION(blowfishDecrypt)
 	popl %esi
 	popl %edi
 	ret
-
+C_FUNCTION_END(blowfishDecrypt, .LblowfishDecrypt_size)

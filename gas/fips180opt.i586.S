@@ -1,9 +1,9 @@
 /*
- * fips180opt.gas.i586.S
+ * fips180opt.i586.S
  *
  * Assembler optimized SHA-1 routines for Intel Pentium processors
  *
- * Compile target is GNU AS
+ * Compile target is GNU Assembler
  *
  * Copyright (c) 2000 Virtual Unlimited B.V.
  *
@@ -25,9 +25,9 @@
  *
  */
 
-#include <gnu/config.gas.h>
+#include "config.gas.h"
 
-	.file "fips180opt.gas.i586.S"
+	.file "fips180opt.i586.S"
 
 	.text
 
@@ -104,7 +104,7 @@
 	movl %eax,\e
 	.endm
 
-C_FUNCTION(sha1Process)
+C_FUNCTION_BEGIN(sha1Process)
 	pushl %edi
 	pushl %esi
 	pushl %ebx
@@ -288,3 +288,4 @@ C_FUNCTION(sha1Process)
 	popl %esi
 	popl %edi
 	ret
+C_FUNCTION_END(sha1Process, .Lsha1Process_size)

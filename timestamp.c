@@ -44,6 +44,8 @@ javalong timestamp()
 	tmp = now.tv_sec;
 	tmp *= 1000;
 	tmp += (now.tv_usec / 1000);
+	# else
+	#  error
 	# endif
 	#elif HAVE_TIME_H
 	tmp = time(0);

@@ -55,11 +55,13 @@ EXPORTS
  decodeInts
  decodeLong
  decodeShort
- dhaes_pDecrypt
- dhaes_pEncrypt
- dhaes_pFree
- dhaes_pInit
- dhaes_usable
+ dhaes_pContextDecrypt
+ dhaes_pContextEncrypt
+ dhaes_pContextFree
+ dhaes_pContextInit
+ dhaes_pContextInitDecrypt
+ dhaes_pContextInitEncrypt
+ dhaes_pUsable
  dldp_pCopy
  dldp_pEqual
  dldp_pFree
@@ -100,6 +102,7 @@ EXPORTS
  encodeIntsPartial
  encodeLong
  encodeShort
+ entropyGatherNext
  entropySourceCount
  entropySourceDefault
  entropySourceFind

@@ -28,13 +28,13 @@
 #include "base64.h"
 
 #if HAVE_STDLIB_H
-#include <stdlib.h>
+# include <stdlib.h>
 #endif
 #if HAVE_STRING_H
-#include <string.h>
+# include <string.h>
 #endif
 #if HAVE_CTYPE_H
-#include <ctype.h>
+# include <ctype.h>
 #endif
 
 static const char* to_b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";

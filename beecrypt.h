@@ -90,6 +90,14 @@ const entropySource*	entropySourceFind(const char*);
 BEEDLLAPI
 const entropySource*	entropySourceDefault();
 
+/*
+ * The following function can try multiple entropy sources for gathering
+ * the requested amount. It will only try multiple sources if variable
+ * BEECRYPT_ENTROPY is not set.
+ */
+BEEDLLAPI
+int						entropyGatherNext(uint32*, int);
+
 #ifdef __cplusplus
 }
 #endif
@@ -302,7 +310,7 @@ const hashFunction*	hashFunctionDefault();
 
 typedef struct
 {
-	const hashFunction* hash;
+	const hashFunction* algo;
 	hashFunctionParam* param;
 } hashFunctionContext;
 
@@ -441,7 +449,7 @@ const keyedHashFunction*	keyedHashFunctionDefault();
 
 typedef struct
 {
-	const keyedHashFunction*	hash;
+	const keyedHashFunction*	algo;
 	keyedHashFunctionParam*		param;
 } keyedHashFunctionContext;
 
@@ -597,7 +605,7 @@ const blockCipher*		blockCipherDefault();
 
 typedef struct
 {
-	const blockCipher* ciph;
+	const blockCipher* algo;
 	blockCipherParam* param;
 } blockCipherContext;
 

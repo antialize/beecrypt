@@ -1,11 +1,11 @@
 /*
- * mp32opt.gas.ia64.S
+ * mp32opt.ia64.S
  *
  * Assembler optimized multiprecision integer routines for ia64 (Intel Itanium)
  *
- * Compile target is GNU AS
+ * Compile target is GNU Assembler
  *
- * Copyright (c) 2000 Virtual Unlimited B.V.
+ * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -28,12 +28,12 @@
 /*
  * I will need to implement 64 bit multiprecision assembler-optimized routines
  * before this platform can be tested adequately. The current 32 bit ones suffer
- * from loading into integer registers, conversion to floating point, doing to xma
+ * from loading into integer registers, conversion to floating point, doing the xma
  * and converting back to integer; 64 bit values can be loaded directly into
  * floating point registers, which should shave off a lot of cycles.
  */
 
-#include <gnu/config.gas.h>
+#include "config.gas.h"
 
 #define saved_pfs	r14
 #define saved_lc	r15
@@ -42,7 +42,7 @@
 #define dst			r17
 #define src			r18
 
-	.file	"mp32opt.gas.ia64.S"
+	.file	"mp32opt.ia64.S"
 
 	.text
 

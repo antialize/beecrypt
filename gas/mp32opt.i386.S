@@ -1,11 +1,11 @@
 /*
- * mp32opt.gas.i386.S
+ * mp32opt.i386.S
  *
  * Assembler optimized multiprecision integer routines for Intel 386 and higher
  *
- * Compile target is GNU AS
+ * Compile target is GNU Assembler
  *
- * Copyright (c) 1998,1999,2000 Virtual Unlimited B.V.
+ * Copyright (c) 1998, 1999, 2000, 2001 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -25,13 +25,13 @@
  *
  */
 
-#include <gnu/config.gas.h>
+#include "config.gas.h"
 
-	.file "mp32opt.gas.i386.S"
+	.file "mp32opt.i386.S"
 
 	.text
 
-C_FUNCTION(mp32addw)
+C_FUNCTION_BEGIN(mp32addw)
 	pushl %edi
 
 	movl 8(%esp),%ecx
@@ -42,23 +42,25 @@ C_FUNCTION(mp32addw)
 	leal -4(%edi,%ecx,4),%edi
 	addl %eax,(%edi)
 	decl %ecx
-	jz .L1
+	jz .Lmp32addw_skip
 	leal -4(%edi),%edi
 
 	.p2align 4,,7
-.L0:
+.Lmp32addw_loop:
 	adcl %edx,(%edi)
 	leal -4(%edi),%edi
 	decl %ecx
-	jnz .L0
-.L1:
+	jnz .Lmp32addw_loop
+.Lmp32addw_skip:
 	sbbl %eax,%eax
 	negl %eax
 
 	popl %edi
 	ret
+C_FUNCTION_END(mp32addw, .Lmp32addw_size)
 
-C_FUNCTION(mp32subw)
+
+C_FUNCTION_BEGIN(mp32subw)
 	pushl %edi
 
 	movl 8(%esp),%ecx
@@ -69,22 +71,24 @@ C_FUNCTION(mp32subw)
 	leal -4(%edi,%ecx,4),%edi
 	subl %eax,(%edi)
 	decl %ecx
-	jz .L3
+	jz .Lmp32subw_skip
 	leal -4(%edi),%edi
 
 	.p2align 4,,7
-.L2:
+.Lmp32subw_loop:
 	sbbl %edx,(%edi)
 	leal -4(%edi),%edi
 	decl %ecx
-	jnz .L2
-.L3:
+	jnz .Lmp32subw_loop
+.Lmp32subw_skip:
 	sbbl %eax,%eax
 	negl %eax
 	popl %edi
 	ret
+C_FUNCTION_END(mp32subw, .Lmp32subw_size)
 
-C_FUNCTION(mp32add)
+
+C_FUNCTION_BEGIN(mp32add)
 	pushl %edi
 	pushl %esi
 
@@ -96,11 +100,11 @@ C_FUNCTION(mp32add)
 	decl %ecx
 
 	.p2align 4,,7
-.L4:
+.Lmp32add_loop:
 	movl (%esi,%ecx,4),%eax
 	adcl %eax,(%edi,%ecx,4)
 	decl %ecx
-	jns .L4
+	jns .Lmp32add_loop
 
 	sbbl %eax,%eax
 	negl %eax
@@ -108,8 +112,10 @@ C_FUNCTION(mp32add)
 	popl %esi
 	popl %edi
 	ret
+C_FUNCTION_END(mp32add, .Lmp32add_size)
 
-C_FUNCTION(mp32sub)
+
+C_FUNCTION_BEGIN(mp32sub)
 	pushl %edi
 	pushl %esi
 
@@ -121,19 +127,21 @@ C_FUNCTION(mp32sub)
 	decl %ecx
 
 	.p2align 4,,7
-.L5:
+.Lmp32sub_loop:
 	movl (%esi,%ecx,4),%eax
 	sbbl %eax,(%edi,%ecx,4)
 	decl %ecx
-	jns .L5
+	jns .Lmp32sub_loop
 
 	sbbl %eax,%eax
 	negl %eax
 	popl %esi
 	popl %edi
 	ret
+C_FUNCTION_END(mp32sub, .Lmp32sub_size)
 
-C_FUNCTION(mp32multwo)
+
+C_FUNCTION_BEGIN(mp32multwo)
 	pushl %edi
 
 	movl 8(%esp),%ecx
@@ -143,19 +151,21 @@ C_FUNCTION(mp32multwo)
 	decl %ecx
 
 	.p2align 4,,7
-.L6:
+.Lmp32multwo_loop:
 	movl (%edi,%ecx,4),%eax
 	adcl %eax,(%edi,%ecx,4)
 	decl %ecx 
-	jns .L6
+	jns .Lmp32multwo_loop
 
 	sbbl %eax,%eax
 	negl %eax
 
 	popl %edi
 	ret
+C_FUNCTION_END(mp32multwo, .Lmp32multwo_size)
 
-C_FUNCTION(mp32setmul)
+
+C_FUNCTION_BEGIN(mp32setmul)
 	pushl %edi
 	pushl %esi
 	pushl %ebx
@@ -170,7 +180,7 @@ C_FUNCTION(mp32setmul)
 	decl %ecx
 
 	.p2align 4,,7
-.L7:
+.Lmp32setmul_loop:
 	movl (%esi,%ecx,4),%eax
 	mull %ebp
 	addl %ebx,%eax
@@ -178,7 +188,7 @@ C_FUNCTION(mp32setmul)
 	movl %eax,(%edi,%ecx,4)
 	movl %edx,%ebx
 	decl %ecx
-	jns .L7
+	jns .Lmp32setmul_loop
 
 	movl %ebx,%eax
 
@@ -187,8 +197,10 @@ C_FUNCTION(mp32setmul)
 	popl %esi
 	popl %edi
 	ret
+C_FUNCTION_END(mp32setmul, .Lmp32setmul_size)
 
-C_FUNCTION(mp32addmul)
+
+C_FUNCTION_BEGIN(mp32addmul)
 	pushl %edi
 	pushl %esi
 	pushl %ebx
@@ -203,7 +215,7 @@ C_FUNCTION(mp32addmul)
 	decl %ecx
 
 	.p2align 4,,7
-.L8:
+.Lmp32addmul_loop:
 	movl (%esi,%ecx,4),%eax
 	mull %ebp
 	addl %ebx,%eax
@@ -213,7 +225,7 @@ C_FUNCTION(mp32addmul)
 	movl %eax,(%edi,%ecx,4)
 	movl %edx,%ebx
 	decl %ecx
-	jns .L8
+	jns .Lmp32addmul_loop
 
 	movl %ebx,%eax
 
@@ -222,8 +234,10 @@ C_FUNCTION(mp32addmul)
 	popl %esi
 	popl %edi
 	ret
+C_FUNCTION_END(mp32addmul, .Lmp32addmul_size)
 
-C_FUNCTION(mp32addsqrtrc)
+
+C_FUNCTION_BEGIN(mp32addsqrtrc)
 	pushl %edi
 	pushl %esi
 	pushl %ebx
@@ -236,7 +250,7 @@ C_FUNCTION(mp32addsqrtrc)
 	decl %ecx
 
 	.p2align 4,,7
-.L9:
+.Lmp32addsqrtrc_loop:
 	movl (%esi,%ecx,4),%eax
 	mull %eax
 	addl %ebx,%eax
@@ -248,7 +262,7 @@ C_FUNCTION(mp32addsqrtrc)
 	movl %edx,(%edi,%ecx,8)
 	negl %ebx
 	decl %ecx
-	jns .L9
+	jns .Lmp32addsqrtrc_loop
 
 	movl %ebx,%eax
 
@@ -256,3 +270,4 @@ C_FUNCTION(mp32addsqrtrc)
 	popl %esi
 	popl %edi
 	ret
+C_FUNCTION_END(mp32addsqrtrc, .Lmp32addsqrtrc_size)

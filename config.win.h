@@ -32,7 +32,7 @@
 #define _WIN32_WINNT 0x0400
 #endif
 
-#include <Windows.h>
+#include <windows.h>
 
 #if defined(_MSC_VER)
 # if defined(_M_IX86)
@@ -53,45 +53,46 @@
 #endif
 
 #if defined(_MSC_VER) || __MWERKS__
-#define HAVE_ERRNO_H		1
-#define HAVE_STRING_H		1
-#define HAVE_STDLIB_H		1
-#define HAVE_CTYPE_H		1
-#define HAVE_FCNTL_H		1
-#define HAVE_TIME_H			1
+#define HAVE_ERRNO_H			1
+#define HAVE_STRING_H			1
+#define HAVE_STDLIB_H			1
+#define HAVE_CTYPE_H			1
+#define HAVE_FCNTL_H			1
+#define HAVE_TIME_H				1
 
-#define HAVE_SYS_TYPES_H	0
-#define HAVE_SYS_STAT_H		0
-#define HAVE_SYS_TIME_H		0
+#define HAVE_SYS_TYPES_H		0
+#define HAVE_SYS_STAT_H			0
+#define HAVE_SYS_TIME_H			0
 
-#define HAVE_THREAD_H		0
-#define HAVE_SYNCH_H		0
-#define HAVE_PTHREAD_H		0
-#define HAVE_SEMAPHORE_H	0
+#define HAVE_THREAD_H			0
+#define HAVE_SYNCH_H			0
+#define HAVE_PTHREAD_H			0
+#define HAVE_SEMAPHORE_H		0
 
 #define HAVE_TERMIO_H			0
 #define HAVE_SYS_AUDIOIO_H		0
 #define HAVE_SYS_IOCTL_H		0
 #define HAVE_SYS_SOUNDCARD_H	0
 
-#define HAVE_ALLOCA			1
+#define HAVE_GETTIMEOFDAY		0
+#define HAVE_GETHRTIME			0
 
-#define HAVE_GETTIMEOFDAY	0
-#define HAVE_GETHRTIME		0
+#define HAVE_DEV_TTY			0
+#define HAVE_DEV_AUDIO			0
+#define HAVE_DEV_DSP			0
+#define HAVE_DEV_RANDOM			0
+#define HAVE_DEV_URANDOM		0
+#define HAVE_DEV_TTY			0
 
-#define HAVE_DEV_TTY		0
-#define HAVE_DEV_AUDIO		0
-#define HAVE_DEV_DSP		0
-#define HAVE_DEV_RANDOM		0
 #else
 #error Not set up for this compiler
 #endif
 
 #if __MWERKS__
-#define HAVE_UNISTD_H		1
-#define HAVE_MALLOC_H		1
+#define HAVE_UNISTD_H			1
+#define HAVE_MALLOC_H			1
 
-#define HAVE_LONG_LONG		1
+#define HAVE_LONG_LONG			1
 
 #define INT8_TYPE		char
 #define INT16_TYPE		short
@@ -105,11 +106,10 @@
 #define DOUBLE8_TYPE	double
 
 #elif defined(_MSC_VER)
-#define HAVE_UNISTD_H		0
-#define HAVE_MALLOC_H		1
-#define alloca	_alloca
+#define HAVE_UNISTD_H			0
+#define HAVE_MALLOC_H			1
 
-#define HAVE_LONG_LONG		0
+#define HAVE_LONG_LONG			0
 
 #define INT8_TYPE		__int8
 #define INT16_TYPE		__int16
