@@ -18,6 +18,11 @@ dnl  You should have received a copy of the GNU Lesser General Public
 dnl  License along with this library; if not, write to the Free Software
 dnl  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+ifelse(substr(ASM_OS,0,7),freebsd,`
+define(USE_SIZE_DIRECTIVE,yes)
+define(USE_TYPE_DIRECTIVE,yes)
+')
+
 ifelse(substr(ASM_OS,0,5),linux,`
 define(USE_SIZE_DIRECTIVE,yes)
 define(USE_TYPE_DIRECTIVE,yes)
