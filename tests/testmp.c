@@ -11,7 +11,7 @@ static const mpw P[8] = { ~((mpw) 0U), ~((mpw) 0U), ~((mpw) 0U), ~((mpw) 0U) - 1
 
 int main()
 {
-	int i;
+	int i, carry;
 	mpw x[4];
 	mpw y[4];
 	mpw r[8];
@@ -72,6 +72,20 @@ int main()
 		return 1;
 	}
 
+	mpcopy(4, x, F);
+	carry = mpaddw(4, x, (mpw) 1U);
+	if (!carry || mpne(4, x, Z))
+	{
+		printf("mpaddw failed");
+		return 1;
+	}
+	carry = mpsubw(4, x, (mpw) 1U);
+	if (!carry || mpne(4, x, F))
+	{
+		printf("mpsubw failed");
+		return 1;
+	}
+
 	mpzero(8, r);
 	mpmul(r, 4, F, 4, F);
 	if (!mpeq(8, r, P))
@@ -87,8 +101,6 @@ int main()
 		printf("mpsqr failed\n");
 		return 1;
 	}
-
-	printf("success\n");
 
 	return 0;
 }
