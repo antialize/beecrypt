@@ -684,7 +684,7 @@ if test "$ac_enable_debug" != yes; then
   pentium3)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I686 -DOPTIMIZE_MMX -DOPTIMIZE_SSE"
     ;;
-  pentium3)
+  pentium4)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I686 -DOPTIMIZE_MMX -DOPTIMIZE_SSE -DOPTIMIZE_SSE2"
     ;;
   powerpc)
