@@ -1,4 +1,4 @@
-4.1.2-pre:
+4.1.2:
 	- Fixed Cygwin DLL missing symbols problem.
 	- Fixed GNU-stack assembler section on some platforms (Debian-ARM).
 	- Fixed inclusion of <asm/byteorder.h> to prevent problems with
