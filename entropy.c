@@ -964,14 +964,14 @@ static int entropy_ttybits(int fd, byte* data, size_t size)
 	#elif HAVE_TERMIO_H
 	struct termio tio_save, tio_set;
 	#else
-	# need alternative
+	# error need alternative
 	#endif
 	#if HAVE_GETHRTIME
 	hrtime_t hrtsample;
 	#elif HAVE_GETTIMEOFDAY
 	struct timeval tvsample;
 	#else
-	# error Need alternative high-precision timer
+	# error need alternative high-precision timer
 	#endif
 
 	printf("please press random keys on your keyboard\n");
