@@ -121,10 +121,7 @@ int rsapricrt(const rsakp* kp, const mp32number* c, mp32number* m)
 	register uint32* qtemp;
 
 	if (mp32gex(c->size, c->data, kp->n.size, kp->n.modl))
-	{
-		printf("ciphertext is too large\n");
 		return -1;
-	}
 
 	ptemp = (uint32*) malloc((6*psize+2)*sizeof(uint32));
 	if (ptemp == (uint32*) 0)
@@ -138,13 +135,6 @@ int rsapricrt(const rsakp* kp, const mp32number* c, mp32number* m)
 	}
 
 	/* c must be small enough to be exponentiated modulo p and q */
-	/*
-	if (c->size > psize || c->size > qsize)
-	{
-		printf("problem: c is too large to be exponentiated\n");
-		return -1;
-	}
-	*/
 
 	/* resize c for powmod p */
 	mp32setx(psize*2, ptemp, c->size, c->data);
