@@ -3,7 +3,7 @@
  *
  * Assembler optimized AES routines for Intel Pentium processors
  *
- * Compile target is Microsoft Macro Assembler
+ * Compile target is GNU Assembler
  *
  * Copyright (c) 2002 Bob Deblier <bob@virtualunlimited.com>
  *
