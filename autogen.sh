@@ -1,6 +1,8 @@
 #! /bin/sh
+export CFLAGS
+export LDFLAGS
 libtoolize --force --copy
 aclocal
 autoheader
-automake -a Makefile docs/Makefile gas/Makefile masm/Makefile mwerks/Makefile tests/Makefile
+automake -a -c
 autoconf
