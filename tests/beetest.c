@@ -241,7 +241,7 @@ void testBlockCiphers()
 				if (memcmp(dec_block, src_block, tmp->blocksize >> 2))
 				{
 					printf("failed\n");
-					// continue;
+					continue;
 				}
 				printf("ok\n");
 				printf("    speed measurement:\n");
