@@ -69,6 +69,21 @@ bool Date::equals(const Object& compare) const throw ()
 	return false;
 }
 
+Date* Date::clone() const throw ()
+{
+	return new Date(_time);
+}
+
+int Date::compareTo(const Date& d) const throw ()
+{
+	if (_time == d._time)
+		return 0;
+	else if (_time < d._time)
+		return -1;
+	else
+		return 1;
+}
+
 bool Date::after(const Date& cmp) const throw ()
 {
 	return _time > cmp._time;
