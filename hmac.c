@@ -3,7 +3,7 @@
  *
  * HMAC message authentication code, code
  *
- * Copyright (c) 1999, 2000 Virtual Unlimited B.V.
+ * Copyright (c) 1999, 2000, 2002 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -26,6 +26,7 @@
 #define BEECRYPT_DLL_EXPORT
 
 #include "hmac.h"
+#include "mp32.h"
 #include "endianness.h"
 
 #define HMAC_IPAD	0x36363636
@@ -33,7 +34,7 @@
 
 int hmacSetup(hmacParam* hp, const hashFunction* hash, hashFunctionParam* param, const uint32* key, int keybits)
 {
-	register int i;
+	register int i, rc;
 
 	int keywords = (keybits + 31) >> 5; /* rounded up */
 	int keybytes = (keybits     ) >> 3;
@@ -41,8 +42,8 @@ int hmacSetup(hmacParam* hp, const hashFunction* hash, hashFunctionParam* param,
 	/* if the key is too large, hash it first */
 	if (keybytes > 64)
 	{
-		/* we need a maximum of 64 bytes */
 		uint32 keydigest[16];
+		byte* tmp;
 
 		/* if the hash digest is too large, this doesn't help */
 		if (hash->digestsize > 64)
@@ -51,22 +52,33 @@ int hmacSetup(hmacParam* hp, const hashFunction* hash, hashFunctionParam* param,
 		if (hash->reset(param))
 			return -1;
 
-		if (hash->update(param, (const byte*) key, keybytes))
+		tmp = (byte*) malloc(keybytes);
+
+		if (tmp == (byte*) 0)
+			return -1;
+
+		/* before we can hash the key, we need to encode it! */
+		encodeIntsPartial(key, tmp, keybytes);
+
+		rc = hash->update(param, tmp, keybytes);
+		free(tmp);
+
+		if (rc)
 			return -1;
 
 		if (hash->digest(param, keydigest))
 			return -1;
 
-		keywords = hash->digestsize >> 3;
+		keywords = hash->digestsize >> 2;
 		keybytes = hash->digestsize;
 
-		encodeInts((const javaint*) keydigest, (byte*) hp->kxi, keybytes);
-		encodeInts((const javaint*) keydigest, (byte*) hp->kxo, keybytes);
+		encodeInts(keydigest, (byte*) hp->kxi, keybytes);
+		encodeInts(keydigest, (byte*) hp->kxo, keybytes);
 	}
 	else if (keybytes > 0)
 	{
-		encodeIntsPartialPad((const javaint*) key, (byte*) hp->kxi, keybytes, 0);
-		encodeIntsPartialPad((const javaint*) key, (byte*) hp->kxo, keybytes, 0);
+		encodeIntsPartialPad(key, (byte*) hp->kxi, keybytes, 0);
+		encodeIntsPartialPad(key, (byte*) hp->kxo, keybytes, 0);
 	}
 	else
 		return -1;
