@@ -7,6 +7,7 @@ many thanks to them for giving me access to their systems.
 
 BENCHmark Modular Exponentation (more is better):
 
+BeeCrypt 3.0.0 | gcc-3.3             | RedHat AS 2.1        | P4 Xeon       2400 |   4 GB: 6920 (--with-cpu=pentium4 --with-arch=pentium4)
 BeeCrypt 3.0.0 | gcc-2.95.4          | Debian Linux 3.0     | Alpha EV6.7    666 |   2 GB: 5742 ()
 BeeCrypt 3.0.0 | gcc-2.96            | RedHat AS 2.1        | P4 Xeon       2400 |   4 GB: 3280 (--with-arch=pentiumpro)
 BeeCrypt 3.0.0 | gcc-3.2.2           | AIX 5.1              | POWER3-II      333 | 512 MB: 1782 (--with-arch=powerpc64)
