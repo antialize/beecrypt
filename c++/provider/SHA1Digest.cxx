@@ -38,7 +38,7 @@ SHA1Digest::~SHA1Digest()
 {
 }
 
-SHA1Digest* SHA1Digest::clone() const
+SHA1Digest* SHA1Digest::clone() const throw ()
 {
 	SHA1Digest* result = new SHA1Digest();
 

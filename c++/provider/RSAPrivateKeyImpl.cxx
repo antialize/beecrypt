@@ -46,8 +46,16 @@ RSAPrivateKeyImpl::~RSAPrivateKeyImpl()
 		delete _enc;
 }
 
-bool RSAPrivateKeyImpl::operator==(const Key& compare) const throw ()
+RSAPrivateKeyImpl* RSAPrivateKeyImpl::clone() const throw ()
 {
+	return new RSAPrivateKeyImpl(*this);
+}
+
+bool RSAPrivateKeyImpl::equals(const Object& compare) const throw ()
+{
+	if (this == &compare)
+		return true;
+
 	const RSAPrivateKey* pri = dynamic_cast<const RSAPrivateKey*>(&compare);
 	if (pri)
 	{
@@ -60,11 +68,6 @@ bool RSAPrivateKeyImpl::operator==(const Key& compare) const throw ()
 		return true;
 	}
 	return false;
-}
-
-RSAPrivateKey* RSAPrivateKeyImpl::clone() const
-{
-	return new RSAPrivateKeyImpl(*this);
 }
 
 const mpbarrett& RSAPrivateKeyImpl::getModulus() const throw ()

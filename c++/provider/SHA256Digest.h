@@ -30,10 +30,12 @@
 
 #include "beecrypt/c++/security/MessageDigestSpi.h"
 using beecrypt::security::MessageDigestSpi;
+#include "beecrypt/c++/lang/Cloneable.h"
+using beecrypt::lang::Cloneable;
 
 namespace beecrypt {
 	namespace provider {
-		class SHA256Digest : public MessageDigestSpi
+		class SHA256Digest : public beecrypt::security::MessageDigestSpi, public beecrypt::lang::Cloneable
 		{
 		private:
 			sha256Param _param;
@@ -51,7 +53,7 @@ namespace beecrypt {
 			SHA256Digest();
 			virtual ~SHA256Digest();
 
-			virtual SHA256Digest* clone() const;
+			virtual SHA256Digest* clone() const throw ();
 		};
 	}
 }

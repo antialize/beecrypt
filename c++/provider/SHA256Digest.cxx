@@ -38,7 +38,7 @@ SHA256Digest::~SHA256Digest()
 {
 }
 
-SHA256Digest* SHA256Digest::clone() const
+SHA256Digest* SHA256Digest::clone() const throw ()
 {
 	SHA256Digest* result = new SHA256Digest();
 

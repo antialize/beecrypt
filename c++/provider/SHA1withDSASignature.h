@@ -43,7 +43,7 @@ using beecrypt::security::spec::AlgorithmParameterSpec;
 
 namespace beecrypt {
 	namespace provider {
-		class SHA1withDSASignature : public SignatureSpi
+		class SHA1withDSASignature : public beecrypt::security::SignatureSpi
 		{
 			friend class BeeCryptProvider;
 

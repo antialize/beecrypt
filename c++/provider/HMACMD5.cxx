@@ -30,7 +30,7 @@ HMACMD5::HMACMD5() : HMAC(hmacmd5, md5)
 {
 }
 
-HMACMD5* HMACMD5::clone() const
+HMACMD5* HMACMD5::clone() const throw ()
 {
 	HMACMD5* result = new HMACMD5();
 

@@ -43,7 +43,7 @@ namespace beecrypt {
 			BeeCertPath(const BeeCertificate& cert);
 			virtual ~BeeCertPath();
 
-			virtual bool operator==(const CertPath& compare) const;
+			virtual bool equals(const Object& compare) const throw ();
 
 			virtual const vector<const Certificate*>& getCertificates() const;
 

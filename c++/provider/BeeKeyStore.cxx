@@ -20,22 +20,28 @@
 # include "config.h"
 #endif
 
+#if HAVE_ASSERT_H
+# include <assert.h>
+#endif
+
 #include "beecrypt/aes.h"
 #include "beecrypt/pkcs12.h"
 #include "beecrypt/sha256.h"
 
 #include "beecrypt/c++/crypto/Mac.h"
 using beecrypt::crypto::Mac;
+#include "beecrypt/c++/crypto/MacInputStream.h"
+using beecrypt::crypto::MacInputStream;
+#include "beecrypt/c++/crypto/MacOutputStream.h"
+using beecrypt::crypto::MacOutputStream;
 #include "beecrypt/c++/io/ByteArrayInputStream.h"
 using beecrypt::io::ByteArrayInputStream;
 #include "beecrypt/c++/io/DataInputStream.h"
 using beecrypt::io::DataInputStream;
 #include "beecrypt/c++/io/DataOutputStream.h"
 using beecrypt::io::DataOutputStream;
-#include "beecrypt/c++/crypto/MacInputStream.h"
-using beecrypt::crypto::MacInputStream;
-#include "beecrypt/c++/crypto/MacOutputStream.h"
-using beecrypt::crypto::MacOutputStream;
+#include "beecrypt/c++/lang/Cloneable.h"
+using beecrypt::lang::Cloneable;
 #include "beecrypt/c++/security/SecureRandom.h"
 using beecrypt::security::SecureRandom;
 #include "beecrypt/c++/security/ProviderException.h"
@@ -57,44 +63,92 @@ namespace {
 #define BKS_PRIVATEKEY_ENTRY	((javaint) 0x1)
 #define BKS_CERTIFICATE_ENTRY	((javaint) 0x2)
 
-BeeKeyStore::Entry::~Entry()
+BeeKeyStore::Entry::~Entry() throw ()
 {
 }
 
-BeeKeyStore::KeyEntry::KeyEntry()
+BeeKeyStore::KeyEntry::KeyEntry() throw ()
 {
 }
 
-BeeKeyStore::KeyEntry::KeyEntry(const bytearray& b, const vector<Certificate*>& c)
+BeeKeyStore::KeyEntry::KeyEntry(const bytearray& b, const vector<Certificate*>& c) throw (CloneNotSupportedException)
 {
 	encryptedkey = b;
+
 	for (vector<Certificate*>::const_iterator it = c.begin(); it != c.end(); it++)
-		chain.push_back((*it)->clone());
+	{
+		chain.push_back(cloneCertificate(*(*it)));
+	}
 }
 
-BeeKeyStore::KeyEntry::~KeyEntry()
+BeeKeyStore::KeyEntry::~KeyEntry() throw ()
 {
 	// delete all the certificates in the chain
 	for (size_t i = 0; i < chain.size(); i++)
 		delete chain[i];
 }
 
-BeeKeyStore::CertEntry::CertEntry()
+BeeKeyStore::CertEntry::CertEntry() throw ()
 {
 	cert = 0;
 }
 
-BeeKeyStore::CertEntry::CertEntry(const Certificate& c)
+BeeKeyStore::CertEntry::CertEntry(const Certificate& c) throw (CloneNotSupportedException)
 {
-	cert = c.clone();
+	cert = cloneCertificate(c);
 }
 
-BeeKeyStore::CertEntry::~CertEntry()
+BeeKeyStore::CertEntry::~CertEntry() throw ()
 {
 	if (cert)
 	{
 		delete cert;
 		cert = 0;
+	}
+}
+
+Certificate* BeeKeyStore::cloneCertificate(const Certificate& cert) throw (CloneNotSupportedException)
+{
+	const Cloneable* c = dynamic_cast<const Cloneable*>(&cert);
+	if (c)	
+	{
+		// Cloneable certificate
+		Object* o = c->clone();
+
+		#if HAVE_ASSERT_H
+		assert(dynamic_cast<Certificate*>(o));
+		#endif
+
+		return reinterpret_cast<Certificate*>(o);
+	}
+	else
+	{
+		// Non-Cloneable certificate; let's try a CertificateFactory
+		ByteArrayInputStream bis(cert.getEncoded());
+
+		CertificateFactory* cf;
+
+		try
+		{
+			Certificate* tmp;
+
+			cf = CertificateFactory::getInstance(cert.getType());
+
+			tmp = cf->generateCertificate(bis);
+
+			delete cf;
+
+			return tmp;
+		}
+		catch (NoSuchAlgorithmException)
+		{
+			throw CloneNotSupportedException("Unable to clone Certificate through CertificateFactory of type " + cert.getType());
+		}
+		catch (CertificateException)
+		{
+			delete cf;
+			throw CloneNotSupportedException("Unable to clone Certificate through its encoding");
+		}
 	}
 }
 
@@ -225,7 +279,7 @@ const String* BeeKeyStore::engineGetCertificateAlias(const Certificate& cert)
 		const CertEntry* ce = dynamic_cast<const CertEntry*>(it->second);
 		if (ce)
 		{
-			if (cert == *(ce->cert))
+			if (cert.equals(*(ce->cert)))
 			{
 				result = &(it->first);
 				break;
@@ -358,7 +412,7 @@ void BeeKeyStore::engineLoad(InputStream* in, const array<javachar>* password) t
 {
 	_lock.lock();
 
-	if (in == 0)
+	if (!in)
 	{
 		randomGeneratorContext rngc;
 

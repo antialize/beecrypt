@@ -92,19 +92,14 @@ Mac* Mac::getInstance(const String& algorithm, const Provider& provider) throw (
 	return result;
 }
 
-Mac* Mac::clone() const
+Mac* Mac::clone() const throw ()
 {
-	MacSpi* _mspc = _mspi->clone();
+	// don't forget to also clone the _init state!
+	Mac* result = new Mac(_mspi->clone(), _prov, _algo);
 
-	if (_mspc)
-	{
-		// don't forget to also clone the _init state!
-		Mac* result = new Mac(_mspc, _prov, _algo);
-		result->_init = _init;
-		return result;
-	}
-	else
-		return 0;
+	result->_init = _init;
+
+	return result;
 }
 
 const bytearray& Mac::doFinal() throw (IllegalStateException)

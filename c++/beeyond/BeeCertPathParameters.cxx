@@ -58,6 +58,7 @@ const vector<const Certificate*>& BeeCertPathParameters::getTrustedCertificates(
 	return _cert;
 }
 
+#if 0
 CertPathParameters* BeeCertPathParameters::clone() const
 {
 	BeeCertPathParameters* tmp = new BeeCertPathParameters();
@@ -67,3 +68,4 @@ CertPathParameters* BeeCertPathParameters::clone() const
 
 	return tmp;
 }
+#endif

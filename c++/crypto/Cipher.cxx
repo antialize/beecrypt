@@ -86,7 +86,7 @@ Cipher* Cipher::getInstance(const String& transformation) throw (NoSuchAlgorithm
 			assert(dynamic_cast<CipherSpi*>((CipherSpi*) (CipherSpi*) tmp->cspi));
 			#endif
 
-			result = new Cipher((CipherSpi*) tmp->cspi, tmp->prov, tmp->name);
+			result = new Cipher(reinterpret_cast<CipherSpi*>(tmp->cspi), tmp->prov, tmp->name);
 
 			delete tmp;
 

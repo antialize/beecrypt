@@ -36,7 +36,7 @@ namespace beecrypt {
 		namespace spec {
 			/*!\ingroup CXX_CRYPTO_SPEC_m
 			 */
-			class BEECRYPTCXXAPI DHPublicKeySpec : public KeySpec
+			class BEECRYPTCXXAPI DHPublicKeySpec : public beecrypt::security::spec::KeySpec
 			{
 			private:
 				mpbarrett _p;

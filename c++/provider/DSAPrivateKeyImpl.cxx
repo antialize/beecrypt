@@ -62,8 +62,16 @@ DSAPrivateKeyImpl::~DSAPrivateKeyImpl()
 		delete _enc;
 }
 
-bool DSAPrivateKeyImpl::operator==(const Key& compare) const throw ()
+DSAPrivateKeyImpl* DSAPrivateKeyImpl::clone() const throw ()
 {
+	return new DSAPrivateKeyImpl(*this);
+}
+
+bool DSAPrivateKeyImpl::equals(const Object& compare) const throw ()
+{
+	if (this == &compare)
+		return true;
+
 	const DSAPrivateKey* pri = dynamic_cast<const DSAPrivateKey*>(&compare);
 	if (pri)
 	{
@@ -81,12 +89,8 @@ bool DSAPrivateKeyImpl::operator==(const Key& compare) const throw ()
 
 		return true;
 	}
-	return false;
-}
 
-DSAPrivateKey* DSAPrivateKeyImpl::clone() const
-{
-	return new DSAPrivateKeyImpl(*this);
+	return false;
 }
 
 const DSAParams& DSAPrivateKeyImpl::getParams() const throw ()

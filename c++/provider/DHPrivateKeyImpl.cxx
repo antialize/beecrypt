@@ -62,8 +62,16 @@ DHPrivateKeyImpl::~DHPrivateKeyImpl()
 		delete _enc;
 }
 
-bool DHPrivateKeyImpl::operator==(const Key& compare) const throw ()
+DHPrivateKeyImpl* DHPrivateKeyImpl::clone() const throw ()
 {
+	return new DHPrivateKeyImpl(*this);
+}
+
+bool DHPrivateKeyImpl::equals(const Object& compare) const throw ()
+{
+	if (this == &compare)
+		return true;
+
 	const DHPrivateKey* pri = dynamic_cast<const DHPrivateKey*>(&compare);
 	if (pri)
 	{
@@ -78,12 +86,8 @@ bool DHPrivateKeyImpl::operator==(const Key& compare) const throw ()
 
 		return true;
 	}
-	return false;
-}
 
-DHPrivateKey* DHPrivateKeyImpl::clone() const
-{
-	return new DHPrivateKeyImpl(*this);
+	return false;
 }
 
 const DHParams& DHPrivateKeyImpl::getParams() const throw ()

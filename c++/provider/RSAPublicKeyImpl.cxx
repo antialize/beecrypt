@@ -45,8 +45,16 @@ RSAPublicKeyImpl::~RSAPublicKeyImpl()
 		delete _enc;
 }
 
-bool RSAPublicKeyImpl::operator==(const Key& compare) const throw ()
+RSAPublicKeyImpl* RSAPublicKeyImpl::clone() const throw ()
 {
+	return new RSAPublicKeyImpl(*this);
+}
+
+bool RSAPublicKeyImpl::equals(const Object& compare) const throw ()
+{
+	if (this == &compare)
+		return true;
+
 	const RSAPublicKey* pub = dynamic_cast<const RSAPublicKey*>(&compare);
 	if (pub)
 	{
@@ -59,11 +67,6 @@ bool RSAPublicKeyImpl::operator==(const Key& compare) const throw ()
 		return true;
 	}
 	return false;
-}
-
-RSAPublicKey* RSAPublicKeyImpl::clone() const
-{
-	return new RSAPublicKeyImpl(*this);
 }
 
 const mpbarrett& RSAPublicKeyImpl::getModulus() const throw ()

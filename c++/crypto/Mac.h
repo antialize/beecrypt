@@ -29,6 +29,8 @@
 
 #include "beecrypt/c++/crypto/MacSpi.h"
 using beecrypt::crypto::MacSpi;
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/Provider.h"
 using beecrypt::security::Provider;
 #include "beecrypt/c++/security/NoSuchAlgorithmException.h"
@@ -40,7 +42,7 @@ namespace beecrypt {
 	namespace crypto {
 		/*!\ingroup CXX_CRYPTO_m
 		 */
-		class BEECRYPTCXXAPI Mac
+		class BEECRYPTCXXAPI Mac : public beecrypt::lang::Object
 		{
 		public:
 			static Mac* getInstance(const String&) throw (NoSuchAlgorithmException);
@@ -57,9 +59,9 @@ namespace beecrypt {
 			Mac(MacSpi* macSpi, const Provider* provider, const String& algorithm);
 
 		public:
-			~Mac();
+			virtual ~Mac();
 
-			Mac* clone() const;
+			Mac* clone() const throw ();
 
 			const bytearray& doFinal() throw (IllegalStateException);
 			const bytearray& doFinal(const bytearray&) throw (IllegalStateException);

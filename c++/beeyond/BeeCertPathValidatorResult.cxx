@@ -23,13 +23,42 @@
 #endif
 
 #include "beecrypt/c++/beeyond/BeeCertPathValidatorResult.h"
+#include "beecrypt/c++/lang/ClassCastException.h"
+using beecrypt::lang::ClassCastException;
+#include "beecrypt/c++/lang/RuntimeException.h"
+using beecrypt::lang::RuntimeException;
+#include "beecrypt/c++/security/KeyFactory.h"
+using beecrypt::security::KeyFactory;
 
 using namespace beecrypt::beeyond;
 
 BeeCertPathValidatorResult::BeeCertPathValidatorResult(const BeeCertificate& root, const PublicKey& pub)
 {
 	_root = root.clone();
-	_pub = pub.clone();
+
+	// key may not be cloneable, but we can use a KeyFactory to translate it
+	KeyFactory* kf;
+
+	try
+	{
+		kf = KeyFactory::getInstance(pub.getAlgorithm());
+
+		_pub = dynamic_cast<PublicKey*>(kf->translateKey(pub));
+
+		delete kf;
+
+		if (!_pub)
+			throw ClassCastException("KeyFactory didn't translate key into a PublicKey");
+	}
+	catch (NoSuchAlgorithmException)
+	{
+		throw CloneNotSupportedException("Unable to clone PublicKey through a KeyFactory of type " + pub.getAlgorithm());
+	}
+	catch (InvalidKeyException)
+	{
+		delete kf;
+		throw CloneNotSupportedException("Unable to clone PublicKey because KeyFactory says it's invalid");
+	}
 }
 
 BeeCertPathValidatorResult::~BeeCertPathValidatorResult()
@@ -38,7 +67,7 @@ BeeCertPathValidatorResult::~BeeCertPathValidatorResult()
 	delete _pub;
 }
 
-CertPathValidatorResult* BeeCertPathValidatorResult::clone() const
+BeeCertPathValidatorResult* BeeCertPathValidatorResult::clone() const throw ()
 {
 	return new BeeCertPathValidatorResult(*_root, *_pub);
 }

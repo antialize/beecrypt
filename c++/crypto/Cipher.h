@@ -29,6 +29,8 @@
 using beecrypt::crypto::CipherSpi;
 #include "beecrypt/c++/crypto/NoSuchPaddingException.h"
 using beecrypt::crypto::NoSuchPaddingException;
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/Provider.h"
 using beecrypt::security::Provider;
 #include "beecrypt/c++/security/NoSuchAlgorithmException.h"
@@ -42,7 +44,7 @@ namespace beecrypt {
 	namespace crypto {
 		/*!\ingroup CXX_CRYPTO_m
 		 */
-		class BEECRYPTCXXAPI Cipher
+		class BEECRYPTCXXAPI Cipher : public beecrypt::lang::Object
 		{
 		public:
 			static Cipher* getInstance(const String& transformation) throw (NoSuchAlgorithmException, NoSuchPaddingException);

@@ -39,7 +39,7 @@ namespace beecrypt {
 			/*!\brief Diffie-Hellman public key interface
 			 * \ingroup CXX_CRYPTO_INTERFACES_m
 			 */
-			class DHPublicKey : public PublicKey, public DHKey
+			class DHPublicKey : public beecrypt::security::PublicKey, public DHKey
 			{
 			public:
 				virtual const mpnumber& getY() const throw () = 0;

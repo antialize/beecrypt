@@ -38,7 +38,7 @@ SHA384Digest::~SHA384Digest()
 {
 }
 
-SHA384Digest* SHA384Digest::clone() const
+SHA384Digest* SHA384Digest::clone() const throw ()
 {
 	SHA384Digest* result = new SHA384Digest();
 

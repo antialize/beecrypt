@@ -38,7 +38,7 @@ MD5Digest::~MD5Digest()
 {
 }
 
-MD5Digest* MD5Digest::clone() const
+MD5Digest* MD5Digest::clone() const throw ()
 {
 	MD5Digest* result = new MD5Digest();
 

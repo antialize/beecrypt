@@ -36,7 +36,7 @@ namespace beecrypt {
 		namespace spec {
 			/*!\ingroup CXX_CRYPTO_SPEC_m
 			 */
-			class BEECRYPTCXXAPI PBEKeySpec : public KeySpec
+			class BEECRYPTCXXAPI PBEKeySpec : public beecrypt::security::spec::KeySpec
 			{
 			private:
 				array<javachar> _password;

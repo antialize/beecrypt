@@ -27,6 +27,8 @@
 
 #include "beecrypt/c++/crypto/SecretKeyFactorySpi.h"
 using beecrypt::crypto::SecretKeyFactorySpi;
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/Provider.h"
 using beecrypt::security::Provider;
 #include "beecrypt/c++/security/NoSuchAlgorithmException.h"
@@ -41,7 +43,7 @@ namespace beecrypt {
 	namespace crypto {
 		/*!\ingroup CXX_CRYPTO_m
 		 */
-		class BEECRYPTCXXAPI SecretKeyFactory
+		class BEECRYPTCXXAPI SecretKeyFactory : public beecrypt::lang::Object
 		{
 		public:
 			static SecretKeyFactory* getInstance(const String& algorithm) throw (NoSuchAlgorithmException);
@@ -57,7 +59,7 @@ namespace beecrypt {
 			SecretKeyFactory(SecretKeyFactorySpi* spi, const Provider* provider, const String& algorithm);
 
 		public:
-			~SecretKeyFactory();
+			virtual ~SecretKeyFactory();
 
 			SecretKey* generateSecret(const KeySpec&) throw (InvalidKeySpecException);
 

@@ -61,8 +61,16 @@ DSAPublicKeyImpl::~DSAPublicKeyImpl()
 		delete _enc;
 }
 
-bool DSAPublicKeyImpl::operator==(const Key& compare) const throw ()
+DSAPublicKeyImpl* DSAPublicKeyImpl::clone() const throw ()
 {
+	return new DSAPublicKeyImpl(*this);
+}
+
+bool DSAPublicKeyImpl::equals(const Object& compare) const throw ()
+{
+	if (this == &compare)
+		return true;
+
 	const DSAPublicKey* pub = dynamic_cast<const DSAPublicKey*>(&compare);
 	if (pub)
 	{
@@ -80,12 +88,8 @@ bool DSAPublicKeyImpl::operator==(const Key& compare) const throw ()
 
 		return true;
 	}
-	return false;
-}
 
-DSAPublicKey* DSAPublicKeyImpl::clone() const
-{
-	return new DSAPublicKeyImpl(*this);
+	return false;
 }
 
 const DSAParams& DSAPublicKeyImpl::getParams() const throw ()

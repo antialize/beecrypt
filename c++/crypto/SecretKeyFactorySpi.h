@@ -29,6 +29,8 @@
 
 #include "beecrypt/c++/crypto/SecretKey.h"
 using beecrypt::crypto::SecretKey;
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/InvalidKeyException.h"
 using beecrypt::security::InvalidKeyException;
 #include "beecrypt/c++/security/spec/KeySpec.h"
@@ -43,7 +45,7 @@ namespace beecrypt {
 	namespace crypto {
 		/*!\ingroup CXX_CRYPTO_m
 		 */
-		class BEECRYPTCXXAPI SecretKeyFactorySpi
+		class BEECRYPTCXXAPI SecretKeyFactorySpi : public beecrypt::lang::Object
 		{
 			friend class SecretKeyFactory;
 

@@ -23,16 +23,16 @@
 #ifndef _CLASS_DHKEYAGREEMENT_H
 #define _CLASS_DHKEYAGREEMENT_H
 
+#include "beecrypt/dlsvdp-dh.h"
+
 #ifdef __cplusplus
 
 #include "beecrypt/c++/crypto/KeyAgreementSpi.h"
 using beecrypt::crypto::KeyAgreementSpi;
 
-#include "beecrypt/dlsvdp-dh.h"
-
 namespace beecrypt {
 	namespace provider {
-		class DHKeyAgreement : public KeyAgreementSpi
+		class DHKeyAgreement : public beecrypt::crypto::KeyAgreementSpi
 		{
 		private:
 			static const int UNINITIALIZED = 0;

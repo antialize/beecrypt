@@ -37,6 +37,8 @@ using beecrypt::crypto::IllegalBlockSizeException;
 using beecrypt::crypto::NoSuchPaddingException;
 #include "beecrypt/c++/lang/IllegalStateException.h"
 using beecrypt::lang::IllegalStateException;
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/AlgorithmParameters.h"
 using beecrypt::security::AlgorithmParameters;
 #include "beecrypt/c++/security/InvalidAlgorithmParameterException.h"
@@ -54,7 +56,7 @@ namespace beecrypt {
 	namespace crypto {
 		/*!\ingroup CXX_CRYPTO_m
 		 */
-		class BEECRYPTCXXAPI CipherSpi
+		class BEECRYPTCXXAPI CipherSpi : public beecrypt::lang::Object
 		{
 			friend class Cipher;
 

@@ -34,7 +34,7 @@ using beecrypt::security::spec::DSAParameterSpec;
 
 namespace beecrypt {
 	namespace provider {
-		class DSAKeyPairGenerator : public KeyPairGeneratorSpi
+		class DSAKeyPairGenerator : public beecrypt::security::KeyPairGeneratorSpi
 		{
 		private:
 			size_t _size;

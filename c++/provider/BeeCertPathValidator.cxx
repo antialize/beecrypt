@@ -92,7 +92,7 @@ CertPathValidatorResult* BeeCertPathValidator::engineValidate(const CertPath& pa
 				// check if the final certificate we have is one of the root certificates
 				for (vector<const Certificate*>::const_iterator rit = roots->begin(); rit != roots->end(); rit++)
 				{
-					if (*tmp == **rit)
+					if (tmp->equals(**rit))
 						return new BeeCertPathValidatorResult(*tmp, beecert->getPublicKey());
 				}
 			}

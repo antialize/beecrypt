@@ -48,7 +48,7 @@ using beecrypt::beeyond::DHAESParameterSpec;
 
 namespace beecrypt {
 	namespace provider {
-		class DHAESCipher : public CipherSpi
+		class DHAESCipher : public beecrypt::crypto::CipherSpi
 		{
 		private:
 			DHAESParameterSpec*     _spec;

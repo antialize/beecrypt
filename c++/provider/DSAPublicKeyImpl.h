@@ -25,6 +25,10 @@
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/lang/Cloneable.h"
+using beecrypt::lang::Cloneable;
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/interfaces/DSAPublicKey.h"
 using beecrypt::security::interfaces::DSAPublicKey;
 #include "beecrypt/c++/security/spec/DSAParameterSpec.h"
@@ -32,7 +36,7 @@ using beecrypt::security::spec::DSAParameterSpec;
 
 namespace beecrypt {
 	namespace provider {
-		class DSAPublicKeyImpl : public DSAPublicKey
+		class DSAPublicKeyImpl : public beecrypt::lang::Object, public beecrypt::security::interfaces::DSAPublicKey, public beecrypt::lang::Cloneable
 		{
 		private:
 			DSAParameterSpec* _params;
@@ -46,9 +50,9 @@ namespace beecrypt {
 			DSAPublicKeyImpl(const mpbarrett&, const mpbarrett&, const mpnumber&, const mpnumber&);
 			virtual ~DSAPublicKeyImpl();
 
-			virtual bool operator==(const Key& compare) const throw ();
+			virtual DSAPublicKeyImpl* clone() const throw ();
 
-			virtual DSAPublicKey* clone() const;
+			virtual bool equals(const Object& compare) const throw ();
 
 			virtual const DSAParams& getParams() const throw ();
 			virtual const mpnumber& getY() const throw ();

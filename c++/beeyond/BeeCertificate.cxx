@@ -28,6 +28,10 @@
 using beecrypt::io::ByteArrayInputStream;
 #include "beecrypt/c++/io/ByteArrayOutputStream.h"
 using beecrypt::io::ByteArrayOutputStream;
+#include "beecrypt/c++/lang/ClassCastException.h"
+using beecrypt::lang::ClassCastException;
+#include "beecrypt/c++/lang/Cloneable.h"
+using beecrypt::lang::Cloneable;
 #include "beecrypt/c++/lang/Long.h"
 using beecrypt::lang::Long;
 #include "beecrypt/c++/lang/NullPointerException.h"
@@ -41,24 +45,24 @@ using beecrypt::security::cert::CertificateFactory;
 
 using namespace beecrypt::beeyond;
 
-BeeCertificate::Field::~Field()
+BeeCertificate::Field::~Field() throw ()
 {
 }
 
-BeeCertificate::UnknownField::UnknownField()
+BeeCertificate::UnknownField::UnknownField() throw ()
 {
 }
 
-BeeCertificate::UnknownField::UnknownField(const UnknownField& copy) : encoding(copy.encoding)
+BeeCertificate::UnknownField::UnknownField(const UnknownField& copy) throw () : encoding(copy.encoding)
 {
 	type = copy.type;
 }
 
-BeeCertificate::UnknownField::~UnknownField()
+BeeCertificate::UnknownField::~UnknownField() throw ()
 {
 }
 
-BeeCertificate::Field* BeeCertificate::UnknownField::clone() const
+BeeCertificate::Field* BeeCertificate::UnknownField::clone() const throw ()
 {
 	return new BeeCertificate::UnknownField(*this);
 }
@@ -77,24 +81,59 @@ void BeeCertificate::UnknownField::encode(DataOutputStream& out) const throw (IO
 
 const javaint BeeCertificate::PublicKeyField::FIELD_TYPE = 0x5055424b; // 'PUBK'
 
-BeeCertificate::PublicKeyField::PublicKeyField()
+BeeCertificate::PublicKeyField::PublicKeyField() throw ()
 {
 	type = BeeCertificate::PublicKeyField::FIELD_TYPE;
 	pub = 0;
 }
 
-BeeCertificate::PublicKeyField::PublicKeyField(const PublicKey& key)
+BeeCertificate::PublicKeyField::PublicKeyField(const PublicKey& key) throw (CloneNotSupportedException)
 {
 	type = BeeCertificate::PublicKeyField::FIELD_TYPE;
-	pub = key.clone();
+
+	const Cloneable* c = dynamic_cast<const Cloneable*>(&key);
+	if (c)
+	{
+		Object* clone = c->clone();
+
+		pub = dynamic_cast<PublicKey*>(clone);
+
+		if (!pub)
+			throw ClassCastException();
+	}
+	else
+	{
+		KeyFactory* kf;
+
+		try
+		{
+			kf = KeyFactory::getInstance(key.getAlgorithm());
+
+			pub = dynamic_cast<PublicKey*>(kf->translateKey(key));
+
+			delete kf;
+
+			if (!pub)
+				throw ClassCastException("KeyFactory didn't translate key into PublicKey");
+		}
+		catch (NoSuchAlgorithmException)
+		{
+			throw CloneNotSupportedException("Unable to clone PublicKey through KeyFactory of type " + key.getAlgorithm());
+		}
+		catch (InvalidKeyException)
+		{
+			delete kf;
+			throw CloneNotSupportedException("Unable to clone PublicKey because KeyFactory says it's invalid");
+		}
+	}
 }
 
-BeeCertificate::PublicKeyField::~PublicKeyField()
+BeeCertificate::PublicKeyField::~PublicKeyField() throw ()
 {
 	delete pub;
 }
 
-BeeCertificate::Field* BeeCertificate::PublicKeyField::clone() const
+BeeCertificate::Field* BeeCertificate::PublicKeyField::clone() const throw (CloneNotSupportedException)
 {
 	return new BeeCertificate::PublicKeyField(*pub);
 }
@@ -147,24 +186,66 @@ void BeeCertificate::PublicKeyField::encode(DataOutputStream& out) const throw (
 
 const javaint BeeCertificate::ParentCertificateField::FIELD_TYPE = 0x43455254; // 'CERT'
 
-BeeCertificate::ParentCertificateField::ParentCertificateField()
+BeeCertificate::ParentCertificateField::ParentCertificateField() throw ()
 {
 	type = BeeCertificate::ParentCertificateField::FIELD_TYPE;
 	parent = 0;
 }
 
-BeeCertificate::ParentCertificateField::ParentCertificateField(const Certificate& cert)
+BeeCertificate::ParentCertificateField::ParentCertificateField(Certificate* cert) throw ()
 {
 	type = BeeCertificate::ParentCertificateField::FIELD_TYPE;
-	parent = cert.clone();
+	parent = cert;
 }
 
-BeeCertificate::ParentCertificateField::~ParentCertificateField()
+BeeCertificate::ParentCertificateField::ParentCertificateField(const Certificate& cert) throw (CloneNotSupportedException)
+{
+	type = BeeCertificate::ParentCertificateField::FIELD_TYPE;
+
+	const Cloneable* c = dynamic_cast<const Cloneable*>(&cert);
+	if (c)
+	{
+		// Cloneable certificate
+		Object* clone = c->clone();
+
+		parent = dynamic_cast<Certificate*>(clone);
+
+		if (!parent)
+			throw ClassCastException();
+	}
+	else
+	{
+		// Non-Cloneable certificate; let's try a CertificateFactory
+		ByteArrayInputStream bis(cert.getEncoded());
+
+		CertificateFactory* cf;
+
+		try
+		{
+			cf = CertificateFactory::getInstance(cert.getType());
+
+			parent = cf->generateCertificate(bis);
+
+			delete cf;
+		}
+		catch (NoSuchAlgorithmException)
+		{
+			throw CloneNotSupportedException("Unable to clone Certificate through CertificateFactory of type " + cert.getType());
+		}
+		catch (CertificateException)
+		{
+			delete cf;
+			throw CloneNotSupportedException("Unable to clone Certificate through its encoding");
+		}
+	}
+}
+
+BeeCertificate::ParentCertificateField::~ParentCertificateField() throw ()
 {
 	delete parent;
 }
 
-BeeCertificate::Field* BeeCertificate::ParentCertificateField::clone() const
+BeeCertificate::Field* BeeCertificate::ParentCertificateField::clone() const throw (CloneNotSupportedException)
 {
 	return new BeeCertificate::ParentCertificateField(*parent);
 }
@@ -312,7 +393,7 @@ BeeCertificate::~BeeCertificate()
 		delete enc;
 }
 
-BeeCertificate* BeeCertificate::clone() const
+BeeCertificate* BeeCertificate::clone() const throw ()
 {
 	return new BeeCertificate(*this);
 }
@@ -478,7 +559,7 @@ const String& BeeCertificate::toString() const throw ()
 		str->append("\nValid from: ");
 		str->append(created.toString());
 		str->append(" until: ");
-		if (expires == FOREVER)
+		if (expires.equals(FOREVER))
 			str->append("-");
 		else
 			str->append(expires.toString());
@@ -512,7 +593,7 @@ void BeeCertificate::checkValidity(const Date& at) const throw (CertificateExpir
 	if (at.before(created))
 		throw CertificateNotYetValidException();
 
-	if (expires != FOREVER)
+	if (!expires.equals(FOREVER))
 		if (at.after(expires))
 			throw CertificateExpiredException();
 }

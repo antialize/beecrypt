@@ -29,6 +29,10 @@
 using beecrypt::crypto::interfaces::DHPrivateKey;
 #include "beecrypt/c++/crypto/spec/DHParameterSpec.h"
 using beecrypt::crypto::spec::DHParameterSpec;
+#include "beecrypt/c++/lang/Cloneable.h"
+using beecrypt::lang::Cloneable;
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 
 using beecrypt::bytearray;
 using beecrypt::crypto::interfaces::DHParams;
@@ -36,7 +40,7 @@ using beecrypt::lang::String;
 
 namespace beecrypt {
 	namespace provider {
-		class DHPrivateKeyImpl : public DHPrivateKey
+		class DHPrivateKeyImpl : public beecrypt::lang::Object, public beecrypt::crypto::interfaces::DHPrivateKey, public beecrypt::lang::Cloneable
 		{
 		private:
 			DHParameterSpec* _params;
@@ -50,9 +54,9 @@ namespace beecrypt {
 			DHPrivateKeyImpl(const mpbarrett&, const mpnumber&, const mpnumber&);
 			virtual ~DHPrivateKeyImpl();
 
-			virtual bool operator==(const Key& compare) const throw ();
+			virtual DHPrivateKeyImpl* clone() const throw ();
 
-			virtual DHPrivateKey* clone() const;
+			virtual bool equals(const Object& compare) const throw ();
 
 			virtual const DHParams& getParams() const throw ();
 			virtual const mpnumber& getX() const throw ();

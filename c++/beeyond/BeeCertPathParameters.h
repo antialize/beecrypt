@@ -36,7 +36,7 @@ using beecrypt::security::cert::CertPathParameters;
 
 namespace beecrypt {
 	namespace beeyond {
-		class BEECRYPTCXXAPI BeeCertPathParameters : public CertPathParameters
+		class BEECRYPTCXXAPI BeeCertPathParameters : public beecrypt::security::cert::CertPathParameters
 		{
 		private:
 			vector<const Certificate*> _cert;
@@ -45,11 +45,11 @@ namespace beecrypt {
 			BeeCertPathParameters();
 
 		public:
+			virtual ~BeeCertPathParameters() {};
+
 			BeeCertPathParameters(KeyStore& keystore) throw (KeyStoreException, InvalidAlgorithmParameterException);
 
 			const vector<const Certificate*>& getTrustedCertificates() const;
-
-			virtual CertPathParameters* clone() const;
 		};
 	}
 }

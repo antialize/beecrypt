@@ -31,6 +31,8 @@ using beecrypt::array;
 using beecrypt::io::DataInputStream;
 #include "beecrypt/c++/io/DataOutputStream.h"
 using beecrypt::io::DataOutputStream;
+#include "beecrypt/c++/lang/Cloneable.h"
+using beecrypt::lang::Cloneable;
 #include "beecrypt/c++/provider/BeeCertificateFactory.h"
 using beecrypt::provider::BeeCertificateFactory;
 #include "beecrypt/c++/security/PublicKey.h"
@@ -57,7 +59,7 @@ namespace beecrypt {
 		*/
 		/*!\ingroup CXX_BEEYOND_m
 		 */
-		class BEECRYPTCXXAPI BeeCertificate : public Certificate
+		class BEECRYPTCXXAPI BeeCertificate : public beecrypt::security::cert::Certificate, public beecrypt::lang::Cloneable
 		{
 			friend class BeeCertificateFactory;
 
@@ -69,9 +71,9 @@ namespace beecrypt {
 			{
 				javaint type;
 
-				virtual ~Field();
+				virtual ~Field() throw ();
 
-				virtual Field* clone() const = 0;
+				virtual Field* clone() const throw (CloneNotSupportedException) = 0;
 
 				virtual void decode(DataInputStream&) throw (IOException) = 0;
 				virtual void encode(DataOutputStream&) const throw (IOException) = 0;
@@ -81,11 +83,11 @@ namespace beecrypt {
 			{
 				bytearray encoding;
 
-				UnknownField();
-				UnknownField(const UnknownField&);
-				virtual ~UnknownField();
+				UnknownField() throw ();
+				UnknownField(const UnknownField&) throw ();
+				virtual ~UnknownField() throw ();
 					
-				virtual Field* clone() const;
+				virtual Field* clone() const throw ();
 
 				virtual void decode(DataInputStream&) throw (IOException);
 				virtual void encode(DataOutputStream&) const throw (IOException);
@@ -97,11 +99,12 @@ namespace beecrypt {
 
 				PublicKey* pub;
 
-				PublicKeyField();
-				PublicKeyField(const PublicKey& key);
-				virtual ~PublicKeyField();
+				PublicKeyField() throw ();
+				PublicKeyField(PublicKey* key) throw ();
+				PublicKeyField(const PublicKey& key) throw (CloneNotSupportedException);
+				virtual ~PublicKeyField() throw ();
 
-				virtual Field* clone() const;
+				virtual Field* clone() const throw (CloneNotSupportedException);
 
 				virtual void decode(DataInputStream&) throw (IOException);
 				virtual void encode(DataOutputStream&) const throw (IOException);
@@ -113,11 +116,12 @@ namespace beecrypt {
 
 				Certificate* parent;
 
-				ParentCertificateField();
-				ParentCertificateField(const Certificate&);
-				virtual ~ParentCertificateField();
+				ParentCertificateField() throw ();
+				ParentCertificateField(Certificate*) throw ();
+				ParentCertificateField(const Certificate&) throw (CloneNotSupportedException);
+				virtual ~ParentCertificateField() throw ();
 
-				virtual Field* clone() const;
+				virtual Field* clone() const throw (CloneNotSupportedException);
 
 				virtual void decode(DataInputStream&) throw (IOException);
 				virtual void encode(DataOutputStream&) const throw (IOException);
@@ -151,7 +155,7 @@ namespace beecrypt {
 			BeeCertificate(const BeeCertificate&);
 			virtual ~BeeCertificate();
 
-			virtual BeeCertificate* clone() const;
+			virtual BeeCertificate* clone() const throw ();
 
 			virtual const bytearray& getEncoded() const;
 			virtual const PublicKey& getPublicKey() const;

@@ -32,7 +32,7 @@ namespace beecrypt {
 	namespace provider {
 		/*!\ingroup CXX_PROVIDER_m
 		 */
-		class BaseProvider : public Provider
+		class BaseProvider : public beecrypt::security::Provider
 		{
 		private:
 			void putall();

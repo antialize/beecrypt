@@ -27,12 +27,14 @@
 
 #include "beecrypt/c++/crypto/KeyAgreementSpi.h"
 using beecrypt::crypto::KeyAgreementSpi;
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 
 namespace beecrypt {
 	namespace crypto {
 		/*!\ingroup CXX_CRYPTO_m
 		 */
-		class BEECRYPTCXXAPI KeyAgreement
+		class BEECRYPTCXXAPI KeyAgreement : public beecrypt::lang::Object
 		{
 		public:
 			static KeyAgreement* getInstance(const String&) throw (NoSuchAlgorithmException);
@@ -48,7 +50,7 @@ namespace beecrypt {
 			KeyAgreement(KeyAgreementSpi* spi, const Provider* provider, const String& algorithm);
 
 		public:
-			~KeyAgreement();
+			virtual ~KeyAgreement();
 
 			void init(const Key&, SecureRandom* = 0) throw (InvalidKeyException);
 			void init(const Key&, const AlgorithmParameterSpec&, SecureRandom* = 0) throw (InvalidKeyException);

@@ -32,7 +32,7 @@ using beecrypt::security::spec::DSAParameterSpec;
 
 namespace beecrypt {
 	namespace provider {
-		class DSAParameterGenerator : public AlgorithmParameterGeneratorSpi
+		class DSAParameterGenerator : public beecrypt::security::AlgorithmParameterGeneratorSpi
 		{
 		private:
 			size_t _size;

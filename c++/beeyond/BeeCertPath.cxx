@@ -35,12 +35,15 @@ BeeCertPath::~BeeCertPath()
 {
 }
 
-bool BeeCertPath::operator==(const CertPath& compare) const
+bool BeeCertPath::equals(const Object& compare) const throw ()
 {
+	if (this == &compare)
+		return true;
+
 	const BeeCertPath* cmp = dynamic_cast<const BeeCertPath*>(&compare);
 	if (cmp)
 	{
-		return *(_cert[0]) == *(cmp->_cert[0]);
+		return _cert[0]->equals(*(cmp->_cert[0]));
 	}
 	return false;
 }

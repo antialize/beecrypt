@@ -38,11 +38,6 @@ SecretKeySpec::~SecretKeySpec()
 {
 }
 
-SecretKey* SecretKeySpec::clone() const
-{
-	return new SecretKeySpec(_data, _algo);
-}
-
 const String& SecretKeySpec::getAlgorithm() const throw ()
 {
 	return _algo;

@@ -25,12 +25,16 @@
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/lang/Cloneable.h"
+using beecrypt::lang::Cloneable;
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/interfaces/RSAPrivateCrtKey.h"
 using beecrypt::security::interfaces::RSAPrivateCrtKey;
 
 namespace beecrypt {
 	namespace provider {
-		class RSAPrivateCrtKeyImpl : public RSAPrivateCrtKey
+		class RSAPrivateCrtKeyImpl : public beecrypt::lang::Object, public beecrypt::security::interfaces::RSAPrivateCrtKey, public beecrypt::lang::Cloneable
 		{
 		private:
 			mpbarrett _n;
@@ -48,9 +52,9 @@ namespace beecrypt {
 			RSAPrivateCrtKeyImpl(const mpbarrett& modulus, const mpnumber& publicExponent, const mpnumber& privateExponent, const mpbarrett& primeP, const mpbarrett& primeQ, const mpnumber& primeExponentP, const mpnumber& primeExponentQ, const mpnumber& crtCoefficient);
 			virtual ~RSAPrivateCrtKeyImpl();
 
-			virtual bool operator==(const Key& compare) const throw ();
+			virtual RSAPrivateCrtKeyImpl* clone() const throw ();
 
-			virtual RSAPrivateCrtKey* clone() const;
+			virtual bool equals(const Object& compare) const throw ();
 
 			virtual const mpbarrett& getModulus() const throw ();
 			virtual const mpnumber& getPrivateExponent() const throw ();

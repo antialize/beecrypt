@@ -30,7 +30,7 @@ HMACSHA256::HMACSHA256() : HMAC(hmacsha256, sha256)
 {
 }
 
-HMACSHA256* HMACSHA256::clone() const
+HMACSHA256* HMACSHA256::clone() const throw ()
 {
 	HMACSHA256* result = new HMACSHA256();
 

@@ -39,7 +39,7 @@ namespace beecrypt {
 		namespace spec {
 			/*!\ingroup CXX_CRYPTO_SPEC_m
 			 */
-			class BEECRYPTCXXAPI DHParameterSpec : public AlgorithmParameterSpec, public DHParams
+			class BEECRYPTCXXAPI DHParameterSpec : public beecrypt::security::spec::AlgorithmParameterSpec, public beecrypt::crypto::interfaces::DHParams
 			{
 			private:
 				mpbarrett _p;

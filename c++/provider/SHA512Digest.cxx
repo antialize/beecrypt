@@ -38,7 +38,7 @@ SHA512Digest::~SHA512Digest()
 {
 }
 
-SHA512Digest* SHA512Digest::clone() const
+SHA512Digest* SHA512Digest::clone() const throw ()
 {
 	SHA512Digest* result = new SHA512Digest();
 

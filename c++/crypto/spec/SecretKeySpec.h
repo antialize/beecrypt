@@ -38,7 +38,7 @@ namespace beecrypt {
 		namespace spec {
 			/*!\ingroup CXX_CRYPTO_SPEC_m
 			 */
-			class BEECRYPTCXXAPI SecretKeySpec : public KeySpec, public SecretKey
+			class BEECRYPTCXXAPI SecretKeySpec : public beecrypt::security::spec::KeySpec, public beecrypt::crypto::SecretKey
 			{
 			private:
 				bytearray _data;
@@ -48,8 +48,6 @@ namespace beecrypt {
 				SecretKeySpec(const byte* data, size_t offset, size_t length, const String& algorithm);
 				SecretKeySpec(const bytearray& b, const String& algorithm);
 				virtual ~SecretKeySpec();
-
-				virtual SecretKey* clone() const;
 
 				virtual const String& getAlgorithm() const throw ();
 				virtual const String* getFormat() const throw ();

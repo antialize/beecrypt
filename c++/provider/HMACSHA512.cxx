@@ -30,7 +30,7 @@ HMACSHA512::HMACSHA512() : HMAC(hmacsha512, sha512)
 {
 }
 
-HMACSHA512* HMACSHA512::clone() const
+HMACSHA512* HMACSHA512::clone() const throw ()
 {
 	HMACSHA512* result = new HMACSHA512();
 

@@ -25,6 +25,8 @@
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/cert/CertPathValidatorResult.h"
 using beecrypt::security::cert::CertPathValidatorResult;
 #include "beecrypt/c++/beeyond/BeeCertificate.h"
@@ -34,7 +36,7 @@ namespace beecrypt {
 	namespace beeyond {
 		/*!\ingroup CXX_BEEYOND_m
 		 */
-		class BEECRYPTCXXAPI BeeCertPathValidatorResult : public CertPathValidatorResult
+		class BEECRYPTCXXAPI BeeCertPathValidatorResult : public beecrypt::lang::Object, public beecrypt::security::cert::CertPathValidatorResult
 		{
 		private:
 			BeeCertificate* _root;
@@ -44,7 +46,7 @@ namespace beecrypt {
 			BeeCertPathValidatorResult(const BeeCertificate& root, const PublicKey& pub);
 			virtual ~BeeCertPathValidatorResult();
 
-			virtual CertPathValidatorResult* clone() const;
+			virtual BeeCertPathValidatorResult* clone() const throw ();
 
 			const BeeCertificate& getRootCertificate() const;
 			const PublicKey& getPublicKey() const;

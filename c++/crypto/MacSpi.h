@@ -31,6 +31,8 @@
 using beecrypt::array;
 #include "beecrypt/c++/lang/IllegalStateException.h"
 using beecrypt::lang::IllegalStateException;
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/InvalidAlgorithmParameterException.h"
 using beecrypt::security::InvalidAlgorithmParameterException;
 #include "beecrypt/c++/security/InvalidKeyException.h"
@@ -46,7 +48,7 @@ namespace beecrypt {
 	namespace crypto {
 		/*!\ingroup CXX_CRYPTO_m
 		 */
-		class BEECRYPTCXXAPI MacSpi
+		class BEECRYPTCXXAPI MacSpi : public beecrypt::lang::Object
 		{
 			friend class Mac;
 
@@ -62,7 +64,7 @@ namespace beecrypt {
 		public:
 			virtual ~MacSpi() {};
 
-			virtual MacSpi* clone() const = 0;
+			virtual MacSpi* clone() const throw () = 0;
 		};
 	}
 }

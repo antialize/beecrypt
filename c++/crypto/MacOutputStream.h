@@ -34,7 +34,7 @@ namespace beecrypt {
 	namespace crypto {
 		/*!\ingroup CXX_CRYPTO_m
 		 */
-		class BEECRYPTCXXAPI MacOutputStream : public FilterOutputStream
+		class BEECRYPTCXXAPI MacOutputStream : public beecrypt::io::FilterOutputStream
 		{
 		private:
 			bool _on;

@@ -30,7 +30,7 @@ HMACSHA1::HMACSHA1() : HMAC(hmacsha1, sha1)
 {
 }
 
-HMACSHA1* HMACSHA1::clone() const
+HMACSHA1* HMACSHA1::clone() const throw ()
 {
 	HMACSHA1* result = new HMACSHA1();
 

@@ -25,17 +25,19 @@
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/lang/Cloneable.h"
+using beecrypt::lang::Cloneable;
 #include "beecrypt/c++/provider/HMAC.h"
 
 namespace beecrypt {
 	namespace provider {
-		class HMACSHA1 : public HMAC
+		class HMACSHA1 : public HMAC, public beecrypt::lang::Cloneable
 		{
 		public:
 			HMACSHA1();
 			virtual ~HMACSHA1() {};
 
-			virtual HMACSHA1* clone() const;
+			virtual HMACSHA1* clone() const throw ();
 		};
 	}
 }

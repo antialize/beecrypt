@@ -29,10 +29,12 @@
 
 #include "beecrypt/c++/crypto/MacSpi.h"
 using beecrypt::crypto::MacSpi;
+#include "beecrypt/c++/lang/Cloneable.h"
+using beecrypt::lang::Cloneable;
 
 namespace beecrypt {
 	namespace provider {
-		class HMAC : public MacSpi
+		class HMAC : public beecrypt::crypto::MacSpi
 		{
 		private:
 			bytearray _key;

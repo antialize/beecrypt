@@ -29,13 +29,13 @@
 
 namespace beecrypt {
 	namespace provider {
-		class HMACSHA512 : public HMAC
+		class HMACSHA512 : public HMAC, public beecrypt::lang::Cloneable
 		{
 		public:
 			HMACSHA512();
 			virtual ~HMACSHA512() {};
 
-			virtual HMACSHA512* clone() const;
+			virtual HMACSHA512* clone() const throw ();
 		};
 	}
 }

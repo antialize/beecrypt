@@ -33,10 +33,8 @@ namespace beecrypt {
 		/*!\brief Secret key interface
 		 * \ingroup CXX_CRYPTO_m
 		 */
-		class BEECRYPTCXXAPI SecretKey : public Key
+		class BEECRYPTCXXAPI SecretKey : public beecrypt::security::Key
 		{
-		public:
-			virtual SecretKey* clone() const = 0;
 		};
 	}
 }

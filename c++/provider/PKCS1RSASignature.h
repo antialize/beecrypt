@@ -42,7 +42,7 @@ using beecrypt::security::spec::AlgorithmParameterSpec;
 
 namespace beecrypt {
 	namespace provider {
-		class PKCS1RSASignature : public SignatureSpi
+		class PKCS1RSASignature : public beecrypt::security::SignatureSpi
 		{
 		private:
 			rsakp _pair;

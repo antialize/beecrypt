@@ -60,14 +60,17 @@ int main(int argc, char* argv[])
 
 		ByteArrayInputStream bis(self->getEncoded());
 
-		CertificateFactory* cf = CertificateFactory::getInstance("BEE");
+		CertificateFactory* cf = CertificateFactory::getInstance(self->getType());
 
 		Certificate* cert = cf->generateCertificate(bis);
 
 		cert->verify(pair->getPublic());
 
-		if (!(*cert == *self))
+		if (!cert->equals(*self))
+		{
+			std::cout << "cloned certificate differs" << std::endl;
 			failures++;
+		}
 
 		delete cert;
 		delete cf;

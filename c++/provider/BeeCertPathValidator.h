@@ -32,7 +32,7 @@ namespace beecrypt {
 	namespace provider {
 		/*!\ingroup CXX_PROVIDER_m
 		 */
-		class BeeCertPathValidator : public CertPathValidatorSpi
+		class BeeCertPathValidator : public beecrypt::security::cert::CertPathValidatorSpi
 		{
 		protected:
 			virtual CertPathValidatorResult* engineValidate(const CertPath& path, const CertPathParameters& params) throw (CertPathValidatorException, InvalidAlgorithmParameterException);

@@ -44,7 +44,7 @@ namespace beecrypt {
 		/*!\brief The default BeeCrypt KeyStore.
 		 * \ingroup CXX_PROVIDER_m
 		 */
-		class BeeKeyStore : public KeyStoreSpi
+		class BeeKeyStore : public beecrypt::security::KeyStoreSpi
 		{
 		private:
 			mutex _lock;
@@ -55,7 +55,7 @@ namespace beecrypt {
 			struct Entry
 			{
 				Date date;
-				virtual ~Entry();
+				virtual ~Entry() throw ();
 			};
 
 			struct KeyEntry : public Entry
@@ -63,18 +63,18 @@ namespace beecrypt {
 				bytearray encryptedkey;
 				vector<Certificate*> chain;
 
-				KeyEntry();
-				KeyEntry(const bytearray& key, const vector<Certificate*>&);
-				virtual ~KeyEntry();
+				KeyEntry() throw ();
+				KeyEntry(const bytearray& key, const vector<Certificate*>&) throw (CloneNotSupportedException);
+				virtual ~KeyEntry() throw ();
 			};
 
 			struct CertEntry : public Entry
 			{
 				Certificate* cert;
 
-				CertEntry();
-				CertEntry(const Certificate&);
-				virtual ~CertEntry();
+				CertEntry() throw ();
+				CertEntry(const Certificate&) throw (CloneNotSupportedException);
+				virtual ~CertEntry() throw ();
 			};
 
 			typedef map<String, KeyFactory*> keyfactory_map;
@@ -97,6 +97,8 @@ namespace beecrypt {
 				virtual bool hasMoreElements() throw ();
 				virtual const void* nextElement() throw (NoSuchElementException);
 			};
+
+			static Certificate* cloneCertificate(const Certificate&) throw (CloneNotSupportedException);
 
 			void clearall();
 

@@ -25,12 +25,16 @@
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/lang/Cloneable.h"
+using beecrypt::lang::Cloneable;
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/interfaces/RSAPublicKey.h"
 using beecrypt::security::interfaces::RSAPublicKey;
 
 namespace beecrypt {
 	namespace provider {
-		class RSAPublicKeyImpl : public RSAPublicKey
+		class RSAPublicKeyImpl : public beecrypt::lang::Object, public RSAPublicKey, public beecrypt::lang::Cloneable
 		{
 		private:
 			mpbarrett _n;
@@ -42,9 +46,9 @@ namespace beecrypt {
 			RSAPublicKeyImpl(const mpbarrett&, const mpnumber&);
 			virtual ~RSAPublicKeyImpl();
 
-			virtual bool operator==(const Key& compare) const throw ();
+			virtual bool equals(const Object& compare) const throw ();
 
-			virtual RSAPublicKey* clone() const;
+			virtual RSAPublicKeyImpl* clone() const throw ();
 
 			virtual const mpbarrett& getModulus() const throw ();
 			virtual const mpnumber& getPublicExponent() const throw ();

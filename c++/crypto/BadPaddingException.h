@@ -32,7 +32,7 @@ namespace beecrypt {
 	namespace crypto {
 		/*!\ingroup CXX_CRYPTO_m
 		 */
-		class BEECRYPTCXXAPI BadPaddingException : public GeneralSecurityException
+		class BEECRYPTCXXAPI BadPaddingException : public beecrypt::security::GeneralSecurityException
 		{
 		public:
 			BadPaddingException() throw ();

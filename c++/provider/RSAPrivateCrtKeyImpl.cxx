@@ -63,8 +63,11 @@ RSAPrivateCrtKeyImpl::~RSAPrivateCrtKeyImpl()
 		delete _enc;
 }
 
-bool RSAPrivateCrtKeyImpl::operator==(const Key& compare) const throw ()
+bool RSAPrivateCrtKeyImpl::equals(const Object& compare) const throw ()
 {
+	if (this == &compare)
+		return true;
+
 	const RSAPrivateKey* pri = dynamic_cast<const RSAPrivateKey*>(&compare);
 	if (pri)
 	{
@@ -79,7 +82,7 @@ bool RSAPrivateCrtKeyImpl::operator==(const Key& compare) const throw ()
 	return false;
 }
 
-RSAPrivateCrtKey* RSAPrivateCrtKeyImpl::clone() const
+RSAPrivateCrtKeyImpl* RSAPrivateCrtKeyImpl::clone() const throw ()
 {
 	return new RSAPrivateCrtKeyImpl(*this);
 }

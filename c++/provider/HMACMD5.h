@@ -29,13 +29,13 @@
 
 namespace beecrypt {
 	namespace provider {
-		class HMACMD5 : public HMAC
+		class HMACMD5 : public HMAC, public beecrypt::lang::Cloneable
 		{
 		public:
 			HMACMD5();
 			virtual ~HMACMD5() {};
 
-			virtual HMACMD5* clone() const;
+			virtual HMACMD5* clone() const throw ();
 		};
 	}
 }

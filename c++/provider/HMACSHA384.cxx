@@ -30,7 +30,7 @@ HMACSHA384::HMACSHA384() : HMAC(hmacsha384, sha384)
 {
 }
 
-HMACSHA384* HMACSHA384::clone() const
+HMACSHA384* HMACSHA384::clone() const throw ()
 {
 	HMACSHA384* result = new HMACSHA384();
 
