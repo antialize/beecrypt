@@ -19,10 +19,7 @@
 
 /*!\file hmac.h
  * \brief HMAC algorithm, headers.
- * \todo Up to now the algorithm only works for hashes that have a block size
- *       of 64 bytes. It would be good to change this so that the initializer
- *       uses the block size from the hash function's descriptor.
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup HMAC_m
  */
 
@@ -33,11 +30,6 @@
 
 /*!\ingroup HMAC_m
  */
-typedef struct
-{
-	byte kxi[64];
-	byte kxo[64];
-} hmacParam;
 
 #ifdef __cplusplus
 extern "C" {
@@ -46,13 +38,13 @@ extern "C" {
 /* not used directly as keyed hash function, but instead used as generic methods */
 
 BEECRYPTAPI
-int hmacSetup (hmacParam*, const hashFunction*, hashFunctionParam*, const uint32*, int);
+int hmacSetup (      byte*,       byte*, const hashFunction*, hashFunctionParam*, const byte*, size_t);
 BEECRYPTAPI
-int hmacReset (hmacParam*, const hashFunction*, hashFunctionParam*);
+int hmacReset (const byte*,              const hashFunction*, hashFunctionParam*);
 BEECRYPTAPI
-int hmacUpdate(hmacParam*, const hashFunction*, hashFunctionParam*, const byte*, int);
+int hmacUpdate(                          const hashFunction*, hashFunctionParam*, const byte*, size_t);
 BEECRYPTAPI
-int hmacDigest(hmacParam*, const hashFunction*, hashFunctionParam*, uint32*);
+int hmacDigest(             const byte*, const hashFunction*, hashFunctionParam*, byte*);
 
 #ifdef __cplusplus
 }

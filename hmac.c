@@ -23,14 +23,13 @@
  * \see RFC2104 HMAC: Keyed-Hashing for Message Authentication.
  *                    H. Krawczyk, M. Bellare, R. Canetti.
  *
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandore.be>
  * \ingroup HMAC_m
  */
 
 #define BEECRYPT_DLL_EXPORT
 
 #include "hmac.h"
-#include "mp32.h"
 #include "endianness.h"
 
 /*!\addtogroup HMAC_m
@@ -40,102 +39,76 @@
 #define HMAC_IPAD	0x36
 #define HMAC_OPAD	0x5c
 
-int hmacSetup(hmacParam* hp, const hashFunction* hash, hashFunctionParam* param, const uint32* key, int keybits)
+int hmacSetup(byte* kxi, byte* kxo, const hashFunction* hash, hashFunctionParam* param, const byte* key, size_t keybits)
 {
 	register int i, rc;
 
-	int keywords = (keybits + 31) >> 5; /* rounded up */
-	int keybytes = (keybits     ) >> 3;
+	size_t keybytes = keybits >> 3;
 
 	/* if the key is too large, hash it first */
-	if (keybytes > 64)
+	if (keybytes > hash->blocksize)
 	{
-		uint32 keydigest[16];
-		byte* tmp;
-
-		/* if the hash digest is too large, this doesn't help */
-		if (hash->digestsize > 64)
+		/* if the hash digest is too large, this doesn't help; this is really a sanity check */
+		if (hash->digestsize > hash->blocksize)
 			return -1;
 
 		if (hash->reset(param))
 			return -1;
 
-		tmp = (byte*) malloc(keybytes);
-
-		if (tmp == (byte*) 0)
+		if (hash->update(param, key, keybytes))
 			return -1;
 
-		/* before we can hash the key, we need to encode it! */
-		encodeIntsPartial(key, tmp, keybytes);
-
-		rc = hash->update(param, tmp, keybytes);
-		free(tmp);
-
-		if (rc)
+		if (hash->digest(param, kxi))
 			return -1;
 
-		if (hash->digest(param, keydigest))
-			return -1;
-
-		keywords = hash->digestsize >> 2;
-		keybytes = hash->digestsize;
-
-		encodeInts(keydigest, hp->kxi, keybytes);
-		encodeInts(keydigest, hp->kxo, keybytes);
+		memcpy(kxo, kxi, keybytes = hash->digestsize);
 	}
 	else if (keybytes > 0)
 	{
-		encodeIntsPartial(key, hp->kxi, keybytes);
-		encodeIntsPartial(key, hp->kxo, keybytes);
+		memcpy(kxi, key, keybytes);
+		memcpy(kxo, key, keybytes);
 	}
 	else
 		return -1;
 
 	for (i = 0; i < keybytes; i++)
 	{
-		hp->kxi[i] ^= HMAC_IPAD;
-		hp->kxo[i] ^= HMAC_OPAD;
+		kxi[i] ^= HMAC_IPAD;
+		kxo[i] ^= HMAC_OPAD;
 	}
 
-	for (i = keybytes; i < 64; i++)
+	for (i = keybytes; i < hash->blocksize; i++)
 	{
-		hp->kxi[i] = HMAC_IPAD;
-		hp->kxo[i] = HMAC_OPAD;
+		kxi[i] = HMAC_IPAD;
+		kxo[i] = HMAC_OPAD;
 	}
 
-	return hmacReset(hp, hash, param);
+	return hmacReset(kxi, hash, param);
 }
 
-int hmacReset(hmacParam* hp, const hashFunction* hash, hashFunctionParam* param)
+int hmacReset(const byte* kxi, const hashFunction* hash, hashFunctionParam* param)
 {
 	if (hash->reset(param))
 		return -1;
-
-	if (hash->update(param, hp->kxi, 64))
+	if (hash->update(param, kxi, hash->blocksize))
 		return -1;
 
 	return 0;
 }
 
-int hmacUpdate(hmacParam* hp, const hashFunction* hash, hashFunctionParam* param, const byte* data, int size)
+int hmacUpdate(const hashFunction* hash, hashFunctionParam* param, const byte* data, size_t size)
 {
 	return hash->update(param, data, size);
 }
 
-int hmacDigest(hmacParam* hp, const hashFunction* hash, hashFunctionParam* param, uint32* data)
+int hmacDigest(const byte* kxo, const hashFunction* hash, hashFunctionParam* param, byte* data)
 {
 	if (hash->digest(param, data))
 		return -1;
-
-	if (hash->update(param, hp->kxo, 64))
+	if (hash->update(param, kxo, hash->blocksize))
 		return -1;
-
-	/* digestsize is in bytes; divide by 4 to get the number of words */
-	encodeInts((const javaint*) data, (byte*) data, hash->digestsize >> 2);
-
-	if (hash->update(param, (const byte*) data, hash->digestsize))
+	if (hash->update(param, data, hash->digestsize))
 		return -1;
-
 	if (hash->digest(param, data))
 		return -1;
 

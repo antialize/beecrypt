@@ -19,7 +19,7 @@
 
 /*!\file hmacsha256.c
  * \brief HMAC-SHA-256 message digest algorithm.
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup HMAC_m HMAC_sha256_m
  */
 
@@ -31,26 +31,26 @@
  * \{
  */
 
-const keyedHashFunction hmacsha256 = { "HMAC-SHA-256", sizeof(hmacsha256Param), 64, 8 * sizeof(uint32), 64, 512, 32, (keyedHashFunctionSetup) hmacsha256Setup, (keyedHashFunctionReset) hmacsha256Reset, (keyedHashFunctionUpdate) hmacsha256Update, (keyedHashFunctionDigest) hmacsha256Digest };
+const keyedHashFunction hmacsha256 = { "HMAC-SHA-256", sizeof(hmacsha256Param), 64, 8 * sizeof(uint32_t), 64, 512, 32, (keyedHashFunctionSetup) hmacsha256Setup, (keyedHashFunctionReset) hmacsha256Reset, (keyedHashFunctionUpdate) hmacsha256Update, (keyedHashFunctionDigest) hmacsha256Digest };
 
-int hmacsha256Setup (hmacsha256Param* sp, const uint32* key, int keybits)
+int hmacsha256Setup (hmacsha256Param* sp, const byte* key, size_t keybits)
 {
-	return hmacSetup(&sp->hparam, &sha256, &sp->sparam, key, keybits);
+	return hmacSetup(sp->kxi, sp->kxo, &sha256, &sp->sparam, key, keybits);
 }
 
 int hmacsha256Reset (hmacsha256Param* sp)
 {
-	return hmacReset(&sp->hparam, &sha256, &sp->sparam);
+	return hmacReset(sp->kxi, &sha256, &sp->sparam);
 }
 
-int hmacsha256Update(hmacsha256Param* sp, const byte* data, int size)
+int hmacsha256Update(hmacsha256Param* sp, const byte* data, size_t size)
 {
-	return hmacUpdate(&sp->hparam, &sha256, &sp->sparam, data, size);
+	return hmacUpdate(&sha256, &sp->sparam, data, size);
 }
 
-int hmacsha256Digest(hmacsha256Param* sp, uint32* data)
+int hmacsha256Digest(hmacsha256Param* sp, byte* data)
 {
-	return hmacDigest(&sp->hparam, &sha256, &sp->sparam, data);
+	return hmacDigest(sp->kxo, &sha256, &sp->sparam, data);
 }
 
 /*!\}

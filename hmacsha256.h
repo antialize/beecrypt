@@ -19,7 +19,7 @@
 
 /*!\file hmacsha256.h
  * \brief HMAC-SHA-256 message authentication code, headers.
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup HMAC_m HMAC_sha256_m
  */
 
@@ -33,8 +33,9 @@
  */
 typedef struct
 {
-	hmacParam hparam;
 	sha256Param sparam;
+	byte kxi[64];
+	byte kxo[64];
 } hmacsha256Param;
 
 #ifdef __cplusplus
@@ -44,13 +45,13 @@ extern "C" {
 extern BEECRYPTAPI const keyedHashFunction hmacsha256;
 
 BEECRYPTAPI
-int hmacsha256Setup (hmacsha256Param*, const uint32*, int);
+int hmacsha256Setup (hmacsha256Param*, const byte*, size_t);
 BEECRYPTAPI
 int hmacsha256Reset (hmacsha256Param*);
 BEECRYPTAPI
-int hmacsha256Update(hmacsha256Param*, const byte*, int);
+int hmacsha256Update(hmacsha256Param*, const byte*, size_t);
 BEECRYPTAPI
-int hmacsha256Digest(hmacsha256Param*, uint32*);
+int hmacsha256Digest(hmacsha256Param*, byte*);
 
 #ifdef __cplusplus
 }

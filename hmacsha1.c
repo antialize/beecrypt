@@ -23,7 +23,7 @@
  * \see RFC2202 - Test Cases for HMAC-MD5 and HMAC-SHA-1.
  *                P. Cheng, R. Glenn.
  *
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup HMAC_m HMAC_sha1_m
  */
 
@@ -35,26 +35,26 @@
  * \{
  */
 
-const keyedHashFunction hmacsha1 = { "HMAC-SHA-1", sizeof(hmacsha1Param), 64, 5 * sizeof(uint32), 64, 512, 32, (keyedHashFunctionSetup) hmacsha1Setup, (keyedHashFunctionReset) hmacsha1Reset, (keyedHashFunctionUpdate) hmacsha1Update, (keyedHashFunctionDigest) hmacsha1Digest };
+const keyedHashFunction hmacsha1 = { "HMAC-SHA-1", sizeof(hmacsha1Param), 64, 20, 64, 512, 32, (keyedHashFunctionSetup) hmacsha1Setup, (keyedHashFunctionReset) hmacsha1Reset, (keyedHashFunctionUpdate) hmacsha1Update, (keyedHashFunctionDigest) hmacsha1Digest };
 
-int hmacsha1Setup (hmacsha1Param* sp, const uint32* key, int keybits)
+int hmacsha1Setup (hmacsha1Param* sp, const byte* key, size_t keybits)
 {
-	return hmacSetup(&sp->hparam, &sha1, &sp->sparam, key, keybits);
+	return hmacSetup(sp->kxi, sp->kxo, &sha1, &sp->sparam, key, keybits);
 }
 
 int hmacsha1Reset (hmacsha1Param* sp)
 {
-	return hmacReset(&sp->hparam, &sha1, &sp->sparam);
+	return hmacReset(sp->kxi, &sha1, &sp->sparam);
 }
 
-int hmacsha1Update(hmacsha1Param* sp, const byte* data, int size)
+int hmacsha1Update(hmacsha1Param* sp, const byte* data, size_t size)
 {
-	return hmacUpdate(&sp->hparam, &sha1, &sp->sparam, data, size);
+	return hmacUpdate(&sha1, &sp->sparam, data, size);
 }
 
-int hmacsha1Digest(hmacsha1Param* sp, uint32* data)
+int hmacsha1Digest(hmacsha1Param* sp, byte* data)
 {
-	return hmacDigest(&sp->hparam, &sha1, &sp->sparam, data);
+	return hmacDigest(sp->kxo, &sha1, &sp->sparam, data);
 }
 
 /*!\}

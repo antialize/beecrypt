@@ -19,7 +19,7 @@
 
 /*!\file hmacmd5.h
  * \brief HMAC-MD5 message authentication code, headers.
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup HMAC_m HMAC_md5_m
  */
 
@@ -33,8 +33,9 @@
  */
 typedef struct
 {
-	hmacParam hparam;
 	md5Param mparam;
+	byte kxi[64];
+	byte kxo[64];
 } hmacmd5Param;
 
 #ifdef __cplusplus
@@ -44,13 +45,13 @@ extern "C" {
 extern BEECRYPTAPI const keyedHashFunction hmacmd5;
 
 BEECRYPTAPI
-int hmacmd5Setup (hmacmd5Param*, const uint32*, int);
+int hmacmd5Setup (hmacmd5Param*, const byte*, size_t);
 BEECRYPTAPI
 int hmacmd5Reset (hmacmd5Param*);
 BEECRYPTAPI
-int hmacmd5Update(hmacmd5Param*, const byte*, int);
+int hmacmd5Update(hmacmd5Param*, const byte*, size_t);
 BEECRYPTAPI
-int hmacmd5Digest(hmacmd5Param*, uint32*);
+int hmacmd5Digest(hmacmd5Param*, byte*);
 
 #ifdef __cplusplus
 }
