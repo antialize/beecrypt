@@ -22,7 +22,7 @@
  *
  * The routines declared here are all low-level operations, most of them
  * suitable to be implemented in assembler. Prime candidates are in order
- * of importance:
+ * of importance (according to gprof):
  * <ul>
  *  <li>mpaddmul
  *  <li>mpsetmul 
@@ -429,6 +429,14 @@ void mpsetw(size_t size, mpw* xdata, mpw y);
 BEECRYPTAPI
 void mpsetx(size_t size, mpw* xdata, size_t ysize, const mpw* ydata);
 
+/*!\fn int mpaddw(size_t size, mpw* xdata, mpw y)
+ * \brief This function adds one word to a multi-precision integer.
+ *  The performed operation is in pseudocode: x += y
+ * \param size The size of the multi-precision integers.
+ * \param xdata The first multi-precision integer.
+ * \param y The multi-precision word.
+ * \return The carry-over value of the operation; this value is either 0 or 1.
+ */
 BEECRYPTAPI
 int mpaddw(size_t size, mpw* xdata, mpw y);
 
@@ -442,13 +450,31 @@ int mpaddw(size_t size, mpw* xdata, mpw y);
  */
 BEECRYPTAPI
 int mpadd (size_t size, mpw* xdata, const mpw* ydata);
+
 BEECRYPTAPI
 int mpaddx(size_t xsize, mpw* xdata, size_t ysize, const mpw* ydata);
 
+/*!\fn int mpsubw(size_t size, mpw* xdata, mpw y)
+ * \brief This function subtracts one word to a multi-precision integer.
+ *  The performed operation is in pseudocode: x -= y
+ * \param size The size of the multi-precision integers.
+ * \param xdata The first multi-precision integer.
+ * \param y The multi-precision word.
+ * \return The carry-over value of the operation; this value is either 0 or 1.
 BEECRYPTAPI
 int mpsubw(size_t size, mpw* xdata, mpw y);
+
+/*!\fn int mpsub(size_t size, mpw* xdata, const mpw* ydata)
+ * \brief This function subtracts two multi-precision integers of equal size.
+ *  The performed operation is in pseudocode: x -= y
+ * \param size The size of the multi-precision integers.
+ * \param xdata The first multi-precision integer.
+ * \param ydata The second multi-precision integer.
+ * \return The carry-over value of the operation; this value is either 0 or 1.
+ */
 BEECRYPTAPI
 int mpsub (size_t size, mpw* xdata, const mpw* ydata);
+
 BEECRYPTAPI
 int mpsubx(size_t xsize, mpw* xdata, size_t ysize, const mpw* ydata);
 
@@ -460,16 +486,19 @@ void mpneg(size_t size, mpw* data);
 
 BEECRYPTAPI
 size_t mpsize(size_t size, const mpw* data);
+
 BEECRYPTAPI
 size_t mpbits(size_t size, const mpw* data);
 
 BEECRYPTAPI
 size_t mpmszcnt(size_t size, const mpw* data);
+
 BEECRYPTAPI
 size_t mplszcnt(size_t size, const mpw* data);
 
 BEECRYPTAPI
 void mplshift(size_t size, mpw* data, size_t count);
+
 BEECRYPTAPI
 void mprshift(size_t size, mpw* data, size_t count);
 
@@ -481,6 +510,7 @@ size_t mpnorm(size_t size, mpw* data);
 
 BEECRYPTAPI
 void mpdivtwo (size_t size, mpw* data);
+
 BEECRYPTAPI
 void mpsdivtwo(size_t size, mpw* data);
 
@@ -555,11 +585,13 @@ void mpndivmod(mpw*, size_t, const mpw*, size_t, const mpw*, mpw*);
 
 BEECRYPTAPI
 void mpprint(size_t size, const mpw* data);
+
 BEECRYPTAPI
 void mpprintln(size_t size, const mpw* data);
 
 BEECRYPTAPI
 void mpfprint(FILE* f, size_t size, const mpw* data);
+
 BEECRYPTAPI
 void mpfprintln(FILE* f, size_t size, const mpw* data);
 
@@ -569,6 +601,7 @@ void mpfprintln(FILE* f, size_t size, const mpw* data);
 
 BEECRYPTAPI
 int os2ip(mpw*, size_t, const byte*, size_t);
+
 BEECRYPTAPI
 int i2osp(byte*, size_t, const mpw*, size_t);
 
