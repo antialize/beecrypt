@@ -4,7 +4,6 @@
 	- Added more digest algorithms for PKCS#1 EMSA.
 	- Fixed missing definition in mpopt.h for s390x.
 	- Fixed nostackexec configuration bug.
-	- Fixed nostackexec problem with assembler files.
 	- Fixed problem in Date::toString.
 
 4.0.0:
