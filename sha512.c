@@ -122,10 +122,10 @@ int sha512Reset(register sha512Param* sp)
 void sha512Process(register sha512Param* sp)
 {
 	#ifdef OPTIMIZE_SSE2
-	# if defined(__GNUC__)
-	static const __m64 MASK = { 0x00FF00FF, 0x00FF00FF };
-	# elif defined(_MSC_VER)
+	# if defined(_MSC_VER) || defined(__INTEL_COMPILER)
 	static const __m64 MASK = { 0x00FF00FF00FF00FF };
+	# elif defined(__GNUC__)
+	static const __m64 MASK = { 0x00FF00FF, 0x00FF00FF };
 	# else
 	#  error
 	# endif
@@ -311,7 +311,7 @@ int sha512Update(register sha512Param* sp, const byte* data, size_t size)
 	mpadd(2, sp->length, add);
 	#elif (MP_WBITS == 32)
 	mpw add[4];
-	mpsetw(4, add, size);
+	mpsetws(4, add, size);
 	mplshift(4, add, 3);
 	mpadd(4, sp->length, add);
 	#else

@@ -56,6 +56,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define HAVE_ASSERT_H			1
+
 #define HAVE_ERRNO_H			1
 #define HAVE_CTYPE_H			1
 #define HAVE_FCNTL_H			1
@@ -97,6 +99,9 @@
 #define HAVE_64_BIT_INT			1
 #define HAVE_64_BIT_UINT		1
 
+#define SIZEOF_SIZE_T			4 /* not sure about this one */
+#define SIZEOF_UNSIGNED_LONG	4
+
 typedef char		int8_t;
 typedef short		int16_t;
 typedef long		int32_t;
@@ -115,6 +120,9 @@ typedef unsigned long long	uint64_t;
 
 #define HAVE_64_BIT_INT			1
 #define HAVE_64_BIT_UINT		1
+
+#define SIZEOF_SIZE_T			4
+#define SIZEOF_UNSIGNED_LONG	4
 
 typedef signed char	int8_t;
 typedef signed short int16_t;
@@ -135,5 +143,6 @@ typedef long off_t;
 typedef HANDLE bc_cond_t;
 typedef HANDLE bc_mutex_t;
 typedef HANDLE bc_thread_t;
+typedef DWORD  bc_threadid_t;
 
 #endif
