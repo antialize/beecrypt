@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002 Bob Deblier
+ * Copyright (c) 2002, 2003 Bob Deblier
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -37,15 +37,15 @@ typedef struct
 	/*!\var k
 	 * \brief Holds the key expansion.
 	 */
-	uint32 k[64];
+	uint32_t k[64];
 	/*!\var nr
 	 * \brief Number of rounds to be used in encryption/decryption.
 	 */
-	uint32 nr;
+	uint32_t nr;
 	/*!\var fdback
 	 * \brief Buffer to be used by block chaining or feedback modes.
 	 */
-	uint32 fdback[4];
+	uint32_t fdback[4];
 } aesParam;
 
 #ifdef __cplusplus
@@ -55,23 +55,15 @@ extern "C" {
 extern const BEECRYPTAPI blockCipher aes;
 
 BEECRYPTAPI
-int aesSetup  (aesParam*, const uint32*, int, cipherOperation);
+int			aesSetup   (aesParam*, const byte*, size_t, cipherOperation);
 BEECRYPTAPI
-int aesSetIV  (aesParam*, const uint32*);
+int			aesSetIV   (aesParam*, const byte*);
 BEECRYPTAPI
-int aesEncrypt(aesParam*, uint32*, const uint32*);
+int			aesEncrypt (aesParam*, uint32_t*, const uint32_t*);
 BEECRYPTAPI
-int aesDecrypt(aesParam*, uint32*, const uint32*);
-
+int			aesDecrypt (aesParam*, uint32_t*, const uint32_t*);
 BEECRYPTAPI
-int aesECBEncrypt(aesParam*, int, uint32*, const uint32*);
-BEECRYPTAPI
-int aesECBDecrypt(aesParam*, int, uint32*, const uint32*);
-
-BEECRYPTAPI
-int aesCBCEncrypt(aesParam*, int, uint32*, const uint32*);
-BEECRYPTAPI
-int aesCBCDecrypt(aesParam*, int, uint32*, const uint32*);
+uint32_t*	aesFeedback(aesParam*);
 
 #ifdef __cplusplus
 }
