@@ -98,7 +98,6 @@ AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_AWK
 AC_PROG_CPP
-AC_PROG_CXX
 AC_PROG_LIBTOOL
 AC_PROG_RANLIB
 
@@ -353,7 +352,21 @@ main()
 
   exit(0);
 }
-        ], ac_cv_have_working_aio=yes, ac_cv_have_working_aio=no)
+        ],
+        ac_cv_have_working_aio=yes,
+        ac_cv_have_working_aio=no,
+        [ case $target_os in
+            linux*)
+              ac_cv_have_working_aio=yes
+              ;;
+            solaris*)
+              ac_cv_have_working_aio=yes
+              ;;
+            *)
+              ac_cv_have_working_aio=no
+              ;;
+          esac
+        ])
       ])
     if test "$ac_cv_have_working_aio" = yes; then
       AC_DEFINE([ENABLE_AIO], 1)
@@ -584,6 +597,14 @@ esac
 
 case $target_os in
   cygwin*)
+    ;;
+  linux*)
+    AC_MSG_CHECKING([for /dev/random])
+    AC_MSG_RESULT(yes)
+    ac_cv_have_dev_random=yes
+    AC_MSG_CHECKING([for /dev/urandom])
+    AC_MSG_RESULT(yes)
+    ac_cv_have_dev_urandom=yes
     ;;
   *)
     AC_CHECKING(for generic entropy devices)
