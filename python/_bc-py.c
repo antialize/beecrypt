@@ -3,7 +3,7 @@
  */
 
 #define	_REENTRANT	1	/* XXX config.h collides with pyconfig.h */
-#include "system.h"
+#include "config.h"
 
 #include "Python.h"
 #ifdef __LCLINT__
@@ -13,8 +13,6 @@
 
 #include "mpw-py.h"
 #include "rng-py.h"
-
-#include "debug.h"
 
 #ifdef __LCLINT__
 #undef	PyObject_HEAD
