@@ -441,49 +441,35 @@ void mp32setx(register uint32 xsize, register uint32* xdata, register uint32 ysi
 #ifndef ASM_MP32ADDW
 uint32 mp32addw(register uint32 xsize, register uint32* xdata, register uint32 y)
 {
-	register uint64 temp;
-	register uint32 carry = 0;
+	register uint32 load, temp, carry = 0;
 
-	xdata += xsize;
-	temp = *(--xdata);
-	temp += y;
-	*xdata = (uint32) temp;
-	while (--xsize && (carry = (uint32) (temp >> 32)))
+	xdata += xsize-1;
+
+	load = *xdata;
+	temp = load + y;
+	*(xdata--) = temp;
+	carry = (load > temp);
+
+	while (--xsize && carry)
 	{
-		temp = *(--xdata);
-		temp += carry;
-		*xdata = (uint32) temp;
+		load = *xdata;
+		temp = load + 1;
+		*(xdata--) = temp;
+		carry = (load > temp);	
 	}
-	return (uint32)(temp >> 32);
+	return carry;
 }
 #endif
 
 #ifndef ASM_MP32ADD
 uint32 mp32add(register uint32 size, register uint32* xdata, register const uint32* ydata)
 {
-# if HAVE_UNSIGNED_LONG_LONG
-	register uint64 temp;
-	register uint32 carry = 0;
-
-	xdata += size;
-	ydata += size;
-
-	while (size--)
-	{
-		temp = *(--xdata);
-		temp += *(--ydata);
-		temp += carry;
-		*xdata = (uint32) temp;
-		carry = (uint32) (temp >> 32);
-	}
-	return carry;
-# else
 	register uint32 load, temp, carry = 0;
 
-	xdata += count-1;
-	ydata += count-1;
+	xdata += size-1;
+	ydata += size-1;
 
-	while (count--)
+	while (size--)
 	{
 		temp = *(ydata--);
 		load = *xdata;
@@ -492,7 +478,6 @@ uint32 mp32add(register uint32 size, register uint32* xdata, register const uint
 		carry = carry ? (load >= temp) : (load > temp);
 	}
 	return carry;
-# endif
 }
 #endif
 
@@ -516,20 +501,21 @@ uint32 mp32addx(register uint32 xsize, register uint32* xdata, register uint32 y
 #ifndef ASM_MP32SUBW
 uint32 mp32subw(register uint32 xsize, register uint32* xdata, register uint32 y)
 {
-	register uint64 temp;
-	register uint32 carry = 0;
+	register uint32 load, temp, carry = 0;
 
-	xdata += xsize;
-	temp = *(--xdata);
-	temp -= y;
-	*xdata = (uint32) temp;
-	carry = (temp >> 32) ? 1 : 0;
+	xdata += xsize-1;
+
+	load = *xdata;
+	temp = load - y;
+	*(xdata--) = temp;
+	carry = (load < temp);
+
 	while (--xsize && carry)
 	{
-		temp = *(--xdata);
-		temp -= carry;
-		*xdata = (uint32) temp;
-		carry = (temp >> 32) ? 1 : 0;
+		load = *xdata;
+		temp = load - 1;
+		*(xdata--) = temp;
+		carry = (load < temp);	
 	}
 	return carry;
 }
@@ -538,29 +524,12 @@ uint32 mp32subw(register uint32 xsize, register uint32* xdata, register uint32 y
 #ifndef ASM_MP32SUB
 uint32 mp32sub(register uint32 size, register uint32* xdata, register const uint32* ydata)
 {
-# if HAVE_UNSIGNED_LONG_LONG
-	register uint64 temp;
-	register uint32 carry = 0;
-
-	xdata += size;
-	ydata += size;
-
-	while (size--)
-	{
-		temp = *(--xdata);
-		temp -= *(--ydata);
-		temp -= carry;
-		*xdata = (uint32) temp;
-		carry = (temp >> 32) != 0;
-	}
-	return carry;
-# else
 	register uint32 load, temp, carry = 0;
 
-	xdata += count-1;
-	ydata += count-1;
+	xdata += size-1;
+	ydata += size-1;
 
-	while (count--)
+	while (size--)
 	{
 		temp = *(ydata--);
 		load = *xdata;
@@ -569,7 +538,6 @@ uint32 mp32sub(register uint32 size, register uint32* xdata, register const uint
 		carry = carry ? (load <= temp) : (load < temp);
 	}
 	return carry;
-# endif
 }
 #endif
 
