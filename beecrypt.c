@@ -43,6 +43,7 @@
 #include "entropy.h"
 
 #include "fips186.h"
+#include "mtprng.h"
 
 #include "md5.h"
 #include "sha1.h"
@@ -63,9 +64,6 @@ static entropySource entropySourceList[] =
 	{ "console", entropy_console },
 	{ "wincrypt", entropy_wincrypt },
 #else
-# if HAVE_DEV_AUDIO
-	{ "audio", entropy_dev_audio },
-# endif
 # if HAVE_DEV_DSP
 	{ "dsp", entropy_dev_dsp },
 # endif
@@ -74,6 +72,9 @@ static entropySource entropySourceList[] =
 # endif
 # if HAVE_DEV_RANDOM
 	{ "random", entropy_dev_random },
+# endif
+# if HAVE_DEV_AUDIO
+	{ "audio", entropy_dev_audio },
 # endif
 # if HAVE_DEV_TTY
 	{ "tty", entropy_dev_tty },
@@ -149,8 +150,8 @@ int entropyGatherNext(byte* data, size_t size)
 
 static const randomGenerator* randomGeneratorList[] =
 {
-	&fips186prng /*,
-	&mtprng */
+	&fips186prng,
+	&mtprng
 };
 
 #define RANDOMGENERATORS	(sizeof(randomGeneratorList) / sizeof(randomGenerator*))
@@ -729,7 +730,7 @@ const blockCipher* blockCipherDefault()
 	if (selection)
 		return blockCipherFind(selection);
 	else
-		return &blowfish;
+		return &aes;
 }
 
 const blockCipher* blockCipherGet(int index)
