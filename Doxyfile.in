@@ -154,7 +154,7 @@ ALIASES                =
 # For instance, some of the names that are used will be different. The list 
 # of all members will be omitted, etc.
 
-OPTIMIZE_OUTPUT_FOR_C  = NO
+OPTIMIZE_OUTPUT_FOR_C  = YES
 
 # Set the OPTIMIZE_OUTPUT_JAVA tag to YES if your project consists of Java sources 
 # only. Doxygen will then generate output that is more tailored for Java. 
@@ -362,19 +362,7 @@ WARN_LOGFILE           =
 # with spaces.
 
 INPUT                  = @top_srcdir@/Doxyheader \
-                         @top_srcdir@/ \
-                         @top_srcdir@/c++ \
-                         @top_srcdir@/c++/crypto \
-                         @top_srcdir@/c++/crypto/interfaces \
-                         @top_srcdir@/c++/crypto/spec \
-                         @top_srcdir@/c++/io \
-                         @top_srcdir@/c++/lang \
-                         @top_srcdir@/c++/nio \
-                         @top_srcdir@/c++/security \
-                         @top_srcdir@/c++/security/cert \
-                         @top_srcdir@/c++/security/interfaces \
-                         @top_srcdir@/c++/security/spec \
-                         @top_srcdir@/c++/util
+                         @top_srcdir@/
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 
