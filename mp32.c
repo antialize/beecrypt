@@ -1128,11 +1128,33 @@ void mp32gcd_w(uint32 size, const uint32* xdata, const uint32* ydata, uint32* re
 }
 #endif
 
-#ifndef HAVE_UNSIGNED_LONG_LONG
+#if !HAVE_UNSIGNED_LONG_LONG
 # ifndef ASM_MP32PNDIV
 uint32 mp32pndiv(uint32 xhi, uint32 xlo, uint32 y)
 {
-	/* expect y with msb set and y < xhi */
+	register uint32 result = 0;
+	register uint8 count = 32;
+	register int carry = 0;
+
+	while (count--)
+	{
+		if (carry | (xhi >= y))
+		{
+			xhi -= y;
+			result |= 1;
+		}
+		carry = (xhi & 0x80000000);
+		xhi <<= 1;
+		xhi |= (xlo >> 31);
+		xlo <<= 1;
+		result <<= 1;
+	}
+	if (carry | (xhi >= y))
+	{
+		xhi -= y;
+		result |= 1;
+	}
+	return result;
 }
 # endif
 #endif
@@ -1273,26 +1295,6 @@ void mp32ndivmod(uint32* result, uint32 xsize, const uint32* xdata, uint32 ysize
 	}
 }
 #endif
-
-/*
-#ifndef ASM_MP32UNPACK
-void mp32unpack(uint32 size, uint8* bytes, const uint32* bits)
-{
-	register uint32 temp;
-	register int i;
-	
-	while (size--)
-	{
-		temp = *(bits++);
-
-		for (i = 0; i < 31; i++)
-		{
-			bytes
-		}
-	}
-}
-#endif
-*/
 
 #ifndef ASM_MP32PRINT
 void mp32print(register uint32 xsize, register const uint32* xdata)
