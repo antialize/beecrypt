@@ -1171,7 +1171,7 @@ LABEL(aesEncrypt)
 
 	subl $32,%esp
 
-	eblock label=e
+	eblock .L00
 
 	movl   (%esp),%eax
 	movl  4(%esp),%ebx
@@ -1211,7 +1211,7 @@ LABEL(aesDecrypt)
 
 	subl $32,%esp
 
-	dblock label=d
+	dblock .L01
 
 	movl   (%esp),%eax
 	movl  4(%esp),%ebx
