@@ -1,4 +1,4 @@
-4.0.0-pre:
+4.0.0:
 	- Added a C++ API interface, modeled after Java's security & crypto API.
 	- Added the new GNU noexecstack feature.
 	- Added more x86_64 and s390x assembler routines.
