@@ -16,6 +16,7 @@ dnl  BeeCrypt specific autoconf macros
 dnl  Copyright 2003 Bob Deblier <bob.deblier@pandora.be>
 dnl
 dnl  This file is part of the BeeCrypt crypto library
+dnl  
 dnl
 dnl  LGPL
 
@@ -305,6 +306,12 @@ AC_DEFUN(BEECRYPT_GNU_CC,[
     pentium*)
       CFLAGS="$CFLAGS -march=$bc_target_arch"
       ;;
+    powerpc)
+      CFLAGS="$CFLAGS -mcpu=powerpc"
+      ;;
+    powerpc64)
+      CFLAGS="$CFLAGS -mcpu=powerpc64"
+      ;;
     sparcv8)
       CFLAGS="$CFLAGS -mv8"
       ;;
@@ -352,7 +359,6 @@ dnl  BEECRYPT_IBM_CC
 AC_DEFUN(BEECRYPT_IBM_CC,[
   AC_REQUIRE([AC_PROG_CC])
   AC_REQUIRE([AC_PROG_CPP])
-  AC_MSG_WARN([doing a check for IBM])
   AC_CACHE_CHECK([whether we are using IBM C],bc_cv_prog_IBM_CC,[
     AC_EGREP_CPP(yes,[
       #ifdef __IBMC__
@@ -360,7 +366,6 @@ AC_DEFUN(BEECRYPT_IBM_CC,[
       #endif
       ],bc_cv_prog_IBM_CC=yes,bc_cv_prog_IBM_CC=no)
     ])
-  AC_MSG_WARN([done checking])
   if test "$bc_cv_prog_IBM_CC" = yes; then
     case $bc_target_arch in
     powerpc)
@@ -371,6 +376,7 @@ AC_DEFUN(BEECRYPT_IBM_CC,[
       ;;
     esac
     if test "$ac_enable_debug" != yes; then
+      BEECRYPT_CFLAGS_REM([-g])
       if test "$ac_with_arch" = yes; then
         CFLAGS="$CFLAGS -O5"
       else
@@ -442,6 +448,7 @@ AC_DEFUN(BEECRYPT_SUN_FORTE_CC,[
       CFLAGS="$CFLAGS -mt"
     fi
     if test "$ac_enable_debug" != yes; then
+      BEECRYPT_CFLAGS_REM([-g])
       CFLAGS="$CFLAGS -fast"
       case $bc_target_arch in
       sparc)
@@ -480,9 +487,9 @@ AC_DEFUN(BEECRYPT_ASM_TEXTSEG,[
         bc_cv_asm_textseg=[".csect .text[PR]"] ;;
       hpux*)
         if test "$bc_target_arch" = ia64; then
-          bc_ bc_cv_asm_textseg=[".section .text"]
+          bc_cv_asm_textseg=[".section .text"]
         else
-          bc_ bc_cv_asm_textseg=".code"
+          bc_cv_asm_textseg=".code"
         fi
         ;;
       *)
@@ -493,31 +500,9 @@ AC_DEFUN(BEECRYPT_ASM_TEXTSEG,[
   ])
 
 
-dnl  BEECRYPT_ASM_DATASEG
-AC_DEFUN(BEECRYPT_ASM_DATASEG,[
-  AC_CACHE_CHECK([how to switch to data segment],
-    bc_cv_asm_dataseg,[
-      case $target_os in
-      aix*)
-        bc_cv_asm_dataseg=[".csect .text[RW]"] ;;
-      hpux*)
-        if test "$bc_target_arch" = ia64; then
-          bc_ bc_cv_asm_textseg=[".section .data"]
-        else
-          bc_ bc_cv_asm_textseg=".data"
-        fi
-        ;;
-      *)
-        bc_cv_asm_dataseg=".data" ;;
-      esac
-    ])
-  AC_SUBST(ASM_DATASEG,$bc_cv_asm_dataseg)
-  ])
-
-
 dnl  BEECRYPT_ASM_GLOBL
 AC_DEFUN(BEECRYPT_ASM_GLOBL,[
-  AC_CACHE_CHECK([how to export a symbol in assembler],
+  AC_CACHE_CHECK([how to declare a global symbol],
     bc_cv_asm_globl,[
       case $target_os in
       hpux*) bc_cv_asm_globl=".export" ;;
@@ -543,7 +528,7 @@ AC_DEFUN(BEECRYPT_ASM_GSYM_PREFIX,[
 
 dnl  BEECRYPT_ASM_LSYM_PREFIX
 AC_DEFUN(BEECRYPT_ASM_LSYM_PREFIX,[
-  AC_CACHE_CHECK([how to declare a local symbols],
+  AC_CACHE_CHECK([how to declare a local symbol],
     bc_cv_asm_lsym_prefix,[
       case $target_os in
       aix* | darwin*) bc_cv_asm_lsym_prefix="L" ;;
@@ -563,6 +548,10 @@ AC_DEFUN(BEECRYPT_ASM_LSYM_PREFIX,[
 
 dnl  BEECRYPT_ASM_SOURCES
 AC_DEFUN(BEECRYPT_ASM_SOURCES,[
+  echo > mpopt.s
+  echo > aesopt.s
+  echo > blowfishopt.s
+  echo > sha1opt.s
   case $bc_target_arch in
   arm)
     AC_CONFIG_COMMANDS([mpopt.arm],[
@@ -617,22 +606,18 @@ AC_DEFUN(BEECRYPT_ASM_SOURCES,[
     # Code is i586-specific!
     case $bc_target_arch in
     athlon* | i[[56]]86 | pentium*)
-      AC_CONFIG_COMMANDS([aesopt],[
+      AC_CONFIG_COMMANDS([aesopt.i586],[
         m4 $srcdir/gas/aesopt.i586.m4 > aesopt.s
         ])
-      AC_CONFIG_COMMANDS([blowfishopt],[
+      AC_CONFIG_COMMANDS([blowfishopt.i586],[
         m4 $srcdir/gas/blowfishopt.i586.m4 > blowfishopt.s
         ])
-      AC_CONFIG_COMMANDS([sha1opt],[
+      AC_CONFIG_COMMANDS([sha1opt.i586],[
         m4 $srcdir/gas/sha1opt.i586.m4 > sha1opt.s
         ])
       ;;
     esac
   fi
-  touch mpopt.s
-  touch aesopt.s
-  touch blowfishopt.s
-  touch sha1opt.s
   ])
 
 # Do all the work for Automake.                            -*- Autoconf -*-
@@ -4939,36 +4924,4 @@ AC_DEFUN([AM_PROG_NM],        [AC_PROG_NM])
 
 # This is just to silence aclocal about the macro not being used
 ifelse([AC_DISABLE_FAST_INSTALL])
-
-# Figure out how to run the assembler.             -*- Autoconf -*-
-
-# serial 2
-
-# Copyright 2001 Free Software Foundation, Inc.
-
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2, or (at your option)
-# any later version.
-
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
-# 02111-1307, USA.
-
-# AM_PROG_AS
-# ----------
-AC_DEFUN([AM_PROG_AS],
-[# By default we simply use the C compiler to build assembly code.
-AC_REQUIRE([AC_PROG_CC])
-: ${CCAS='$(CC)'}
-# Set ASFLAGS if not already set.
-: ${CCASFLAGS='$(CFLAGS)'}
-AC_SUBST(CCAS)
-AC_SUBST(CCASFLAGS)])
 

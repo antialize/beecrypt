@@ -293,6 +293,12 @@ AC_DEFUN(BEECRYPT_GNU_CC,[
     pentium*)
       CFLAGS="$CFLAGS -march=$bc_target_arch"
       ;;
+    powerpc)
+      CFLAGS="$CFLAGS -mcpu=powerpc"
+      ;;
+    powerpc64)
+      CFLAGS="$CFLAGS -mcpu=powerpc64"
+      ;;
     sparcv8)
       CFLAGS="$CFLAGS -mv8"
       ;;
