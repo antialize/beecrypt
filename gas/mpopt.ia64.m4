@@ -28,8 +28,9 @@ define(`alt',`r19')
 
 
 C_FUNCTION_BEGIN(mpadd)
+	.prologue
+	.save ar.lc, saved_lc
 	alloc saved_pfs = ar.pfs,3,5,0,8
-	mov saved_lc = ar.lc
 	sub sze = in0,r0,1;;
 
 dnl	adjust addresses
@@ -42,14 +43,14 @@ dnl	prepare modulo-scheduled loop
 	mov ar.ec = 2 
 	mov pr.rot = ((1 << 16) | (1 << 19));;
 
+	.body
 LOCAL(mpadd_loop):
+	.pred.rel.mutex p20,p22
 	(p16) ld8 r32 = [alt],-8
 	(p16) ld8 r35 = [src],-8
-	.pred.rel.mutex p20,p22
 	(p20) add r36 = r33,r36
 	(p22) add r36 = r33,r36,1
 	;;
-	.pred.rel.mutex p20,p22
 	(p20) cmp.leu p19,p21 = r33,r36
 	(p22) cmp.ltu p19,p21 = r33,r36
 	(p18) st8 [dst] = r37,-8
@@ -70,8 +71,9 @@ C_FUNCTION_END(mpadd)
 
 
 C_FUNCTION_BEGIN(mpsub)
+	.prologue
+	.save ar.lc, saved_lc
 	alloc saved_pfs = ar.pfs,3,5,0,8
-	mov saved_lc = ar.lc
 	sub sze = in0,r0,1;;
 
 dnl	adjust addresses
@@ -84,14 +86,14 @@ dnl	prepare modulo-scheduled loop
 	mov ar.ec = 2 
 	mov pr.rot = ((1 << 16) | (1 << 19));;
 
+	.body
 LOCAL(mpsub_loop):
+	.pred.rel.mutex p20,p22
 	(p16) ld8 r32 = [alt],-8
 	(p16) ld8 r35 = [src],-8
-	.pred.rel.mutex p20,p22
 	(p20) sub r36 = r33,r36
 	(p22) sub r36 = r33,r36,1
 	;;
-	.pred.rel.mutex p20,p22
 	(p20) cmp.geu p19,p21 = r33,r36
 	(p22) cmp.gtu p19,p21 = r33,r36
 	(p18) st8 [dst] = r37,-8
@@ -112,8 +114,9 @@ C_FUNCTION_END(mpsub)
 
 
 C_FUNCTION_BEGIN(mpsetmul)
+	.prologue
+	.save ar.lc, saved_lc
 	alloc saved_pfs = ar.pfs,4,4,0,8
-	mov saved_lc = ar.lc
 
 	setf.sig f6 = in3
 	setf.sig f7 = r0
@@ -128,6 +131,7 @@ dnl	prepare modulo-scheduled loop
 	mov ar.ec = 3
 	mov pr.rot = (1 << 16);;
 
+	.body
 LOCAL(mpsetmul_loop):
 	(p16) ldf8 f32 = [src],-8
 	(p18) stf8 [dst] = f35,-8
@@ -145,8 +149,9 @@ C_FUNCTION_END(mpsetmul)
 
 
 C_FUNCTION_BEGIN(mpaddmul)
+	.prologue
+	.save ar.lc, saved_lc
 	alloc saved_pfs = ar.pfs,4,4,0,8
-	mov saved_lc = ar.lc
 
 	setf.sig f6 = in3
 	sub sze = in0,r0,1;;
@@ -164,6 +169,7 @@ dnl	prepare modulo-scheduled loop
 	mov ar.ec = 4
 	mov pr.rot = ((1 << 16) | (1 << 21));;
 
+	.body
 LOCAL(mpaddmul_loop):
 	.pred.rel.mutex p24,p26
 	(p18) getf.sig r37 = f35
@@ -176,7 +182,6 @@ LOCAL(mpaddmul_loop):
 	(p16) ldf8 f36 = [alt],-8
 	;;
 dnl	set carry from this operation
-	.pred.rel.mutex p24,p26
 	(p24) cmp.leu p23,p25 = r38,r35
 	(p26) cmp.ltu p23,p25 = r38,r35
 	(p20) st8 [dst] = r36,-8
