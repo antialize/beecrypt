@@ -30,6 +30,7 @@
 #endif
 
 #include "dldp.h"
+#include "mp.h"
 #include "mpprime.h"
 
 #if HAVE_STDLIB_H
