@@ -391,6 +391,22 @@ void mpclrlsb(size_t size, mpw* data)
 }
 #endif
 
+#ifndef ASM_MPAND
+void mpand(size_t size, mpw* xdata, const mpw* ydata)
+{
+	while (size--)
+		xdata[size] &= ydata[size];
+}
+#endif
+
+#ifndef ASM_MPOR
+void mpor(size_t size, mpw* xdata, const mpw* ydata)
+{
+	while (size--)
+		xdata[size] |= ydata[size];
+}
+#endif
+
 #ifndef ASM_MPXOR
 void mpxor(size_t size, mpw* xdata, const mpw* ydata)
 {
@@ -931,6 +947,32 @@ size_t mplszcnt(size_t size, const mpw* data)
 }
 #endif
 
+#ifndef ASM_MPPOPCNT
+size_t mppopcnt(size_t size, const mpw* data)
+{
+	register mpw xmask = (mpw)((*data & MP_MSBMASK) ? -1 : 0);
+	register size_t nbits = MP_WBITS * size;
+	register size_t i = 0;
+
+	while (i < size)
+	{
+		register mpw temp = (data[i++] ^ xmask);
+		if (temp)
+		{
+			while (!(temp & MP_MSBMASK))
+			{
+				nbits--;
+				temp <<= 1;
+			}
+			break;
+		}
+		else
+			nbits -= MP_WBITS;
+	}
+	return nbits;
+}
+#endif
+
 #ifndef ASM_MPLSHIFT
 void mplshift(size_t size, mpw* data, size_t count)
 {
@@ -1123,7 +1165,7 @@ int mpextgcd_w(size_t size, const mpw* xdata, const mpw* ndata, mpw* result, mpw
 {
 	/*
 	 * For computing a modular inverse, pass the modulus as ndata and the number
-     * to be inverted as xdata.
+	 * to be inverted as xdata.
 	 *
 	 * Fact: if a element of Zn, then a is invertible if and only if gcd(a,n) = 1
 	 * Hence: if ndata is even, then x must be odd, otherwise the gcd(x,n) >= 2
@@ -1158,7 +1200,7 @@ int mpextgcd_w(size_t size, const mpw* xdata, const mpw* ndata, mpw* result, mpw
 		{
 			mpdivtwo(sizep, udata);
 
-			if ((full && mpodd(sizep, adata)) || mpodd(sizep, bdata))
+			if (mpodd(sizep, bdata) || (full && mpodd(sizep, adata)))
 			{
 				if (full) mpaddx(sizep, adata, size, xdata);
 				mpsubx(sizep, bdata, size, ndata);
@@ -1171,7 +1213,7 @@ int mpextgcd_w(size_t size, const mpw* xdata, const mpw* ndata, mpw* result, mpw
 		{
 			mpdivtwo(sizep, vdata);
 
-			if ((full && mpodd(sizep, cdata)) || mpodd(sizep, ddata))
+			if (mpodd(sizep, ddata) || (full && mpodd(sizep, cdata)))
 			{
 				if (full) mpaddx(sizep, cdata, size, xdata);
 				mpsubx(sizep, ddata, size, ndata);
@@ -1193,7 +1235,7 @@ int mpextgcd_w(size_t size, const mpw* xdata, const mpw* ndata, mpw* result, mpw
 			mpsub(sizep, ddata, bdata);
 		}
 		if (mpz(sizep, udata))
-		{       
+		{
 			if (mpisone(sizep, vdata))
 			{
 				if (result)
