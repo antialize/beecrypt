@@ -19,7 +19,7 @@
 
 /*!\file entropy.h
  * \brief Entropy sources, headers.
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup ES_m ES_audio_m ES_dsp_m ES_random_m ES_urandom_m ES_tty_m
  */
 
@@ -43,26 +43,26 @@ BEECRYPTAPI
 int entropy_provider_cleanup();
 
 BEECRYPTAPI
-int entropy_wavein(uint32*, int);
+int entropy_wavein(byte*, size_t);
 BEECRYPTAPI
-int entropy_console(uint32*, int);
+int entropy_console(byte*, size_t);
 BEECRYPTAPI
-int entropy_wincrypt(uint32*, int);
+int entropy_wincrypt(byte*, size_t);
 #else
 #if HAVE_DEV_AUDIO
-int entropy_dev_audio (uint32*, int);
+int entropy_dev_audio  (byte*, size_t);
 #endif
 #if HAVE_DEV_DSP
-int entropy_dev_dsp   (uint32*, int);
+int entropy_dev_dsp    (byte*, size_t);
 #endif
 #if HAVE_DEV_RANDOM
-int entropy_dev_random(uint32*, int);
+int entropy_dev_random (byte*, size_t);
 #endif
 #if HAVE_DEV_URANDOM
-int entropy_dev_urandom(uint32*, int);
+int entropy_dev_urandom(byte*, size_t);
 #endif
 #if HAVE_DEV_TTY
-int entropy_dev_tty   (uint32*, int);
+int entropy_dev_tty    (byte*, size_t);
 #endif
 #endif
 

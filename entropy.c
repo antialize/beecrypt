@@ -18,7 +18,7 @@
  */
 
 /*!\file entropy.c
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup ES_m ES_audio_m ES_dsp_m ES_random_m ES_urandom_m ES_tty_m
  */
 
@@ -137,7 +137,7 @@ static int entropy_noise_filter(void* sampledata, int samplecount, int samplesiz
 	{
 	case 1:
 		{
-			uint8* samples = (uint8*) sampledata;
+			uint8_t* samples = (uint8_t*) sampledata;
 
 			switch (channels)
 			{
@@ -211,7 +211,7 @@ static int entropy_noise_filter(void* sampledata, int samplecount, int samplesiz
 
 	case 2:
 		{
-			uint16* samples = (uint16*) sampledata;
+			uint16_t* samples = (uint16_t*) sampledata;
 
 			switch (channels)
 			{
@@ -308,13 +308,13 @@ static int entropy_noise_filter(void* sampledata, int samplecount, int samplesiz
 */
 
 #if WIN32
-static int entropy_noise_gather(HWAVEIN wavein, int samplesize, int channels, int swap, int timeout, uint32 *data, int size)
+static int entropy_noise_gather(HWAVEIN wavein, int samplesize, int channels, int swap, int timeout, byte* data, size_t size)
 #else
-static int entropy_noise_gather(int fd, int samplesize, int channels, int swap, int timeout, uint32 *data, int size)
+static int entropy_noise_gather(int fd, int samplesize, int channels, int swap, int timeout, byte* data, size_t size)
 #endif
 {
-	uint32 randombits = size << 5;
-	uint32 temp = 0;
+	size_t randombits = size << 3;
+	byte temp = 0;
 	int rc, i;
 
 	byte* sampledata = (byte*) malloc(1024 * samplesize * channels);
@@ -467,7 +467,7 @@ static int entropy_noise_gather(int fd, int samplesize, int channels, int swap, 
 		{
 		case 1:
 			{
-				uint8* samples = (uint8*) sampledata;
+				uint8_t* samples = (uint8_t*) sampledata;
 
 				for (i = 0; randombits && (i < 1024); i += 2)
 				{
@@ -476,7 +476,7 @@ static int entropy_noise_gather(int fd, int samplesize, int channels, int swap, 
 						temp <<= 1;
 						temp |= samples[i];
 						randombits--;
-						if (!(randombits & 0x1f))
+						if (!(randombits & 0x7))
 							*(data++) = temp;
 					}
 				}
@@ -485,7 +485,7 @@ static int entropy_noise_gather(int fd, int samplesize, int channels, int swap, 
 
 		case 2:
 			{
-				uint16* samples = (uint16*) sampledata;
+				uint16_t* samples = (uint16_t*) sampledata;
 
 				for (i = 0; randombits && (i < 1024); i += 2)
 				{
@@ -494,7 +494,7 @@ static int entropy_noise_gather(int fd, int samplesize, int channels, int swap, 
 						temp <<= 1;
 						temp |= samples[i];
 						randombits--;
-						if (!(randombits & 0x1f))
+						if (!(randombits & 0x7))
 							*(data++) = temp;
 					}
 				}
@@ -518,7 +518,7 @@ static int entropy_noise_gather(int fd, int samplesize, int channels, int swap, 
 #endif
 
 #if WIN32
-int entropy_wavein(uint32* data, int size)
+int entropy_wavein(byte* data, size_t size)
 {
 	const char *timeout_env = getenv("BEECRYPT_ENTROPY_WAVEIN_TIMEOUT");
 
@@ -635,10 +635,9 @@ int entropy_wavein(uint32* data, int size)
 	return rc;
 }
 
-int entropy_console(uint32* data, int size)
+int entropy_console(byte* data, size_t size)
 {
-	register uint32 randombits = size << 5;
-	register uint32 temp = 0;
+	register size_t randombits = size << 3;
 
 	HANDLE hStdin;
 	DWORD inRet;
@@ -671,13 +670,9 @@ int entropy_console(uint32* data, int size)
 			}
 
 			/* get 8 bits from the sample */
-			temp <<= 8;
 			/* discard the 2 lowest bits */
-			temp |= (uint32)(hrtsample.LowPart >> 2);
+			*(data++) = (byte)(hrtsample.LowPart >> 2);
 			randombits -= 8;
-
-			if (!(randombits & 0x1f))
-				*(data++) = temp;
 		}
 	}
 
@@ -694,7 +689,7 @@ int entropy_console(uint32* data, int size)
 	return 0;
 }
 
-int entropy_wincrypt(uint32* data, int size)
+int entropy_wincrypt(byte* data, size_t size)
 {
 	HCRYPTPROV hCrypt;
 	DWORD provType = PROV_RSA_FULL;
@@ -717,7 +712,7 @@ int entropy_wincrypt(uint32* data, int size)
 		#endif
 	}
 
-	rc = CryptGenRandom(hCrypt, size << 2, (BYTE*) data);
+	rc = CryptGenRandom(hCrypt, size, (BYTE*) data);
 
 	CryptReleaseContext(hCrypt, 0);
 
@@ -861,10 +856,8 @@ static int opendevice(const char *device)
 /* timeout is in milliseconds */
 /*!\ingroup ES_random_m ES_urandom_m
  */
-static int entropy_randombits(int fd, int timeout, uint32* data, int size)
+static int entropy_randombits(int fd, int timeout, byte* data, size_t size)
 {
-	register byte* bytedata = (byte*) data;
-	register int   bytesize = (size << 2);
 	register int rc;
 
 	#if ENABLE_AIO
@@ -882,15 +875,15 @@ static int entropy_randombits(int fd, int timeout, uint32* data, int size)
 	my_aiocb.aio_sigevent.sigev_notify = SIGEV_NONE;
 	#endif
 
-	while (bytesize)
+	while (size)
 	{
 		#if ENABLE_AIO
-		my_aiocb.aio_buf = bytedata;
-		my_aiocb.aio_nbytes = bytesize;
+		my_aiocb.aio_buf = data;
+		my_aiocb.aio_nbytes = size;
 
 		rc = aio_read(&my_aiocb);
 		#else
-		rc = read(fd, bytedata, bytesize);
+		rc = read(fd, data, size);
 		#endif
 
 		if (rc < 0)
@@ -952,8 +945,8 @@ static int entropy_randombits(int fd, int timeout, uint32* data, int size)
 			return -1;
 		#endif
 
-		bytedata += rc;
-		bytesize -= rc;
+		data += rc;
+		size -= rc;
 	}
 	return 0;
 }
@@ -962,10 +955,8 @@ static int entropy_randombits(int fd, int timeout, uint32* data, int size)
 #if HAVE_DEV_TTY
 /*!\ingroup ES_tty_m
  */
-static int entropy_ttybits(int fd, uint32* data, int size)
+static int entropy_ttybits(int fd, byte* data, size_t size)
 {
-	uint32 randombits = size << 5;
-	uint32 temp = 0;
 	byte dummy;
 
 	#if HAVE_TERMIOS_H
@@ -1035,7 +1026,7 @@ static int entropy_ttybits(int fd, uint32* data, int size)
 	# error Need alternative tty control library
 	#endif
 
-	while (randombits)
+	while (size)
 	{
 		if (read(fd, &dummy, 1) < 0)
 		{
@@ -1047,23 +1038,18 @@ static int entropy_ttybits(int fd, uint32* data, int size)
 		printf("."); fflush(stdout);
 		#if HAVE_GETHRTIME
 		hrtsample = gethrtime();
-		/* get 16 bits from the sample */
-		temp <<= 16;
-		/* discard the 10 lowest bits i.e. 1024 nanoseconds */
-		temp |= (uint16)(hrtsample >> 10);
-		randombits -= 16;
+		/* discard the 10 lowest bits i.e. 1024 nanoseconds of a sample */
+		*(data++) = (byte)(hrtsample >> 10);
+		size--;
 		#elif HAVE_GETTIMEOFDAY
 		/* discard the 4 lowest bits i.e. 4 microseconds */
 		gettimeofday(&tvsample, 0);
 		/* get 8 bits from the sample */
-		temp <<= 8;
-		temp |= (uint8)(tvsample.tv_usec >> 2);
-		randombits -= 8;
+		*(data) = (byte)(tvsample.tv_usec >> 2);
+		size--;
 		#else
 		# error Need alternative high-precision timer sample
 		#endif
-		if (!(randombits & 0x1f))
-			*(data++) = temp;
 	}
 
 	printf("\nthanks\n");
@@ -1100,7 +1086,7 @@ static int entropy_ttybits(int fd, uint32* data, int size)
 #if HAVE_DEV_AUDIO
 /*!\ingroup ES_audio_m
  */
-int entropy_dev_audio(uint32 *data, int size)
+int entropy_dev_audio(byte* data, size_t size)
 {
 	const char* timeout_env = getenv("BEECRYPT_ENTROPY_AUDIO_TIMEOUT");
 
@@ -1192,7 +1178,7 @@ dev_audio_end:
 #if HAVE_DEV_DSP
 /*!\ingroup ES_dsp_m
  */
-int entropy_dev_dsp(uint32 *data, int size)
+int entropy_dev_dsp(byte* data, size_t size)
 {
 	const char* timeout_env = getenv("BEECRYPT_ENTROPY_DSP_TIMEOUT");
 
@@ -1314,7 +1300,7 @@ dev_dsp_end:
 #if HAVE_DEV_RANDOM
 /*!\ingroup ES_random_m
  */
-int entropy_dev_random(uint32* data, int size)
+int entropy_dev_random(byte* data, size_t size)
 {
 	const char* timeout_env = getenv("BEECRYPT_ENTROPY_RANDOM_TIMEOUT");
 
@@ -1358,7 +1344,7 @@ dev_random_end:
 #if HAVE_DEV_URANDOM
 /*!\ingroup ES_urandom_m
  */
-int entropy_dev_urandom(uint32* data, int size)
+int entropy_dev_urandom(byte* data, size_t size)
 {
 	const char* timeout_env = getenv("BEECRYPT_ENTROPY_URANDOM_TIMEOUT");
 
@@ -1402,7 +1388,7 @@ dev_urandom_end:
 #if HAVE_DEV_TTY
 /*!\ingroup ES_tty_m
  */
-int entropy_dev_tty(uint32* data, int size)
+int entropy_dev_tty(byte* data, size_t size)
 {
 	register int rc;
 
