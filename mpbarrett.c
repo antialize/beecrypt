@@ -273,7 +273,7 @@ void mpbrndinv_w(const mpbarrett* b, randomGeneratorContext* rc, mpw* result, mp
 		else
 			mpbrnd_w(b, rc, result, wksp);
 
-	} while (mpextgcd_w(size, result, b->modl, inverse, wksp) == 0);
+	} while (mpextgcd_w(size, b->modl, result, inverse, wksp) == 0);
 }
 
 /*
