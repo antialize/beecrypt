@@ -363,22 +363,25 @@ int hashFunctionContextUpdateMP(hashFunctionContext* ctxt, const mpnumber* n)
 	if (n != (mpnumber*) 0)
 	{
 		int rc;
-		byte* tmp = (byte*) malloc(MP_WORDS_TO_BYTES(n->size) + 1);
+
+		/* get the number of significant bits in the number */
+		size_t sig = mpbits(n->size, n->data);
+
+		/* calculate how many bytes we need for a java-style encoding;
+		 * if the most significant bit of the most significant byte
+		 * is set, then we need to prefix a zero byte.
+		 */
+		size_t req = ((sig+7) >> 3) + (((sig&7) == 0) ? 1 : 0);
+
+		byte* tmp = (byte*) malloc(req);
 
 		if (tmp == (byte*) 0)
 			return -1;
 
-		if (mpmsbset(n->size, n->data))
-		{
-			tmp[0] = 0;
-			i2osp(tmp+1, MP_WORDS_TO_BYTES(n->size), n->data, n->size);
-			rc = ctxt->algo->update(ctxt->param, tmp, MP_WORDS_TO_BYTES(n->size) + 1);
-		}
-		else
-		{
-			i2osp(tmp, MP_WORDS_TO_BYTES(n->size), n->data, n->size);
-			rc = ctxt->algo->update(ctxt->param, tmp, MP_WORDS_TO_BYTES(n->size));
-		}
+		i2osp(tmp, req, n->data, n->size);
+
+		rc = ctxt->algo->update(ctxt->param, tmp, req);
+
 		free(tmp);
 
 		return rc;
@@ -611,21 +614,27 @@ int keyedHashFunctionContextUpdateMP(keyedHashFunctionContext* ctxt, const mpnum
 
 	if (n != (mpnumber*) 0)
 	{
-		register int rc;
-		register byte* temp = (byte*) malloc(MP_WORDS_TO_BYTES(n->size)+1);
+		int rc;
 
-		if (mpmsbset(n->size, n->data))
-		{
-			temp[0] = 0;
-			i2osp(temp+1, MP_WORDS_TO_BYTES(n->size), n->data, n->size);
-			rc = ctxt->algo->update(ctxt->param, temp, MP_WORDS_TO_BYTES(n->size)+1);
-		}
-		else
-		{
-			i2osp(temp, MP_WORDS_TO_BYTES(n->size), n->data, n->size);
-			rc = ctxt->algo->update(ctxt->param, temp, MP_WORDS_TO_BYTES(n->size));
-		}
-		free(temp);
+		/* get the number of significant bits in the number */
+		size_t sig = mpbits(n->size, n->data);
+
+		/* calculate how many bytes we need a java-style encoding; if the
+		 * most significant bit of the most significant byte is set, then
+		 * we need to prefix a zero byte.
+		 */
+		size_t req = ((sig+7) >> 3) + (((sig&7) == 0) ? 1 : 0);
+
+		byte* tmp = (byte*) malloc(req);
+
+		if (tmp == (byte*) 0)
+			return -1;
+
+		i2osp(tmp, req, n->data, n->size);
+
+		rc = ctxt->algo->update(ctxt->param, tmp, req);
+
+		free(tmp);
 
 		return rc;
 	}
