@@ -62,14 +62,14 @@ int dsasign(const mpbarrett* p, const mpbarrett* q, const mpnumber* g, randomGen
 	mpnfree(r);
 	mpnsize(r, qsize);
 
-	/* get a random k, invertible modulo q */
+	/* get a random k, invertible modulo q; store k @ qtemp, inv(k) @ qtemp+qsize */
 	mpbrndinv_w(q, rgc, qtemp, qtemp+qsize, qwksp);
 
 	/* g^k mod p */
 	mpbpowmod_w(p, g->size, g->data, qsize, qtemp, ptemp, pwksp);
 
 	/* (g^k mod p) mod q - simple modulo */
-	mpnmod(qtemp+2*qsize, psize, ptemp, qsize, q->modl, pwksp);
+	mpmod(qtemp+2*qsize, psize, ptemp, qsize, q->modl, pwksp);
 	mpcopy(qsize, r->data, qtemp+psize+qsize);
 
 	/* allocate s */
@@ -153,7 +153,7 @@ int dsavrfy(const mpbarrett* p, const mpbarrett* q, const mpnumber* g, const mpn
 		mpbmulmod_w(p, psize, ptemp, psize, ptemp+psize, ptemp, pwksp);
 
 		/* modulo q */
-		mpnmod(ptemp+psize, psize, ptemp, qsize, q->modl, pwksp);
+		mpmod(ptemp+psize, psize, ptemp, qsize, q->modl, pwksp);
 
 		rc = mpeqx(r->size, r->data, psize, ptemp+psize);
 	}
