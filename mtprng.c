@@ -37,8 +37,6 @@
 #define BEECRYPT_DLL_EXPORT
 
 #include "mtprng.h"
-#include "mp32.h"
-#include "mp32opt.h"
 
 #if HAVE_STDLIB_H
 # include <stdlib.h>
@@ -47,16 +45,17 @@
 # include <malloc.h>
 #endif
 
-#define hiBit(a)		((a) & 0x80000000)
-#define loBit(a)		((a) & 0x1)
-#define loBits(a)		((a) & 0x7FFFFFFF)
+#define hiBit(a)		((a) & 0x80000000U)
+#define loBit(a)		((a) & 0x1U)
+#define loBits(a)		((a) & 0x7FFFFFFFU)
 #define mixBits(a, b)	(hiBit(a) | loBits(b))
 
 const randomGenerator mtprng = { "Mersenne Twister", sizeof(mtprngParam), (randomGeneratorSetup) mtprngSetup, (randomGeneratorSeed) mtprngSeed, (randomGeneratorNext) mtprngNext, (randomGeneratorCleanup) mtprngCleanup };
 
 static void mtprngReload(mtprngParam* mp)
 {
-    register uint32* p0 = mp->state, *p2=p0+2, *pM = p0+M, s0, s1;
+    register uint32_t *p0 = mp->state;
+	register uint32_t *p2 = p0+2, *pM = p0+M, s0, s1;
     register int j;
 
     for (s0=mp->state[0], s1=mp->state[1], j=N-M+1; --j; s0=s1, s1=*(p2++))
@@ -92,17 +91,17 @@ int mtprngSetup(mtprngParam* mp)
 
 		mp->left = 0;
 
-		return entropyGatherNext(mp->state, N+1);
+		return entropyGatherNext((byte*) mp->state, (N+1) * sizeof(uint32_t));
 	}
 	return -1;
 }
 
-int mtprngSeed(mtprngParam* mp, const uint32* data, int size)
+int mtprngSeed(mtprngParam* mp, const byte* data, size_t size)
 {
 	if (mp)
 	{
-		int	needed = N+1;
-		uint32*	dest = mp->state;
+		size_t	needed = (N+1) * sizeof(uint32_t);
+		byte*	dest = (byte*) mp->state;
 
 		#ifdef _REENTRANT
 		# if WIN32
@@ -120,11 +119,11 @@ int mtprngSeed(mtprngParam* mp, const uint32* data, int size)
 		#endif
 		while (size < needed)
 		{
-			mp32copy(size, dest, data);
+			memcpy(dest, data, size);
 			dest += size;
 			needed -= size;
 		}
-		mp32copy(needed, dest, data);
+		memcpy(dest, data, needed);
 		#ifdef _REENTRANT
 		# if WIN32
 		if (!ReleaseMutex(mp->lock))
@@ -144,11 +143,11 @@ int mtprngSeed(mtprngParam* mp, const uint32* data, int size)
 	return -1;
 }
 
-int mtprngNext(mtprngParam* mp, uint32* data, int size)
+int mtprngNext(mtprngParam* mp, byte* data, size_t size)
 {
 	if (mp)
 	{
-		register uint32 tmp;
+		uint32_t tmp;
 
 		#ifdef _REENTRANT
 		# if WIN32
@@ -164,18 +163,28 @@ int mtprngNext(mtprngParam* mp, uint32* data, int size)
 		#  endif
 		# endif
 		#endif
-		while (size--)
+		while (size > 0)
 		{
 			if (mp->left == 0)
 				mtprngReload(mp);
 
 			tmp = *(mp->nextw++);
 			tmp ^= (tmp >> 11);
-			tmp ^= (tmp << 7) & 0x9D2C5680;
-			tmp ^= (tmp << 15) & 0xEFC60000;
+			tmp ^= (tmp << 7) & 0x9D2C5680U;
+			tmp ^= (tmp << 15) & 0xEFC60000U;
 			tmp ^= (tmp >> 18);
 			mp->left--;
-			*(data++) = tmp;
+
+			if (size >= 4)
+			{
+				memcpy(data, &tmp, 4);
+				size -= 4;
+			}
+			else
+			{
+				memcpy(data, &tmp, size);
+				size = 0;
+			}
 		}
 		#ifdef _REENTRANT
 		# if WIN32
