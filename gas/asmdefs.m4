@@ -18,11 +18,24 @@ dnl  You should have received a copy of the GNU Lesser General Public
 dnl  License along with this library; if not, write to the Free Software
 dnl  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+ifelse(substr(ASM_OS,0,5),linux,`
+define(USE_SIZE_DIRECTIVE,yes)
+')
+
 define(SYMNAME,`GSYM_PREFIX`$1'')
+define(LOCAL,`LSYM_PREFIX`$1'')
+
 define(C_FUNCTION_BEGIN,`
 	TEXTSEG
 	GLOBL SYMNAME($1)
 SYMNAME($1):
 ')
-define(LOCAL,`LSYM_PREFIX`$1'')
+
+ifelse(USE_SIZE_DIRECTIVE,yes,`
+define(C_FUNCTION_END,`
+LOCAL($1)_size:
+	.size SYMNAME($1), LOCAL($1)_size  - SYMNAME($1)
+')
+',`
 define(C_FUNCTION_END,`')
+')
