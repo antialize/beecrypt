@@ -293,6 +293,7 @@ EXPORTS
  randomGeneratorContextInit
  randomGeneratorContextFree
  randomGeneratorContextNext
+ rsapub
  rsapri
  rsapricrt
  rsavrfy

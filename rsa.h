@@ -33,9 +33,11 @@ extern "C" {
 #endif
 
 BEECRYPTAPI
-int rsapri   (const rsakp* kp, const mp32number* m, mp32number* c);
+int rsapub   (const rsapk* pk, const mp32number* m, mp32number* c);
 BEECRYPTAPI
-int rsapricrt(const rsakp* kp, const mp32number* m, mp32number* c);
+int rsapri   (const rsakp* kp, const mp32number* c, mp32number* m);
+BEECRYPTAPI
+int rsapricrt(const rsakp* kp, const mp32number* c, mp32number* m);
 
 BEECRYPTAPI
 int rsavrfy  (const rsapk* pk, const mp32number* m, const mp32number* c);
