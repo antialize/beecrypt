@@ -6,7 +6,7 @@ INCLUDES = -I$(top_srcdir)/..
 
 AUTOMAKE_OPTIONS = gnu no-dependencies
 
-SUBDIRS = lang io util security crypto beeyond . provider
+SUBDIRS = lang io nio util security crypto beeyond . provider
 
 libaltdir=$(prefix)/lib@LIBALT@
 cxxdir=$(pkgincludedir)/c++
