@@ -72,6 +72,8 @@
 #  define ASM_MPSETMUL
 #  define ASM_MPADDMUL
 # elif defined(OPTIMIZE_M68K)
+#  define ASM_MPSETMUL
+#  define ASM_MPADDMUL
 # elif defined(OPTIMIZE_POWERPC) || defined(OPTIMIZE_POWERPC64)
 #  define ASM_MPSETMUL
 #  define ASM_MPADDW

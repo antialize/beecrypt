@@ -530,6 +530,11 @@ AC_DEFUN(BEECRYPT_ASM_SOURCES,[
       m4 $srcdir/gas/mpopt.ia64.m4 > $srcdir/mpopt.s
       ])
     ;;
+  m68k)
+    AC_CONFIG_COMMANDS([mpopt.m68k],[
+      m4 $srcdir/gas/mpopt.m68k.m4 > $srcdir/mpopt.s
+      ])
+    ;;
   powerpc)
     AC_CONFIG_COMMANDS([mpopt.ppc],[
       m4 $srcdir/gas/mpopt.ppc.m4 > $srcdir/mpopt.s

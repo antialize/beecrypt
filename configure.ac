@@ -111,6 +111,12 @@ AC_ARG_WITH(arch,[  --with-arch             optimize for specific architecture (
   i[[3456]]86)
     bc_target_arch=i386
     ;;
+  ia64)
+    bc_target_arch=ia64
+    ;;
+  m68k)
+    bc_target_arch=m68k
+    ;;
   powerpc*)
     bc_target_arch=powerpc
     ;;
@@ -311,6 +317,10 @@ AH_BOTTOM([
 # endif
 # if LINUX
 #  define _LIBC_REENTRANT
+# endif
+#else
+# ifdef _REENTRANT
+#  undef _REENTRANT
 # endif
 #endif
 ])
@@ -543,6 +553,9 @@ if test "$ac_enable_debug" != yes; then
     ;;
   ia64)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_IA64"
+    ;;
+  m68k)
+    CPPFLAGS="$CPPFLAGS -DOPTIMIZE_M68K"
     ;;
   pentium | pentium-mmx)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I586"
