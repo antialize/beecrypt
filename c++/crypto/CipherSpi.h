@@ -71,7 +71,7 @@ namespace beecrypt {
 
 			virtual void engineInit(int opmode, const Key& key, SecureRandom* random) throw (InvalidKeyException) = 0;
 			virtual void engineInit(int opmode, const Key& key, AlgorithmParameters* params, SecureRandom* random) throw (InvalidKeyException, InvalidAlgorithmParameterException) = 0;
-			virtual void engineInit(int opmode, const Key& key, AlgorithmParameterSpec* params, SecureRandom* random) throw (InvalidKeyException, InvalidAlgorithmParameterException) = 0;
+			virtual void engineInit(int opmode, const Key& key, const AlgorithmParameterSpec& params, SecureRandom* random) throw (InvalidKeyException, InvalidAlgorithmParameterException) = 0;
 
 			virtual void engineSetMode(const String& mode) throw (NoSuchAlgorithmException) = 0;
 			virtual void engineSetPadding(const String& padding) throw (NoSuchPaddingException) = 0;
