@@ -32,8 +32,6 @@ namespace beecrypt {
 	namespace lang {
 		class BEECRYPTCXXAPI Object
 		{
-			class beecrypt::lang::CloneNotSupportedException;
-
 		protected:
 			virtual Object* clone() const throw (CloneNotSupportedException);
 
