@@ -27,6 +27,8 @@
 
 @TYPEDEF_BC_LOCK_T@
 
+@TYPEDEF_SIZE_T@
+
 @TYPEDEF_INT8_T@
 @TYPEDEF_INT16_T@
 @TYPEDEF_INT32_T@
@@ -37,7 +39,10 @@
 @TYPEDEF_UINT32_T@
 @TYPEDEF_UINT64_T@
 
-#if !defined(MP_WBITS) /* dangerous; some assembler routines make assumptions */
+/* WARNING: overriding this value is dangerous; some assembler routines
+ * make assumptions about the size set by the configure script
+ */
+#if !defined(MP_WBITS)
 # define MP_WBITS	@MP_WBITS@
 #endif
 
