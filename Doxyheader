@@ -80,6 +80,7 @@ The library has been tested on the following platforms:
  <li>Linux glibc 2.x ia64
  <li>Linux glibc 2.x m68k
  <li>Linux glibc 2.x ppc
+ <li>Linux glibc 2.x s390x
  <li>Linux glibc 2.x sparc
  <li>Linux glibc 2.x x86
  <li>Solaris 2.[6789] sparc (with Forte or GNU compilers)
