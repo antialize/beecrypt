@@ -37,21 +37,24 @@ using beecrypt::security::spec::AlgorithmParameterSpec;
 namespace beecrypt {
 	namespace security {
 		namespace spec {
+			/*!\brief DSA parameter specification
+			 * \ingroup CXX_SECURITY_SPEC_m
+			 */
 			class BEECRYPTCXXAPI DSAParameterSpec : public AlgorithmParameterSpec, public DSAParams
 			{
-				private:
-					mpbarrett _p;
-					mpbarrett _q;
-					mpnumber _g;
+			private:
+				mpbarrett _p;
+				mpbarrett _q;
+				mpnumber _g;
 
-				public:
-					DSAParameterSpec(const DSAParams&);
-					DSAParameterSpec(const mpbarrett& p, const mpbarrett& q, const mpnumber& g);
-					virtual ~DSAParameterSpec();
+			public:
+				DSAParameterSpec(const DSAParams&);
+				DSAParameterSpec(const mpbarrett& p, const mpbarrett& q, const mpnumber& g);
+				virtual ~DSAParameterSpec();
 
-					const mpbarrett& getP() const throw ();
-					const mpbarrett& getQ() const throw ();
-					const mpnumber& getG() const throw ();
+				const mpbarrett& getP() const throw ();
+				const mpbarrett& getQ() const throw ();
+				const mpnumber& getG() const throw ();
 			};
 		}
 	}

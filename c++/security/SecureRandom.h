@@ -38,33 +38,35 @@ using beecrypt::security::NoSuchProviderException;
 
 namespace beecrypt {
 	namespace security {
+		/*!\ingroup CXX_SECURITY_m
+		 */
 		class BEECRYPTCXXAPI SecureRandom
 		{
-			public:
-				static SecureRandom* getInstance(const String&) throw (NoSuchAlgorithmException);
-				static SecureRandom* getInstance(const String&, const String&) throw (NoSuchAlgorithmException, NoSuchProviderException);
-				static SecureRandom* getInstance(const String&, const Provider&) throw (NoSuchAlgorithmException);
+		public:
+			static SecureRandom* getInstance(const String& type) throw (NoSuchAlgorithmException);
+			static SecureRandom* getInstance(const String& type, const String& provider) throw (NoSuchAlgorithmException, NoSuchProviderException);
+			static SecureRandom* getInstance(const String& type, const Provider& provider) throw (NoSuchAlgorithmException);
 
-				static void getSeed(byte*, size_t);
+			static void getSeed(byte*, size_t);
 
-			private:
-				SecureRandomSpi* _rspi;
-				String           _type;
-				const Provider*  _prov;
+		private:
+			SecureRandomSpi* _rspi;
+			const Provider*  _prov;
+			String           _type;
 
-			protected:
-				SecureRandom(SecureRandomSpi*, const String&, const Provider&);
+		protected:
+			SecureRandom(SecureRandomSpi* spi, const Provider& provider, const String& type);
 
-			public:
-				SecureRandom();
-				~SecureRandom();
+		public:
+			SecureRandom();
+			~SecureRandom();
 
-				void generateSeed(byte*, size_t);
-				void nextBytes(byte*, size_t);
-				void setSeed(const byte*, size_t);
+			void generateSeed(byte*, size_t);
+			void nextBytes(byte*, size_t);
+			void setSeed(const byte*, size_t);
 
-				const String& getType() const throw ();
-				const Provider& getProvider() const throw ();
+			const String& getType() const throw ();
+			const Provider& getProvider() const throw ();
 		};
 	}
 }

@@ -34,18 +34,20 @@ using beecrypt::security::spec::KeySpec;
 namespace beecrypt {
 	namespace security {
 		namespace spec {
+			/*!\ingroup CXX_SECURITY_SPEC_m
+			 */
 			class BEECRYPTCXXAPI RSAPrivateKeySpec : public KeySpec
 			{
-				private:
-					mpbarrett _n;
-					mpnumber _d;
+			private:
+				mpbarrett _n;
+				mpnumber _d;
 
-				public:
-					RSAPrivateKeySpec(const mpbarrett& modulus, const mpnumber& privateExponent);
-					virtual ~RSAPrivateKeySpec();
+			public:
+				RSAPrivateKeySpec(const mpbarrett& modulus, const mpnumber& privateExponent);
+				virtual ~RSAPrivateKeySpec();
 
-					const mpbarrett& getModulus() const throw ();
-					const mpnumber& getPrivateExponent() const throw ();
+				const mpbarrett& getModulus() const throw ();
+				const mpnumber& getPrivateExponent() const throw ();
 			};
 		}
 	}

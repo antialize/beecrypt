@@ -33,22 +33,24 @@ using beecrypt::security::spec::AlgorithmParameterSpec;
 namespace beecrypt {
 	namespace security {
 		namespace spec {
+			/*!\ingroup CXX_SECURITY_SPEC_m
+			 */
 			class BEECRYPTCXXAPI RSAKeyGenParameterSpec : public AlgorithmParameterSpec
 			{
-				public:
-					static const mpnumber F0;
-					static const mpnumber F4;
+			public:
+				static const mpnumber F0;
+				static const mpnumber F4;
 
-				private:
-					size_t _keysize;
-					mpnumber _e;
+			private:
+				size_t _keysize;
+				mpnumber _e;
 				
-				public:
-					RSAKeyGenParameterSpec(size_t, const mpnumber&);
-					virtual ~RSAKeyGenParameterSpec();
+			public:
+				RSAKeyGenParameterSpec(size_t, const mpnumber&);
+				virtual ~RSAKeyGenParameterSpec();
 
-					size_t getKeysize() const throw ();
-					const mpnumber& getPublicExponent() const throw ();
+				size_t getKeysize() const throw ();
+				const mpnumber& getPublicExponent() const throw ();
 			};
 		}
 	}

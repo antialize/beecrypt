@@ -34,22 +34,25 @@ using beecrypt::security::spec::KeySpec;
 namespace beecrypt {
 	namespace security {
 		namespace spec {
+			/*!\brief DSA public key specification
+			 * \ingroup CXX_SECURITY_SPEC_m
+			 */
 			class BEECRYPTCXXAPI DSAPublicKeySpec : public KeySpec
 			{
-				private:
-					mpbarrett _p;
-					mpbarrett _q;
-					mpnumber _g;
-					mpnumber _y;
+			private:
+				mpbarrett _p;
+				mpbarrett _q;
+				mpnumber _g;
+				mpnumber _y;
 
-				public:
-					DSAPublicKeySpec(const mpbarrett& p, const mpbarrett& q, const mpnumber& g, const mpnumber& y);
-					virtual ~DSAPublicKeySpec();
+			public:
+				DSAPublicKeySpec(const mpbarrett& p, const mpbarrett& q, const mpnumber& g, const mpnumber& y);
+				virtual ~DSAPublicKeySpec();
 
-					const mpbarrett& getP() const throw ();
-					const mpbarrett& getQ() const throw ();
-					const mpnumber& getG() const throw ();
-					const mpnumber& getY() const throw ();
+				const mpbarrett& getP() const throw ();
+				const mpbarrett& getQ() const throw ();
+				const mpnumber& getG() const throw ();
+				const mpnumber& getY() const throw ();
 			};
 		}
 	}

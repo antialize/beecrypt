@@ -43,17 +43,19 @@ using std::type_info;
 
 namespace beecrypt {
 	namespace security {
+		/*!\ingroup CXX_SECURITY_m
+		 */
 		class BEECRYPTCXXAPI AlgorithmParameterGeneratorSpi
 		{
 			friend class BEECRYPTCXXAPI AlgorithmParameterGenerator;
 
-			protected:
-				virtual AlgorithmParameters* engineGenerateParameters() = 0;
-				virtual void engineInit(const AlgorithmParameterSpec&, SecureRandom*) throw (InvalidAlgorithmParameterException) = 0;
-				virtual void engineInit(size_t, SecureRandom*) throw (InvalidParameterException) = 0;
+		protected:
+			virtual AlgorithmParameters* engineGenerateParameters() = 0;
+			virtual void engineInit(const AlgorithmParameterSpec& genParamSpec, SecureRandom* random) throw (InvalidAlgorithmParameterException) = 0;
+			virtual void engineInit(size_t size, SecureRandom* random) throw (InvalidParameterException) = 0;
 
-			public:
-				virtual ~AlgorithmParameterGeneratorSpi() {};
+		public:
+			virtual ~AlgorithmParameterGeneratorSpi() {};
 		};
 	}
 }

@@ -40,16 +40,18 @@ using std::vector;
 namespace beecrypt {
 	namespace security {
 		namespace cert {
+			/*!\ingroup CXX_SECURITY_CERT_m
+			 */
 			class BEECRYPTCXXAPI CertificateFactorySpi
 			{
 				friend class CertificateFactory;
 
-				protected:
-					virtual Certificate* engineGenerateCertificate(InputStream& in) throw (CertificateException) = 0;
-					virtual vector<Certificate*>* engineGenerateCertificates(InputStream& in) throw (CertificateException) = 0;
+			protected:
+				virtual Certificate* engineGenerateCertificate(InputStream& in) throw (CertificateException) = 0;
+				virtual vector<Certificate*>* engineGenerateCertificates(InputStream& in) throw (CertificateException) = 0;
 
-				public:
-					virtual ~CertificateFactorySpi() {};
+			public:
+				virtual ~CertificateFactorySpi() {};
 			};
 		}
 	}

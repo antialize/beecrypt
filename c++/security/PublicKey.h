@@ -31,12 +31,12 @@ using beecrypt::security::Key;
 namespace beecrypt {
 	namespace security {
 		/*!\brief Public key interface.
-		* \ingroup CXX_IF_m
-		*/
+		 * \ingroup CXX_SECURITY_m
+		 */
 		class PublicKey : public Key
 		{
-			public:
-				virtual PublicKey* clone() const = 0;
+		public:
+			virtual PublicKey* clone() const = 0;
 		};
 	}
 }

@@ -40,18 +40,20 @@ using beecrypt::security::spec::AlgorithmParameterSpec;
 
 namespace beecrypt {
 	namespace security {
+		/*!\ingroup CXX_SECURITY_m
+		 */
 		class BEECRYPTCXXAPI KeyPairGeneratorSpi
 		{
 			friend class KeyPairGenerator;
 
-			protected:
-				virtual KeyPair* engineGenerateKeyPair() = 0;
+		protected:
+			virtual KeyPair* engineGenerateKeyPair() = 0;
 
-				virtual void engineInitialize(const AlgorithmParameterSpec&, SecureRandom*) throw (InvalidAlgorithmParameterException) = 0;
-				virtual void engineInitialize(size_t, SecureRandom*) throw (InvalidParameterException) = 0;
+			virtual void engineInitialize(const AlgorithmParameterSpec&, SecureRandom*) throw (InvalidAlgorithmParameterException) = 0;
+			virtual void engineInitialize(size_t, SecureRandom*) throw (InvalidParameterException) = 0;
 
-			public:
-				virtual ~KeyPairGeneratorSpi() {};
+		public:
+			virtual ~KeyPairGeneratorSpi() {};
 		};
 	}
 }

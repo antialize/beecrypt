@@ -30,11 +30,13 @@ using beecrypt::lang::IllegalArgumentException;
 
 namespace beecrypt {
 	namespace security {
+		/*!\ingroup CXX_SECURITY_m
+		 */
 		class BEECRYPTCXXAPI InvalidParameterException : public IllegalArgumentException
 		{
-			public:
-				InvalidParameterException() throw ();
-				InvalidParameterException(const String&) throw ();
+		public:
+			InvalidParameterException() throw ();
+			InvalidParameterException(const String& message) throw ();
 		};
 	}
 }

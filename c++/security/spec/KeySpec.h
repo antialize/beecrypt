@@ -30,12 +30,13 @@
 namespace beecrypt {
 	namespace security {
 		namespace spec {
-			/*!\brief The base class for specification of cryptographic keys.
-			*/
+			/*!\brief The base class for specification of cryptographic keys
+			 * \ingroup CXX_SECURITY_SPEC_m
+			 */
 			class BEECRYPTCXXAPI KeySpec
 			{
-				public:
-					virtual ~KeySpec() {}
+			public:
+				virtual ~KeySpec() {}
 			};
 		}
 	}

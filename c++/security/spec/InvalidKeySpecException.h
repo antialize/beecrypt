@@ -31,11 +31,13 @@ using beecrypt::security::GeneralSecurityException;
 namespace beecrypt {
 	namespace security {
 		namespace spec {
+			/*!\ingroup CXX_SECURITY_SPEC_m
+			 */
 			class BEECRYPTCXXAPI InvalidKeySpecException : public GeneralSecurityException
 			{
-				public:
-					InvalidKeySpecException() throw ();
-					InvalidKeySpecException(const String&) throw ();
+			public:
+				InvalidKeySpecException() throw ();
+				InvalidKeySpecException(const String& message) throw ();
 			};
 		}
 	}

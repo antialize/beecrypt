@@ -32,21 +32,23 @@ using beecrypt::security::PublicKey;
 
 namespace beecrypt {
 	namespace security {
+		/*!\ingroup CXX_SECURITY_m
+		 */
 		class BEECRYPTCXXAPI KeyPair
 		{
 			friend class KeyPairGenerator;
 
-			private:
-				PublicKey* pub;
-				PrivateKey* pri;
+		private:
+			PublicKey* pub;
+			PrivateKey* pri;
 
-			public:
-				KeyPair(const PublicKey&, const PrivateKey&);
-				KeyPair(PublicKey*, PrivateKey*);
-				~KeyPair();
+		public:
+			KeyPair(const PublicKey& pub, const PrivateKey& pri);
+			KeyPair(PublicKey*, PrivateKey*);
+			~KeyPair();
 
-				const PublicKey& getPublic() const throw ();
-				const PrivateKey& getPrivate() const throw ();
+			const PublicKey& getPublic() const throw ();
+			const PrivateKey& getPrivate() const throw ();
 		};
 	}
 }

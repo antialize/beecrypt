@@ -41,47 +41,48 @@ using std::map;
 
 namespace beecrypt {
 	namespace util {
+		/*!\ingroup CXX_UTIL_m
+		 */
 		class BEECRYPTCXXAPI Properties
 		{
-			private:
-				typedef map<String,String> properties_map;
+		private:
+			typedef map<String,String> properties_map;
 
-				class PropEnum : public Enumeration
-				{
-					public:
-						properties_map::const_iterator _it;
-						properties_map::const_iterator _end;
-
-					public:
-						PropEnum(const properties_map&) throw ();
-						virtual ~PropEnum() throw ();
-
-						virtual bool hasMoreElements() throw ();
-						virtual const void* nextElement() throw (NoSuchElementException);
-				};
-
-				properties_map _pmap;
-
-				mutex _lock;
-
-			protected:
-				const Properties* defaults;
+			class PropEnum : public Enumeration
+			{
+			public:
+				properties_map::const_iterator _it;
+				properties_map::const_iterator _end;
 
 			public:
-				Properties();
-				Properties(const Properties& copy);
-				Properties(const Properties* defaults);
-				~Properties();
+				PropEnum(const properties_map& map) throw ();
+				virtual ~PropEnum() throw ();
 
-				const String* getProperty(const String& key) const throw ();
-				const String* getProperty(const String& key, const String& defaultValue) const throw ();
+				virtual bool hasMoreElements() throw ();
+				virtual const void* nextElement() throw (NoSuchElementException);
+			};
 
-				void setProperty(const String& key, const String& value) throw ();
+			properties_map _pmap;
+			mutex _lock;
 
-				Enumeration* propertyNames() const;
+		protected:
+			const Properties* defaults;
 
-				void load(InputStream& in) throw (IOException);
-				void store(OutputStream& out, const String& header) throw (IOException);
+		public:
+			Properties();
+			Properties(const Properties& copy);
+			Properties(const Properties* defaults);
+			~Properties();
+
+			const String* getProperty(const String& key) const throw ();
+			const String* getProperty(const String& key, const String& defaultValue) const throw ();
+
+			void setProperty(const String& key, const String& value) throw ();
+
+			Enumeration* propertyNames() const;
+
+			void load(InputStream& in) throw (IOException);
+			void store(OutputStream& out, const String& header) throw (IOException);
 		};
 	}
 }

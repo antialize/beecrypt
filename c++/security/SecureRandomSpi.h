@@ -29,17 +29,19 @@
 
 namespace beecrypt {
 	namespace security {
+		/*!\ingroup CXX_SECURITY_m
+		 */
 		class BEECRYPTCXXAPI SecureRandomSpi
 		{
 			friend class SecureRandom;
 
-			protected:
-				virtual void engineGenerateSeed(byte*, size_t) = 0;
-				virtual void engineNextBytes(byte*, size_t) = 0;
-				virtual void engineSetSeed(const byte*, size_t) = 0;
+		protected:
+			virtual void engineGenerateSeed(byte*, size_t) = 0;
+			virtual void engineNextBytes(byte*, size_t) = 0;
+			virtual void engineSetSeed(const byte*, size_t) = 0;
 
-			public:
-				virtual ~SecureRandomSpi() {};
+		public:
+			virtual ~SecureRandomSpi() {};
 		};
 	}
 }

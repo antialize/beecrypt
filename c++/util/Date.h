@@ -32,6 +32,8 @@ using beecrypt::lang::String;
 
 namespace beecrypt {
 	namespace util {
+		/*!\ingroup CXX_UTIL_m
+		 */
 		class BEECRYPTCXXAPI Date
 		{
 		private:

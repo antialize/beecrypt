@@ -43,30 +43,32 @@ using beecrypt::security::cert::CertificateException;
 namespace beecrypt {
 	namespace security {
 		namespace cert {
+			/*!\ingroup CXX_SECURITY_CERT_m
+			 */
 			class BEECRYPTCXXAPI Certificate
 			{
-				private:
-					String _type;
+			private:
+				String _type;
 
-				protected:
-					Certificate(const String& type);
+			protected:
+				Certificate(const String& type);
 
-				public:
-					virtual ~Certificate();
+			public:
+				virtual ~Certificate();
 
-					virtual bool operator==(const Certificate&) const;
+				virtual bool operator==(const Certificate&) const;
 
-					virtual Certificate* clone() const = 0;
+				virtual Certificate* clone() const = 0;
 
-					virtual const bytearray& getEncoded() const = 0;
-					virtual const PublicKey& getPublicKey() const = 0;
+				virtual const bytearray& getEncoded() const = 0;
+				virtual const PublicKey& getPublicKey() const = 0;
 
-					virtual void verify(const PublicKey&) throw (CertificateException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException, SignatureException) = 0;
-					virtual void verify(const PublicKey&, const String&) throw (CertificateException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException, SignatureException) = 0;
+				virtual void verify(const PublicKey&) const throw (CertificateException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException, SignatureException) = 0;
+				virtual void verify(const PublicKey&, const String&) const throw (CertificateException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException, SignatureException) = 0;
 
-					virtual const String& toString() const throw () = 0;
+				virtual const String& toString() const throw () = 0;
 
-					const String& getType() const throw ();
+				const String& getType() const throw ();
 			};
 		}
 	}

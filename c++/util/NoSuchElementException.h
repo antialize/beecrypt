@@ -30,11 +30,13 @@ using beecrypt::lang::RuntimeException;
 
 namespace beecrypt {
 	namespace util {
+		/*!\ingroup CXX_UTIL_m
+		 */
 		class BEECRYPTCXXAPI NoSuchElementException : public RuntimeException
 		{
-			public:
-				NoSuchElementException() throw ();
-				NoSuchElementException(const String&) throw ();
+		public:
+			NoSuchElementException() throw ();
+			NoSuchElementException(const String&) throw ();
 		};
 	}
 }

@@ -37,19 +37,21 @@ using std::type_info;
 
 namespace beecrypt {
 	namespace security {
+		/*!\ingroup CXX_SECURITY_m
+		 */
 		class BEECRYPTCXXAPI AlgorithmParametersSpi
 		{
 			friend class BEECRYPTCXXAPI AlgorithmParameters;
 
-			protected:
-				virtual AlgorithmParameterSpec* engineGetParameterSpec(const type_info&) = 0;
+		protected:
+			virtual AlgorithmParameterSpec* engineGetParameterSpec(const type_info& info) = 0;
 
-				virtual void engineInit(const AlgorithmParameterSpec&) throw (InvalidParameterSpecException) = 0;
-				virtual void engineInit(const byte*, size_t) = 0;
-				virtual void engineInit(const byte*, size_t, const String&) = 0;
+			virtual void engineInit(const AlgorithmParameterSpec& spec) throw (InvalidParameterSpecException) = 0;
+			virtual void engineInit(const byte* data, size_t size) = 0;
+			virtual void engineInit(const byte* data, size_t size, const String& format) = 0;
 
-			public:
-				virtual ~AlgorithmParametersSpi() {};
+		public:
+			virtual ~AlgorithmParametersSpi() {};
 		};
 	}
 }

@@ -35,19 +35,21 @@ using beecrypt::security::spec::KeySpec;
 namespace beecrypt {
 	namespace security {
 		namespace spec {
+			/*!\brief Encoded key specification
+			 * \ingroup CXX_SECURITY_SPEC_m
+			 */
 			class BEECRYPTCXXAPI EncodedKeySpec : public KeySpec
 			{
-				private:
-					bytearray _encoded;
+			private:
+				bytearray _encoded;
 
-				public:
-					EncodedKeySpec(const byte*, size_t);
-					EncodedKeySpec(const bytearray&);
-					virtual ~EncodedKeySpec();
+			public:
+				EncodedKeySpec(const byte*, size_t);
+				EncodedKeySpec(const bytearray&);
+				virtual ~EncodedKeySpec();
 
-					const bytearray& getEncoded() const throw ();
-					virtual const String& getFormat() const throw () = 0;
-
+				const bytearray& getEncoded() const throw ();
+				virtual const String& getFormat() const throw () = 0;
 			};
 		}
 	}

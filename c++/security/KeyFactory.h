@@ -41,33 +41,35 @@ using std::type_info;
 
 namespace beecrypt {
 	namespace security {
+		/*!\ingroup CXX_SECURITY_m
+		 */
 		class BEECRYPTCXXAPI KeyFactory
 		{
-			public:
-				static KeyFactory* getInstance(const String&) throw (NoSuchAlgorithmException);
-				static KeyFactory* getInstance(const String&, const String&) throw (NoSuchAlgorithmException, NoSuchProviderException);
-				static KeyFactory* getInstance(const String&, const Provider&) throw (NoSuchAlgorithmException);
+		public:
+			static KeyFactory* getInstance(const String& algorithm) throw (NoSuchAlgorithmException);
+			static KeyFactory* getInstance(const String& algorithm, const String& provider) throw (NoSuchAlgorithmException, NoSuchProviderException);
+			static KeyFactory* getInstance(const String& algorithm, const Provider& provider) throw (NoSuchAlgorithmException);
 
-			private:
-				KeyFactorySpi*  _kspi;
-				String          _algo;
-				const Provider* _prov;
+		private:
+			KeyFactorySpi*  _kspi;
+			const Provider* _prov;
+			String          _algo;
 
-			protected:
-				KeyFactory(KeyFactorySpi*, const String&, const Provider&);
+		protected:
+			KeyFactory(KeyFactorySpi* spi, const Provider& provider, const String& algorithm);
 
-			public:
-				~KeyFactory();
+		public:
+			~KeyFactory();
 
-				PrivateKey* generatePrivate(const KeySpec&) throw (InvalidKeySpecException);
-				PublicKey* generatePublic(const KeySpec&) throw (InvalidKeySpecException);
+			PrivateKey* generatePrivate(const KeySpec& spec) throw (InvalidKeySpecException);
+			PublicKey* generatePublic(const KeySpec& spec) throw (InvalidKeySpecException);
 
-				KeySpec* getKeySpec(const Key& key, const type_info&) throw (InvalidKeySpecException);
+			KeySpec* getKeySpec(const Key& key, const type_info& info) throw (InvalidKeySpecException);
 
-				Key* translateKey(const Key&) throw (InvalidKeyException);
+			Key* translateKey(const Key& key) throw (InvalidKeyException);
 
-				const String& getAlgorithm() const throw ();
-				const Provider& getProvider() const throw ();
+			const String& getAlgorithm() const throw ();
+			const Provider& getProvider() const throw ();
 		};
 	}
 }

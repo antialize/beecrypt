@@ -30,11 +30,13 @@ using beecrypt::lang::Exception;
 
 namespace beecrypt {
 	namespace security {
+		/*!\ingroup CXX_SECURITY_m
+		 */
 		class BEECRYPTCXXAPI GeneralSecurityException : public Exception
 		{
-			public:
-				GeneralSecurityException() throw ();
-				GeneralSecurityException(const String&) throw ();
+		public:
+			GeneralSecurityException() throw ();
+			GeneralSecurityException(const String& message) throw ();
 		};
 	}
 }
