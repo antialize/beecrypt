@@ -3,7 +3,7 @@
 #
 # Copyright (c) 2001, 2002 Virtual Unlimited B.V.
 #
-# Author: Bob Deblier <bob@virtualunlimited.com>
+# Author: Bob Deblier <bob.deblier@pandora.be>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -28,31 +28,34 @@
 # 3. Interfaces removed (bad): Increment CURRENT, set AGE and REVISION to 0.
 #
 
-LIBBEECRYPT_LT_CURRENT = 5
-LIBBEECRYPT_LT_AGE = 3
+LIBBEECRYPT_LT_CURRENT = 6
+LIBBEECRYPT_LT_AGE = 0
 LIBBEECRYPT_LT_REVISION = 0
 
 AUTOMAKE_OPTIONS = gnu check-news no-dependencies
 
 SUBDIRS = docs gas masm mwerks tests
 
-SUFFIXES = .S
-.S.lo:
+SUFFIXES = .s
+
+.s.lo:
 	$(LTCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
 
-BEECRYPT_OBJECTS = aes.lo aesopt.lo base64.lo beecrypt.lo blockmode.lo blockpad.lo blowfish.lo blowfishopt.lo dhaes.lo dldp.lo dlkp.lo dlpk.lo dlsvdp-dh.lo dsa.lo elgamal.lo endianness.lo entropy.lo fips186.lo hmac.lo hmacmd5.lo hmacsha1.lo hmacsha256.lo md5.lo memchunk.lo mp32.lo mp32barrett.lo mp32number.lo mp32opt.lo mp32prime.lo mtprng.lo rsa.lo rsakp.lo rsapk.lo sha1.lo sha1opt.lo sha256.lo timestamp.lo
+BEECRYPT_OBJECTS = aes.lo aesopt.lo base64.lo beecrypt.lo blockmode.lo blockpad.lo blowfish.lo blowfishopt.lo dhaes.lo dldp.lo dlkp.lo dlpk.lo dlsvdp-dh.lo dsa.lo elgamal.lo endianness.lo entropy.lo fips186.lo hmac.lo hmacmd5.lo hmacsha1.lo hmacsha256.lo md5.lo memchunk.lo mp.lo mpopt.lo mpbarrett.lo mpnumber.lo mpprime.lo rsa.lo rsakp.lo rsapk.lo sha1.lo sha1opt.lo sha256.lo timestamp.lo
 
 BEECRYPT_JAVA_OBJECTS = javaglue.lo
 
 lib_LTLIBRARIES = libbeecrypt.la
 
-libbeecrypt_la_SOURCES = aes.c base64.c beecrypt.c blockmode.c blockpad.c blowfish.c dhaes.c dldp.c dlkp.c dlpk.c dlsvdp-dh.c dsa.c elgamal.c endianness.c entropy.c fips186.c hmac.c hmacmd5.c hmacsha1.c hmacsha256.c javaglue.c md5.c memchunk.c mp32.c mp32barrett.c mp32number.c mp32prime.c mtprng.c rsa.c rsakp.c rsapk.c sha1.c sha256.c timestamp.c
+libbeecrypt_la_SOURCES = aes.c base64.c beecrypt.c blockmode.c blockpad.c blowfish.c dhaes.c dldp.c dlkp.c dlpk.c dlsvdp-dh.c dsa.c elgamal.c endianness.c entropy.c fips186.c hmac.c hmacmd5.c hmacsha1.c hmacsha256.c javaglue.c md5.c memchunk.c mp.c mpbarrett.c mpnumber.c mpprime.c rsa.c rsakp.c rsapk.c sha1.c sha256.c timestamp.c
 libbeecrypt_la_DEPENDENCIES = $(BEECRYPT_OBJECTS) $(BEECRYPT_JAVA_OBJECTS)
 
-libbeecrypt_la_LIBADD = aesopt.lo blowfishopt.lo mp32opt.lo sha1opt.lo
+libbeecrypt_la_LIBADD = aesopt.lo blowfishopt.lo mpopt.lo sha1opt.lo
 
 libbeecrypt_la_LDFLAGS = -no-undefined -version-info $(LIBBEECRYPT_LT_CURRENT):$(LIBBEECRYPT_LT_REVISION):$(LIBBEECRYPT_LT_AGE)
 
-pkginclude_HEADERS = aes.h aesopt.h base64.h beecrypt.h beecrypt.api.h beecrypt.gas.h beecrypt.gnu.h beecrypt.gnu.types.h beecrypt.win.h blockmode.h blockpad.h blowfish.h blowfishopt.h dhaes.h dldp.h dlkp.h dlpk.h dlsvdp-dh.h dsa.h elgamal.h endianness.h entropy.h fips186.h hmac.h hmacmd5.h hmacsha1.h hmacsha256.h md5.h memchunk.h mp32.h mp32barrett.h mp32number.h mp32opt.h mp32prime.h mtprng.h rsa.h rsakp.h rsapk.h sha1.h sha1opt.h sha256.h timestamp.h
+pkginclude_HEADERS = aes.h aesopt.h base64.h beecrypt.h beecrypt.api.h beecrypt.gnu.h beecrypt.gnu.types.h beecrypt.win.h blockmode.h blockpad.h blowfish.h blowfishopt.h dhaes.h dldp.h dlkp.h dlpk.h dlsvdp-dh.h dsa.h elgamal.h endianness.h entropy.h fips186.h hmac.h hmacmd5.h hmacsha1.h hmacsha256.h md5.h memchunk.h mp.h mpbarrett.h mpnumber.h mpopt.h mpprime.h rsa.h rsakp.h rsapk.h sha1.h sha1opt.h sha256.h timestamp.h
 
 EXTRA_DIST = BENCHMARKS BUGS CONTRIBUTORS README.DLL README.WIN32 beecrypt.def beecrypt.rc javaglue.h installgen.sh Makefile.mak
+
+DISTCLEANFILES = mpopt.s aesopt.s blowfishopt.s sha1opt.s

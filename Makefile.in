@@ -19,7 +19,7 @@
 #
 # Copyright (c) 2001, 2002 Virtual Unlimited B.V.
 #
-# Author: Bob Deblier <bob@virtualunlimited.com>
+# Author: Bob Deblier <bob.deblier@pandora.be>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -97,6 +97,14 @@ OBJEXT = @OBJEXT@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 AMTAR = @AMTAR@
 AS = @AS@
+ASM_ARCH = @ASM_ARCH@
+ASM_CPU = @ASM_CPU@
+ASM_DATASEG = @ASM_DATASEG@
+ASM_GLOBL = @ASM_GLOBL@
+ASM_GSYM_PREFIX = @ASM_GSYM_PREFIX@
+ASM_LSYM_PREFIX = @ASM_LSYM_PREFIX@
+ASM_OS = @ASM_OS@
+ASM_TEXTSEG = @ASM_TEXTSEG@
 AWK = @AWK@
 CC = @CC@
 CPP = @CPP@
@@ -115,58 +123,50 @@ ac_cv_have_java = @ac_cv_have_java@
 ac_cv_have_javac = @ac_cv_have_javac@
 am__include = @am__include@
 am__quote = @am__quote@
-double8_type = @double8_type@
-float4_type = @float4_type@
 install_sh = @install_sh@
-int16_type = @int16_type@
-int32_type = @int32_type@
-int64_type = @int64_type@
-int8_type = @int8_type@
-uint16_type = @uint16_type@
-uint32_type = @uint32_type@
-uint64_type = @uint64_type@
-uint8_type = @uint8_type@
 
-LIBBEECRYPT_LT_CURRENT = 5
-LIBBEECRYPT_LT_AGE = 3
+LIBBEECRYPT_LT_CURRENT = 6
+LIBBEECRYPT_LT_AGE = 0
 LIBBEECRYPT_LT_REVISION = 0
 
 AUTOMAKE_OPTIONS = gnu check-news no-dependencies
 
 SUBDIRS = docs gas masm mwerks tests
 
-SUFFIXES = .S
+SUFFIXES = .s
 
-BEECRYPT_OBJECTS = aes.lo aesopt.lo base64.lo beecrypt.lo blockmode.lo blockpad.lo blowfish.lo blowfishopt.lo dhaes.lo dldp.lo dlkp.lo dlpk.lo dlsvdp-dh.lo dsa.lo elgamal.lo endianness.lo entropy.lo fips186.lo hmac.lo hmacmd5.lo hmacsha1.lo hmacsha256.lo md5.lo memchunk.lo mp32.lo mp32barrett.lo mp32number.lo mp32opt.lo mp32prime.lo mtprng.lo rsa.lo rsakp.lo rsapk.lo sha1.lo sha1opt.lo sha256.lo timestamp.lo
+BEECRYPT_OBJECTS = aes.lo aesopt.lo base64.lo beecrypt.lo blockmode.lo blockpad.lo blowfish.lo blowfishopt.lo dhaes.lo dldp.lo dlkp.lo dlpk.lo dlsvdp-dh.lo dsa.lo elgamal.lo endianness.lo entropy.lo fips186.lo hmac.lo hmacmd5.lo hmacsha1.lo hmacsha256.lo md5.lo memchunk.lo mp.lo mpopt.lo mpbarrett.lo mpnumber.lo mpprime.lo rsa.lo rsakp.lo rsapk.lo sha1.lo sha1opt.lo sha256.lo timestamp.lo
 
 BEECRYPT_JAVA_OBJECTS = javaglue.lo
 
 lib_LTLIBRARIES = libbeecrypt.la
 
-libbeecrypt_la_SOURCES = aes.c base64.c beecrypt.c blockmode.c blockpad.c blowfish.c dhaes.c dldp.c dlkp.c dlpk.c dlsvdp-dh.c dsa.c elgamal.c endianness.c entropy.c fips186.c hmac.c hmacmd5.c hmacsha1.c hmacsha256.c javaglue.c md5.c memchunk.c mp32.c mp32barrett.c mp32number.c mp32prime.c mtprng.c rsa.c rsakp.c rsapk.c sha1.c sha256.c timestamp.c
+libbeecrypt_la_SOURCES = aes.c base64.c beecrypt.c blockmode.c blockpad.c blowfish.c dhaes.c dldp.c dlkp.c dlpk.c dlsvdp-dh.c dsa.c elgamal.c endianness.c entropy.c fips186.c hmac.c hmacmd5.c hmacsha1.c hmacsha256.c javaglue.c md5.c memchunk.c mp.c mpbarrett.c mpnumber.c mpprime.c rsa.c rsakp.c rsapk.c sha1.c sha256.c timestamp.c
 libbeecrypt_la_DEPENDENCIES = $(BEECRYPT_OBJECTS) $(BEECRYPT_JAVA_OBJECTS)
 
-libbeecrypt_la_LIBADD = aesopt.lo blowfishopt.lo mp32opt.lo sha1opt.lo
+libbeecrypt_la_LIBADD = aesopt.lo blowfishopt.lo mpopt.lo sha1opt.lo
 
 libbeecrypt_la_LDFLAGS = -no-undefined -version-info $(LIBBEECRYPT_LT_CURRENT):$(LIBBEECRYPT_LT_REVISION):$(LIBBEECRYPT_LT_AGE)
 
-pkginclude_HEADERS = aes.h aesopt.h base64.h beecrypt.h beecrypt.api.h beecrypt.gas.h beecrypt.gnu.h beecrypt.gnu.types.h beecrypt.win.h blockmode.h blockpad.h blowfish.h blowfishopt.h dhaes.h dldp.h dlkp.h dlpk.h dlsvdp-dh.h dsa.h elgamal.h endianness.h entropy.h fips186.h hmac.h hmacmd5.h hmacsha1.h hmacsha256.h md5.h memchunk.h mp32.h mp32barrett.h mp32number.h mp32opt.h mp32prime.h mtprng.h rsa.h rsakp.h rsapk.h sha1.h sha1opt.h sha256.h timestamp.h
+pkginclude_HEADERS = aes.h aesopt.h base64.h beecrypt.h beecrypt.api.h beecrypt.gnu.h beecrypt.gnu.types.h beecrypt.win.h blockmode.h blockpad.h blowfish.h blowfishopt.h dhaes.h dldp.h dlkp.h dlpk.h dlsvdp-dh.h dsa.h elgamal.h endianness.h entropy.h fips186.h hmac.h hmacmd5.h hmacsha1.h hmacsha256.h md5.h memchunk.h mp.h mpbarrett.h mpnumber.h mpopt.h mpprime.h rsa.h rsakp.h rsapk.h sha1.h sha1opt.h sha256.h timestamp.h
 
 EXTRA_DIST = BENCHMARKS BUGS CONTRIBUTORS README.DLL README.WIN32 beecrypt.def beecrypt.rc javaglue.h installgen.sh Makefile.mak
+
+DISTCLEANFILES = mpopt.s aesopt.s blowfishopt.s sha1opt.s
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = beecrypt.gnu.h
-CONFIG_CLEAN_FILES = Doxyfile beecrypt.gnu.types.h
+CONFIG_CLEAN_FILES = Doxyfile config.m4 beecrypt.gnu.types.h
 LTLIBRARIES = $(lib_LTLIBRARIES)
 
 am_libbeecrypt_la_OBJECTS = aes.lo base64.lo beecrypt.lo blockmode.lo \
 	blockpad.lo blowfish.lo dhaes.lo dldp.lo dlkp.lo dlpk.lo \
 	dlsvdp-dh.lo dsa.lo elgamal.lo endianness.lo entropy.lo \
 	fips186.lo hmac.lo hmacmd5.lo hmacsha1.lo hmacsha256.lo \
-	javaglue.lo md5.lo memchunk.lo mp32.lo mp32barrett.lo \
-	mp32number.lo mp32prime.lo mtprng.lo rsa.lo rsakp.lo rsapk.lo \
-	sha1.lo sha256.lo timestamp.lo
+	javaglue.lo md5.lo memchunk.lo mp.lo mpbarrett.lo mpnumber.lo \
+	mpprime.lo rsa.lo rsakp.lo rsapk.lo sha1.lo sha256.lo \
+	timestamp.lo
 libbeecrypt_la_OBJECTS = $(am_libbeecrypt_la_OBJECTS)
 
 DEFS = @DEFS@
@@ -194,9 +194,10 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive install-info-recursive \
 	uninstall-recursive check-recursive installcheck-recursive
 DIST_COMMON = README $(pkginclude_HEADERS) AUTHORS COPYING COPYING.LIB \
 	ChangeLog Doxyfile.in INSTALL Makefile.am Makefile.in NEWS \
-	aclocal.m4 beecrypt.gnu.h.in beecrypt.gnu.types.h.in \
-	config.guess config.sub configure configure.ac install-sh \
-	ltconfig ltmain.sh missing mkinstalldirs
+	acinclude.m4 aclocal.m4 beecrypt.gnu.h.in \
+	beecrypt.gnu.types.h.in config.guess config.m4.in config.sub \
+	configure configure.ac install-sh ltconfig ltmain.sh missing \
+	mkinstalldirs
 DIST_SUBDIRS = $(SUBDIRS)
 SOURCES = $(libbeecrypt_la_SOURCES)
 
@@ -204,7 +205,7 @@ all: beecrypt.gnu.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
 .SUFFIXES:
-.SUFFIXES: .S .c .lo .o .obj
+.SUFFIXES: .s .c .lo .o .obj
 
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno
@@ -219,7 +220,7 @@ $(top_builddir)/config.status: $(srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
 $(srcdir)/configure:  $(srcdir)/configure.ac $(ACLOCAL_M4) $(CONFIGURE_DEPENDENCIES)
 	cd $(srcdir) && $(AUTOCONF)
 
-$(ACLOCAL_M4):  configure.ac 
+$(ACLOCAL_M4):  configure.ac acinclude.m4
 	cd $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 
 beecrypt.gnu.h: stamp-h1
@@ -239,6 +240,8 @@ $(srcdir)/beecrypt.gnu.h.in:  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 distclean-hdr:
 	-rm -f beecrypt.gnu.h stamp-h1
 Doxyfile: $(top_builddir)/config.status Doxyfile.in
+	cd $(top_builddir) && $(SHELL) ./config.status $@
+config.m4: $(top_builddir)/config.status config.m4.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 beecrypt.gnu.types.h: $(top_builddir)/config.status beecrypt.gnu.types.h.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
@@ -545,6 +548,7 @@ clean-generic:
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES)
+	-test -z "$(DISTCLEANFILES)" || rm -f $(DISTCLEANFILES)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
@@ -611,7 +615,8 @@ uninstall-info: uninstall-info-recursive
 	uninstall-info-recursive uninstall-libLTLIBRARIES \
 	uninstall-pkgincludeHEADERS uninstall-recursive
 
-.S.lo:
+
+.s.lo:
 	$(LTCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
