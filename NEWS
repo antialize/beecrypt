@@ -1,3 +1,10 @@
+4.1.2-pre:
+	- Fixed Cygwin DLL missing symbols problem.
+	- Fixed GNU-stack assembler section on some platforms (Debian-ARM).
+	- Fixed inclusion of <asm/byteorder.h> to prevent problems with
+	  other header files.
+	- Fixed SHA-384 and SHA-512 code Visual C++ compatibility.
+
 4.1.1:
 	- Fixed shared library version info.
 
