@@ -10,6 +10,7 @@ cxxcryptodir=$(pkgincludedir)/c++/crypto
 
 libcxxcrypto_la_SOURCES = \
 BadPaddingException.cxx \
+KeyAgreement.cxx \
 Mac.cxx \
 MacInputStream.cxx \
 MacOutputStream.cxx \
@@ -18,6 +19,8 @@ libcxxcrypto_la_LIBADD = spec/libcxxcryptospec.la
 
 cxxcrypto_HEADERS = \
 BadPaddingException.h \
+KeyAgreement.h \
+KeyAgreementSpi.h \
 Mac.h \
 MacInputStream.h \
 MacOutputStream.h \
