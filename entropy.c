@@ -611,7 +611,7 @@ int entropy_wavein(byte* data, size_t size)
 	if (WaitForSingleObject(entropy_wavein_lock, INFINITE) != WAIT_OBJECT_0)
 		return -1;
 
-	rc = waveInOpen(&wavein, WAVE_MAPPER, &waveformatex, (DWORD) entropy_wavein_event, (DWORD) 0, CALLBACK_EVENT);
+	rc = waveInOpen(&wavein, WAVE_MAPPER, &waveformatex, (DWORD_PTR) entropy_wavein_event, (DWORD) 0, CALLBACK_EVENT);
 	if (rc != MMSYSERR_NOERROR)
 	{
 		fprintf(stderr, "waveInOpen failed!\n"); fflush(stderr);
