@@ -1,5 +1,30 @@
 /*! \mainpage BeeCrypt API Documentation.
 
+BeeCrypt started its life when the need for a portable and fast cryptography
+library arose at Virtual Unlimited in 1997. I'm still trying to make it
+faster, easier to use and more portable, in addition to providing better
+documentation.
+
+BeeCrypt is released under the following license:
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+Legal disclaimer: note that depending on where you are, the use of
+cryptography may be limited or forbidden by law. Before using this library,
+make sure you are legally entitled to do so.
+
 Included in the library are:
 <ul>
  <li>entropy sources for initializing pseudo-random generators
@@ -50,7 +75,6 @@ Planned for the future are:
 
 The library has been tested on the following platforms:
 <ul>
- <li>AIX 5.1 ppc64
  <li>Linux glibc 2.x alpha
  <li>Linux glibc 2.x arm
  <li>Linux glibc 2.x ia64
@@ -66,7 +90,8 @@ The library has been tested on the following platforms:
 
 The library is currently in the process of being ported to:
 <ul>
- <li>Darwin (the javaglue doesn't compile yet)
+ <li>AIX (shared libraries don't seem to work in 64-bit mode)
+ <li>Darwin (javaglue doesn't compile yet)
  <li>Cygwin (the DLL builds now, but needs to be tested)
 </ul>
 
