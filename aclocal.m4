@@ -345,10 +345,10 @@ AC_DEFUN(BEECRYPT_IBM_CC,[
   if test "$bc_cv_prog_IBM_CC" = yes; then
     case $bc_target_arch in
     powerpc)
-      CC="$CC -q32"
+      CC="$CC -q32 -qarch=ppc"
       ;;
     powerpc64)
-      CC="$CC -q64"
+      CC="$CC -q64 -qarch=ppc64"
       ;;
     esac
     if test "$ac_enable_debug" != yes; then
@@ -411,32 +411,30 @@ dnl  BEECRYPT_SUN_FORTE_CC
 AC_DEFUN(BEECRYPT_SUN_FORTE_CC,[
   AC_REQUIRE([AC_PROG_CC])
   AC_REQUIRE([AC_PROG_CPP])
-  AC_CACHE_CHECK([whether we are using Sun Forte C/C++],bc_cv_prog_SUN_FORTE_CC,[
+  AC_CACHE_CHECK([whether we are using Sun Forte C],bc_cv_prog_SUN_FORTE_CC,[
     AC_EGREP_CPP(yes,[
       #ifdef __SUNPRO_C
         yes;
       #endif
       ],bc_cv_prog_SUN_FORTE_CC=yes,bc_cv_prog_SUN_FORTE_CC=no)
     ])
-  if test "bc_cv_prog_SUN_FORTE_CC" = yes; then
+  if test "$bc_cv_prog_SUN_FORTE_CC" = yes; then
     if test "$ac_enable_threads" = yes; then
       CFLAGS="$CFLAGS -mt"
     fi
     if test "$ac_enable_debug" != yes; then
       CFLAGS="$CFLAGS -fast"
-      if "$ac_with_arch" = yes; then
-        case $bc_target_arch in
-        sparcv8)
-          CFLAGS="$CFLAGS -xtarget=generic -xarch=v8"
-          ;;
-        sparcv8plus*)
-          CFLAGS="$CFLAGS -xtarget=generic -xarch=v8plus"
-          ;;
-        sparcv9*)
-          CFLAGS="$CFLAGS -xtarget=generic64 -xarch=v9"
-          ;;
-        esac
-      fi
+      case $bc_target_arch in
+      sparcv8)
+        CFLAGS="$CFLAGS -xtarget=generic -xarch=v8"
+        ;;
+      sparcv8plus*)
+        CFLAGS="$CFLAGS -xtarget=generic -xarch=v8plus"
+        ;;
+      sparcv9*)
+        CFLAGS="$CFLAGS -xtarget=generic64 -xarch=v9"
+        ;;
+      esac
     fi
   fi
   ])
@@ -513,10 +511,10 @@ AC_DEFUN(BEECRYPT_ASM_LSYM_PREFIX,[
       hpux* | osf*)   bc_cv_asm_lsym_prefix="$" ;;
       linux*)
         case $target_cpu in
-	alpha*)       bc_cv_asm_lsym_prefix="$" ;;
+        alpha*)       bc_cv_asm_lsym_prefix="$" ;;
         *)            bc_cv_asm_lsym_prefix=".L" ;;
-	esac
-	;;
+        esac
+        ;;
       *)              bc_cv_asm_lsym_prefix=".L" ;;
       esac
     ])
