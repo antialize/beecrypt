@@ -19,7 +19,7 @@
 
 /*!\file fips186.h
  * \brief FIPS-186 pseudo-random number generator, headers.
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup PRNG_m PRNG_fips186_m
  */
 
@@ -46,7 +46,13 @@
 #include "beecrypt.h"
 #include "sha1.h"
 
-#define FIPS186_STATE_SIZE	16
+#if (MP_WBYTES == 8)
+# define FIPS186_STATE_SIZE	8
+#elif (MP_WBYTES == 4)
+# define FIPS186_STATE_SIZE	16
+#else
+# error
+#endif
 
 /*!\ingroup PRNG_fips186_m
  */
@@ -66,8 +72,9 @@ typedef struct
 	# endif
 	#endif
 	sha1Param	param;
-	uint32		state[FIPS186_STATE_SIZE];
-	int			digestsize;
+	mpw			state[FIPS186_STATE_SIZE];
+	byte		digest[20];
+	int			digestremain;
 } fips186Param;
 
 #ifdef __cplusplus
@@ -79,9 +86,9 @@ extern BEECRYPTAPI const randomGenerator fips186prng;
 BEECRYPTAPI
 int fips186Setup  (fips186Param*);
 BEECRYPTAPI
-int fips186Seed   (fips186Param*, const uint32*, int);
+int fips186Seed   (fips186Param*, const byte*, size_t);
 BEECRYPTAPI
-int fips186Next   (fips186Param*, uint32*, int);
+int fips186Next   (fips186Param*, byte*, size_t);
 BEECRYPTAPI
 int fips186Cleanup(fips186Param*);
 
