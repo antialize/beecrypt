@@ -3,9 +3,7 @@
  */
 
 #define	_REENTRANT	1	/* XXX config.h collides with pyconfig.h */
-#ifndef _GNU_SOURCE
-#define _GNU_SOURCE	1	/* XXX pick up stpcpy et al */
-#endif
+#define	_GNU_SOURCE		/* XXX pick up stpcpy et al */
 #include "config.h"
 
 #include "Python.h"
