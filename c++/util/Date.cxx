@@ -36,7 +36,7 @@ namespace {
 	__thread String* result = 0;
 	__thread DateFormat* format = 0;
 	# else
-	#  warning Date.toString() method routine is not multi-thread safe
+	#  warning Date::toString() method routine is not multi-thread safe
 	String* result = 0;
 	DateFormat* format = 0;
 	# endif
@@ -98,6 +98,8 @@ const String& Date::toString() const
 
 	if (!result)
 		result = new String();
+	else
+		result->remove();
 
 	*result = format->format((UDate) _time, *result);
 
