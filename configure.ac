@@ -672,28 +672,30 @@ BEECRYPT_CPU_BITS
 
 if test "$ac_with_javaglue" = yes ; then
   CFLAGS="$CFLAGS -I$ac_cv_java_include"
-  case $target_os in
-  aix*)
-    CFLAGS="$CFLAGS -I$ac_cv_java_include"/aix
-    ;;
-  cygwin*)
-    CFLAGS="$CFLAGS -I$ac_cv_java_include"/win32
-    ;;
-  darwin*)
-    ;;
-  linux*)
-    CFLAGS="$CFLAGS -I$ac_cv_java_include"/linux
-    ;;
-  osf*)
-    CFLAGS="$CFLAGS -I$ac_cv_java_include"/osf
-    ;;
-  solaris*)
-    CFLAGS="$CFLAGS -I$ac_cv_java_include"/solaris
-    ;;
-  *)
-    AC_MSG_WARN([please add appropriate -I$ac_cv_java_include/<operating system> flag])
-    ;;
-  esac
+  if test "$ac_cv_have_gcj" != yes; then
+    case $target_os in
+    aix*)
+      CFLAGS="$CFLAGS -I$ac_cv_java_include"/aix
+      ;;
+    cygwin*)
+      CFLAGS="$CFLAGS -I$ac_cv_java_include"/win32
+      ;;
+    darwin*)
+      ;;
+    linux*)
+      CFLAGS="$CFLAGS -I$ac_cv_java_include"/linux
+      ;;
+    osf*)
+      CFLAGS="$CFLAGS -I$ac_cv_java_include"/osf
+      ;;
+    solaris*)
+      CFLAGS="$CFLAGS -I$ac_cv_java_include"/solaris
+      ;;
+    *)
+      AC_MSG_WARN([please add appropriate -I$ac_cv_java_include/<operating system> flag])
+      ;;
+    esac
+  fi
 fi
 
 # Generate output files.
