@@ -35,6 +35,9 @@
 #if HAVE_MALLOC_H
 # include <malloc.h>
 #endif
+#if HAVE_STRING_H
+# include <string.h>
+#endif
 
 memchunk* memchunkAlloc(size_t size)
 {
