@@ -60,3 +60,6 @@ pkginclude_HEADERS = aes.h aesopt.h base64.h beecrypt.h beecrypt.api.h beecrypt.
 EXTRA_DIST = BENCHMARKS BUGS CONTRIBUTORS README.DLL README.WIN32 beecrypt.rc javaglue.h autogen.sh Makefile.mak
 
 DISTCLEANFILES = mpopt.s aesopt.s blowfishopt.s sha1opt.s
+
+bench:
+	(cd tests && $(MAKE) $(AM_MAKEFLAGS) bench)
