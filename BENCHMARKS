@@ -5,8 +5,12 @@ I've tried to make them as accurate as possible, within limits.
 Note: many of the testing systems were provided by HP's testdrive program;
 many thanks to them for giving me access to their systems.
 
+Note: to avoid religious wars, in the table below read GNU/Linux for
+Linux - I'm just a little cramped for space...
+
 BENCHmark Modular Exponentation (more is better):
 
+BeeCrypt 3.0.0 | gcc-3.2.2           | Debian Linux 3.0     | Itanium 2      900 |  12 GB: 6992 ()
 BeeCrypt 3.0.0 | gcc-3.3             | RedHat AS 2.1        | P4 Xeon       2400 |   4 GB: 6920 (--with-arch=pentium4)
 BeeCrypt 3.0.0 | gcc-2.95.4          | Debian Linux 3.0     | Alpha EV6.7    666 |   2 GB: 5742 ()
 BeeCrypt 3.0.0 | gcc-2.96            | RedHat AS 2.1        | P4 Xeon       2400 |   4 GB: 3280 (--with-arch=pentiumpro)
