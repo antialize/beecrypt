@@ -30,6 +30,24 @@ AC_ARG_ENABLE(optimized, [  --enable-optimized      enables the assembler optimi
     fi
   ])
 
+AC_ARG_ENABLE(sse2,      [  --enable-sse2           enables Intel SSE2 assembler optimizations [default depends on --enable-optimized and target_cpu]],
+  [ if test "$enableval" = yes; then
+      ac_enable_sse2=yes
+    else
+      ac_enable_sse2=no
+   fi
+  ],
+  [ if test "$ac_enable_debug" = no; then
+      ac_enable_sse2=no
+    else
+      if test "$target_cpu" = i686; then
+        ac_enable_sse2=yes
+      else
+        ac_enable_sse2=no
+      fi
+    fi
+  ])
+
 AC_ARG_ENABLE(threads, [  --enable-threads        enables multithread support [de fault=yes]],
   [ if test "$enableval" = no; then
       ac_enable_threads=no
@@ -624,6 +642,9 @@ if test "$ac_enable_optimized" = yes; then
     ;;
   i686)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I686"
+    if test "$ac_enable_sse2" = yes; then
+      CPPFLAGS="$CPPFLAGS -DOPTIMIZE_SSE2"
+    fi
     ;;
   ia64)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_IA64"
@@ -674,7 +695,7 @@ else
         CFLAGS="$CFLAGS -fomit-frame-pointer"
         ;;
       i386)
-        CFLAGS="$CFLAGS -mcpu=i386 -fomit-frame-pointer"
+        CFLAGS="$CFLAGS -mcpu=i386 -fomit-frame-pointer"
         ;;
       i486)
         CFLAGS="$CFLAGS -mcpu=i486 -fomit-frame-pointer"
@@ -788,6 +809,11 @@ EOF
       cat > $srcdir/mp32opt.S << EOF
 #include "gas/mp32opt.i386.S"
 EOF
+      if test "$ac_enable_sse2" = yes; then
+        cat >> $srcdir/mp32opt.S << EOF
+#include "gas/mp32opt.sse2.S"
+EOF
+      fi
       cat > $srcdir/sha1opt.S << EOF
 #include "gas/sha1opt.i586.S"
 EOF
