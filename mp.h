@@ -443,8 +443,7 @@ void mpsetw(size_t size, mpw* xdata, mpw y);
  * \param xdata The first multi-precision integer.
  * \param xsize The size of the second multi-precision integer.
  * \param ydata The second multi-precision integer.
- *
-BEECRYPTAPI
+ */
 void mpsetx(size_t xsize, mpw* xdata, size_t ysize, const mpw* ydata);
 
 /*!\fn int mpaddw(size_t size, mpw* xdata, mpw y)
