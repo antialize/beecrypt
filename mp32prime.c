@@ -880,7 +880,7 @@ static void mp32prndbits(mp32barrett* p, uint8 msbclr, uint8 lsbset, randomGener
 		p->modl[size] |= (0xffffffff >> (32 - lsbset));
 }
 
-/**
+/*
  * mp32psppdiv_w
  *  needs workspace of (3*size) words
  */
@@ -902,7 +902,7 @@ int mp32psppdiv_w(const mp32barrett* p, uint32* wksp)
 	return mp32isone(size, wksp);
 }
 
-/**
+/*
  * needs workspace of (5*size+2)
  */
 int mp32pmilrabtwo_w(const mp32barrett* p, uint32 s, const uint32* rdata, const uint32* ndata, uint32* wksp)
@@ -927,7 +927,7 @@ int mp32pmilrabtwo_w(const mp32barrett* p, uint32 s, const uint32* rdata, const 
 	}
 }
 
-/**
+/*
  * needs workspace of (5*size+2) words
  */
 int mp32pmilraba_w(const mp32barrett* p, const uint32* adata, uint32 s, const uint32* rdata, const uint32* ndata, uint32* wksp)
@@ -952,7 +952,7 @@ int mp32pmilraba_w(const mp32barrett* p, const uint32* adata, uint32 s, const ui
 	}
 }
 
-/**
+/*
  * needs workspace of (8*size+2) words
  */
 int mp32pmilrab_w(const mp32barrett* p, randomGeneratorContext* rc, int t, uint32* wksp)
@@ -1005,7 +1005,7 @@ int mp32pmilrab_w(const mp32barrett* p, randomGeneratorContext* rc, int t, uint3
     return 1;
 }
 
-/**
+/*
  * needs workspace of (7*size+2) words
  */
 void mp32prnd_w(mp32barrett* p, randomGeneratorContext* rc, uint32 size, int t, const mp32number* f, uint32* wksp)
@@ -1056,7 +1056,7 @@ void mp32prnd_w(mp32barrett* p, randomGeneratorContext* rc, uint32 size, int t, 
 	}
 }
 
-/**
+/*
  * needs workspace of (7*size+2) words
  */
 void mp32prndconone_w(mp32barrett* p, randomGeneratorContext* rc, uint32 size, int t, const mp32barrett* q, const mp32number* f, mp32number* r, int cofactor, uint32* wksp)

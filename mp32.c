@@ -949,7 +949,7 @@ uint32 mp32rshiftlsz(register uint32 xsize, register uint32* xdata)
 /* try an alternate version here, with descending sizes */
 /* also integrate lszcnt and rshift properly into one function */
 #ifndef ASM_MP32GCD_W
-/**
+/*
  * mp32gcd_w
  *  need workspace of (size) words
  */
