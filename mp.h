@@ -407,14 +407,35 @@ void mpclrmsb(size_t size, mpw* data);
 BEECRYPTAPI
 void mpclrlsb(size_t size, mpw* data);
 
+/*!\fn mpand(size_t size, mpw* xdata, const mpw* ydata)
+ * \brief This function computes the bit-wise AND of two multi-precision
+ *  integers. Modifies xdata.
+ * \param size The size of the multi-precision integers.
+ * \param xdata The multi-precision integer data.
+ * \param ydata The multi-precision integer data.
+ */
 BEECRYPTAPI
-void mpand(size_t, mpw*, const mpw*);
+void mpand(size_t size, mpw* xdata, const mpw* ydata);
 
+/*!\fn void mpor(size_t size, mpw* xdata, const mpw* ydata) 
+ * \brief This function computes the bit-wise OR of two multi-precision
+ *  integers. Modifies xdata.
+ * \param size The size of the multi-precision integer.
+ * \param xdata The multi-precision integer data.
+ * \param ydata The multi-precision integer data.
+ */
 BEECRYPTAPI
-void mpor(size_t, mpw*, const mpw*);
+void mpor(size_t size, mpw* xdata, const mpw* ydata);
 
+/*!\fn void mpxor(size_t size, mpw* xdata, const mpw* ydata) 
+ * \brief This function computes the bit-wise XOR of two multi-precision
+ *  integers. Modifies xdata.
+ * \param size The size of the multi-precision integer.
+ * \param xdata The multi-precision integer data.
+ * \param ydata The multi-precision integer data.
+ */
 BEECRYPTAPI
-void mpxor(size_t, mpw*, const mpw*);
+void mpxor(size_t size, mpw* xdata, const mpw* ydata);
 
 /*!\fn mpnot(size_t size, mpw* data)
  * \brief This function flips all bits of a multi-precision integer.
@@ -517,12 +538,29 @@ int mpsubx(size_t xsize, mpw* xdata, size_t ysize, const mpw* ydata);
 BEECRYPTAPI
 int mpmultwo(size_t size, mpw* data);
 
+/*!\fn void mpneg(size_t size, mpw* data)
+ * \brief This function negates a multi-precision integer.
+ * \param size The size of the multi-precision integer.
+ * \param data The multi-precision integer data.
+ */
 BEECRYPTAPI
 void mpneg(size_t size, mpw* data);
 
+/*!\fn size_t mpsize(size_t size, const mpw* data)
+ * \brief This function returns the true size of a multi-precision
+ *  integer, after stripping leading zero words.
+ * \param size The size of the multi-precision integer.
+ * \param data The multi-precision integer data.
+ */
 BEECRYPTAPI
 size_t mpsize(size_t size, const mpw* data);
 
+/*!\fn size_t mpbits(size_t size, const mpw* data)
+ * \brief This function returns the number of significant bits
+ *  in a multi-precision integer.
+ * \param size The size of the multi-precision integer.
+ * \param data The multi-precision integer data.
+ */
 BEECRYPTAPI
 size_t mpbits(size_t size, const mpw* data);
 
