@@ -112,9 +112,7 @@ provider and the counterpart of this library.
  */
 /*! \defgroup	BC_blowfish_m	Block ciphers: Blowfish
  */
-/*! \defgroup	MP32_m	Multiple Precision Integer Arithmetic (32 bit)
- */
-/*! \defgroup	MP64_m	Multiple Precision Integer Arithmetic (64 bit)
+/*! \defgroup	MP_m	Multiple Precision Integer Arithmetic
  */
 /*! \defgroup	DL_m	Discrete Logarithm Primitives
  */

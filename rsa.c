@@ -44,7 +44,7 @@
  * This function can be used for encryption and verifying.
  *
  * It performs the following operation:
- * \li \f$c=m^{e}\ \testrm{mod}\ \nf$
+ * \li \f$c=m^{e}\ \textrm{mod}\ n\f$
  *
  * \param pk The RSA public key.
  * \param m The message.

@@ -30,6 +30,14 @@
 
 #include <stdio.h>
 
+/*!\fn void mpzero(register size_t size, register mpw* data)
+ * \brief Multi-precision zeroing.
+ *
+ * Zero (fill with 0) a number of multi-precision words.
+ *
+ * \param size The size of the multi-precision integer.
+ * \param data The multi-precision integer data.
+ */
 #ifndef ASM_MPZERO
 void mpzero(register size_t size, register mpw* data)
 {
@@ -38,6 +46,15 @@ void mpzero(register size_t size, register mpw* data)
 }
 #endif
 
+/*!\fn void mpfill(register size_t size, register mpw* data, register mpw fill)
+ * \brief Multi-precision zeroing.
+ *
+ * Fill a number of multi-precision words with a specific value.
+ *
+ * \param size The size of the multi-precision integer.
+ * \param data The multi-precision integer data.
+ * \param fill The value fill the data with.
+ */
 #ifndef ASM_MPFILL
 void mpfill(register size_t size, register mpw* data, register mpw fill)
 {
@@ -46,6 +63,13 @@ void mpfill(register size_t size, register mpw* data, register mpw fill)
 }
 #endif
 
+/*!\fn int mpodd(register size_t size, register mpw* data)
+ * \brief Test if multi-precision integer is odd.
+ * \param size The size of the multi-precision integer.
+ * \param data The multi-precision integer data.
+ * \retval 1 if odd
+ * \retval 0 if even
+ */
 #ifndef ASM_MPODD
 int mpodd(register size_t size, register const mpw* data)
 {
@@ -53,6 +77,13 @@ int mpodd(register size_t size, register const mpw* data)
 }
 #endif
 
+/*!\fn int mpodd(register size_t size, register mpw* data)
+ * \brief Test if multi-precision integer is even.
+ * \param size The size of the multi-precision integer.
+ * \param data The multi-precision integer data.
+ * \retval 1 if even
+ * \retval 0 if odd
+ */
 #ifndef ASM_MPEVEN
 int mpeven(register size_t size, register const mpw* data)
 {
@@ -60,6 +91,13 @@ int mpeven(register size_t size, register const mpw* data)
 }
 #endif
 
+/*!\fn int mpz(register size_t size, register mpw* data)
+ * \brief Test if multi-precision integer is zero.
+ * \param size The size of the multi-precision integer.
+ * \param data The multi-precision integer data.
+ * \retval 1 if zero
+ * \retval 0 if not zero
+ */
 #ifndef ASM_MPZ
 int mpz(register size_t size, register const mpw* data)
 {
@@ -70,6 +108,13 @@ int mpz(register size_t size, register const mpw* data)
 }
 #endif
 
+/*!\fn int mpnz(register size_t size, register mpw* data)
+ * \brief Test if multi-precision integer is not zero.
+ * \param size The size of the multi-precision integer.
+ * \param data The multi-precision integer data.
+ * \retval 1 if not zero
+ * \retval 0 if zero
+ */
 #ifndef ASM_MPNZ
 int mpnz(register size_t size, register const mpw* data)
 {
@@ -80,6 +125,14 @@ int mpnz(register size_t size, register const mpw* data)
 }
 #endif
 
+/*!\fn int mpeq(register size_t size, register mpw* xdata, register const mpw* ydata)
+ * \brief Test if two multi-precision integers (of same size) are equal.
+ * \param size The size of the multi-precision integers.
+ * \param xdata The first multi-precision integer.
+ * \param ydata The second multi-precision integer.
+ * \retval 1 if equal
+ * \retval 0 if not equal
+ */
 #ifndef ASM_MPEQ
 int mpeq(register size_t size, register const mpw* xdata, register const mpw* ydata)
 {
@@ -97,6 +150,15 @@ int mpeq(register size_t size, register const mpw* xdata, register const mpw* yd
 }
 #endif
 
+/*!\fn int mpeqx(register size_t xsize, register mpw* xdata, register size_t ysize, register const mpw* ydata)
+ * \brief Test if two multi-precision integers (of different size) are equal.
+ * \param xsize The size of the first multi-precision integer.
+ * \param xdata The first multi-precision integer.
+ * \param ysize The size of the first multi-precision integer.
+ * \param ydata The second multi-precision integer.
+ * \retval 1 if equal
+ * \retval 0 if not equal
+ */
 #ifndef ASM_MPEQX
 int mpeqx(register size_t xsize, register const mpw* xdata, register size_t ysize, register const mpw* ydata)
 {
@@ -561,6 +623,20 @@ void mpneg(register size_t size, register mpw* data)
 }
 #endif
 
+/*!\fn mpw mpsetmul(register size_t size, register mpw* result, register const mpw* data, register mpw y)
+ * \brief Multi-precision multiply-setup.
+ *
+ * This function is used in the computation of a full multi-precision
+ * multiplication. By using it we can shave off a few cycles; otherwise we'd
+ * have to zero the least significant half of the result first and use
+ * another call to the slightly slower mpaddmul function.
+
+ * \param size The size of multi-precision word data.
+ * \param result The place where result should be stored.
+ * \param data The multi-precision word data.
+ * \param y The multiplicand.
+ * \retval carry-over mpw.
+ */
 #ifndef ASM_MPSETMUL
 mpw mpsetmul(register size_t size, register mpw* result, register const mpw* data, register mpw y)
 {
@@ -617,6 +693,19 @@ mpw mpsetmul(register size_t size, register mpw* result, register const mpw* dat
 }
 #endif
 
+/*!\fn mpw mpaddmul(register size_t size, register mpw* result, register const mpw* data, register mpw y)
+ * \brief Multi-precision multiply-accumulate.
+ *
+ * This function is used in the computation of a full multi-precision
+ * multiplication. It computes the product-by-one-word, accumulated with
+ * previous results.
+ *
+ * \param size The size of multi-precision word data.
+ * \param result The place where result should be stored.
+ * \param data The multi-precision word data.
+ * \param y The multiplicand.
+ * \retval carry-over mpw.
+ */
 #ifndef ASM_MPADDMUL
 mpw mpaddmul(register size_t size, register mpw* result, register const mpw* data, register mpw y)
 {

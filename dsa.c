@@ -33,7 +33,6 @@
 
 #include "dsa.h"
 #include "dldp.h"
-/* #include "mp32.h" */
 
 #if HAVE_STDLIB_H
 # include <stdlib.h>
@@ -148,7 +147,7 @@ int dsasign(const mpbarrett* p, const mpbarrett* q, const mpnumber* g, randomGen
  * \param s The signature's r value.
  *
  * \warning The return type of this function should be a boolean, but since
- *          that type isn't as portable, an int is used.
+ *          that type isn't portable, an int is used.
  *
  * \retval 0 on failure.
  * \retval 1 on success.

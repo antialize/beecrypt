@@ -20,9 +20,6 @@
 /*!\file blockmode.c
  * \brief Blockcipher operation modes.
  * \todo Additional modes, such as CFB and OFB.
- * \todo Add generic routines, instead of specific ones for each algorithm.
- *       The latter mode can stay for optimized functions, for instance if
- *       they're written in assembler.
  * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup BC_m
  */
@@ -35,18 +32,14 @@
  * \{
  */
 
-/*!\fn blockEncryptECB(const blockCipher* bc, blockCipherParam* bp, int count, uint32_t* dst, const uint32_t* src)
+/*!\fn blockEncryptECB(const blockCipher* bc, blockCipherParam* bp, int nblocks, uint32_t* dst, const uint32_t* src)
  * \brief Encrypts multiple blocks in Electronic Code Book (ECB) mode.
  * \param bc The blockcipher.
  * \param bp The cipher's parameter block.
  * \param nblocks The number of blocks to be encrypted.
- * \param dst The destination (ciphertext data) address; the uint32_t pointer type
- *            is only used for memory alignment purposes.
- * \param src The source (cleartext data) address; the uint32_t pointer type
- *            is only used for memory alignment purposes.
- * \param fdback The feedback (unused by this function).
+ * \param dst The ciphertext data; should be aligned on a 32-bit boundary.
+ * \param src The cleartext data; should be aligned on a 32-bit boundary.
  * \retval 0 on success.
- * \retval -1 on failure.
  */
 int blockEncryptECB(const blockCipher* bc, blockCipherParam* bp, int nblocks, uint32_t* dst, const uint32_t* src)
 {
@@ -65,6 +58,15 @@ int blockEncryptECB(const blockCipher* bc, blockCipherParam* bp, int nblocks, ui
 	return 0;
 }
 
+/*!\fn blockDecryptECB(const blockCipher* bc, blockCipherParam* bp, int nblocks, uint32_t* dst, const uint32_t* src)
+ * \brief Decrypts multiple blocks in Electronic Code Book (ECB) mode.
+ * \param bc The blockcipher.
+ * \param bp The cipher's parameter block.
+ * \param nblocks The number of blocks to be decrypted.
+ * \param dst The cleartext data; should be aligned on a 32-bit boundary.
+ * \param src The ciphertext data; should be aligned on a 32-bit boundary.
+ * \retval 0 on success.
+ */
 int blockDecryptECB(const blockCipher* bc, blockCipherParam* bp, int nblocks, uint32_t* dst, const uint32_t* src)
 {
 	/* assumes that every blockcipher's blocksize is a multiple of 32 bits */
