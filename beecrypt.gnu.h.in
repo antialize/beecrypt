@@ -72,6 +72,9 @@
 /* Define to 1 if you have the `thread' library (-lthread). */
 #undef HAVE_LIBTHREAD
 
+/* Define to 1 if you have the `winmm' library (-lwinmm). */
+#undef HAVE_LIBWINMM
+
 /* Define to 1 if your compiler knows the 'long long' type */
 #undef HAVE_LONG_LONG
 
