@@ -424,15 +424,33 @@ void mpxor(size_t, mpw*, const mpw*);
 BEECRYPTAPI
 void mpnot(size_t size, mpw* data);
 
+/*!\fn void mpsetw(size_t size, mpw* xdata, mpw y)
+ * \brief This function sets the value of a multi-precision integer to the
+ *  given word. The given value is copied into the least significant word,
+ *  while the most significant words are zeroed.
+ * \param size The size of the multi-precision integer.
+ * \param xdata The first multi-precision integer.
+ * \param y The multi-precision word.
+ */
 BEECRYPTAPI
 void mpsetw(size_t size, mpw* xdata, mpw y);
+
+/*!\fn void mpsetx(size_t xsize, mpw* xdata, size_t ysize, const mpw* ydata)
+ * \brief This function set the value of the first multi-precision integer
+ *  to the second, truncating the most significant words if ysize > xsize, or
+ *  zeroing the most significant words if ysize < xsize.
+ * \param xsize The size of the first multi-precision integer.
+ * \param xdata The first multi-precision integer.
+ * \param xsize The size of the second multi-precision integer.
+ * \param ydata The second multi-precision integer.
+ *
 BEECRYPTAPI
-void mpsetx(size_t size, mpw* xdata, size_t ysize, const mpw* ydata);
+void mpsetx(size_t xsize, mpw* xdata, size_t ysize, const mpw* ydata);
 
 /*!\fn int mpaddw(size_t size, mpw* xdata, mpw y)
  * \brief This function adds one word to a multi-precision integer.
- *  The performed operation is in pseudocode: x += y
- * \param size The size of the multi-precision integers.
+ *  The performed operation is in pseudocode: x += y.
+ * \param size The size of the multi-precision integer.
  * \param xdata The first multi-precision integer.
  * \param y The multi-precision word.
  * \return The carry-over value of the operation; this value is either 0 or 1.
@@ -442,7 +460,7 @@ int mpaddw(size_t size, mpw* xdata, mpw y);
 
 /*!\fn int mpadd(size_t size, mpw* xdata, const mpw* ydata)
  * \brief This function adds two multi-precision integers of equal size.
- *  The performed operation is in pseudocode: x += y
+ *  The performed operation is in pseudocode: x += y.
  * \param size The size of the multi-precision integers.
  * \param xdata The first multi-precision integer.
  * \param ydata The second multi-precision integer.
@@ -451,12 +469,21 @@ int mpaddw(size_t size, mpw* xdata, mpw y);
 BEECRYPTAPI
 int mpadd (size_t size, mpw* xdata, const mpw* ydata);
 
+/*!\fn int mpaddx(size_t xsize, mpw* xdata, size_t ysize, const mpw* ydata)
+ * \brief This function adds two multi-precision integers of different size.
+ *  The performed operation in pseudocode: x += y.
+ * \param xsize The size of the first multi-precision integer.
+ * \param xdata The first multi-precision integer.
+ * \param ysize The size of the second multi-precision integer.
+ * \param ydata The second multi-precision integer.
+ * \return The carry-over value of the operation; this value is either 0 or 1.
+ */
 BEECRYPTAPI
 int mpaddx(size_t xsize, mpw* xdata, size_t ysize, const mpw* ydata);
 
 /*!\fn int mpsubw(size_t size, mpw* xdata, mpw y)
  * \brief This function subtracts one word to a multi-precision integer.
- *  The performed operation is in pseudocode: x -= y
+ *  The performed operation in pseudocode: x -= y
  * \param size The size of the multi-precision integers.
  * \param xdata The first multi-precision integer.
  * \param y The multi-precision word.
@@ -466,7 +493,7 @@ int mpsubw(size_t size, mpw* xdata, mpw y);
 
 /*!\fn int mpsub(size_t size, mpw* xdata, const mpw* ydata)
  * \brief This function subtracts two multi-precision integers of equal size.
- *  The performed operation is in pseudocode: x -= y
+ *  The performed operation in pseudocode: x -= y
  * \param size The size of the multi-precision integers.
  * \param xdata The first multi-precision integer.
  * \param ydata The second multi-precision integer.
@@ -475,6 +502,15 @@ int mpsubw(size_t size, mpw* xdata, mpw y);
 BEECRYPTAPI
 int mpsub (size_t size, mpw* xdata, const mpw* ydata);
 
+/*!\fn int mpaddx(size_t xsize, mpw* xdata, size_t ysize, const mpw* ydata)
+ * \brief This function subtracts two multi-precision integers of different
+ *  size. The performed operation in pseudocode: x -= y.
+ * \param xsize The size of the first multi-precision integer.
+ * \param xdata The first multi-precision integer.
+ * \param ysize The size of the second multi-precision integer.
+ * \param ydata The second multi-precision integer.
+ * \return The carry-over value of the operation; this value is either 0 or 1.
+ */
 BEECRYPTAPI
 int mpsubx(size_t xsize, mpw* xdata, size_t ysize, const mpw* ydata);
 
