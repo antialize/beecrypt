@@ -258,7 +258,7 @@ if test "$ac_enable_threads" = yes; then
 fi
 
 if test "$ac_enable_aio" = yes; then
-  if test "$ac_cv_have_aio_h" = yes; then
+  if test "$ac_cv_header_aio_h" = yes; then
     AC_SEARCH_LIBS(aio_read, [c rt aio posix4], [ ], [
       AC_MSG_ERROR([no library containing aio routines found])
     ])
