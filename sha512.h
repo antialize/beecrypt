@@ -31,7 +31,11 @@
 /*!\brief Holds all the parameters necessary for the SHA-512 algorithm.
  * \ingroup HASH_sha512_m
  */
-typedef struct
+#ifdef __cplusplus
+struct BEECRYPTAPI sha512Param
+#else
+struct _sha512Param
+#endif
 {
 	/*!\var h
 	 */
@@ -55,7 +59,11 @@ typedef struct
 	 *  copied before it is processed.
 	 */
 	uint64_t offset;
-} sha512Param;
+};
+
+#ifndef __cplusplus
+typedef struct _sha512Param sha512Param;
+#endif
 
 #ifdef __cplusplus
 extern "C" {
