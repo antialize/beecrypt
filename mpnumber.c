@@ -20,7 +20,7 @@
 /*!\file mpnumber.c
  * \brief Multi-precision numbers.
  * \author Bob Deblier <bob.deblier@pandora.be>
- * \ingroup MP64_m
+ * \ingroup MP_m
  */
 
 #define BEECRYPT_DLL_EXPORT
