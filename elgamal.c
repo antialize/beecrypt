@@ -26,6 +26,9 @@
  *
  * Two of the signature variants in Note 11.70 are described.
  *
+ * \todo Explore the possibility of using simultaneous multiple exponentiation,
+ *       as described in HAC, 14.87 (iii).
+ *
  * \author Bob Deblier <bob@virtualunlimited.com>
  * \ingroup DL_m DL_elgamal_m
  */
