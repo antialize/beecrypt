@@ -131,7 +131,7 @@ int rsakpMake(rsakp* kp, randomGeneratorContext* rgc, int nsize)
 
 		/* compute d = inv(e) mod phi */
 		mpnsize(&kp->d, nsize);
-		mpbinv_w(&phi, kp->e.size, kp->e.data, kp->d.data, temp);
+		mpninv_w((mpnumber*) &phi, kp->e.size, kp->e.data, kp->d.data, temp);
 
 		/* compute d1 = d mod (p-1) */
 		mpnsize(&kp->d1, pqsize);
@@ -143,7 +143,7 @@ int rsakpMake(rsakp* kp, randomGeneratorContext* rgc, int nsize)
 
 		/* compute c = inv(q) mod p */
 		mpnsize(&kp->c, pqsize);
-		mpbinv_w(&kp->p, pqsize, kp->q.modl, kp->c.data, temp);
+		mpninv_w((mpnumber*) &kp->p, pqsize, kp->q.modl, kp->c.data, temp);
 
 		free(temp);
 

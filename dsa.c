@@ -140,7 +140,7 @@ int dsavrfy(const mpbarrett* p, const mpbarrett* q, const mpnumber* g, const mpn
 	qwksp = qtemp+2*qsize;
 
 	/* compute w = inv(s) mod q */
-	if (mpbinv_w(q, s->size, s->data, qtemp, qwksp))
+	if (mpninv_w((mpnumber*) q, s->size, s->data, qtemp, qwksp))
 	{
 		/* compute u1 = h(m)*w mod q */
 		mpbmulmod_w(q, hm->size, hm->data, qsize, qtemp, qtemp+qsize, qwksp);

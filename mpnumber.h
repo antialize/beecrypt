@@ -58,6 +58,11 @@ void mpnsetw  (mpnumber*, mpw);
 BEECRYPTAPI
 void mpnsethex(mpnumber*, const char*);
 
+BEECRYPTAPI
+int  mpninv_w(const mpnumber*, size_t, const mpw*, mpw*, mpw*);
+BEECRYPTAPI
+int  mpninv(mpnumber*, const mpnumber*, const mpnumber*);
+
 #ifdef __cplusplus
 }
 #endif
