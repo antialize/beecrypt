@@ -1,14 +1,5 @@
 /*
- * mp32opt.sse1.S
- *
- * Assembler optimized multiprecision integer routines for Intel Pentium
- * processors supporting SSE2 instructions.
- *
- * Compile target is GNU Assembler
- *
  * Copyright (c) 2003 Bob Deblier
- *
- * Author: Bob Deblier <bob.deblier@pandora.be>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,6 +15,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ */
+
+/*!\file mp32opt.sse2.S
+ * \brief Multi-precision integer, Intel SSE2 assembler-optimized routines.
+ * \author Bob Deblier <bob.deblier@pandora.be>
+ * \ingroup MP32_m
  */
 
 #include "beecrypt.gas.h"
