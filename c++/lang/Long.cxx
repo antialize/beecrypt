@@ -65,7 +65,7 @@ const String& Long::toString(javalong l) throw ()
 
 const String& Long::toHexString(javalong l) throw ()
 {
-	char tmp[17];
+	char tmp[18];
 
 	#if WIN32
 	sprintf(tmp, "%I64x", l);
@@ -87,7 +87,7 @@ const String& Long::toHexString(javalong l) throw ()
 
 const String& Long::toOctalString(javalong l) throw ()
 {
-	char tmp[24];
+	char tmp[23];
 
 	#if WIN32
 	sprintf(tmp, "%I64o", l);
@@ -157,5 +157,15 @@ javaint Long::intValue() const throw ()
 
 javalong Long::longValue() const throw ()
 {
-	return (javalong) _val;
+	return _val;
+}
+
+int Long::compareTo(const Long& l) const throw ()
+{
+	if (_val == l._val)
+		return 0;
+	else if (_val < l._val)
+		return -1;
+	else
+		return 1;
 }

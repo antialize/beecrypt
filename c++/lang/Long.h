@@ -27,19 +27,20 @@
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/lang/Comparable.h"
+using beecrypt::lang::Comparable;
+#include "beecrypt/c++/lang/Number.h"
+using beecrypt::lang::Number;
 #include "beecrypt/c++/lang/NumberFormatException.h"
 using beecrypt::lang::NumberFormatException;
-#include "beecrypt/c++/lang/Object.h"
 #include "beecrypt/c++/lang/String.h"
 using beecrypt::lang::String;
 
 namespace beecrypt {
 	namespace lang {
-		/*!\brief This subclass of Throwable is used to indicate a serious
-		 *        problem, which should not be caught by the application.
-		 * \ingroup CXX_LANG_m
+		/*!\ingroup CXX_LANG_m
 		 */
-		class BEECRYPTCXXAPI Long : public beecrypt::lang::Object
+		class BEECRYPTCXXAPI Long : public beecrypt::lang::Number, public beecrypt::lang::Comparable<Long>
 		{
 		private:
 			javalong _val;
@@ -59,10 +60,12 @@ namespace beecrypt {
 			Long(const String& s) throw (NumberFormatException);
 			virtual ~Long() {};
 
-			javabyte byteValue() const throw ();
-			javashort shortValue() const throw ();
-			javaint intValue() const throw ();
-			javalong longValue() const throw ();
+			virtual javabyte byteValue() const throw ();
+			virtual javashort shortValue() const throw ();
+			virtual javaint intValue() const throw ();
+			virtual javalong longValue() const throw ();
+
+			virtual int compareTo(const Long& anotherLong) const throw ();
 		};
 	}
 }
