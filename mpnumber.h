@@ -42,6 +42,9 @@ struct _mpnumber
 	mpw*	data;
 
 #ifdef __cplusplus
+	static const mpnumber ZERO;
+	static const mpnumber ONE;
+
 	mpnumber();
 	mpnumber(unsigned int);
 	mpnumber(const mpnumber&);
