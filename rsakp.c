@@ -29,8 +29,8 @@
 # include "config.h"
 #endif
 
-#include "rsakp.h"
-#include "mpprime.h"
+#include "beecrypt/rsakp.h"
+#include "beecrypt/mpprime.h"
 
 /*!\addtogroup IF_rsa_m
  * \{
@@ -59,10 +59,11 @@ int rsakpMake(rsakp* kp, randomGeneratorContext* rgc, size_t bits)
 		mpw* workspace = dividend+nsize+1;
 		int shift;
 
-		/* set e */
-		mpnsetw(&kp->e, 65537);
+		/* set e to default value if e is empty */
+		if (kp->e.size == 0 && !kp->e.data)
+			mpnsetw(&kp->e, 65537U);
 
-		/* generate a random prime p */
+		/* generate a random prime p, so that gcd(p-1,e) = 1 */
 		mpprnd_w(&kp->p, rgc, pbits, mpptrials(pbits), &kp->e, temp);
 
 		/* find out how big q should be */
@@ -76,7 +77,7 @@ int rsakpMake(rsakp* kp, randomGeneratorContext* rgc, size_t bits)
 		mpnzero(&min);
 		mpnset(&min, nsize+1-psize, divmod);
 
-		/* generate a random prime q, with min/max constraints */
+		/* generate a random prime q, with min/max constraints, so that gcd(q-1,e) = 1 */
 		if (mpprndr_w(&kp->q, rgc, qbits, mpptrials(qbits), &min, (mpnumber*) 0, &kp->e, temp))
 		{
 			/* shouldn't happen */
@@ -107,19 +108,25 @@ int rsakpMake(rsakp* kp, randomGeneratorContext* rgc, size_t bits)
 		mpmul(temp, psize, psubone.modl, qsize, qsubone.modl);
 		mpnset(&phi, nsize, temp);
 
-		/* compute d = inv(e) mod phi */
-		mpninv(&kp->d, &kp->e, &phi);
+		/* compute d = inv(e) mod phi; if gcd(e, phi) != 1 then this function will fail
+		 */
+		if (mpninv(&kp->d, &kp->e, &phi) == 0)
+		{
+			/* shouldn't happen, since gcd(p-1,e) = 1 and gcd(q-1,e) = 1 ==> gcd((p-1)(q-1),e) = 1 */
+			free(temp);
+			return -1;
+		}
 
-		/* compute d1 = d mod (p-1) */
-		mpnsize(&kp->d1, psize);
-		mpbmod_w(&psubone, kp->d.data, kp->d1.data, temp);
+		/* compute dp = d mod (p-1) */
+		mpnsize(&kp->dp, psize);
+		mpbmod_w(&psubone, kp->d.data, kp->dp.data, temp);
 
-		/* compute d2 = d mod (q-1) */
-		mpnsize(&kp->d2, qsize);
-		mpbmod_w(&qsubone, kp->d.data, kp->d2.data, temp);
+		/* compute dq = d mod (q-1) */
+		mpnsize(&kp->dq, qsize);
+		mpbmod_w(&qsubone, kp->d.data, kp->dq.data, temp);
 
-		/* compute c = inv(q) mod p */
-		mpninv(&kp->c, (mpnumber*) &kp->q, (mpnumber*) &kp->p);
+		/* compute qi = inv(q) mod p */
+		mpninv(&kp->qi, (mpnumber*) &kp->q, (mpnumber*) &kp->p);
 
 		free(temp);
 
@@ -137,9 +144,9 @@ int rsakpInit(rsakp* kp)
 	mpnzero(&kp->d);
 	mpbzero(&kp->p);
 	mpbzero(&kp->q);
-	mpnzero(&kp->d1);
-	mpnzero(&kp->d2);
-	mpnzero(&kp->c);
+	mpnzero(&kp->dp);
+	mpnzero(&kp->dq);
+	mpnzero(&kp->qi);
 	*/
 
 	return 0;
@@ -156,12 +163,12 @@ int rsakpFree(rsakp* kp)
 	mpbfree(&kp->p);
 	mpbwipe(&kp->q);
 	mpbfree(&kp->q);
-	mpnwipe(&kp->d1);
-	mpnfree(&kp->d1);
-	mpnwipe(&kp->d2);
-	mpnfree(&kp->d2);
-	mpnwipe(&kp->c);
-	mpnfree(&kp->c);
+	mpnwipe(&kp->dp);
+	mpnfree(&kp->dp);
+	mpnwipe(&kp->dq);
+	mpnfree(&kp->dq);
+	mpnwipe(&kp->qi);
+	mpnfree(&kp->qi);
 
 	return 0;
 }
@@ -173,9 +180,9 @@ int rsakpCopy(rsakp* dst, const rsakp* src)
 	mpncopy(&dst->d, &src->d);
 	mpbcopy(&dst->p, &src->p);
 	mpbcopy(&dst->q, &src->q);
-	mpncopy(&dst->d1, &src->d1);
-	mpncopy(&dst->d2, &src->d2);
-	mpncopy(&dst->c, &src->c);
+	mpncopy(&dst->dp, &src->dp);
+	mpncopy(&dst->dp, &src->dp);
+	mpncopy(&dst->qi, &src->qi);
 
 	return 0;
 }
