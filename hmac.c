@@ -33,36 +33,57 @@
 
 int hmacSetup(hmacParam* hp, const hashFunction* hash, hashFunctionParam* param, const uint32* key, int keybits)
 {
-	int keywords = (keybits >> 5);
+	register int i;
 
-	if (keywords <= 16)
+	int keywords = (keybits + 31) >> 5; /* rounded up */
+	int keybytes = (keybits     ) >> 3;
+
+	/* if the key is too large, hash it first */
+	if (keybytes > 64)
 	{
-		register int i;
+		/* we need a maximum of 64 bytes */
+		uint32 keydigest[16];
 
-		if (keywords > 0)
-		{
-			encodeInts((const javaint*) key, (byte*) hp->kxi, keywords);
-			encodeInts((const javaint*) key, (byte*) hp->kxo, keywords);
+		/* if the hash digest is too large, this doesn't help */
+		if (hash->digestsize > 64)
+			return -1;
 
-			for (i = 0; i < keywords; i++)
-			{
-				hp->kxi[i] ^= HMAC_IPAD;
-				hp->kxo[i] ^= HMAC_OPAD;
-			}
-		}
+		if (hash->reset(param))
+			return -1;
 
-		for (i = keywords; i < 16; i++)
-		{
-			hp->kxi[i] = HMAC_IPAD;
-			hp->kxo[i] = HMAC_OPAD;
-		}
+		if (hash->update(param, (const byte*) key, keybytes))
+			return -1;
 
-		return hmacReset(hp, hash, param);
+		if (hash->digest(param, keydigest))
+			return -1;
+
+		keywords = hash->digestsize >> 3;
+		keybytes = hash->digestsize;
+
+		encodeInts((const javaint*) keydigest, (byte*) hp->kxi, keybytes);
+		encodeInts((const javaint*) keydigest, (byte*) hp->kxo, keybytes);
+	}
+	else if (keybytes > 0)
+	{
+		encodeIntsPartialPad((const javaint*) key, (byte*) hp->kxi, keybytes, 0);
+		encodeIntsPartialPad((const javaint*) key, (byte*) hp->kxo, keybytes, 0);
+	}
+	else
+		return -1;
+
+	for (i = 0; i < keywords; i++)
+	{
+		hp->kxi[i] ^= HMAC_IPAD;
+		hp->kxo[i] ^= HMAC_OPAD;
 	}
 
-	/* key too long */
+	for (i = keywords; i < 16; i++)
+	{
+		hp->kxi[i] = HMAC_IPAD;
+		hp->kxo[i] = HMAC_OPAD;
+	}
 
-	return -1;
+	return hmacReset(hp, hash, param);
 }
 
 int hmacReset(hmacParam* hp, const hashFunction* hash, hashFunctionParam* param)
