@@ -69,11 +69,11 @@ static entropySource entropySourceList[] =
 # if HAVE_DEV_DSP
 	{ "dsp", entropy_dev_dsp },
 # endif
-# if HAVE_DEV_RANDOM
-	{ "random", entropy_dev_random },
-# endif
 # if HAVE_DEV_URANDOM
 	{ "urandom", entropy_dev_urandom },
+# endif
+# if HAVE_DEV_RANDOM
+	{ "random", entropy_dev_random },
 # endif
 # if HAVE_DEV_TTY
 	{ "tty", entropy_dev_tty },
