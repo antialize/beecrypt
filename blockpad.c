@@ -1,11 +1,5 @@
 /*
- * blockpad.c
- *
- * Blockcipher padding, code
- *
- * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
+ * Copyright (c) 2000, 2001, 2002 Virtual Unlimited B.V.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,6 +17,12 @@
  *
  */
 
+/*!\file blockpad.c
+ * \brief Blockcipher padding algorithms.
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup BC_m
+ */
+
 #define BEECRYPT_DLL_EXPORT
 
 #include "blockpad.h"
@@ -36,6 +36,10 @@
 #if HAVE_STRING_H
 # include <string.h>
 #endif
+
+/*!\addtogroup BC_m
+ * \{
+ */
 
 memchunk* pkcs5Pad(int blockbytes, memchunk* tmp)
 {
@@ -119,3 +123,6 @@ memchunk* pkcs5UnpadCopy(int blockbytes, const memchunk* src)
 
 	return tmp;
 }
+
+/* \}
+ */
