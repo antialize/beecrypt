@@ -293,14 +293,15 @@ EOF
           ac_cv_java_include="$ac_cv_java_include -I$gcjpath/include"
         fi
       else
-        AC_MSG_WARN([java headers not found, disabling java glue])
-        ac_cv_java_headers=no
-        ac_cv_java_include=
-        ac_with_java=no
+        # we have a non-working gcj
+        ac_cv_have_gcj=no
       fi
       rm -fr conftest*
     ])
-  else
+  fi
+
+  # gcj may have failed; in this case we want to try for a real java
+  if test "$ac_cf_have_gcj" != yes; then
     AC_CHECK_PROG(ac_cv_have_java, java, yes, no)
     if test "$ac_cv_have_java" = yes; then
       AC_CHECK_PROG(ac_cv_have_javac, javac, yes, no)
