@@ -263,7 +263,6 @@ AC_DEFUN(BEECRYPT_GNU_CC,[
     case $target_os in
     aix*)
       CC="$CC -maix64"
-      LDFLAGS="$LDFLAGS -b64"
       ;;
     esac
     ;;
