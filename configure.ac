@@ -478,6 +478,7 @@ if test "$ac_enable_debug" != yes; then
     ;;
   athlon*)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I386 -DOPTIMIZE_MMX"
+    CFLAGS="$CFLAGS -mmmx"
     ;;
   i386)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I386"
@@ -501,8 +502,8 @@ if test "$ac_enable_debug" != yes; then
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I586"
     ;;
   pentium-mmx)
-    CFLAGS="$CFLAGS -mmmx"
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I586 -DOPTIMIZE_MMX"
+    CFLAGS="$CFLAGS -mmmx"
     ;;
   pentiumpro)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I686"
