@@ -510,7 +510,7 @@ AC_DEFUN(BEECRYPT_ASM_GSYM_PREFIX,[
       *)                 bc_cv_asm_gsym_prefix="" ;;
       esac
     ])
-  AC_SUBST(ASM_GSYM_PREFIX,$bc_cv_asm_sym_prefix)
+  AC_SUBST(ASM_GSYM_PREFIX,$bc_cv_asm_gsym_prefix)
   ])
 
 
