@@ -48,6 +48,15 @@
 @TYPEDEF_UINT32_T@
 @TYPEDEF_UINT64_T@
 
+#if defined(__GNUC__)
+# if !defined(__GNUC_PREREQ__)
+#  define __GNUC_PREREQ__(maj, min) (__GNUC__ > (maj) || __GNUC__ == (maj) && __GNUC_MINOR__ >= (min))
+# endif
+#else
+# define __GNUC__ 0
+# define __GNUC_PREREQ__(maj, min) 0
+#endif
+
 /* WARNING: overriding this value is dangerous; some assembler routines
  * make assumptions about the size set by the configure script
  */
