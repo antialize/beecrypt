@@ -85,7 +85,15 @@
 #  define ASM_MPSETMUL
 #  define ASM_MPADDMUL
 #  define ASM_MPADDSQRTRC
-# elif defined(OPTIMIZE_SPARCV8PLUS) || defined(OPTIMIZE_SPARCV9)
+# elif defined(OPTIMIZE_SPARCV8PLUS)
+#  define ASM_MPADDW
+#  define ASM_MPSUBW
+#  define ASM_MPADD
+#  define ASM_MPSUB
+#  define ASM_MPMULTWO
+#  define ASM_MPSETMUL
+#  define ASM_MPADDMUL
+#  define ASM_MPADDSQRTRC
 # endif
 #endif
 
@@ -125,7 +133,15 @@
 #  define ASM_MPSETMUL
 #  define ASM_MPADDMUL
 #  define ASM_MPADDSQRTRC
-# elif defined(OPTIMIZE_SPARCV8PLUS) /* || defined(OPTIMIZE_SPARCV9) */
+# elif defined(OPTIMIZE_SPARCV8PLUS)
+#  define ASM_MPADDW
+#  define ASM_MPSUBW
+#  define ASM_MPADD
+#  define ASM_MPSUB
+#  define ASM_MPMULTWO
+#  define ASM_MPSETMUL
+#  define ASM_MPADDMUL
+#  define ASM_MPADDSQRTRC
 # endif
 #endif
 

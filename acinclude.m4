@@ -550,6 +550,11 @@ AC_DEFUN(BEECRYPT_ASM_SOURCES,[
       m4 $srcdir/gas/mpopt.sparcv8.m4 > $srcdir/mpopt.s
       ])
     ;;
+  sparcv8plus)
+    AC_CONFIG_COMMANDS([mpopt.sparcv8plus],[
+      m4 $srcdir/gas/mpopt.sparcv8plus.m4 > $srcdir/mpopt.s
+      ])
+    ;;
   esac
   if test "$ac_with_arch" = yes; then
     # Code is i586-specific!
