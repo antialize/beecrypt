@@ -730,6 +730,9 @@ EOF
       cat > $srcdir/aesopt.S << EOF
 #include "gas/aesopt.powerpc.S"
 EOF
+      cat > $srcdir/blowfishopt.S << EOF
+#include "gas/blowfishopt.powerpc.S"
+EOF
       cat > $srcdir/mp32opt.S << EOF
 #include "gas/mp32opt.powerpc.S"
 EOF

@@ -897,31 +897,33 @@ _ad4:	.long	0x52525252,0x09090909,0x6a6a6a6a,0xd5d5d5d5
 	.macro	eblock	label
 	sxrk
 
-	etfs offset=16
-	esft offset=32
-	etfs offset=48
-	esft offset=64
-	etfs offset=80
-	esft offset=96
-	etfs offset=112
-	esft offset=128
-	etfs offset=144
+	etfs 16
+	esft 32
+	etfs 48
+	esft 64
+	etfs 80
+	esft 96
+	etfs 112
+	esft 128
+	etfs 144
 
 	movl 256(%ebp),%eax
 	cmp $10,%eax
 	je \label
 
-	esft offset=160
-	etfs offset=176
+	esft 160
+	etfs 176
 
 	movl 256(%ebp),%eax
 	cmp $12,%eax
 	je \label
 
-	esft offset=192
-	etfs offset=208
+	esft 192
+	etfs 208
 
 	movl 256(%ebp),%eax
+
+	.align 4
 \label:
 	sall $4,%eax
 	addl %eax,%ebp
@@ -1126,31 +1128,33 @@ _ad4:	.long	0x52525252,0x09090909,0x6a6a6a6a,0xd5d5d5d5
 	.macro	dblock	label
 	sxrk
 
-	dtfs offset=16
-	dsft offset=32
-	dtfs offset=48
-	dsft offset=64
-	dtfs offset=80
-	dsft offset=96
-	dtfs offset=112
-	dsft offset=128
-	dtfs offset=144
+	dtfs 16
+	dsft 32
+	dtfs 48
+	dsft 64
+	dtfs 80
+	dsft 96
+	dtfs 112
+	dsft 128
+	dtfs 144
 
 	movl 256(%ebp),%eax
 	cmp $10,%eax
 	je \label
 
-	dsft offset=160
-	dtfs offset=176
+	dsft 160
+	dtfs 176
 
 	movl 256(%ebp),%eax
 	cmp $12,%eax
 	je \label
 
-	dsft offset=192
-	dtfs offset=208
+	dsft 192
+	dtfs 208
 
 	movl 256(%ebp),%eax
+
+	.align 4
 \label:
 	sall $4,%eax
 	addl %eax,%ebp
@@ -1171,7 +1175,7 @@ LABEL(aesEncrypt)
 
 	subl $32,%esp
 
-	eblock .L00
+	eblock LOCAL(00)
 
 	movl   (%esp),%eax
 	movl  4(%esp),%ebx
@@ -1211,7 +1215,7 @@ LABEL(aesDecrypt)
 
 	subl $32,%esp
 
-	dblock .L01
+	dblock LOCAL(01)
 
 	movl   (%esp),%eax
 	movl  4(%esp),%ebx
@@ -1236,3 +1240,101 @@ LABEL(aesDecrypt)
 	popl %edi
 	ret
 C_FUNCTION_END(aesDecrypt, LOCAL(aesDecrypt_size))
+
+
+C_FUNCTION_BEGIN(aesECBEncrypt)
+LABEL(aesECBEncrypt)
+	pushl %edi
+	pushl %esi
+	pushl %ebp
+	pushl %ebx
+
+	movl 28(%esp),%edi
+	movl 32(%esp),%esi
+
+	subl $32,%esp
+
+	.align 4
+LOCAL(02):
+	movl 52(%esp),%ebp
+
+	eblock LOCAL(03)
+
+	movl   (%esp),%eax
+	movl  4(%esp),%ebx
+	movl  8(%esp),%ecx
+	movl 12(%esp),%edx
+	bswap %eax
+	bswap %ebx
+	bswap %ecx
+	bswap %edx
+	movl %eax,  (%edi)
+	movl %ebx, 4(%edi)
+	movl %ecx, 8(%edi)
+	movl %edx,12(%edi)
+
+	addl $16,%esi
+	addl $16,%edi
+
+	decl 56(%esp)
+	jnz LOCAL(02)
+
+	addl $32,%esp
+
+	xorl %eax,%eax
+
+	popl %ebx
+	popl %ebp
+	popl %esi
+	popl %edi
+	ret
+C_FUNCTION_END(aesECBEncrypt, LOCAL(aesECBEncrypt_size))
+
+
+C_FUNCTION_BEGIN(aesECBDecrypt)
+LABEL(aesECBDecrypt)
+	pushl %edi
+	pushl %esi
+	pushl %ebp
+	pushl %ebx
+
+	movl 28(%esp),%edi
+	movl 32(%esp),%esi
+
+	subl $32,%esp
+
+	.align 4
+LOCAL(04):
+	movl 52(%esp),%ebp
+
+	dblock LOCAL(05)
+
+	movl   (%esp),%eax
+	movl  4(%esp),%ebx
+	movl  8(%esp),%ecx
+	movl 12(%esp),%edx
+	bswap %eax
+	bswap %ebx
+	bswap %ecx
+	bswap %edx
+	movl %eax,  (%edi)
+	movl %ebx, 4(%edi)
+	movl %ecx, 8(%edi)
+	movl %edx,12(%edi)
+
+	addl $16,%esi
+	addl $16,%edi
+
+	decl 56(%esp)
+	jnz LOCAL(04)
+
+	addl $32,%esp
+
+	xorl %eax,%eax
+
+	popl %ebx
+	popl %ebp
+	popl %esi
+	popl %edi
+	ret
+C_FUNCTION_END(aesECBDecrypt, LOCAL(aesECBDecrypt_size))
