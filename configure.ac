@@ -59,7 +59,6 @@ AC_ARG_WITH(cpu,      [  --with-cpu              enable cpu-specific optimizatio
         ac_with_cpu=$target_cpu
         ;;
     esac
-    echo "end of specified with-cpu"
   ],
   [ ac_with_cpu=$target_cpu
   ])
