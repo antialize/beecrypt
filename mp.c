@@ -1396,10 +1396,16 @@ void mpprintln(size_t size, const mpw* data)
 
 void mpfprint(FILE* f, size_t size, const mpw* data)
 {
+	if (data == (mpw*) 0)
+		return;
+
+	if (f == (FILE*) 0)
+		return;
+
 	while (size--)
 	{
 		#if (MP_WBITS == 32)
-		fprintf(f, "%08x", *(data++));
+		fprintf(f, "%08x", (unsigned) *(data++));
 		#elif (MP_WBITS == 64)
 		# if WIN32
 		fprintf(f, "%016I64x", *(data++));
@@ -1417,6 +1423,12 @@ void mpfprint(FILE* f, size_t size, const mpw* data)
 
 void mpfprintln(FILE* f, size_t size, const mpw* data)
 {
+	if (data == (mpw*) 0)
+		return;
+
+	if (f == (FILE*) 0)
+		return;
+
 	while (size--)
 	{
 		#if (MP_WBITS == 32)
