@@ -178,7 +178,7 @@ memchunk* b64dec(const char* string)
 					for (i = 0; i < length; i++)
 					{
 						register char ch = string[i];
-						register byte bits;
+						register byte bits = 0;
 
 						if (isspace(ch))
 							continue;
