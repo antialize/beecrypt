@@ -25,17 +25,18 @@
 
 using namespace beecrypt::provider;
 
-RSAPublicKeyImpl::RSAPublicKeyImpl(const RSAPublicKey& copy)
+RSAPublicKeyImpl::RSAPublicKeyImpl(const RSAPublicKey& copy) : _n(copy.getModulus()), _e(copy.getPublicExponent())
 {
-	_n = copy.getModulus();
-	_e = copy.getPublicExponent();
 	_enc = 0;
 }
 
-RSAPublicKeyImpl::RSAPublicKeyImpl(const mpbarrett& n, const mpnumber& e)
+RSAPublicKeyImpl::RSAPublicKeyImpl(const RSAPublicKeyImpl& copy) : _n(copy._n), _e(copy._e)
 {
-	_n = n;
-	_e = e;
+	_enc = 0;
+}
+
+RSAPublicKeyImpl::RSAPublicKeyImpl(const mpbarrett& n, const mpnumber& e) : _n(n), _e(e)
+{
 	_enc = 0;
 }
 

@@ -27,6 +27,8 @@
 
 #include "beecrypt/c++/array.h"
 using beecrypt::bytearray;
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/spec/AlgorithmParameterSpec.h"
 using beecrypt::security::spec::AlgorithmParameterSpec;
 
@@ -35,7 +37,7 @@ namespace beecrypt {
 		namespace spec {
 			/*!\ingroup CXX_CRYPTO_SPEC_m
 			 */
-			class BEECRYPTCXXAPI IvParameterSpec : public beecrypt::security::spec::AlgorithmParameterSpec
+			class BEECRYPTCXXAPI IvParameterSpec : public beecrypt::lang::Object, public beecrypt::security::spec::AlgorithmParameterSpec
 			{
 			private:
 				bytearray _iv;

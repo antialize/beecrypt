@@ -25,29 +25,18 @@
 
 using namespace beecrypt::provider;
 
-RSAPrivateCrtKeyImpl::RSAPrivateCrtKeyImpl(const RSAPrivateCrtKey& copy)
+RSAPrivateCrtKeyImpl::RSAPrivateCrtKeyImpl(const RSAPrivateCrtKey& copy) : _n(copy.getModulus()), _e(copy.getPublicExponent()), _d(copy.getPrivateExponent()), _p(copy.getPrimeP()), _q(copy.getPrimeQ()), _dp(copy.getPrimeExponentP()), _dq(copy.getPrimeExponentQ()), _qi(copy.getCrtCoefficient())
 {
-	_n = copy.getModulus();
-	_e = copy.getPublicExponent();
-	_d = copy.getPrivateExponent();
-	_p = copy.getPrimeP();
-	_q = copy.getPrimeQ();
-	_dp = copy.getPrimeExponentP();
-	_dq = copy.getPrimeExponentQ();
-	_qi = copy.getCrtCoefficient();
 	_enc = 0;
 }
 
-RSAPrivateCrtKeyImpl::RSAPrivateCrtKeyImpl(const mpbarrett& n, const mpnumber& e, const mpnumber& d, const mpbarrett& p, const mpbarrett& q, const mpnumber& dp, const mpnumber& dq, const mpnumber& qi)
+RSAPrivateCrtKeyImpl::RSAPrivateCrtKeyImpl(const RSAPrivateCrtKeyImpl& copy) : _n(copy._n), _e(copy._e), _d(copy._d), _p(copy._p), _q(copy._q), _dp(copy._dp), _dq(copy._dq), _qi(copy._qi)
 {
-	_n = n;
-	_e = e;
-	_d = d;
-	_p = p;
-	_q = q;
-	_dp = dp;
-	_dq = dq;
-	_qi = qi;
+	_enc = 0;
+}
+
+RSAPrivateCrtKeyImpl::RSAPrivateCrtKeyImpl(const mpbarrett& n, const mpnumber& e, const mpnumber& d, const mpbarrett& p, const mpbarrett& q, const mpnumber& dp, const mpnumber& dq, const mpnumber& qi) : _n(n), _e(e), _d(d), _p(p), _q(q), _dp(dp), _dq(dq), _qi(qi)
+{
 	_enc = 0;
 }
 

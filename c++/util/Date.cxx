@@ -32,14 +32,8 @@ namespace {
 	__declspec(thread) String* result = 0;
 	__declspec(thread) DateFormat* format = 0;
 	#else
-	# if __GNUC__ && __GNUC_PREREQ (3, 3)
 	__thread String* result = 0;
 	__thread DateFormat* format = 0;
-	# else
-	#  warning Date::toString() method routine is not multi-thread safe
-	String* result = 0;
-	DateFormat* format = 0;
-	# endif
 	#endif
 }
 

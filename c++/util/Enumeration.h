@@ -35,8 +35,6 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI Enumeration
 		{
 		public:
-			virtual ~Enumeration() throw () {};
-
 			virtual bool hasMoreElements() throw () = 0;
 			virtual const void* nextElement() throw (NoSuchElementException) = 0;
 		};

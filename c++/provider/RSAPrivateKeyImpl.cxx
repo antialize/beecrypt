@@ -25,17 +25,18 @@
 
 using namespace beecrypt::provider;
 
-RSAPrivateKeyImpl::RSAPrivateKeyImpl(const RSAPrivateKey& copy)
+RSAPrivateKeyImpl::RSAPrivateKeyImpl(const RSAPrivateKey& copy) : _n(copy.getModulus()), _d(copy.getPrivateExponent())
 {
-	_n = copy.getModulus();
-	_d = copy.getPrivateExponent();
 	_enc = 0;
 }
 
-RSAPrivateKeyImpl::RSAPrivateKeyImpl(const mpbarrett& n, const mpnumber& d)
+RSAPrivateKeyImpl::RSAPrivateKeyImpl(const RSAPrivateKeyImpl& copy) : _n(copy._n), _d(copy._d)
 {
-	_n = n;
-	_d = d;
+	_enc = 0;
+}
+
+RSAPrivateKeyImpl::RSAPrivateKeyImpl(const mpbarrett& n, const mpnumber& d) : _n(n), _d(d)
+{
 	_enc = 0;
 }
 

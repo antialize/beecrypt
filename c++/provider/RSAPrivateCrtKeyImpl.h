@@ -49,6 +49,7 @@ namespace beecrypt {
 
 		public:
 			RSAPrivateCrtKeyImpl(const RSAPrivateCrtKey&);
+			RSAPrivateCrtKeyImpl(const RSAPrivateCrtKeyImpl&);
 			RSAPrivateCrtKeyImpl(const mpbarrett& modulus, const mpnumber& publicExponent, const mpnumber& privateExponent, const mpbarrett& primeP, const mpbarrett& primeQ, const mpnumber& primeExponentP, const mpnumber& primeExponentQ, const mpnumber& crtCoefficient);
 			virtual ~RSAPrivateCrtKeyImpl();
 

@@ -45,6 +45,7 @@ namespace beecrypt {
 
 		public:
 			DSAPrivateKeyImpl(const DSAPrivateKey&);
+			DSAPrivateKeyImpl(const DSAPrivateKeyImpl&);
 			DSAPrivateKeyImpl(const DSAParams&, const mpnumber&);
 			DSAPrivateKeyImpl(const dsaparam&, const mpnumber&);
 			DSAPrivateKeyImpl(const mpbarrett&, const mpbarrett&, const mpnumber&, const mpnumber&);

@@ -20,7 +20,6 @@
 # include "config.h"
 #endif
 
-#include "beecrypt/c++/resource.h"
 #include "beecrypt/c++/provider/DSAPrivateKeyImpl.h"
 #include "beecrypt/c++/provider/BeeKeyFactory.h"
 
@@ -30,6 +29,13 @@ DSAPrivateKeyImpl::DSAPrivateKeyImpl(const DSAPrivateKey& copy)
 {
 	_params = new DSAParameterSpec(copy.getParams());
 	_x = copy.getX();
+	_enc = 0;
+}
+
+DSAPrivateKeyImpl::DSAPrivateKeyImpl(const DSAPrivateKeyImpl& copy)
+{
+	_params = new DSAParameterSpec(*copy._params);
+	_x = copy._x;
 	_enc = 0;
 }
 

@@ -7,7 +7,7 @@ AUTOMAKE_OPTIONS = gnu no-dependencies
 pkgaltlibdir=$(prefix)/lib@LIBALT@/beecrypt
 pkgaltlib_LTLIBRARIES = base.la
 
-dist_sysconf_DATA = beecrypt.conf
+nodist_sysconf_DATA = beecrypt.conf
 
 base_la_SOURCES = \
 AESCipher.cxx \

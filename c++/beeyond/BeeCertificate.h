@@ -66,6 +66,9 @@ namespace beecrypt {
 		public:
 			static const Date FOREVER;
 
+			static Certificate* cloneCertificate(const Certificate& cert) throw (CloneNotSupportedException);
+			static PublicKey* clonePublicKey(const PublicKey& pub) throw (CloneNotSupportedException);
+
 		protected:
 			struct Field
 			{

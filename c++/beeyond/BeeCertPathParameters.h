@@ -25,6 +25,8 @@
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/InvalidAlgorithmParameterException.h"
 using beecrypt::security::InvalidAlgorithmParameterException;
 #include "beecrypt/c++/security/KeyStore.h"
@@ -36,7 +38,7 @@ using beecrypt::security::cert::CertPathParameters;
 
 namespace beecrypt {
 	namespace beeyond {
-		class BEECRYPTCXXAPI BeeCertPathParameters : public beecrypt::security::cert::CertPathParameters
+		class BEECRYPTCXXAPI BeeCertPathParameters : public beecrypt::lang::Object, public beecrypt::security::cert::CertPathParameters
 		{
 		private:
 			vector<const Certificate*> _cert;
@@ -45,9 +47,10 @@ namespace beecrypt {
 			BeeCertPathParameters();
 
 		public:
+			BeeCertPathParameters(KeyStore& keystore) throw (KeyStoreException, InvalidAlgorithmParameterException);
 			virtual ~BeeCertPathParameters() {};
 
-			BeeCertPathParameters(KeyStore& keystore) throw (KeyStoreException, InvalidAlgorithmParameterException);
+			virtual BeeCertPathParameters* clone() const throw ();
 
 			const vector<const Certificate*>& getTrustedCertificates() const;
 		};

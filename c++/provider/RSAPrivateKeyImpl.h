@@ -43,6 +43,7 @@ namespace beecrypt {
 
 		public:
 			RSAPrivateKeyImpl(const RSAPrivateKey&);
+			RSAPrivateKeyImpl(const RSAPrivateKeyImpl&);
 			RSAPrivateKeyImpl(const mpbarrett&, const mpnumber&);
 			virtual ~RSAPrivateKeyImpl();
 

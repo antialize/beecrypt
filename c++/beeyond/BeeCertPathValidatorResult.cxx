@@ -23,6 +23,7 @@
 #endif
 
 #include "beecrypt/c++/beeyond/BeeCertPathValidatorResult.h"
+#include "beecrypt/c++/beeyond/BeeCertificate.h"
 #include "beecrypt/c++/lang/ClassCastException.h"
 using beecrypt::lang::ClassCastException;
 #include "beecrypt/c++/lang/RuntimeException.h"
@@ -36,29 +37,7 @@ BeeCertPathValidatorResult::BeeCertPathValidatorResult(const BeeCertificate& roo
 {
 	_root = root.clone();
 
-	// key may not be cloneable, but we can use a KeyFactory to translate it
-	KeyFactory* kf;
-
-	try
-	{
-		kf = KeyFactory::getInstance(pub.getAlgorithm());
-
-		_pub = dynamic_cast<PublicKey*>(kf->translateKey(pub));
-
-		delete kf;
-
-		if (!_pub)
-			throw ClassCastException("KeyFactory didn't translate key into a PublicKey");
-	}
-	catch (NoSuchAlgorithmException)
-	{
-		throw CloneNotSupportedException("Unable to clone PublicKey through a KeyFactory of type " + pub.getAlgorithm());
-	}
-	catch (InvalidKeyException)
-	{
-		delete kf;
-		throw CloneNotSupportedException("Unable to clone PublicKey because KeyFactory says it's invalid");
-	}
+	_pub = BeeCertificate::clonePublicKey(pub);
 }
 
 BeeCertPathValidatorResult::~BeeCertPathValidatorResult()

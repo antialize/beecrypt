@@ -20,23 +20,20 @@
  * \ingroup CXX_SECURITY_SPEC_m
  */
 
-#ifndef _CLASS_KEYSPEC_H
-#define _CLASS_KEYSPEC_H
+#ifndef _INTERFACE_KEYSPEC_H
+#define _INTERFACE_KEYSPEC_H
 
 #include "beecrypt/api.h"
 
 #ifdef __cplusplus
 
-#include "beecrypt/c++/lang/Object.h"
-using beecrypt::lang::Object;
-
 namespace beecrypt {
 	namespace security {
 		namespace spec {
-			/*!\brief The base class for specification of cryptographic keys
+			/*!\brief Transparent specification of key material that represent a cryptographic key
 			 * \ingroup CXX_SECURITY_SPEC_m
 			 */
-			class BEECRYPTCXXAPI KeySpec : public beecrypt::lang::Object
+			class BEECRYPTCXXAPI KeySpec
 			{
 			public:
 				virtual ~KeySpec() {};

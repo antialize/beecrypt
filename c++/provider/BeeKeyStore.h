@@ -98,8 +98,6 @@ namespace beecrypt {
 				virtual const void* nextElement() throw (NoSuchElementException);
 			};
 
-			static Certificate* cloneCertificate(const Certificate&) throw (CloneNotSupportedException);
-
 			void clearall();
 
 		protected:

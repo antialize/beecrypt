@@ -49,6 +49,7 @@ namespace beecrypt {
 
 		public:
 			DHPrivateKeyImpl(const DHPrivateKey&);
+			DHPrivateKeyImpl(const DHPrivateKeyImpl&);
 			DHPrivateKeyImpl(const DHParams&, const mpnumber&);
 			DHPrivateKeyImpl(const dhparam&, const mpnumber&);
 			DHPrivateKeyImpl(const mpbarrett&, const mpnumber&, const mpnumber&);

@@ -33,7 +33,7 @@ namespace beecrypt {
 		namespace spec {
 			/*!\ingroup CXX_SECURITY_SPEC_m
 			 */
-			class BEECRYPTCXXAPI RSAPrivateCrtKeySpec : public RSAPrivateKeySpec
+			class BEECRYPTCXXAPI RSAPrivateCrtKeySpec : public beecrypt::security::spec::RSAPrivateKeySpec
 			{
 				private:
 					mpnumber _e;

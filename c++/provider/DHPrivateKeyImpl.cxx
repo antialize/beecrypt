@@ -20,37 +20,39 @@
 # include "config.h"
 #endif
 
-#include "beecrypt/c++/resource.h"
 #include "beecrypt/c++/provider/DHPrivateKeyImpl.h"
 #include "beecrypt/c++/provider/BeeKeyFactory.h"
 
 using namespace beecrypt::provider;
 
-DHPrivateKeyImpl::DHPrivateKeyImpl(const DHPrivateKey& copy)
+DHPrivateKeyImpl::DHPrivateKeyImpl(const DHPrivateKey& copy) : _x(copy.getX())
 {
 	_params = new DHParameterSpec(copy.getParams());
-	_x = copy.getX();
 	_enc = 0;
 }
 
-DHPrivateKeyImpl::DHPrivateKeyImpl(const DHParams& params, const mpnumber& x)
+
+DHPrivateKeyImpl::DHPrivateKeyImpl(const DHPrivateKeyImpl& copy) : _x(copy._x)
+{
+	_params = new DHParameterSpec(*copy._params);
+	_enc = 0;
+}
+
+DHPrivateKeyImpl::DHPrivateKeyImpl(const DHParams& params, const mpnumber& x) : _x(x)
 {
 	_params = new DHParameterSpec(params.getP(), params.getG(), params.getL());
-	_x = x;
 	_enc = 0;
 }
 
-DHPrivateKeyImpl::DHPrivateKeyImpl(const dhparam& params, const mpnumber& x)
+DHPrivateKeyImpl::DHPrivateKeyImpl(const dhparam& params, const mpnumber& x) : _x(x)
 {
 	_params = new DHParameterSpec(params.p, params.g);
-	_x = x;
 	_enc = 0;
 }
 
-DHPrivateKeyImpl::DHPrivateKeyImpl(const mpbarrett& p, const mpnumber& g, const mpnumber& x)
+DHPrivateKeyImpl::DHPrivateKeyImpl(const mpbarrett& p, const mpnumber& g, const mpnumber& x) : _x(x)
 {
 	_params = new DHParameterSpec(p, g);
-	_x = x;
 	_enc = 0;
 }
 

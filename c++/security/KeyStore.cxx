@@ -201,7 +201,7 @@ size_t KeyStore::size() const throw (KeyStoreException)
 	return _kspi->engineSize();
 }
 
-void KeyStore::store(OutputStream& out, const array<javachar>* password) throw (IOException, KeyStoreException, NoSuchAlgorithmException, CertificateException)
+void KeyStore::store(OutputStream& out, const array<javachar>* password) throw (KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException)
 {
 	if (!_init)
 		throw KeyStoreException("Uninitialized keystore");

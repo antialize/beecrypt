@@ -31,6 +31,8 @@
 
 #include "beecrypt/c++/crypto/interfaces/DHParams.h"
 using beecrypt::crypto::interfaces::DHParams;
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/spec/AlgorithmParameterSpec.h"
 using beecrypt::security::spec::AlgorithmParameterSpec;
 
@@ -39,7 +41,7 @@ namespace beecrypt {
 		namespace spec {
 			/*!\ingroup CXX_CRYPTO_SPEC_m
 			 */
-			class BEECRYPTCXXAPI DHParameterSpec : public beecrypt::security::spec::AlgorithmParameterSpec, public beecrypt::crypto::interfaces::DHParams
+			class BEECRYPTCXXAPI DHParameterSpec : public beecrypt::lang::Object, public beecrypt::security::spec::AlgorithmParameterSpec, public beecrypt::crypto::interfaces::DHParams
 			{
 			private:
 				mpbarrett _p;

@@ -148,7 +148,7 @@ size_t DHKeyAgreement::engineGenerateSecret(bytearray& b, size_t offset) throw (
 		throw IllegalStateException();
 }
 
-SecretKey* DHKeyAgreement::engineGenerateSecret(const String& algorithm) throw (IllegalStateException, InvalidKeyException, NoSuchAlgorithmException)
+SecretKey* DHKeyAgreement::engineGenerateSecret(const String& algorithm) throw (IllegalStateException, NoSuchAlgorithmException, InvalidKeyException)
 {
 	if (_state == SHARED)
 	{

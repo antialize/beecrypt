@@ -32,12 +32,7 @@ namespace {
 	#if WIN32
 	__declspec(thread) String* result = 0;
 	#else
-	# if __GNUC__ && __GNUC_PREREQ (3, 3)
 	__thread String* result = 0;
-	# else
-	#  warning Long::toString() and Long::toHexString methods are not multi-thread safe
-	String* result = 0;
-	# endif
 	#endif
 };
 

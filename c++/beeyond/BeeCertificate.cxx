@@ -22,6 +22,10 @@
 # include "config.h"
 #endif
 
+#if HAVE_ASSERT_H
+# include <assert.h>
+#endif
+
 #include "beecrypt/c++/beeyond/BeeCertificate.h"
 #include "beecrypt/c++/beeyond/AnyEncodedKeySpec.h"
 #include "beecrypt/c++/io/ByteArrayInputStream.h"
@@ -44,6 +48,82 @@ using beecrypt::security::Signature;
 using beecrypt::security::cert::CertificateFactory;
 
 using namespace beecrypt::beeyond;
+
+Certificate* BeeCertificate::cloneCertificate(const Certificate& cert) throw (CloneNotSupportedException)
+{
+	const Cloneable* c = dynamic_cast<const Cloneable*>(&cert);
+	if (c)
+	{
+		return dynamic_cast<Certificate*>(c->clone());
+	}
+	else
+	{
+		ByteArrayInputStream bis(cert.getEncoded());
+
+		CertificateFactory* cf;
+
+		try
+		{
+			Certificate* tmp;
+
+			cf = CertificateFactory::getInstance(cert.getType());
+
+			tmp = cf->generateCertificate(bis);
+
+			delete cf;
+
+			return tmp;
+		}
+		catch (NoSuchAlgorithmException)
+		{
+			throw CloneNotSupportedException("Unable to clone Certificate through CertificateFactory of type " + cert.getType());
+		}
+		catch (CertificateException)
+		{
+			delete cf;
+			throw CloneNotSupportedException("Unable to clone Certificate through its encoding");
+		}
+	}
+}
+
+PublicKey* BeeCertificate::clonePublicKey(const PublicKey& key) throw (CloneNotSupportedException)
+{
+	const Cloneable* c = dynamic_cast<const Cloneable*>(&key);
+	if (c)
+	{
+		return dynamic_cast<PublicKey*>(c->clone());
+	}
+	else
+	{
+		PublicKey* p;
+		KeyFactory* kf;
+
+		try
+		{
+			kf = KeyFactory::getInstance(key.getAlgorithm());
+
+			p = dynamic_cast<PublicKey*>(kf->translateKey(key));
+
+			delete kf;
+
+			if (p)
+			{
+				return p;
+			}
+			else
+				throw ClassCastException("KeyFactory didn't translate key into PublicKey");
+		}
+		catch (NoSuchAlgorithmException)
+		{
+			throw CloneNotSupportedException("Unable to clone key through KeyFactory of type " + key.getAlgorithm());
+		}
+		catch (InvalidKeyException)
+		{
+			delete kf;
+			throw CloneNotSupportedException("Unable to clone PublicKey because KeyFactory says it's invalid");
+		}
+	}
+}
 
 BeeCertificate::Field::~Field() throw ()
 {
@@ -90,42 +170,7 @@ BeeCertificate::PublicKeyField::PublicKeyField() throw ()
 BeeCertificate::PublicKeyField::PublicKeyField(const PublicKey& key) throw (CloneNotSupportedException)
 {
 	type = BeeCertificate::PublicKeyField::FIELD_TYPE;
-
-	const Cloneable* c = dynamic_cast<const Cloneable*>(&key);
-	if (c)
-	{
-		Object* clone = c->clone();
-
-		pub = dynamic_cast<PublicKey*>(clone);
-
-		if (!pub)
-			throw ClassCastException();
-	}
-	else
-	{
-		KeyFactory* kf;
-
-		try
-		{
-			kf = KeyFactory::getInstance(key.getAlgorithm());
-
-			pub = dynamic_cast<PublicKey*>(kf->translateKey(key));
-
-			delete kf;
-
-			if (!pub)
-				throw ClassCastException("KeyFactory didn't translate key into PublicKey");
-		}
-		catch (NoSuchAlgorithmException)
-		{
-			throw CloneNotSupportedException("Unable to clone PublicKey through KeyFactory of type " + key.getAlgorithm());
-		}
-		catch (InvalidKeyException)
-		{
-			delete kf;
-			throw CloneNotSupportedException("Unable to clone PublicKey because KeyFactory says it's invalid");
-		}
-	}
+	pub = clonePublicKey(key);
 }
 
 BeeCertificate::PublicKeyField::~PublicKeyField() throw ()

@@ -221,7 +221,7 @@ Cipher* Cipher::getInstance(const String& transformation) throw (NoSuchAlgorithm
 		throw NoSuchAlgorithmException("Incorrect Algorithm/Mode/Padding syntax");
 }
 
-Cipher* Cipher::getInstance(const String& transformation, const String& provider) throw (NoSuchAlgorithmException, NoSuchPaddingException, NoSuchProviderException)
+Cipher* Cipher::getInstance(const String& transformation, const String& provider) throw (NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException)
 {
 	UErrorCode status = U_ZERO_ERROR;
 

@@ -25,31 +25,33 @@
 
 using namespace beecrypt::provider;
 
-DHPublicKeyImpl::DHPublicKeyImpl(const DHPublicKey& copy)
+DHPublicKeyImpl::DHPublicKeyImpl(const DHPublicKey& copy) : _y(copy.getY())
 {
 	_params = new DHParameterSpec(copy.getParams());
-	_y = copy.getY();
 	_enc = 0;
 }
 
-DHPublicKeyImpl::DHPublicKeyImpl(const DHParams& params, const mpnumber& y)
+DHPublicKeyImpl::DHPublicKeyImpl(const DHPublicKeyImpl& copy) : _y(copy._y)
+{
+	_params = new DHParameterSpec(*copy._params);
+	_enc = 0;
+}
+
+DHPublicKeyImpl::DHPublicKeyImpl(const DHParams& params, const mpnumber& y) : _y(y)
 {
 	_params = new DHParameterSpec(params.getP(), params.getG(), params.getL());
-	_y = y;
 	_enc = 0;
 }
 
-DHPublicKeyImpl::DHPublicKeyImpl(const dhparam& params, const mpnumber& y)
+DHPublicKeyImpl::DHPublicKeyImpl(const dhparam& params, const mpnumber& y) : _y(y)
 {
 	_params = new DHParameterSpec(params.p, params.g);
-	_y = y;
 	_enc = 0;
 }
 
-DHPublicKeyImpl::DHPublicKeyImpl(const mpbarrett& p, const mpnumber& g, const mpnumber& y)
+DHPublicKeyImpl::DHPublicKeyImpl(const mpbarrett& p, const mpnumber& g, const mpnumber& y) : _y(y)
 {
 	_params = new DHParameterSpec(p, g);
-	_y = y;
 	_enc = 0;
 }
 

@@ -46,6 +46,8 @@ using beecrypt::lang::Cloneable;
 using beecrypt::security::SecureRandom;
 #include "beecrypt/c++/security/ProviderException.h"
 using beecrypt::security::ProviderException;
+#include "beecrypt/c++/beeyond/BeeCertificate.h"
+using beecrypt::beeyond::BeeCertificate;
 #include "beecrypt/c++/beeyond/PKCS12PBEKey.h"
 using beecrypt::beeyond::PKCS12PBEKey;
 #include "beecrypt/c++/provider/KeyProtector.h"
@@ -77,7 +79,7 @@ BeeKeyStore::KeyEntry::KeyEntry(const bytearray& b, const vector<Certificate*>& 
 
 	for (vector<Certificate*>::const_iterator it = c.begin(); it != c.end(); it++)
 	{
-		chain.push_back(cloneCertificate(*(*it)));
+		chain.push_back(BeeCertificate::cloneCertificate(*(*it)));
 	}
 }
 
@@ -95,7 +97,7 @@ BeeKeyStore::CertEntry::CertEntry() throw ()
 
 BeeKeyStore::CertEntry::CertEntry(const Certificate& c) throw (CloneNotSupportedException)
 {
-	cert = cloneCertificate(c);
+	cert = BeeCertificate::cloneCertificate(c);
 }
 
 BeeKeyStore::CertEntry::~CertEntry() throw ()
@@ -104,51 +106,6 @@ BeeKeyStore::CertEntry::~CertEntry() throw ()
 	{
 		delete cert;
 		cert = 0;
-	}
-}
-
-Certificate* BeeKeyStore::cloneCertificate(const Certificate& cert) throw (CloneNotSupportedException)
-{
-	const Cloneable* c = dynamic_cast<const Cloneable*>(&cert);
-	if (c)	
-	{
-		// Cloneable certificate
-		Object* o = c->clone();
-
-		#if HAVE_ASSERT_H
-		assert(dynamic_cast<Certificate*>(o));
-		#endif
-
-		return reinterpret_cast<Certificate*>(o);
-	}
-	else
-	{
-		// Non-Cloneable certificate; let's try a CertificateFactory
-		ByteArrayInputStream bis(cert.getEncoded());
-
-		CertificateFactory* cf;
-
-		try
-		{
-			Certificate* tmp;
-
-			cf = CertificateFactory::getInstance(cert.getType());
-
-			tmp = cf->generateCertificate(bis);
-
-			delete cf;
-
-			return tmp;
-		}
-		catch (NoSuchAlgorithmException)
-		{
-			throw CloneNotSupportedException("Unable to clone Certificate through CertificateFactory of type " + cert.getType());
-		}
-		catch (CertificateException)
-		{
-			delete cf;
-			throw CloneNotSupportedException("Unable to clone Certificate through its encoding");
-		}
 	}
 }
 

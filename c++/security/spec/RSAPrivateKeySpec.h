@@ -28,6 +28,8 @@
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/spec/KeySpec.h"
 using beecrypt::security::spec::KeySpec;
 
@@ -36,7 +38,7 @@ namespace beecrypt {
 		namespace spec {
 			/*!\ingroup CXX_SECURITY_SPEC_m
 			 */
-			class BEECRYPTCXXAPI RSAPrivateKeySpec : public KeySpec
+			class BEECRYPTCXXAPI RSAPrivateKeySpec : public beecrypt::lang::Object, public beecrypt::security::spec::KeySpec
 			{
 			private:
 				mpbarrett _n;

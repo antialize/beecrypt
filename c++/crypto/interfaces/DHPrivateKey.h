@@ -41,8 +41,8 @@ namespace beecrypt {
 			 */
 			class DHPrivateKey : public PrivateKey, public DHKey
 			{
-				public:
-					virtual const mpnumber& getX() const throw () = 0;
+			public:
+				virtual const mpnumber& getX() const throw () = 0;
 			};
 		}
 	}

@@ -57,9 +57,7 @@ int main(int argc, char* argv[])
 
 		Cipher* c = Cipher::getInstance("DHAES");
 
-		const DHPublicKey* pub = dynamic_cast<const DHPublicKey*>(&pair->getPublic());
-
-		DHAESParameterSpec* s = new DHAESParameterSpec(pub->getParams(), "SHA-512", "AES", "HMAC-SHA-512");
+		DHAESParameterSpec* s = new DHAESParameterSpec("SHA-512", "AES", "HMAC-SHA-512");
 
 		c->init(Cipher::ENCRYPT_MODE, pair->getPublic(), *s);
 

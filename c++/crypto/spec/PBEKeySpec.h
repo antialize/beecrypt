@@ -28,6 +28,8 @@
 #include "beecrypt/c++/array.h"
 using beecrypt::array;
 using beecrypt::bytearray;
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/spec/KeySpec.h"
 using beecrypt::security::spec::KeySpec;
 
@@ -36,7 +38,7 @@ namespace beecrypt {
 		namespace spec {
 			/*!\ingroup CXX_CRYPTO_SPEC_m
 			 */
-			class BEECRYPTCXXAPI PBEKeySpec : public beecrypt::security::spec::KeySpec
+			class BEECRYPTCXXAPI PBEKeySpec : public beecrypt::lang::Object, public beecrypt::security::spec::KeySpec
 			{
 			private:
 				array<javachar> _password;

@@ -20,7 +20,6 @@
 # include "config.h"
 #endif
 
-#include "beecrypt/c++/resource.h"
 #include "beecrypt/c++/provider/DSAPublicKeyImpl.h"
 #include "beecrypt/c++/provider/BeeKeyFactory.h"
 
@@ -30,6 +29,13 @@ DSAPublicKeyImpl::DSAPublicKeyImpl(const DSAPublicKey& copy)
 {
 	_params = new DSAParameterSpec(copy.getParams());
 	_y = copy.getY();
+	_enc = 0;
+}
+
+DSAPublicKeyImpl::DSAPublicKeyImpl(const DSAPublicKeyImpl& copy)
+{
+	_params = new DSAParameterSpec(*copy._params);
+	_y = copy._y;
 	_enc = 0;
 }
 

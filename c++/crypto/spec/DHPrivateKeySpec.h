@@ -30,13 +30,15 @@
 
 #include "beecrypt/c++/security/spec/KeySpec.h"
 using beecrypt::security::spec::KeySpec;
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 
 namespace beecrypt {
 	namespace crypto {
 		namespace spec {
 			/*!\ingroup CXX_CRYPTO_SPEC_m
 			 */
-			class BEECRYPTCXXAPI DHPrivateKeySpec : public beecrypt::security::spec::KeySpec
+			class BEECRYPTCXXAPI DHPrivateKeySpec : public beecrypt::lang::Object, public beecrypt::security::spec::KeySpec
 			{
 			private:
 				mpbarrett _p;

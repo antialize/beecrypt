@@ -65,7 +65,7 @@ namespace beecrypt {
 
 			const bytearray& doFinal() throw (IllegalStateException);
 			const bytearray& doFinal(const bytearray&) throw (IllegalStateException);
-			size_t doFinal(byte* data, size_t offset, size_t length) throw (ShortBufferException, IllegalStateException);
+			size_t doFinal(byte* data, size_t offset, size_t length) throw (IllegalStateException, ShortBufferException);
 			size_t getMacLength();
 			void init(const Key&) throw (InvalidKeyException);
 			void init(const Key&, const AlgorithmParameterSpec*) throw (InvalidKeyException, InvalidAlgorithmParameterException);

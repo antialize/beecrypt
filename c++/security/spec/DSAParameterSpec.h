@@ -29,6 +29,8 @@
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/security/interfaces/DSAParams.h"
 using beecrypt::security::interfaces::DSAParams;
 #include "beecrypt/c++/security/spec/AlgorithmParameterSpec.h"
@@ -40,7 +42,7 @@ namespace beecrypt {
 			/*!\brief DSA parameter specification
 			 * \ingroup CXX_SECURITY_SPEC_m
 			 */
-			class BEECRYPTCXXAPI DSAParameterSpec : public AlgorithmParameterSpec, public DSAParams
+			class BEECRYPTCXXAPI DSAParameterSpec : public beecrypt::lang::Object, public beecrypt::security::spec::AlgorithmParameterSpec, public beecrypt::security::interfaces::DSAParams
 			{
 			private:
 				mpbarrett _p;

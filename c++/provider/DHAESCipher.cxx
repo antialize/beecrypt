@@ -29,6 +29,8 @@ using beecrypt::crypto::spec::SecretKeySpec;
 #include "beecrypt/c++/security/ProviderException.h"
 using beecrypt::security::ProviderException;
 
+#include <unicode/ustream.h>
+
 using namespace beecrypt::provider;
 
 DHAESCipher::DHAESCipher()
@@ -121,7 +123,7 @@ bytearray* DHAESCipher::engineDoFinal(const byte* input, size_t inputOffset, siz
 
 		_m->update(*tmp);
 
-		DHAESParameterSpec* newspec = new DHAESParameterSpec(*_msg, _m->doFinal(), _spec->getMessageDigestAlgorithm(), _spec->getCipherAlgorithm(), _spec->getMacAlgorithm(), _spec->getCipherKeyLength(), _spec->getMacKeyLength());
+		DHAESParameterSpec* newspec = new DHAESParameterSpec(_msg->getY(), _m->doFinal(), _spec->getMessageDigestAlgorithm(), _spec->getCipherAlgorithm(), _spec->getMacAlgorithm(), _spec->getCipherKeyLength(), _spec->getMacKeyLength());
 
 		delete _spec;
 
@@ -158,7 +160,7 @@ size_t DHAESCipher::engineDoFinal(const byte* input, size_t inputOffset, size_t 
 
 		_m->update(output.data(), outputOffset, tmp);
 
-		DHAESParameterSpec* newspec = new DHAESParameterSpec(*_msg, _m->doFinal(), _spec->getMessageDigestAlgorithm(), _spec->getCipherAlgorithm(), _spec->getMacAlgorithm(), _spec->getCipherKeyLength(), _spec->getMacKeyLength());
+		DHAESParameterSpec* newspec = new DHAESParameterSpec(_msg->getY(), _m->doFinal(), _spec->getMessageDigestAlgorithm(), _spec->getCipherAlgorithm(), _spec->getMacAlgorithm(), _spec->getCipherKeyLength(), _spec->getMacKeyLength());
 
 		delete _spec;
 
@@ -386,7 +388,7 @@ void DHAESCipher::reset()
 	{
 		if (_buf)
 		{
-			_msg = new DHPublicKeyImpl(_spec->getP(), _spec->getG(), _spec->getEphemeralPublicKey());
+			_msg = new DHPublicKeyImpl(_dec->getParams(), _spec->getEphemeralPublicKey());
 
 			_ka->init(*_dec, _srng);
 			_ka->doPhase(*_msg, true);
@@ -394,7 +396,7 @@ void DHAESCipher::reset()
 		else
 		{
 			// generate an ephemeral keypair
-			_kpg->initialize(*_spec, _srng);
+			_kpg->initialize(DHParameterSpec(_enc->getParams()), _srng);
 
 			KeyPair* pair;
 
@@ -438,19 +440,35 @@ void DHAESCipher::reset()
 		size_t cl = _spec->getCipherKeyLength(), ml = _spec->getMacKeyLength();
 		SecretKeySpec *cipherKeySpec, *macKeySpec;
 
-		if (cl == 0)
+		if ((cl & 0x3) || (ml & 0x3))
+			throw InvalidAlgorithmParameterException("cipher and mac key lengths must be a whole number of butes");
+
+		cl <<= 3;
+		ml <<= 3;
+	
+		if (cl == 0 && ml == 0)
 		{
 			// both key lengths are zero; divide available key in two equal halves
 			cipherKeySpec = new SecretKeySpec(key.data(), 0, key.size() >> 1, "RAW");
 			macKeySpec = new SecretKeySpec(key.data(), key.size() >> 1, key.size() >> 1, "RAW");
 		}
+		else if (cl == 0)
+		{
+			throw InvalidAlgorithmParameterException("when specifying a non-zero mac key size you must also specify a non-zero cipher key size");
+		}
 		else if (ml == 0)
 		{
+			if (cl >= key.size())
+				throw InvalidAlgorithmParameterException("requested key size for cipher exceeds total key size");
+
 			cipherKeySpec = new SecretKeySpec(key.data(), 0, cl, "RAW");
 			macKeySpec = new SecretKeySpec(key.data(), cl, key.size() - cl, "RAW");
 		}
 		else
 		{
+			if ((cl + ml) > key.size())
+				throw InvalidAlgorithmParameterException("requested key sizes for cipher and mac exceed total key size");
+
 			cipherKeySpec = new SecretKeySpec(key.data(), 0, cl, "RAW");
 			macKeySpec = new SecretKeySpec(key.data(), cl, ml, "RAW");
 		}
@@ -523,6 +541,12 @@ void DHAESCipher::reset()
 	}
 	catch (InvalidAlgorithmParameterException e)
 	{
+		std::cout << "got InvalidAlgorithmParameterException " << e.getMessage() << std::endl;
 		throw ProviderException(e.getMessage());
+	}
+	catch (Exception e)
+	{
+		std::cout << "got Exception " << e.getMessage() << std::endl;
+		throw e;
 	}
 }
