@@ -170,7 +170,7 @@ int mpninv(mpnumber* inv, const mpnumber* k, const mpnumber* mod)
 	{
 		mpnsize(inv, size);
 		mpsetx(size, wksp, k->size, k->data);
-		rc = mpextgcd_w(size, wksp, mod->data, inv->data, wksp+size);
+		rc = mpextgcd_w(size, mod->data, wksp, inv->data, wksp+size);
 		free(wksp);
 	}
 
