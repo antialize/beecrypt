@@ -3,7 +3,7 @@
  *
  * Java compatible 64-bit timestamp, code
  *
- * Copyright (c) 1999, 2000 Virtual Unlimited B.V.
+ * Copyright (c) 1999, 2000, 2002 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -27,11 +27,15 @@
 
 #include "timestamp.h"
 
-#if HAVE_TIME_H
-# include <time.h>
-#endif
-#if HAVE_SYS_TIME_H
+#if TIME_WITH_SYS_TIME
 # include <sys/time.h>
+# include <time.h>
+#else
+# if HAVE_SYS_TIME_H
+#  include <sys/time.h>
+# elif HAVE_TIME_H
+#  include <time.h>
+# endif
 #endif
 
 javalong timestamp()
