@@ -1,4 +1,4 @@
-dnl  x86-64.m4
+dnl  x86_64.m4
 dnl
 dnl  Copyright (c) 2003 Bob Deblier
 dnl 

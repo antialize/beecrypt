@@ -1,4 +1,4 @@
-dnl  mpopt.x86-64.m4
+dnl  mpopt.x86_64.m4
 dnl
 dnl  Copyright (c) 2003 Bob Deblier
 dnl 
@@ -21,7 +21,7 @@ dnl  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 	.file "mpopt.s"
 
 include(config.m4)
-include(ARM_SRCDIR/x86-64.m4)
+include(ARM_SRCDIR/x86_64.m4)
 
 
 C_FUNCTION_BEGIN(mpzero)
