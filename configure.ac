@@ -206,7 +206,21 @@ AC_CHECK_FUNCS([memset memcmp memmove strcspn strerror strspn])
 AH_TEMPLATE([HAVE_GETHRTIME],[.])
 AH_TEMPLATE([HAVE_GETTIMEOFDAY],[.])
 if test "$ac_cv_header_sys_time_h" = yes; then
-  AC_CHECK_FUNCS([gethrtime gettimeofday])
+  AC_CHECK_FUNCS([gethrtime])
+  # gettimeofday detection fails on HP/UX!
+  AC_MSG_CHECKING([for gettimeofday])
+  AC_TRY_LINK([#include <sys/time.h> ],[
+    struct timeval dummy;
+    gettimeofday(&dummy, (void*) 0);
+    ],[
+    AC_MSG_RESULT([yes])
+    AC_DEFINE([HAVE_GETTIMEOFDAY],1)
+    ac_cv_func_gettimeofday=yes
+    ],[
+    AC_MSG_RESULT([no])
+    AC_DEFINE([HAVE_GETTIMEOFDAY],0)
+    ac_cv_func_gettimeofday=no
+    ])
 fi
 
 # Predefines and checks for Java API support
