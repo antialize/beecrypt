@@ -28,16 +28,18 @@
 
 #include "beecrypt.h"
 
-#if WIN32
-# include <windows.h>
-# include <winbase.h>
-#else
-# if HAVE_THREAD_H && HAVE_SYNCH_H
-#  include <synch.h>
-# elif HAVE_PTHREAD_H
-#  include <pthread.h>
+#ifdef _REENTRANT
+# if WIN32
+#  include <windows.h>
+#  include <winbase.h>
 # else
-#  error need locking mechanism
+#  if HAVE_THREAD_H && HAVE_SYNCH_H
+#   include <synch.h>
+#  elif HAVE_PTHREAD_H
+#   include <pthread.h>
+#  else
+#   error need locking mechanism
+#  endif
 # endif
 #endif
 
