@@ -22,15 +22,19 @@
 # include "config.h"
 #endif
 
+#if HAVE_ASSERT_H
+# include <assert.h>
+#endif
+
 #include "beecrypt/c++/security/KeyPairGenerator.h"
 #include "beecrypt/c++/security/Security.h"
 
 using namespace beecrypt::security;
 
-KeyPairGenerator::KeyPairGenerator(KeyPairGeneratorSpi* spi, const Provider& provider, const String& algorithm)
+KeyPairGenerator::KeyPairGenerator(KeyPairGeneratorSpi* spi, const Provider* provider, const String& algorithm)
 {
 	_kspi = spi;
-	_prov = &provider;
+	_prov = provider;
 	_algo = algorithm;
 }
 
@@ -43,6 +47,10 @@ KeyPairGenerator* KeyPairGenerator::getInstance(const String& algorithm) throw (
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "KeyPairGenerator");
 
+	#if HAVE_ASSERT_H
+	assert(dynamic_cast<KeyPairGeneratorSpi*>((KeyPairGeneratorSpi*) tmp->cspi));
+	#endif
+
 	KeyPairGenerator* result = new KeyPairGenerator((KeyPairGeneratorSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 	delete tmp;
@@ -54,6 +62,10 @@ KeyPairGenerator* KeyPairGenerator::getInstance(const String& algorithm, const S
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "KeyPairGenerator", provider);
 
+	#if HAVE_ASSERT_H
+	assert(dynamic_cast<KeyPairGeneratorSpi*>((KeyPairGeneratorSpi*) tmp->cspi));
+	#endif
+
 	KeyPairGenerator* result = new KeyPairGenerator((KeyPairGeneratorSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 	delete tmp;
@@ -64,6 +76,10 @@ KeyPairGenerator* KeyPairGenerator::getInstance(const String& algorithm, const S
 KeyPairGenerator* KeyPairGenerator::getInstance(const String& algorithm, const Provider& provider) throw (NoSuchAlgorithmException)
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "KeyPairGenerator", provider);
+
+	#if HAVE_ASSERT_H
+	assert(dynamic_cast<KeyPairGeneratorSpi*>((KeyPairGeneratorSpi*) tmp->cspi));
+	#endif
 
 	KeyPairGenerator* result = new KeyPairGenerator((KeyPairGeneratorSpi*) tmp->cspi, tmp->prov, tmp->name);
 

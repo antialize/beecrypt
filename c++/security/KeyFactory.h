@@ -56,7 +56,7 @@ namespace beecrypt {
 			String          _algo;
 
 		protected:
-			KeyFactory(KeyFactorySpi* spi, const Provider& provider, const String& algorithm);
+			KeyFactory(KeyFactorySpi* spi, const Provider* provider, const String& algorithm);
 
 		public:
 			~KeyFactory();

@@ -57,7 +57,7 @@ namespace beecrypt {
 				String                 _type;
 
 			protected:
-				CertificateFactory(CertificateFactorySpi* spi, const Provider& provider, const String& type);
+				CertificateFactory(CertificateFactorySpi* spi, const Provider* provider, const String& type);
 
 			public:
 				~CertificateFactory();

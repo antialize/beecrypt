@@ -22,15 +22,19 @@
 # include "config.h"
 #endif
 
+#if HAVE_ASSERT_H
+# include <assert.h>
+#endif
+
 #include "beecrypt/c++/security/Security.h"
 #include "beecrypt/c++/security/cert/CertPathValidator.h"
 
 using namespace beecrypt::security::cert;
 
-CertPathValidator::CertPathValidator(CertPathValidatorSpi* spi, const Provider& provider, const String& algorithm)
+CertPathValidator::CertPathValidator(CertPathValidatorSpi* spi, const Provider* provider, const String& algorithm)
 {
 	_cspi = spi;
-	_prov = &provider;
+	_prov = provider;
 	_algo = algorithm;
 }
 
@@ -43,6 +47,10 @@ CertPathValidator* CertPathValidator::getInstance(const String& algorithm) throw
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "CertPathValidator");
 
+	#if HAVE_ASSERT_H
+	assert(dynamic_cast<CertPathValidatorSpi*>((CertPathValidatorSpi*) tmp->cspi));
+	#endif
+
 	CertPathValidator* result = new CertPathValidator((CertPathValidatorSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 	delete tmp;
@@ -54,6 +62,10 @@ CertPathValidator* CertPathValidator::getInstance(const String& algorithm, const
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "CertPathValidator", provider);
 
+	#if HAVE_ASSERT_H
+	assert(dynamic_cast<CertPathValidatorSpi*>((CertPathValidatorSpi*) tmp->cspi));
+	#endif
+
 	CertPathValidator* result = new CertPathValidator((CertPathValidatorSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 	delete tmp;
@@ -64,6 +76,10 @@ CertPathValidator* CertPathValidator::getInstance(const String& algorithm, const
 CertPathValidator* CertPathValidator::getInstance(const String& algorithm, const Provider& provider) throw (NoSuchAlgorithmException)
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "CertPathValidator", provider);
+
+	#if HAVE_ASSERT_H
+	assert(dynamic_cast<CertPathValidatorSpi*>((CertPathValidatorSpi*) tmp->cspi));
+	#endif
 
 	CertPathValidator* result = new CertPathValidator((CertPathValidatorSpi*) tmp->cspi, tmp->prov, tmp->name);
 

@@ -58,7 +58,7 @@ namespace beecrypt {
 				String                _algo;
 
 			protected:
-				CertPathValidator(CertPathValidatorSpi* spi, const Provider& provider, const String& algorithm);
+				CertPathValidator(CertPathValidatorSpi* spi, const Provider* provider, const String& algorithm);
 
 			public:
 				~CertPathValidator();

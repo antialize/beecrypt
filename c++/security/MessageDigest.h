@@ -53,7 +53,7 @@ namespace beecrypt {
 			String            _algo;
 
 		protected:
-			MessageDigest(MessageDigestSpi* spi, const Provider& provider, const String& algorithm);
+			MessageDigest(MessageDigestSpi* spi, const Provider* provider, const String& algorithm);
 
 		public:
 			~MessageDigest();

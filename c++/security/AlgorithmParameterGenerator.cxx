@@ -22,6 +22,10 @@
 # include "config.h"
 #endif
 
+#if HAVE_ASSERT_H
+# include <assert.h>
+#endif
+
 #include "beecrypt/c++/security/AlgorithmParameterGenerator.h"
 #include "beecrypt/c++/security/AlgorithmParameterGeneratorSpi.h"
 #include "beecrypt/c++/security/AlgorithmParameters.h"
@@ -31,10 +35,10 @@
 
 using namespace beecrypt::security;
 
-AlgorithmParameterGenerator::AlgorithmParameterGenerator(AlgorithmParameterGeneratorSpi* spi, const Provider& provider, const String& algorithm)
+AlgorithmParameterGenerator::AlgorithmParameterGenerator(AlgorithmParameterGeneratorSpi* spi, const Provider* provider, const String& algorithm)
 {
 	_aspi = spi;
-	_prov = &provider;
+	_prov = provider;
 	_algo = algorithm;
 }
 
@@ -47,6 +51,10 @@ AlgorithmParameterGenerator* AlgorithmParameterGenerator::getInstance(const Stri
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "AlgorithmParameterGenerator");
 
+	#if HAVE_ASSERT_H
+	assert(dynamic_cast<AlgorithmParameterGeneratorSpi*>((AlgorithmParameterGeneratorSpi*) tmp->cspi));
+	#endif
+
     AlgorithmParameterGenerator* result = new AlgorithmParameterGenerator((AlgorithmParameterGeneratorSpi*) tmp->cspi, tmp->prov, tmp->name);
 
     delete tmp;
@@ -58,6 +66,10 @@ AlgorithmParameterGenerator* AlgorithmParameterGenerator::getInstance(const Stri
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "AlgorithmParameterGenerator", provider);
 
+	#if HAVE_ASSERT_H
+	assert(dynamic_cast<AlgorithmParameterGeneratorSpi*>((AlgorithmParameterGeneratorSpi*) tmp->cspi));
+	#endif
+
     AlgorithmParameterGenerator* result = new AlgorithmParameterGenerator((AlgorithmParameterGeneratorSpi*) tmp->cspi, tmp->prov, tmp->name);
 
     delete tmp;
@@ -68,6 +80,10 @@ AlgorithmParameterGenerator* AlgorithmParameterGenerator::getInstance(const Stri
 AlgorithmParameterGenerator* AlgorithmParameterGenerator::getInstance(const String& algorithm, const Provider& provider) throw (NoSuchAlgorithmException)
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "AlgorithmParameterGenerator", provider);
+
+	#if HAVE_ASSERT_H
+	assert(dynamic_cast<AlgorithmParameterGeneratorSpi*>((AlgorithmParameterGeneratorSpi*) tmp->cspi));
+	#endif
 
     AlgorithmParameterGenerator* result = new AlgorithmParameterGenerator((AlgorithmParameterGeneratorSpi*) tmp->cspi, tmp->prov, tmp->name);
 

@@ -75,7 +75,7 @@ namespace beecrypt {
 			String          _algo;
 
 		protected:
-			Signature(SignatureSpi* spi, const Provider& provider, const String& algorithm);
+			Signature(SignatureSpi* spi, const Provider* provider, const String& algorithm);
 
 		public:
 			~Signature();

@@ -51,7 +51,7 @@ namespace beecrypt {
 			String               _algo;
 
 		protected:
-			KeyPairGenerator(KeyPairGeneratorSpi* spi, const Provider& provider, const String& algorithm);
+			KeyPairGenerator(KeyPairGeneratorSpi* spi, const Provider* provider, const String& algorithm);
 
 		public:
 			~KeyPairGenerator();

@@ -22,6 +22,10 @@
 # include "config.h"
 #endif
 
+#if HAVE_ASSERT_H
+# include <assert.h>
+#endif
+
 #include "beecrypt/c++/security/SecureRandom.h"
 #include "beecrypt/c++/security/SecureRandomSpi.h"
 #include "beecrypt/c++/security/Security.h"
@@ -31,6 +35,10 @@ using namespace beecrypt::security;
 SecureRandom* SecureRandom::getInstance(const String& algorithm) throw (NoSuchAlgorithmException)
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "SecureRandom");
+
+	#if HAVE_ASSERT_H
+	assert(dynamic_cast<SecureRandomSpi*>((SecureRandomSpi*) tmp->cspi));
+	#endif
 
 	SecureRandom* result = new SecureRandom((SecureRandomSpi*) tmp->cspi, tmp->prov, tmp->name);
 
@@ -43,6 +51,10 @@ SecureRandom* SecureRandom::getInstance(const String& type, const String& provid
 {
 	Security::spi* tmp = Security::getSpi(type, "SecureRandom", provider);
 
+	#if HAVE_ASSERT_H
+	assert(dynamic_cast<SecureRandomSpi*>((SecureRandomSpi*) tmp->cspi));
+	#endif
+
 	SecureRandom* result = new SecureRandom((SecureRandomSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 	delete tmp;
@@ -53,6 +65,10 @@ SecureRandom* SecureRandom::getInstance(const String& type, const String& provid
 SecureRandom* SecureRandom::getInstance(const String& type, const Provider& provider) throw (NoSuchAlgorithmException)
 {
 	Security::spi* tmp = Security::getSpi(type, "SecureRandom", provider);
+
+	#if HAVE_ASSERT_H
+	assert(dynamic_cast<SecureRandomSpi*>((SecureRandomSpi*) tmp->cspi));
+	#endif
 
 	SecureRandom* result = new SecureRandom((SecureRandomSpi*) tmp->cspi, tmp->prov, tmp->name);
 
@@ -70,17 +86,21 @@ SecureRandom::SecureRandom()
 {
 	Security::spi* tmp = Security::getFirstSpi("SecureRandom");
 
+	#if HAVE_ASSERT_H
+	assert(dynamic_cast<SecureRandomSpi*>((SecureRandomSpi*) tmp->cspi));
+	#endif
+
 	_rspi = (SecureRandomSpi*) tmp->cspi;
 	_type = tmp->name;
-	_prov = &tmp->prov;
+	_prov = tmp->prov;
 
 	delete tmp;
 }
 
-SecureRandom::SecureRandom(SecureRandomSpi* rspi, const Provider& provider, const String& type) /* : _prov(&provider) */
+SecureRandom::SecureRandom(SecureRandomSpi* rspi, const Provider* provider, const String& type)
 {
 	_rspi = rspi;
-	_prov = &provider;
+	_prov = provider;
 	_type = type;
 }
 

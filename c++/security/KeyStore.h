@@ -98,7 +98,7 @@ namespace beecrypt {
 			bool            _init;
 
 		protected:
-			KeyStore(KeyStoreSpi* spi, const Provider& provider, const String& type);
+			KeyStore(KeyStoreSpi* spi, const Provider* provider, const String& type);
 
 		public:
 			~KeyStore();

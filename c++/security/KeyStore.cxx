@@ -22,15 +22,19 @@
 # include "config.h"
 #endif
 
+#if HAVE_ASSERT_H
+# include <assert.h>
+#endif
+
 #include "beecrypt/c++/security/KeyStore.h"
 #include "beecrypt/c++/security/Security.h"
 
 using namespace beecrypt::security;
 
-KeyStore::KeyStore(KeyStoreSpi* spi, const Provider& provider, const String& type)
+KeyStore::KeyStore(KeyStoreSpi* spi, const Provider* provider, const String& type)
 {
 	_kspi = spi;
-	_prov = &provider;
+	_prov = provider;
 	_type = type;
 	_init = false;
 }
@@ -45,6 +49,10 @@ KeyStore* KeyStore::getInstance(const String& type) throw (KeyStoreException)
 	try
 	{
 		Security::spi* tmp = Security::getSpi(type, "KeyStore");
+
+		#if HAVE_ASSERT_H
+		assert(dynamic_cast<KeyStoreSpi*>((KeyStoreSpi*) tmp->cspi));
+		#endif
 
 		KeyStore* result = new KeyStore((KeyStoreSpi*) tmp->cspi, tmp->prov, tmp->name);
 
@@ -64,6 +72,10 @@ KeyStore* KeyStore::getInstance(const String& type, const String& provider) thro
 	{
 		Security::spi* tmp = Security::getSpi(type, "KeyStore", provider);
 
+		#if HAVE_ASSERT_H
+		assert(dynamic_cast<KeyStoreSpi*>((KeyStoreSpi*) tmp->cspi));
+		#endif
+
 		KeyStore* result = new KeyStore((KeyStoreSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 		delete tmp;
@@ -81,6 +93,10 @@ KeyStore* KeyStore::getInstance(const String& type, const Provider& provider) th
 	try
 	{
 		Security::spi* tmp = Security::getSpi(type, "KeyStore", provider);
+
+		#if HAVE_ASSERT_H
+		assert(dynamic_cast<KeyStoreSpi*>((KeyStoreSpi*) tmp->cspi));
+		#endif
 
 		KeyStore* result = new KeyStore((KeyStoreSpi*) tmp->cspi, tmp->prov, tmp->name);
 

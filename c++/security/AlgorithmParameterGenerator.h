@@ -52,7 +52,7 @@ namespace beecrypt {
 			String                          _algo;
 
 		protected:
-			AlgorithmParameterGenerator(AlgorithmParameterGeneratorSpi* spi, const Provider& provider, const String& algorithm);
+			AlgorithmParameterGenerator(AlgorithmParameterGeneratorSpi* spi, const Provider* provider, const String& algorithm);
 
 		public:
 			~AlgorithmParameterGenerator();

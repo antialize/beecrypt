@@ -22,15 +22,19 @@
 # include "config.h"
 #endif
 
+#if HAVE_ASSERT_H
+# include <assert.h>
+#endif
+
 #include "beecrypt/c++/security/Security.h"
 #include "beecrypt/c++/security/cert/CertificateFactory.h"
 
 using namespace beecrypt::security::cert;
 
-CertificateFactory::CertificateFactory(CertificateFactorySpi* spi, const Provider& provider, const String& type)
+CertificateFactory::CertificateFactory(CertificateFactorySpi* spi, const Provider* provider, const String& type)
 {
 	_cspi = spi;
-	_prov = &provider;
+	_prov = provider;
 	_type = type;
 }
 
@@ -43,6 +47,10 @@ CertificateFactory* CertificateFactory::getInstance(const String& type) throw (N
 {
 	Security::spi* tmp = Security::getSpi(type, "CertificateFactory");
 
+	#if HAVE_ASSERT_H
+	assert(dynamic_cast<CertificateFactorySpi*>((CertificateFactorySpi*) tmp->cspi));
+	#endif
+
 	CertificateFactory* result = new CertificateFactory((CertificateFactorySpi*) tmp->cspi, tmp->prov, tmp->name);
 
 	delete tmp;
@@ -54,6 +62,10 @@ CertificateFactory* CertificateFactory::getInstance(const String& type, const St
 {
 	Security::spi* tmp = Security::getSpi(type, "CertificateFactory", provider);
 
+	#if HAVE_ASSERT_H
+	assert(dynamic_cast<CertificateFactorySpi*>((CertificateFactorySpi*) tmp->cspi));
+	#endif
+
 	CertificateFactory* result = new CertificateFactory((CertificateFactorySpi*) tmp->cspi, tmp->prov, tmp->name);
 
 	delete tmp;
@@ -64,6 +76,10 @@ CertificateFactory* CertificateFactory::getInstance(const String& type, const St
 CertificateFactory* CertificateFactory::getInstance(const String& type, const Provider& provider) throw (NoSuchAlgorithmException)
 {
 	Security::spi* tmp = Security::getSpi(type, "CertificateFactory", provider);
+
+	#if HAVE_ASSERT_H
+	assert(dynamic_cast<CertificateFactorySpi*>((CertificateFactorySpi*) tmp->cspi));
+	#endif
 
 	CertificateFactory* result = new CertificateFactory((CertificateFactorySpi*) tmp->cspi, tmp->prov, tmp->name);
 

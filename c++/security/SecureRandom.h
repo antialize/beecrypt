@@ -55,7 +55,7 @@ namespace beecrypt {
 			String           _type;
 
 		protected:
-			SecureRandom(SecureRandomSpi* spi, const Provider& provider, const String& type);
+			SecureRandom(SecureRandomSpi* spi, const Provider* provider, const String& type);
 
 		public:
 			SecureRandom();

@@ -54,7 +54,7 @@ namespace beecrypt {
 			String                  _algo;
 
 		protected:
-			AlgorithmParameters(AlgorithmParametersSpi* spi, const Provider& provider, const String& algorithm);
+			AlgorithmParameters(AlgorithmParametersSpi* spi, const Provider* provider, const String& algorithm);
 
 		public:
 			~AlgorithmParameters();
