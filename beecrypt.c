@@ -56,13 +56,6 @@
 #include "blowfish.h"
 #include "blockmode.h"
 
-/*!\addtogroup ES_m
- * \{
- */
-
-/*!\var entropySourceList
- * \brief Table holding all available entropy sources.
- */
 static entropySource entropySourceList[] =
 {
 #if WIN32
@@ -95,12 +88,12 @@ int entropySourceCount()
 	return ENTROPYSOURCES;
 }
 
-const entropySource* entropySourceGet(int index)
+const entropySource* entropySourceGet(int n)
 {
-	if ((index < 0) || (index >= ENTROPYSOURCES))
+	if ((n < 0) || (n >= ENTROPYSOURCES))
 		return (const entropySource*) 0;
 
-	return entropySourceList+index;
+	return entropySourceList+n;
 }
 
 const entropySource* entropySourceFind(const char* name)
@@ -153,11 +146,6 @@ int entropyGatherNext(byte* data, size_t size)
 	}
 	return -1;
 }
-
-/*!\}
- * \addtogroup PRNG_m
- * \{
- */
 
 static const randomGenerator* randomGeneratorList[] =
 {
@@ -245,11 +233,6 @@ int randomGeneratorContextNext(randomGeneratorContext* ctxt, byte* data, size_t 
 {
 	return ctxt->rng->next(ctxt->param, data, size);
 }
-
-/*!\}
- * \addtogroup HASH_m
- * \{
- */
 
 static const hashFunction* hashFunctionList[] =
 {
@@ -479,11 +462,6 @@ int hashFunctionContextDigestMatch(hashFunctionContext* ctxt, const mpnumber* d)
 
 	return rc;
 }
-
-/*!\}
- * \addtogroup HMAC_m
- * \{
- */
 
 static const keyedHashFunction* keyedHashFunctionList[] =
 {
@@ -731,11 +709,6 @@ int keyedHashFunctionContextDigestMatch(keyedHashFunctionContext* ctxt, const mp
 	return rc;
 }
 
-/*!\}
- * \addtogroup BC_m 
- * \{
- */
-
 static const blockCipher* blockCipherList[] =
 {
 	&aes,
@@ -744,23 +717,11 @@ static const blockCipher* blockCipherList[] =
 
 #define BLOCKCIPHERS (sizeof(blockCipherList) / sizeof(blockCipher*))
 
-/*!\fn int blockCipherCount()
- * \brief Return the number of available blockciphers.
- * \return The number of available blockciphers.
- */
 int blockCipherCount()
 {
 	return BLOCKCIPHERS;
 }
 
-/*!\fn const blockCipher* blockCipherDefault()
- * \brief Return the default blockcipher.
- *
- * By default, the function returns the first entry in blockCipherList, but
- * this can be overridden by setting environment variable BEECRYPT_CIPHER.
- *
- * \return The default blockcipher.
- */
 const blockCipher* blockCipherDefault()
 {
 	char* selection = getenv("BEECRYPT_CIPHER");
@@ -771,12 +732,6 @@ const blockCipher* blockCipherDefault()
 		return &blowfish;
 }
 
-/*!\fn const blockCipher* blockCipherGet(int index)
- * \brief Return a blockcipher by its index.
- * \param index The requested blockcipher index.
- * \return The requested blockcipher, or a null pointer, if the index
- * was out of range.
- */
 const blockCipher* blockCipherGet(int index)
 {
 	if ((index < 0) || (index >= BLOCKCIPHERS))
@@ -785,12 +740,6 @@ const blockCipher* blockCipherGet(int index)
 	return blockCipherList[index];
 }
 
-/*!\fn const blockCipher* blockCipherFind(const char* name)
- * \brief Return a blockcipher by its name.
- * \param name The requested blockcipher's name.
- * \return The requested blockcipher, or a null pointer, if the name
- * wasn't found.
- */
 const blockCipher* blockCipherFind(const char* name)
 {
 	register int index;
@@ -872,7 +821,7 @@ int blockCipherContextFree(blockCipherContext* ctxt)
 	return 0;
 }
 
-int blockCipherContextECB(blockCipherContext* ctxt, void* dst, const void* src, int nblocks)
+int blockCipherContextECB(blockCipherContext* ctxt, uint32_t* dst, const uint32_t* src, int nblocks)
 {
 	switch (ctxt->op)
 	{
@@ -887,7 +836,7 @@ int blockCipherContextECB(blockCipherContext* ctxt, void* dst, const void* src, 
 	return -1;
 }
 
-int blockCipherContextCBC(blockCipherContext* ctxt, void* dst, const void* src, int nblocks)
+int blockCipherContextCBC(blockCipherContext* ctxt, uint32_t* dst, const uint32_t* src, int nblocks)
 {
 	switch (ctxt->op)
 	{
@@ -901,9 +850,6 @@ int blockCipherContextCBC(blockCipherContext* ctxt, void* dst, const void* src, 
 	}
 	return -1;
 }
-
-/*!\}
- */
 
 #if WIN32
 __declspec(dllexport)

@@ -45,21 +45,8 @@
  */
 typedef int (*entropyNext)(byte*, size_t);
 
-/*
- * The struct 'entropySource' holds information and pointers to code specific
- * to each entropy source. Each specific entropy source MUST be written to be
- * multithread-safe.
- *
- * The struct contains the following function(s):
- *
- * int (*next)(byte* data, size_t size);
- *
- * This function will fill an array of 32-bit unsigned integers of given size
- * with entropy.
- * Return value is 0 on success, or -1 on failure.
- */
-
-/*!\brief This struct holds information and pointers to code specific to each source of entropy.
+/*!\brief This struct holds information and pointers to code specific to each
+ *  source of entropy.
  * \ingroup ES_m
  */
 typedef struct
@@ -69,43 +56,61 @@ typedef struct
 	 */
 	const char*			name;
 	/*!\var next
+	 * \brief Points to the function which produces the entropy.
 	 */
 	const entropyNext	next;
 } entropySource;
-
-/*
- * You can use the following functions to find entropy sources implemented by
- * the library:
- *
- * entropySourceCount returns the number of sources available.
- *
- * entropySourceGet returns the entropy source with a given index (starting
- * at zero, up to entropySourceCount() - 1), or NULL if the index was out of
- * bounds.
- *
- * entropySourceFind returns the entropy source with the given name, or NULL
- * if no entropy source exists with that name.
- */
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+/*!\fn int entropySourceCount()
+ * \brief This function returns the number of entropy sources implemented by
+ *  the library.
+ * \return The number of entropy sources implemented.
+ */
 BEECRYPTAPI
 int						entropySourceCount();
+
+/*!\fn const entropySource* entropySourceGet(int n)
+ * \brief This function returns the \a n -th entropy source implemented by
+ *  the library.
+ * \param n Index of the requested entropy source; legal values are 0
+ *  through entropySourceCount() - 1.
+ * \return A pointer to an entropy source or null, if the index was out of
+ *  range.
+ */
 BEECRYPTAPI
-const entropySource*	entropySourceGet(int);
+const entropySource*	entropySourceGet(int n);
+
+/*!\fn const entropySource* entropySourceFind(const char* name)
+ * \brief This function returns the entropy source specified by the given name.
+ * \param name Name of the requested entropy source.
+ * \return A pointer to an entropy source or null, if the name wasn't found.
+ */
 BEECRYPTAPI
-const entropySource*	entropySourceFind(const char*);
+const entropySource*	entropySourceFind(const char* name);
+
+/*!\fn const entropySource* entropySourceDefault()
+ * \brief This functions returns the default entropy source; the default value
+ *  can be specified by setting environment variable BEECRYPT_ENTROPY.
+ * \return A pointer to an entropy source or null, in case an error occured.
+ */
 BEECRYPTAPI
 const entropySource*	entropySourceDefault();
 
-/*
- * The following function can try multiple entropy sources for gathering
- * the requested amount. It will only try multiple sources if variable
- * BEECRYPT_ENTROPY is not set.
+/*!\fn int entropyGatherNext(byte* data, size_t size)
+ * \brief This function gathers \a size bytes of entropy into \a data.
+ *
+ * Unless environment variable BEECRYPT_ENTROPY is set, this function will
+ * try each successive entropy source to gather up the requested amount.
+ *
+ * \param data Points to where the entropy should be stored.
+ * \param size Indicates how many bytes of entropy should be gathered.
+ * \retval 0 On success.
+ * \retval -1 On failure.
  */
-
 BEECRYPTAPI
 int						entropyGatherNext(byte*, size_t);
 
@@ -140,13 +145,37 @@ typedef int (*randomGeneratorCleanup)(randomGeneratorParam*);
  *
  */
 
+/*!\brief This struct holds information and pointers to code specific to each
+ *  pseudo-random number generator.
+ * \ingroup PRNG_m
+ */
 typedef struct
 {
+	/*!\var name
+	 * \brief The random generator's name.
+	 */
 	const char*						name;
+	/*!\var paramsize
+	 * \brief The size of the random generator's parameters.
+	 * \note The implementor should set this by using sizeof(<struct holding
+     *  random generator's parameters>).
+	 */
 	const unsigned int				paramsize;
+	/*!\var setup
+	 * \brief Points to the setup function.
+	 */
 	const randomGeneratorSetup		setup;
+	/*!\var seed
+	 * \brief Points to the seeding function.
+	 */
 	const randomGeneratorSeed		seed;
+	/*!\var seed
+	 * \brief Points to the function which generates the random data.
+	 */
 	const randomGeneratorNext		next;
+	/*!\var seed
+	 * \brief Points to the cleanup function.
+	 */
 	const randomGeneratorCleanup	cleanup;
 } randomGenerator;
 
@@ -633,10 +662,10 @@ BEECRYPTAPI
 int blockCipherContextFree(blockCipherContext*);
 
 BEECRYPTAPI
-int blockCipherECB(blockCipherContext*, uint32_t*, const uint32_t*, int);
+int blockCipherContextECB(blockCipherContext*, uint32_t*, const uint32_t*, int);
 
 BEECRYPTAPI
-int blockCipherCBC(blockCipherContext*, uint32_t*, const uint32_t*, int);
+int blockCipherContextCBC(blockCipherContext*, uint32_t*, const uint32_t*, int);
 
 #ifdef __cplusplus
 }
