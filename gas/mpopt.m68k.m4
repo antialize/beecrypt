@@ -19,6 +19,8 @@ dnl  License along with this library; if not, write to the Free Software
 dnl  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  
 include(config.m4)
+include(ASM_SRCDIR/m68k.m4)
+
 
 divert(-1)
 dnl to be tested
@@ -28,6 +30,7 @@ C_FUNCTION_BEGIN(mpadd)
 	movea.l 12(%sp),%a1
 	move.l %d0,%d1
 	lsl.l #2,%d0
+	subq.l #1,%d1
 	adda.l %d0,%a0
 	adda.l %d0,%a1
 	clr %d0
@@ -35,7 +38,7 @@ C_FUNCTION_BEGIN(mpadd)
 	.align 2
 LOCAL(mpadd_loop):
 	addx.l -(%a1),-(%a0)
-	dbne %d1,LOCAL(mpadd_loop)
+	dbf %d1,LOCAL(mpadd_loop)
 
 	addx.l %d0,%d0
 	rts
@@ -51,6 +54,7 @@ C_FUNCTION_BEGIN(mpsub)
 	movea.l 12(%sp),%a1
 	move.l %d0,%d1
 	lsl.l #2,%d0
+	subq.l #1,%d1
 	adda.l %d0,%a0
 	adda.l %d0,%a1
 	clr %d0
@@ -58,7 +62,7 @@ C_FUNCTION_BEGIN(mpsub)
 	.align 2
 LOCAL(mpsub_loop):
 	subx.l -(%a1),-(%a0)
-	dbne %d1,LOCAL(mpsub_loop)
+	dbf %d1,LOCAL(mpsub_loop)
 
 	addx.l %d0,%d0
 	rts
@@ -67,28 +71,26 @@ divert(0)
 
 
 C_FUNCTION_BEGIN(mpsetmul)
-	movem.l %d2-%d5,-(%sp)
-	move.l 20(%sp),%d0
-	movea.l 24(%sp),%a0
-	movea.l 28(%sp),%a1
-	move.l 32(%sp),%d2
-	move.l %d0,%d5
+	movem.l %d2-%d4,-(%sp)
+	move.l 16(%sp),%d0
+	movea.l 20(%sp),%a0
+	movea.l 24(%sp),%a1
+	move.l 28(%sp),%d2
+	move.l %d0,%d3
 	lsl.l #2,%d0
+	subq.l #1,%d3
 	adda.l %d0,%a0
 	adda.l %d0,%a1
-	clr.l %d3
 	clr.l %d4
 
 	.align 2
 LOCAL(mpsetmul_loop):
 	move.l -(%a1),%d1
 	mulu.l %d2,%d0:%d1
-dnl if I use dbne, then I should be able to use addx.l %d4,%d0 here
-	add.l %d3,%d1
+	addx.l %d4,%d1
 	addx.l %d4,%d0
 	move.l %d1,-(%a0)
-	move.l %d0,%d3
-	dbne %d5,LOCAL(mpsetmul_loop)
+	dbf %d3,LOCAL(mpsetmul_loop)
 
 	movem.l (%sp)+,%d2-%d5
 	rts
@@ -103,6 +105,7 @@ C_FUNCTION_BEGIN(mpaddmul)
 	move.l 32(%sp),%d2
 	move.l %d0,%d5
 	lsl.l #2,%d0
+	subq.l #1,%d5
 	adda.l %d0,%a1
 	adda.l %d0,%a2
 	clr.l %d3
@@ -118,7 +121,7 @@ LOCAL(mpaddmul_loop):
 	addx.l %d4,%d0
 	move.l %d1,(%a1)
 	move.l %d0,%d3
-	dbne %d5,LOCAL(mpaddmul_loop)
+	dbf %d5,LOCAL(mpaddmul_loop)
 
 	movem.l (%sp)+,%d2-%d5
 	rts
@@ -128,31 +131,33 @@ C_FUNCTION_END(mpaddmul)
 divert(-1)
 dnl in development
 C_FUNCTION_BEGIN(mpaddsqrtrc)
-	movem.l %d3-%d5,-(%sp)
+	movem.l %d2-%d4,-(%sp)
 	move.l 16(%sp),%d0
 	movea.l 20(%sp),%a1
 	movea.l 24(%sp),%a2
-	move.l %d0,%d5
+	move.l %d0,%d3
 	lsl.l #2,%d0
+	subq.l #1,%d3
 	adda.l %d0,%a1
 	adda.l %d0,%a2
-	clr.l %d3
 	clr.l %d4
 
 LOCAL(mpaddsqrtrc_loop):
 	move.l -(%a2),%d1
 dnl square %d1 into %d0 and %d1
 	mulu.l %d1,%d0:%d1
-	add.l %d3,%d1
+	addx.l %d4,%d1
 	addx.l %d4,%d0
+	movl.l -(%a1),%d2
+	add.l %d2,%d1
+	move.l %d1,(%a1)
 	add.l -(%a1),%d1
-	addx.l -(%a1),%d0
-	addx.l %d4,%d3
-	move.l %d1,4(%a1)
+	movl.l -(%a1),%d2
+	addx.l %d2,%d0
 	move.l %d0,0(%a1)
-	dbne %d5,LOCAL(mpaddsqrtrc_loop)
+	dbf %d3,LOCAL(mpaddsqrtrc_loop)
 
-	movem.l (%sp)+,%d3-%d5
+	movem.l (%sp)+,%d2-%d4
 	rts
 C_FUNCTION_END(mpaddsqrtrc)
 divert(0)
