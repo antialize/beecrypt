@@ -1,9 +1,5 @@
 /*
- * testsha1.c
- *
- * Unit test program for SHA-1; it tests all but one of vectors specified by FIPS PUB 180-1.
- *
- * Copyright (c) 2002 Bob Deblier
+ * Copyright (c) 2002, 2003 Bob Deblier
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,6 +17,13 @@
  *
  */
 
+/*!\file testsha1.c
+ * \brief Unit test program for the SHA-1 algorithm ; it tests all but one of
+ *        the vectors specified by FIPS PUB 180-1.
+ * \author Bob Deblier <bob.deblier@pandora.be>
+ * \ingroup UNIT_m
+ */
+
 #include <stdio.h>
 
 #include "sha1.h"
@@ -34,9 +37,9 @@ struct input_expect
 
 struct input_expect table[2] = {
 	{ "abc",
-		{ 0xA9993E36, 0x4706816A, 0xBA3E2571, 0x7850C26C, 0x9CD0D89D } },
+		{ 0xA9993E36U, 0x4706816AU, 0xBA3E2571U, 0x7850C26CU, 0x9CD0D89DU } },
 	{ "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq",
-		{ 0x84983E44, 0x1C3BD26E, 0xBAAE4AA1, 0xF95129E5, 0xE54670F1 } }
+		{ 0x84983E44U, 0x1C3BD26EU, 0xBAAE4AA1U, 0xF95129E5U, 0xE54670F1U } }
 };
 
 int main()

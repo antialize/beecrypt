@@ -1,9 +1,5 @@
 /*
- * testmd5.c
- *
- * Unit test program for MD5; it tests all vectors specified by RFC 1321.
- *
- * Copyright (c) 2002 Bob Deblier
+ * Copyright (c) 2002, 2003 Bob Deblier
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,6 +17,13 @@
  *
  */
 
+/*!\file testmd5.c
+ * \brief Unit test program for the MD5 algorithm; it tests all vectors
+ *        specified by RFC 1321.
+ * \author Bob Deblier <bob.deblier@pandora.be>
+ * \ingroup UNIT_m
+ */
+
 #include <stdio.h>
 
 #include "md5.h"
@@ -34,19 +37,19 @@ struct input_expect
 
 struct input_expect table[7] = {
 	{ "",
-		{ 0xd41d8cd9, 0x8f00b204, 0xe9800998, 0xecf8427e } },
+		{ 0xd41d8cd9U, 0x8f00b204U, 0xe9800998U, 0xecf8427eU } },
 	{ "a",
-		{ 0x0cc175b9, 0xc0f1b6a8, 0x31c399e2, 0x69772661 } },
+		{ 0x0cc175b9U, 0xc0f1b6a8U, 0x31c399e2U, 0x69772661U } },
 	{ "abc",
-		{ 0x90015098, 0x3cd24fb0, 0xd6963f7d, 0x28e17f72 } },
+		{ 0x90015098U, 0x3cd24fb0U, 0xd6963f7dU, 0x28e17f72U } },
 	{ "message digest",
-		{ 0xf96b697d, 0x7cb7938d, 0x525a2f31, 0xaaf161d0 } },
+		{ 0xf96b697dU, 0x7cb7938dU, 0x525a2f31U, 0xaaf161d0U } },
 	{ "abcdefghijklmnopqrstuvwxyz",
-		{ 0xc3fcd3d7, 0x6192e400, 0x7dfb496c, 0xca67e13b } },
+		{ 0xc3fcd3d7U, 0x6192e400U, 0x7dfb496cU, 0xca67e13bU } },
 	{ "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
-		{ 0xd174ab98, 0xd277d9f5, 0xa5611c2c, 0x9f419d9f } },
+		{ 0xd174ab98U, 0xd277d9f5U, 0xa5611c2cU, 0x9f419d9fU } },
 	{ "12345678901234567890123456789012345678901234567890123456789012345678901234567890",
-		{ 0x57edf4a2, 0x2be3c955, 0xac49da2e, 0x2107b67a } }
+		{ 0x57edf4a2U, 0x2be3c955U, 0xac49da2eU, 0x2107b67aU } }
 };
 
 int main()

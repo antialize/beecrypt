@@ -1,9 +1,5 @@
 /*
- * testdsa.c
- *
- * Unit test program for DSA.
- *
- * Copyright (c) 2002 Bob Deblier
+ * Copyright (c) 2002, 2003 Bob Deblier
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,6 +15,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ */
+
+/*!\file testdsa.c
+ * \brief Unit test program for the DSA algorithm.
+ * \author Bob Deblier <bob.deblier@pandora.be>
+ * \ingroup UNIT_m
  */
 
 #include <stdio.h>
@@ -37,8 +39,8 @@ static const char* dsa_k = "358dad571462710f50e254cf1a376b2bdeaadfbf";
 
 static const char* dsa_hm = "a9993e364706816aba3e25717850c26c9cd0d89d";
 
-static const uint32 expect_r[5] = { 0x8bac1ab6, 0x6410435c, 0xb7181f95, 0xb16ab97c, 0x92b341c0 };
-static const uint32 expect_s[5] = { 0x41e2345f, 0x1f56df24, 0x58f426d1, 0x55b4ba2d, 0xb6dcd8c8 };
+static const uint32 expect_r[5] = { 0x8bac1ab6U, 0x6410435cU, 0xb7181f95U, 0xb16ab97cU, 0x92b341c0U };
+static const uint32 expect_s[5] = { 0x41e2345fU, 0x1f56df24U, 0x58f426d1U, 0x55b4ba2dU, 0xb6dcd8c8U };
 
 /* we need to fake a random generator to pass k into the signing algorithm */
 
@@ -83,11 +85,11 @@ int main()
 
 	dlkp_pInit(&keypair);
 
-        mp32bsethex(&keypair.param.p, dsa_p);                 
-        mp32bsethex(&keypair.param.q, dsa_q);
-        mp32nsethex(&keypair.param.g, dsa_g);
-        mp32nsethex(&keypair.y, dsa_y);
-        mp32nsethex(&keypair.x, dsa_x);
+	mp32bsethex(&keypair.param.p, dsa_p);                 
+	mp32bsethex(&keypair.param.q, dsa_q);
+	mp32nsethex(&keypair.param.g, dsa_g);
+	mp32nsethex(&keypair.y, dsa_y);
+	mp32nsethex(&keypair.x, dsa_x);
 
 	mp32nzero(&hm);
 	mp32nsethex(&hm, dsa_hm);

@@ -1,9 +1,5 @@
 /*
- * testhmacsha1.c
- *
- * Unit test program for HMAC-SHA1; it tests all vectors specified by RFC 2202.
- *
- * Copyright (c) 2002 Bob Deblier
+ * Copyright (c) 2002, 2003 Bob Deblier
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,6 +17,13 @@
  *
  */
 
+/*!\file testhmacsha1.c
+ * \brief Unit test program for HMAC-SHA1; it tests all vectors specified
+ *        by RFC 2202.
+ * \author Bob Deblier <bob.deblier@pandora.be>
+ * \ingroup UNIT_m
+ */
+
 #include <stdio.h>
 
 #include "hmacsha1.h"
@@ -35,19 +38,19 @@ struct key_input_expect
 struct key_input_expect table[7] = 
 {
 	{ "\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b", "Hi There",
-		{ 0xb6173186, 0x55057264, 0xe28bc0b6, 0xfb378c8e, 0xf146be00 } },
+		{ 0xb6173186U, 0x55057264U, 0xe28bc0b6U, 0xfb378c8eU, 0xf146be00U } },
 	{ "Jefe", "what do ya want for nothing?",
-		{ 0xeffcdf6a, 0xe5eb2fa2, 0xd27416d5, 0xf184df9c, 0x259a7c79 } },
+		{ 0xeffcdf6aU, 0xe5eb2fa2U, 0xd27416d5U, 0xf184df9cU, 0x259a7c79U } },
 	{ "\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa", "\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd\xdd",
-		{ 0x125d7342, 0xb9ac11cd, 0x91a39af4, 0x8aa17b4f, 0x63f175d3 } },
+		{ 0x125d7342U, 0xb9ac11cdU, 0x91a39af4U, 0x8aa17b4fU, 0x63f175d3U } },
 	{ "\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19",  "\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd\xcd",
-		{ 0x4c9007f4, 0x026250c6, 0xbc8414f9, 0xbf50c86c, 0x2d7235da } },
+		{ 0x4c9007f4U, 0x026250c6U, 0xbc8414f9U, 0xbf50c86cU, 0x2d7235daU } },
 	{ "\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c", "Test With Truncation",
-		{ 0x4c1a0342, 0x4b55e07f, 0xe7f27be1, 0xd58bb932, 0x4a9a5a04 } },
+		{ 0x4c1a0342U, 0x4b55e07fU, 0xe7f27be1U, 0xd58bb932U, 0x4a9a5a04U } },
 	{ "\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa", "Test Using Larger Than Block-Size Key - Hash Key First",
-		{ 0xaa4ae5e1, 0x5272d00e, 0x95705637, 0xce8a3b55, 0xed402112 } },
+		{ 0xaa4ae5e1U, 0x5272d00eU, 0x95705637U, 0xce8a3b55U, 0xed402112U } },
 	{ "\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa\xaa", "Test Using Larger Than Block-Size Key and Larger Than One Block-Size Data",
-		{ 0xe8e99d0f, 0x45237d78, 0x6d6bbaa7, 0x965c7808, 0xbbff1a91 } }
+		{ 0xe8e99d0fU, 0x45237d78U, 0x6d6bbaa7U, 0x965c7808U, 0xbbff1a91U } }
 };
 
 int main()
@@ -55,7 +58,7 @@ int main()
 	int i, failures = 0;
 	uint32 digest[5];
 	uint32 key[64];
-        hmacsha1Param param;
+	hmacsha1Param param;
 
 	for (i = 0; i < 7; i++)
 	{

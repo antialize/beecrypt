@@ -1,10 +1,5 @@
 /*
- * testdldp.c
- *
- * Unit test program for discrete logarithm domain parameters (over a prime field),
- * as specified by IEEE P.1363.
- *
- * Copyright (c) 2002 Bob Deblier
+ * Copyright (c) 2002, 2003 Bob Deblier
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,6 +17,12 @@
  *
  */
 
+/*!\file testdldp.c
+ * \brief Unit test program for discrete logarithm domain parameters.
+ * \author Bob Deblier <bob.deblier@pandora.be>
+ * \ingroup UNIT_m
+ */
+
 #include <stdio.h>
 
 #include "beecrypt.h"
@@ -34,32 +35,35 @@ int main()
 	dldp_p params;
 	randomGeneratorContext rngc;
 
-        memset(&params, 0, sizeof(dldp_p));
+	memset(&params, 0, sizeof(dldp_p));
 
-        if (randomGeneratorContextInit(&rngc, randomGeneratorDefault()) == 0)
-        {                        
-                mp32number gq;
+	if (randomGeneratorContextInit(&rngc, randomGeneratorDefault()) == 0)
+	{                        
+		mp32number gq;
 
-                mp32nzero(&gq);
+		mp32nzero(&gq);
 
 		/* make parameters with p = 512 bits, q = 160 bits, g of order (q) */
-                dldp_pgoqMake(&params, &rngc, 512 >> 5, 160 >> 5, 1);
+		dldp_pgoqMake(&params, &rngc, 512 >> 5, 160 >> 5, 1);
 
-                /* we have the parameters, now see if g^q == 1 */
-                mp32bnpowmod(&params.p, &params.g, (mp32number*) &params.q, &gq);
-                if (mp32isone(gq.size, gq.data))
+		/* we have the parameters, now see if g^q == 1 */
+		mp32bnpowmod(&params.p, &params.g, (mp32number*) &params.q, &gq);
+		if (mp32isone(gq.size, gq.data))
 			printf("ok\n");
 		else
 			failures++;
 
-                mp32nfree(&gq);
+		mp32nfree(&gq);
 
-                dldp_pFree(&params);
+		dldp_pFree(&params);
 
-                randomGeneratorContextFree(&rngc);  
-        }
+		randomGeneratorContextFree(&rngc);  
+	}
 	else
+	{
+		printf("random generator failure\n");
 		return -1;
+	}
 
 	return failures;
 }
