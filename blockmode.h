@@ -38,9 +38,9 @@ extern "C" {
  *  Book mode.
  * \param bc The blockcipher.
  * \param bp The cipher's parameter block.
- * \param nblocks The number of blocks to be encrypted.
  * \param dst The ciphertext data; should be aligned on a 32-bit boundary.
  * \param src The cleartext data; should be aligned on a 32-bit boundary.
+ * \param nblocks The number of blocks to be encrypted.
  * \retval 0 on success.
  */
 BEECRYPTAPI
@@ -51,9 +51,9 @@ int blockEncryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, 
  *  Book mode.
  * \param bc The blockcipher.
  * \param bp The cipher's parameter block.
- * \param nblocks The number of blocks to be decrypted.
  * \param dst The cleartext data; should be aligned on a 32-bit boundary.
  * \param src The ciphertext data; should be aligned on a 32-bit boundary.
+ * \param nblocks The number of blocks to be decrypted.
  * \retval 0 on success.
  */
 BEECRYPTAPI
@@ -64,9 +64,9 @@ int blockDecryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, 
  *  Chaining mode.
  * \param bc The blockcipher.
  * \param bp The cipher's parameter block.
- * \param nblocks The number of blocks to be encrypted.
  * \param dst The ciphertext data; should be aligned on a 32-bit boundary.
  * \param src The cleartext data; should be aligned on a 32-bit boundary.
+ * \param nblocks The number of blocks to be encrypted.
  * \retval 0 on success.
  */
 BEECRYPTAPI
@@ -77,9 +77,9 @@ int blockEncryptCBC(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, 
  *  Chaining mode.
  * \param bc The blockcipher.
  * \param bp The cipher's parameter block.
- * \param nblocks The number of blocks to be decrypted.
  * \param dst The cleartext data; should be aligned on a 32-bit boundary.
  * \param src The ciphertext data; should be aligned on a 32-bit boundary.
+ * \param nblocks The number of blocks to be decrypted.
  * \retval 0 on success.
  */
 BEECRYPTAPI
