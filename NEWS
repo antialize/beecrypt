@@ -1,3 +1,14 @@
+3.2.0-pre:
+	- Fixed a bug in the creation of rsa keypairs; code was not correctly
+	  migrated to new calling sequence. The code now implements the method
+	  described in IEEE P.1363.
+	- Fixed another bug in mpextgcd_w which sometimes returned incorrect
+	  results.
+	- Fixed a bug in mprshiftlsz, which didn't work correctly when size = 1.
+	- Modified i2osp, so that it only requires as much octets as there are
+	  significant bytes in the integers.
+	- Fixed a configuration problem on Tru64 Unix.
+
 3.1.0:
 	- Added wiping of private key components of keypairs before freeing.
 	- Fixed bug in mpextgcd_w which sometimes returned incorrect result.
