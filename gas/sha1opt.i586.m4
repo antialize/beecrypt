@@ -18,8 +18,6 @@ dnl  You should have received a copy of the GNU Lesser General Public
 dnl  License along with this library; if not, write to the Free Software
 dnl  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-	.file "sha1opt.i586.S"
-
 include(config.m4)
 include(ASM_SRCDIR/x86.m4)
 
