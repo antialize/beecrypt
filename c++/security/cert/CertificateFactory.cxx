@@ -27,11 +27,11 @@
 
 using namespace beecrypt::security::cert;
 
-CertificateFactory::CertificateFactory(CertificateFactorySpi* spi, const String& type, const Provider& provider)
+CertificateFactory::CertificateFactory(CertificateFactorySpi* spi, const Provider& provider, const String& type)
 {
 	_cspi = spi;
-	_type = type;
 	_prov = &provider;
+	_type = type;
 }
 
 CertificateFactory::~CertificateFactory()
@@ -43,7 +43,7 @@ CertificateFactory* CertificateFactory::getInstance(const String& type) throw (N
 {
 	Security::spi* tmp = Security::getSpi(type, "CertificateFactory");
 
-	CertificateFactory* result = new CertificateFactory((CertificateFactorySpi*) tmp->cspi, tmp->name, tmp->prov);
+	CertificateFactory* result = new CertificateFactory((CertificateFactorySpi*) tmp->cspi, tmp->prov, tmp->name);
 
 	delete tmp;
 
@@ -54,7 +54,7 @@ CertificateFactory* CertificateFactory::getInstance(const String& type, const St
 {
 	Security::spi* tmp = Security::getSpi(type, "CertificateFactory", provider);
 
-	CertificateFactory* result = new CertificateFactory((CertificateFactorySpi*) tmp->cspi, tmp->name, tmp->prov);
+	CertificateFactory* result = new CertificateFactory((CertificateFactorySpi*) tmp->cspi, tmp->prov, tmp->name);
 
 	delete tmp;
 
@@ -65,7 +65,7 @@ CertificateFactory* CertificateFactory::getInstance(const String& type, const Pr
 {
 	Security::spi* tmp = Security::getSpi(type, "CertificateFactory", provider);
 
-	CertificateFactory* result = new CertificateFactory((CertificateFactorySpi*) tmp->cspi, tmp->name, tmp->prov);
+	CertificateFactory* result = new CertificateFactory((CertificateFactorySpi*) tmp->cspi, tmp->prov, tmp->name);
 
 	delete tmp;
 

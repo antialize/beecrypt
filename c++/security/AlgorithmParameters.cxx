@@ -31,11 +31,11 @@ using beecrypt::security::spec::AlgorithmParameterSpec;
 
 using namespace beecrypt::security;
 
-AlgorithmParameters::AlgorithmParameters(AlgorithmParametersSpi* spi, const String& algorithm, const Provider& provider)
+AlgorithmParameters::AlgorithmParameters(AlgorithmParametersSpi* spi, const Provider& provider, const String& algorithm)
 {
 	_aspi = spi;
-	_algo = algorithm;
 	_prov = &provider;
+	_algo = algorithm;
 }
 
 AlgorithmParameters::~AlgorithmParameters()
@@ -47,7 +47,7 @@ AlgorithmParameters* AlgorithmParameters::getInstance(const String& algorithm) t
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "AlgorithmParameters");
 
-	AlgorithmParameters* result = new AlgorithmParameters((AlgorithmParametersSpi*) tmp->cspi, tmp->name, tmp->prov);
+	AlgorithmParameters* result = new AlgorithmParameters((AlgorithmParametersSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 	delete tmp;
 
@@ -58,7 +58,7 @@ AlgorithmParameters* AlgorithmParameters::getInstance(const String& algorithm, c
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "AlgorithmParameters", provider);
 
-	AlgorithmParameters* result = new AlgorithmParameters((AlgorithmParametersSpi*) tmp->cspi, tmp->name, tmp->prov);
+	AlgorithmParameters* result = new AlgorithmParameters((AlgorithmParametersSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 	delete tmp;
 
@@ -69,7 +69,7 @@ AlgorithmParameters* AlgorithmParameters::getInstance(const String& algorithm, c
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "AlgorithmParameters", provider);
 
-	AlgorithmParameters* result = new AlgorithmParameters((AlgorithmParametersSpi*) tmp->cspi, tmp->name, tmp->prov);
+	AlgorithmParameters* result = new AlgorithmParameters((AlgorithmParametersSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 	delete tmp;
 

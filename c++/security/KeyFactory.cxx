@@ -27,11 +27,11 @@
 
 using namespace beecrypt::security;
 
-KeyFactory::KeyFactory(KeyFactorySpi* spi, const String& algorithm, const Provider& provider)
+KeyFactory::KeyFactory(KeyFactorySpi* spi, const Provider& provider, const String& algorithm)
 {
 	_kspi = spi;
-	_algo = algorithm;
 	_prov = &provider;
+	_algo = algorithm;
 }
 
 KeyFactory::~KeyFactory()
@@ -43,7 +43,7 @@ KeyFactory* KeyFactory::getInstance(const String& algorithm) throw (NoSuchAlgori
 {
     Security::spi* tmp = Security::getSpi(algorithm, "KeyFactory");
 
-    KeyFactory* result = new KeyFactory((KeyFactorySpi*) tmp->cspi, tmp->name, tmp->prov);
+    KeyFactory* result = new KeyFactory((KeyFactorySpi*) tmp->cspi, tmp->prov, tmp->name);
 
     delete tmp;
 
@@ -54,7 +54,7 @@ KeyFactory* KeyFactory::getInstance(const String& algorithm, const String& provi
 {
     Security::spi* tmp = Security::getSpi(algorithm, "KeyFactory", provider);
 
-    KeyFactory* result = new KeyFactory((KeyFactorySpi*) tmp->cspi, tmp->name, tmp->prov);
+    KeyFactory* result = new KeyFactory((KeyFactorySpi*) tmp->cspi, tmp->prov, tmp->name);
 
     delete tmp;
 
@@ -65,7 +65,7 @@ KeyFactory* KeyFactory::getInstance(const String& algorithm, const Provider& pro
 {
     Security::spi* tmp = Security::getSpi(algorithm, "KeyFactory", provider);
 
-    KeyFactory* result = new KeyFactory((KeyFactorySpi*) tmp->cspi, tmp->name, tmp->prov);
+    KeyFactory* result = new KeyFactory((KeyFactorySpi*) tmp->cspi, tmp->prov, tmp->name);
 
     delete tmp;
 

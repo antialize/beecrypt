@@ -27,11 +27,11 @@
 
 using namespace beecrypt::security;
 
-MessageDigest::MessageDigest(MessageDigestSpi* spi, const String& algorithm, const Provider& provider)
+MessageDigest::MessageDigest(MessageDigestSpi* spi, const Provider& provider, const String& algorithm)
 {
 	_mspi = spi;
-	_algo = algorithm;
 	_prov = &provider;
+	_algo = algorithm;
 }
 
 MessageDigest::~MessageDigest()
@@ -43,7 +43,7 @@ MessageDigest* MessageDigest::getInstance(const String& algorithm) throw (NoSuch
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "MessageDigest");
 
-	MessageDigest* result = new MessageDigest((MessageDigestSpi*) tmp->cspi, tmp->name, tmp->prov);
+	MessageDigest* result = new MessageDigest((MessageDigestSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 	delete tmp;
 
@@ -54,7 +54,7 @@ MessageDigest* MessageDigest::getInstance(const String& algorithm, const String&
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "MessageDigest", provider);
 
-	MessageDigest* result = new MessageDigest((MessageDigestSpi*) tmp->cspi, tmp->name, tmp->prov);
+	MessageDigest* result = new MessageDigest((MessageDigestSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 	delete tmp;
 
@@ -65,7 +65,7 @@ MessageDigest* MessageDigest::getInstance(const String& algorithm, const Provide
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "MessageDigest", provider);
 
-	MessageDigest* result = new MessageDigest((MessageDigestSpi*) tmp->cspi, tmp->name, tmp->prov);
+	MessageDigest* result = new MessageDigest((MessageDigestSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 	delete tmp;
 
@@ -77,7 +77,7 @@ MessageDigest* MessageDigest::clone() const
 	MessageDigestSpi* _mspc = _mspi->clone();
 
 	if (_mspc)
-		return new MessageDigest(_mspc, _algo, *_prov);
+		return new MessageDigest(_mspc, *_prov, _algo);
 	else
 		return 0;
 }

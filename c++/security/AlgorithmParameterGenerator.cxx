@@ -31,11 +31,11 @@
 
 using namespace beecrypt::security;
 
-AlgorithmParameterGenerator::AlgorithmParameterGenerator(AlgorithmParameterGeneratorSpi* spi, const String& algorithm, const Provider& provider)
+AlgorithmParameterGenerator::AlgorithmParameterGenerator(AlgorithmParameterGeneratorSpi* spi, const Provider& provider, const String& algorithm)
 {
 	_aspi = spi;
-	_algo = algorithm;
 	_prov = &provider;
+	_algo = algorithm;
 }
 
 AlgorithmParameterGenerator::~AlgorithmParameterGenerator()
@@ -47,7 +47,7 @@ AlgorithmParameterGenerator* AlgorithmParameterGenerator::getInstance(const Stri
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "AlgorithmParameterGenerator");
 
-    AlgorithmParameterGenerator* result = new AlgorithmParameterGenerator((AlgorithmParameterGeneratorSpi*) tmp->cspi, tmp->name, tmp->prov);
+    AlgorithmParameterGenerator* result = new AlgorithmParameterGenerator((AlgorithmParameterGeneratorSpi*) tmp->cspi, tmp->prov, tmp->name);
 
     delete tmp;
                                                                                 
@@ -58,7 +58,7 @@ AlgorithmParameterGenerator* AlgorithmParameterGenerator::getInstance(const Stri
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "AlgorithmParameterGenerator", provider);
 
-    AlgorithmParameterGenerator* result = new AlgorithmParameterGenerator((AlgorithmParameterGeneratorSpi*) tmp->cspi, tmp->name, tmp->prov);
+    AlgorithmParameterGenerator* result = new AlgorithmParameterGenerator((AlgorithmParameterGeneratorSpi*) tmp->cspi, tmp->prov, tmp->name);
 
     delete tmp;
                                                                                 
@@ -69,7 +69,7 @@ AlgorithmParameterGenerator* AlgorithmParameterGenerator::getInstance(const Stri
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "AlgorithmParameterGenerator", provider);
 
-    AlgorithmParameterGenerator* result = new AlgorithmParameterGenerator((AlgorithmParameterGeneratorSpi*) tmp->cspi, tmp->name, tmp->prov);
+    AlgorithmParameterGenerator* result = new AlgorithmParameterGenerator((AlgorithmParameterGeneratorSpi*) tmp->cspi, tmp->prov, tmp->name);
 
     delete tmp;
                                                                                 

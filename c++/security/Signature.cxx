@@ -27,11 +27,11 @@
 
 using namespace beecrypt::security;
 
-Signature::Signature(SignatureSpi* spi, const String& algorithm, const Provider& provider)
+Signature::Signature(SignatureSpi* spi, const Provider& provider, const String& algorithm)
 {
 	_sspi = spi;
-	_algo = algorithm;
 	_prov = &provider;
+	_algo = algorithm;
 }
 
 Signature::~Signature()
@@ -43,7 +43,7 @@ Signature* Signature::getInstance(const String& algorithm) throw (NoSuchAlgorith
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "Signature");
 
-	Signature* result = new Signature((SignatureSpi*) tmp->cspi, tmp->name, tmp->prov);
+	Signature* result = new Signature((SignatureSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 	delete tmp;
 
@@ -54,7 +54,7 @@ Signature* Signature::getInstance(const String& algorithm, const String& provide
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "Signature", provider);
 
-	Signature* result = new Signature((SignatureSpi*) tmp->cspi, tmp->name, tmp->prov);
+	Signature* result = new Signature((SignatureSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 	delete tmp;
 
@@ -65,7 +65,7 @@ Signature* Signature::getInstance(const String& algorithm, const Provider& provi
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "Signature", provider);
 
-	Signature* result = new Signature((SignatureSpi*) tmp->cspi, tmp->name, tmp->prov);
+	Signature* result = new Signature((SignatureSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 	delete tmp;
 

@@ -32,7 +32,7 @@ SecureRandom* SecureRandom::getInstance(const String& algorithm) throw (NoSuchAl
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "SecureRandom");
 
-	SecureRandom* result = new SecureRandom((SecureRandomSpi*) tmp->cspi, tmp->name, tmp->prov);
+	SecureRandom* result = new SecureRandom((SecureRandomSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 	delete tmp;
 
@@ -43,7 +43,7 @@ SecureRandom* SecureRandom::getInstance(const String& type, const String& provid
 {
 	Security::spi* tmp = Security::getSpi(type, "SecureRandom", provider);
 
-	SecureRandom* result = new SecureRandom((SecureRandomSpi*) tmp->cspi, tmp->name, tmp->prov);
+	SecureRandom* result = new SecureRandom((SecureRandomSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 	delete tmp;
 
@@ -54,7 +54,7 @@ SecureRandom* SecureRandom::getInstance(const String& type, const Provider& prov
 {
 	Security::spi* tmp = Security::getSpi(type, "SecureRandom", provider);
 
-	SecureRandom* result = new SecureRandom((SecureRandomSpi*) tmp->cspi, tmp->name, tmp->prov);
+	SecureRandom* result = new SecureRandom((SecureRandomSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 	delete tmp;
 
@@ -77,11 +77,11 @@ SecureRandom::SecureRandom()
 	delete tmp;
 }
 
-SecureRandom::SecureRandom(SecureRandomSpi* rspi, const String& type, const Provider& provider) : _prov(&provider)
+SecureRandom::SecureRandom(SecureRandomSpi* rspi, const Provider& provider, const String& type) /* : _prov(&provider) */
 {
 	_rspi = rspi;
-	_type = type;
 	_prov = &provider;
+	_type = type;
 }
 
 SecureRandom::~SecureRandom()

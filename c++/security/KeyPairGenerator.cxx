@@ -27,11 +27,11 @@
 
 using namespace beecrypt::security;
 
-KeyPairGenerator::KeyPairGenerator(KeyPairGeneratorSpi* spi, const String& algorithm, const Provider& provider)
+KeyPairGenerator::KeyPairGenerator(KeyPairGeneratorSpi* spi, const Provider& provider, const String& algorithm)
 {
 	_kspi = spi;
-	_algo = algorithm;
 	_prov = &provider;
+	_algo = algorithm;
 }
 
 KeyPairGenerator::~KeyPairGenerator()
@@ -43,7 +43,7 @@ KeyPairGenerator* KeyPairGenerator::getInstance(const String& algorithm) throw (
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "KeyPairGenerator");
 
-	KeyPairGenerator* result = new KeyPairGenerator((KeyPairGeneratorSpi*) tmp->cspi, tmp->name, tmp->prov);
+	KeyPairGenerator* result = new KeyPairGenerator((KeyPairGeneratorSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 	delete tmp;
 
@@ -54,7 +54,7 @@ KeyPairGenerator* KeyPairGenerator::getInstance(const String& algorithm, const S
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "KeyPairGenerator", provider);
 
-	KeyPairGenerator* result = new KeyPairGenerator((KeyPairGeneratorSpi*) tmp->cspi, tmp->name, tmp->prov);
+	KeyPairGenerator* result = new KeyPairGenerator((KeyPairGeneratorSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 	delete tmp;
 
@@ -65,7 +65,7 @@ KeyPairGenerator* KeyPairGenerator::getInstance(const String& algorithm, const P
 {
 	Security::spi* tmp = Security::getSpi(algorithm, "KeyPairGenerator", provider);
 
-	KeyPairGenerator* result = new KeyPairGenerator((KeyPairGeneratorSpi*) tmp->cspi, tmp->name, tmp->prov);
+	KeyPairGenerator* result = new KeyPairGenerator((KeyPairGeneratorSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 	delete tmp;
 
