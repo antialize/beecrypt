@@ -47,16 +47,15 @@ struct _mpnumber
 
 	mpnumber();
 	mpnumber(unsigned int);
+	mpnumber(size_t, const mpw*);
 	mpnumber(const mpnumber&);
 	~mpnumber();
 
 	const mpnumber& operator=(const mpnumber&);
-	bool operator==(const mpnumber&) const throw ();
-	bool operator!=(const mpnumber&) const throw ();
 
 	void wipe();
 
-	size_t bitlength() const throw ();
+	size_t bitlength() const;
 #endif
 };
 
@@ -65,10 +64,6 @@ typedef struct _mpnumber mpnumber;
 #else
 BEECRYPTAPI
 std::ostream& operator<<(std::ostream&, const mpnumber&);
-/*
-BEECRYPTAPI
-std::istream& operator>>(std::istream&, mpnumber&);
-*/
 #endif
 
 #ifdef __cplusplus

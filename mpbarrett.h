@@ -49,11 +49,10 @@ struct _mpbarrett
 	~mpbarrett();
 																				
 	const mpbarrett& operator=(const mpbarrett&);
-	bool operator==(const mpbarrett&) const throw ();
-	bool operator!=(const mpbarrett&) const throw ();
-																				
+
 	void wipe();
-	size_t bitlength() const throw ();
+
+	size_t bitlength() const;
 #endif
 };
 
