@@ -35,8 +35,7 @@
 
 #if HAVE_STDLIB_H
 # include <stdlib.h>
-#endif
-#if HAVE_MALLOC
+#elif HAVE_MALLOC
 # include <malloc.h>
 #endif
 
