@@ -46,13 +46,13 @@ typedef struct
 extern "C" {
 #endif
 
-BEEDLLAPI
+BEECRYPTAPI
 int rsakpMake(rsakp*, randomGeneratorContext*, int);
-BEEDLLAPI
+BEECRYPTAPI
 int rsakpInit(rsakp*);
-BEEDLLAPI
+BEECRYPTAPI
 int rsakpFree(rsakp*);
-BEEDLLAPI
+BEECRYPTAPI
 int rsakpCopy(rsakp*, const rsakp*);
 
 #ifdef __cplusplus

@@ -32,7 +32,7 @@
 extern "C" {
 #endif
 
-BEEDLLAPI
+BEECRYPTAPI
 int dlsvdp_pDHSecret(const dldp_p*, const mp32number*, const mp32number*, mp32number*);
 
 #ifdef __cplusplus

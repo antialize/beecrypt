@@ -37,16 +37,16 @@ extern "C" {
 #endif
 
 #if WIN32
-BEEDLLAPI
+BEECRYPTAPI
 int entropy_provider_setup(HINSTANCE);
-BEEDLLAPI
+BEECRYPTAPI
 int entropy_provider_cleanup();
 
-BEEDLLAPI
+BEECRYPTAPI
 int entropy_wavein(uint32*, int);
-BEEDLLAPI
+BEECRYPTAPI
 int entropy_console(uint32*, int);
-BEEDLLAPI
+BEECRYPTAPI
 int entropy_wincrypt(uint32*, int);
 #else
 #if HAVE_DEV_AUDIO

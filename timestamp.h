@@ -34,19 +34,21 @@
 # define ONE_HOUR	3600000LL
 # define ONE_DAY	86400000LL
 # define ONE_WEEK	604800000LL
+# define ONE_YEAR	31536000000LL
 #else
 # define ONE_SECOND	1000L
 # define ONE_MINUTE	60000L
 # define ONE_HOUR	3600000L
 # define ONE_DAY	86400000L
 # define ONE_WEEK	604800000L
+# define ONE_YEAR	31536000000L
 #endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-BEEDLLAPI
+BEECRYPTAPI
 javalong timestamp();
 
 #ifdef __cplusplus

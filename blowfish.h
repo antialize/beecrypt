@@ -43,25 +43,25 @@ typedef struct
 extern "C" {
 #endif
 
-extern const BEEDLLAPI blockCipher blowfish;
+extern const BEECRYPTAPI blockCipher blowfish;
 
-BEEDLLAPI
+BEECRYPTAPI
 int blowfishSetup  (blowfishParam*, const uint32*, int, cipherOperation);
-BEEDLLAPI
+BEECRYPTAPI
 int blowfishSetIV  (blowfishParam*, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 int blowfishEncrypt(blowfishParam*, uint32*, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 int blowfishDecrypt(blowfishParam*, uint32*, const uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 int blowfishECBEncrypt(blowfishParam*, int, uint32*, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 int blowfishECBDecrypt(blowfishParam*, int, uint32*, const uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 int blowfishCBCEncrypt(blowfishParam*, int, uint32*, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 int blowfishCBCDecrypt(blowfishParam*, int, uint32*, const uint32*);
 
 #ifdef __cplusplus

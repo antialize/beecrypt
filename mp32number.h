@@ -40,24 +40,24 @@ typedef struct
 extern "C" {
 #endif
 
-BEEDLLAPI
+BEECRYPTAPI
 void mp32nzero(mp32number*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32nsize(mp32number*, uint32);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32ninit(mp32number*, uint32, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32nfree(mp32number*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32ncopy(mp32number*, const mp32number*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32nwipe(mp32number*);
 
-BEEDLLAPI
+BEECRYPTAPI
 void mp32nset   (mp32number*, uint32, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32nsetw  (mp32number*, uint32);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32nsethex(mp32number*, const char*);
 
 #ifdef __cplusplus

@@ -72,15 +72,15 @@ typedef struct
 extern "C" {
 #endif
 
-extern BEEDLLAPI const randomGenerator fips186prng;
+extern BEECRYPTAPI const randomGenerator fips186prng;
 
-BEEDLLAPI
+BEECRYPTAPI
 int fips186Setup  (fips186Param*);
-BEEDLLAPI
+BEECRYPTAPI
 int fips186Seed   (fips186Param*, const uint32*, int);
-BEEDLLAPI
+BEECRYPTAPI
 int fips186Next   (fips186Param*, uint32*, int);
-BEEDLLAPI
+BEECRYPTAPI
 int fips186Cleanup(fips186Param*);
 
 #ifdef __cplusplus

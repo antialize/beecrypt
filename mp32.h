@@ -41,158 +41,158 @@ extern "C" {
 #ifndef ASM_MP32COPY
 #define mp32copy(size, dst, src) memcpy(dst, src, (size) << 2)
 #else
-BEEDLLAPI
+BEECRYPTAPI
 void mp32copy(uint32, uint32*, const uint32*);
 #endif
 
 #ifndef ASM_MP32MOVE
 #define mp32move(size, dst, src) memmove(dst, src, (size) << 2)
 #else
-BEEDLLAPI
+BEECRYPTAPI
 void mp32move(uint32, uint32*, const uint32*);
 #endif
 
-BEEDLLAPI
+BEECRYPTAPI
 void mp32zero(uint32, uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32fill(uint32, uint32*, uint32);
 
-BEEDLLAPI
+BEECRYPTAPI
 int mp32odd (uint32, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 int mp32even(uint32, const uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 int mp32z  (uint32, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 int mp32nz (uint32, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 int mp32eq (uint32, const uint32*, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 int mp32ne (uint32, const uint32*, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 int mp32gt (uint32, const uint32*, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 int mp32lt (uint32, const uint32*, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 int mp32ge (uint32, const uint32*, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 int mp32le (uint32, const uint32*, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 int mp32eqx(uint32, const uint32*, uint32, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 int mp32nex(uint32, const uint32*, uint32, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 int mp32gtx(uint32, const uint32*, uint32, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 int mp32ltx(uint32, const uint32*, uint32, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 int mp32gex(uint32, const uint32*, uint32, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 int mp32lex(uint32, const uint32*, uint32, const uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 int mp32isone(uint32, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 int mp32istwo(uint32, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 int mp32leone(uint32, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 int mp32eqmone(uint32, const uint32*, const uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 int mp32msbset(uint32, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 int mp32lsbset(uint32, const uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 void mp32setmsb(uint32, uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32setlsb(uint32, uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32clrmsb(uint32, uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32clrlsb(uint32, uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 void mp32xor(uint32, uint32*, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32not(uint32, uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 void mp32setw(uint32, uint32*, uint32);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32setx(uint32, uint32*, uint32, const uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 uint32 mp32addw(uint32, uint32*, uint32);
-BEEDLLAPI
+BEECRYPTAPI
 uint32 mp32add (uint32, uint32*, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 uint32 mp32addx(uint32, uint32*, uint32, const uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 uint32 mp32subw(uint32, uint32*, uint32);
-BEEDLLAPI
+BEECRYPTAPI
 uint32 mp32sub (uint32, uint32*, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 uint32 mp32subx(uint32, uint32*, uint32, const uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 uint32 mp32multwo(uint32, uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 void mp32neg(uint32, uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 uint32 mp32size(uint32, const uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 uint32 mp32mszcnt(uint32, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 uint32 mp32lszcnt(uint32, const uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 void mp32lshift(uint32, uint32*, uint32);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32rshift(uint32, uint32*, uint32);
 
-BEEDLLAPI
+BEECRYPTAPI
 uint32 mp32norm(uint32, uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 uint32 mp32divpowtwo(uint32, uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 void mp32divtwo (uint32, uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32sdivtwo(uint32, uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 uint32 mp32setmul   (uint32, uint32*, const uint32*, uint32);
-BEEDLLAPI
+BEECRYPTAPI
 uint32 mp32addmul   (uint32, uint32*, const uint32*, uint32);
-BEEDLLAPI
+BEECRYPTAPI
 uint32 mp32addsqrtrc(uint32, uint32*, const uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 void mp32mul(uint32*, uint32, const uint32*, uint32, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32sqr(uint32*, uint32, const uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 void mp32gcd_w(uint32, const uint32*, const uint32*, uint32*, uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 uint32 mp32nmodw(uint32*, uint32, const uint32*, uint32, uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 void mp32nmod(uint32*, uint32, const uint32*, uint32, const uint32*, uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32ndivmod(uint32*, uint32, const uint32*, uint32, const uint32*, uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 void mp32print(uint32, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32println(uint32, const uint32*);
 
 #ifdef __cplusplus

@@ -41,15 +41,15 @@ typedef struct
 extern "C" {
 #endif
 
-extern BEEDLLAPI const hashFunction sha1;
+extern BEECRYPTAPI const hashFunction sha1;
 
-BEEDLLAPI
+BEECRYPTAPI
 void sha1Process(sha1Param*);
-BEEDLLAPI
+BEECRYPTAPI
 int  sha1Reset  (sha1Param*);
-BEEDLLAPI
+BEECRYPTAPI
 int  sha1Update (sha1Param*, const byte*, int);
-BEEDLLAPI
+BEECRYPTAPI
 int  sha1Digest (sha1Param*, uint32*);
 
 #ifdef __cplusplus

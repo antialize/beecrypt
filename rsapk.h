@@ -38,11 +38,11 @@ typedef struct
 extern "C" {
 #endif
 
-BEEDLLAPI
+BEECRYPTAPI
 int rsapkInit(rsapk*);
-BEEDLLAPI
+BEECRYPTAPI
 int rsapkFree(rsapk*);
-BEEDLLAPI
+BEECRYPTAPI
 int rsapkCopy(rsapk*, const rsapk*);
 
 #ifdef __cplusplus

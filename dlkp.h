@@ -41,13 +41,13 @@ typedef struct
 extern "C" {
 #endif
 
-BEEDLLAPI
+BEECRYPTAPI
 int dlkp_pPair(dlkp_p*, randomGeneratorContext*, const dldp_p*);
-BEEDLLAPI
+BEECRYPTAPI
 int dlkp_pInit(dlkp_p*);
-BEEDLLAPI
+BEECRYPTAPI
 int dlkp_pFree(dlkp_p*);
-BEEDLLAPI
+BEECRYPTAPI
 int dlkp_pCopy(dlkp_p*, const dlkp_p*);
 
 #ifdef __cplusplus

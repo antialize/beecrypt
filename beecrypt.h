@@ -77,13 +77,13 @@ typedef struct
 extern "C" {
 #endif
 
-BEEDLLAPI
+BEECRYPTAPI
 int						entropySourceCount();
-BEEDLLAPI
+BEECRYPTAPI
 const entropySource*	entropySourceGet(int);
-BEEDLLAPI
+BEECRYPTAPI
 const entropySource*	entropySourceFind(const char*);
-BEEDLLAPI
+BEECRYPTAPI
 const entropySource*	entropySourceDefault();
 
 /*
@@ -91,7 +91,7 @@ const entropySource*	entropySourceDefault();
  * the requested amount. It will only try multiple sources if variable
  * BEECRYPT_ENTROPY is not set.
  */
-BEEDLLAPI
+BEECRYPTAPI
 int						entropyGatherNext(uint32*, int);
 
 #ifdef __cplusplus
@@ -176,13 +176,13 @@ typedef struct
 extern "C" {
 #endif
 
-BEEDLLAPI
+BEECRYPTAPI
 int						randomGeneratorCount();
-BEEDLLAPI
+BEECRYPTAPI
 const randomGenerator*	randomGeneratorGet(int);
-BEEDLLAPI
+BEECRYPTAPI
 const randomGenerator*	randomGeneratorFind(const char*);
-BEEDLLAPI
+BEECRYPTAPI
 const randomGenerator*	randomGeneratorDefault();
 
 #ifdef __cplusplus
@@ -210,10 +210,12 @@ typedef struct
 extern "C" {
 #endif
 
-BEEDLLAPI
+BEECRYPTAPI
 int randomGeneratorContextInit(randomGeneratorContext*, const randomGenerator*);
-BEEDLLAPI
+BEECRYPTAPI
 int randomGeneratorContextFree(randomGeneratorContext*);
+BEECRYPTAPI
+int randomGeneratorContextNext(randomGeneratorContext*, uint32*, int);
 
 #ifdef __cplusplus
 }
@@ -286,13 +288,13 @@ typedef struct
 extern "C" {
 #endif
 
-BEEDLLAPI
+BEECRYPTAPI
 int					hashFunctionCount();
-BEEDLLAPI
+BEECRYPTAPI
 const hashFunction*	hashFunctionGet(int);
-BEEDLLAPI
+BEECRYPTAPI
 const hashFunction*	hashFunctionFind(const char*);
-BEEDLLAPI
+BEECRYPTAPI
 const hashFunction*	hashFunctionDefault();
 
 #ifdef __cplusplus
@@ -320,21 +322,21 @@ typedef struct
 extern "C" {
 #endif
 
-BEEDLLAPI
+BEECRYPTAPI
 int hashFunctionContextInit(hashFunctionContext*, const hashFunction*);
-BEEDLLAPI
+BEECRYPTAPI
 int hashFunctionContextFree(hashFunctionContext*);
-BEEDLLAPI
+BEECRYPTAPI
 int hashFunctionContextReset(hashFunctionContext*);
-BEEDLLAPI
+BEECRYPTAPI
 int hashFunctionContextUpdate(hashFunctionContext*, const byte*, int);
-BEEDLLAPI
+BEECRYPTAPI
 int hashFunctionContextUpdateMC(hashFunctionContext*, const memchunk*);
-BEEDLLAPI
+BEECRYPTAPI
 int hashFunctionContextUpdateMP32(hashFunctionContext*, const mp32number*);
-BEEDLLAPI
+BEECRYPTAPI
 int hashFunctionContextDigest(hashFunctionContext*, mp32number*);
-BEEDLLAPI
+BEECRYPTAPI
 int hashFunctionContextDigestMatch(hashFunctionContext*, const mp32number*);
 
 #ifdef __cplusplus
@@ -425,13 +427,13 @@ typedef struct
 extern "C" {
 #endif
 
-BEEDLLAPI
+BEECRYPTAPI
 int							keyedHashFunctionCount();
-BEEDLLAPI
+BEECRYPTAPI
 const keyedHashFunction*	keyedHashFunctionGet(int);
-BEEDLLAPI
+BEECRYPTAPI
 const keyedHashFunction*	keyedHashFunctionFind(const char*);
-BEEDLLAPI
+BEECRYPTAPI
 const keyedHashFunction*	keyedHashFunctionDefault();
 
 #ifdef __cplusplus
@@ -459,23 +461,23 @@ typedef struct
 extern "C" {
 #endif
 
-BEEDLLAPI
+BEECRYPTAPI
 int keyedHashFunctionContextInit(keyedHashFunctionContext*, const keyedHashFunction*);
-BEEDLLAPI
+BEECRYPTAPI
 int keyedHashFunctionContextFree(keyedHashFunctionContext*);
-BEEDLLAPI
+BEECRYPTAPI
 int keyedHashFunctionContextSetup(keyedHashFunctionContext*, const uint32*, int);
-BEEDLLAPI
+BEECRYPTAPI
 int keyedHashFunctionContextReset(keyedHashFunctionContext*);
-BEEDLLAPI
+BEECRYPTAPI
 int keyedHashFunctionContextUpdate(keyedHashFunctionContext*, const byte*, int);
-BEEDLLAPI
+BEECRYPTAPI
 int keyedHashFunctionContextUpdateMC(keyedHashFunctionContext*, const memchunk*);
-BEEDLLAPI
+BEECRYPTAPI
 int keyedHashFunctionContextUpdateMP32(keyedHashFunctionContext*, const mp32number*);
-BEEDLLAPI
+BEECRYPTAPI
 int keyedHashFunctionContextDigest(keyedHashFunctionContext*, mp32number*);
-BEEDLLAPI
+BEECRYPTAPI
 int keyedHashFunctionContextDigestMatch(keyedHashFunctionContext*, const mp32number*);
 
 #ifdef __cplusplus
@@ -581,13 +583,13 @@ typedef struct
 extern "C" {
 #endif
 
-BEEDLLAPI
+BEECRYPTAPI
 int						blockCipherCount();
-BEEDLLAPI
+BEECRYPTAPI
 const blockCipher*		blockCipherGet(int);
-BEEDLLAPI
+BEECRYPTAPI
 const blockCipher*		blockCipherFind(const char*);
-BEEDLLAPI
+BEECRYPTAPI
 const blockCipher*		blockCipherDefault();
 
 #ifdef __cplusplus
@@ -615,13 +617,13 @@ typedef struct
 extern "C" {
 #endif
 
-BEEDLLAPI
+BEECRYPTAPI
 int blockCipherContextInit(blockCipherContext*, const blockCipher*);
-BEEDLLAPI
+BEECRYPTAPI
 int blockCipherContextSetup(blockCipherContext*, const uint32*, int, cipherOperation);
-BEEDLLAPI
+BEECRYPTAPI
 int blockCipherContextSetIV(blockCipherContext*, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 int blockCipherContextFree(blockCipherContext*);
 
 #ifdef __cplusplus

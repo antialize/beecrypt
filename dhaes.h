@@ -51,21 +51,29 @@ typedef struct
 	int							mackeybits;
 } dhaes_pContext;
 
-BEEDLLAPI
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+BEECRYPTAPI
 int dhaes_pUsable(const dhaes_pParameters*);
 
-BEEDLLAPI
+BEECRYPTAPI
 int dhaes_pContextInit       (dhaes_pContext*, const dhaes_pParameters*);
-BEEDLLAPI
+BEECRYPTAPI
 int dhaes_pContextInitDecrypt(dhaes_pContext*, const dhaes_pParameters*, const mp32number*);
-BEEDLLAPI
+BEECRYPTAPI
 int dhaes_pContextInitEncrypt(dhaes_pContext*, const dhaes_pParameters*, const mp32number*);
-BEEDLLAPI
+BEECRYPTAPI
 int dhaes_pContextFree       (dhaes_pContext*);
 
-BEEDLLAPI
+BEECRYPTAPI
 memchunk* dhaes_pContextEncrypt(dhaes_pContext*,       mp32number*,       mp32number*, const memchunk*, randomGeneratorContext*);
-BEEDLLAPI
+BEECRYPTAPI
 memchunk* dhaes_pContextDecrypt(dhaes_pContext*, const mp32number*, const mp32number*, const memchunk*);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -36,18 +36,18 @@ extern uint32* mp32spprod[SMALL_PRIMES_PRODUCT_MAX];
 extern "C" {
 #endif
 
-BEEDLLAPI
+BEECRYPTAPI
 int  mp32ptrials     (uint32);
-BEEDLLAPI
+BEECRYPTAPI
 int  mp32pmilrab_w   (const mp32barrett*, randomGeneratorContext*, int, uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 void mp32prnd_w      (mp32barrett*, randomGeneratorContext*, uint32, int, const mp32number*, uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32prndsafe_w  (mp32barrett*, randomGeneratorContext*, uint32, int, uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32prndcon_w   (mp32barrett*, randomGeneratorContext*, uint32, int, const mp32number*, const mp32number*, const mp32number*, mp32number*, uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32prndconone_w(mp32barrett*, randomGeneratorContext*, uint32, int, const mp32barrett*, const mp32number*, mp32number*, int, uint32*);
 
 #ifdef __cplusplus

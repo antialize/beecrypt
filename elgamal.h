@@ -32,14 +32,14 @@
 extern "C" {
 #endif
 
-BEEDLLAPI
+BEECRYPTAPI
 int elgv1sign(const mp32barrett* p, const mp32barrett* n, const mp32number* g, randomGeneratorContext*, const mp32number* hm, const mp32number* x, mp32number* r, mp32number* s);
-BEEDLLAPI
+BEECRYPTAPI
 int elgv3sign(const mp32barrett* p, const mp32barrett* n, const mp32number* g, randomGeneratorContext*, const mp32number* hm, const mp32number* x, mp32number* r, mp32number* s);
 
-BEEDLLAPI
+BEECRYPTAPI
 int elgv1vrfy(const mp32barrett* p, const mp32barrett* n, const mp32number* g, const mp32number* hm, const mp32number* y, const mp32number* r, const mp32number* s);
-BEEDLLAPI
+BEECRYPTAPI
 int elgv3vrfy(const mp32barrett* p, const mp32barrett* n, const mp32number* g, const mp32number* hm, const mp32number* y, const mp32number* r, const mp32number* s);
 
 #ifdef __cplusplus

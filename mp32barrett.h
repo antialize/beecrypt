@@ -40,82 +40,82 @@ typedef struct
 extern "C" {
 #endif
 
-BEEDLLAPI
+BEECRYPTAPI
 void mp32bzero(mp32barrett*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32binit(mp32barrett*, uint32);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32bfree(mp32barrett*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32bcopy(mp32barrett*, const mp32barrett*);
 
-BEEDLLAPI
+BEECRYPTAPI
 void mp32bset(mp32barrett*, uint32, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32bsethex(mp32barrett*, const char*);
 
-BEEDLLAPI
+BEECRYPTAPI
 void mp32bsubone(const mp32barrett*, uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 void mp32bmu_w(mp32barrett*, uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 void mp32brnd_w   (const mp32barrett*, randomGeneratorContext*, uint32*, uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32brndodd_w(const mp32barrett*, randomGeneratorContext*, uint32*, uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32brndinv_w(const mp32barrett*, randomGeneratorContext*, uint32*, uint32*, uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 void mp32bneg_w(const mp32barrett*, const uint32*, uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32bmod_w(const mp32barrett*, const uint32*, uint32*, uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 void mp32baddmod_w(const mp32barrett*, uint32, const uint32*, uint32, const uint32*, uint32*, uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32bsubmod_w(const mp32barrett*, uint32, const uint32*, uint32, const uint32*, uint32*, uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32bmulmod_w(const mp32barrett*, uint32, const uint32*, uint32, const uint32*, uint32*, uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32bsqrmod_w(const mp32barrett*, uint32, const uint32*, uint32*, uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32bpowmod_w(const mp32barrett*, uint32, const uint32*, uint32, const uint32*, uint32*, uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32bpowmodsld_w(const mp32barrett*, const uint32*, uint32, const uint32*, uint32*, uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32btwopowmod_w(const mp32barrett*, uint32, const uint32*, uint32*, uint32*);
 
-BEEDLLAPI
+BEECRYPTAPI
 int  mp32binv_w(const mp32barrett*, uint32, const uint32*, uint32*, uint32*);
 
 
 /* To be added:
  * simultaneous multiple exponentiation, for use in dsa and elgamal signature verification
  */
-BEEDLLAPI
+BEECRYPTAPI
 void mp32bsm2powmod(const mp32barrett*, const uint32*, const uint32*, const uint32*, const uint32*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32bsm3powmod(const mp32barrett*, const uint32*, const uint32*, const uint32*, const uint32*, const uint32*, const uint32*);
 
 
-BEEDLLAPI
+BEECRYPTAPI
 int  mp32bpprime_w(const mp32barrett*, randomGeneratorContext*, int, uint32*);
 
 /* the next routines take mp32numbers as parameters */
 
-BEEDLLAPI
+BEECRYPTAPI
 void mp32bnrnd(const mp32barrett*, randomGeneratorContext*, mp32number*);
 
-BEEDLLAPI
+BEECRYPTAPI
 void mp32bnmulmod(const mp32barrett*, const mp32number*, const mp32number*, mp32number*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32bnsqrmod(const mp32barrett*, const mp32number*, mp32number*);
 
-BEEDLLAPI
+BEECRYPTAPI
 void mp32bnpowmod   (const mp32barrett*, const mp32number*, const mp32number*, mp32number*);
-BEEDLLAPI
+BEECRYPTAPI
 void mp32bnpowmodsld(const mp32barrett*, const uint32*, const mp32number*, mp32number*);
 
 #ifdef __cplusplus

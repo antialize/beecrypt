@@ -40,15 +40,15 @@ typedef struct
 extern "C" {
 #endif
 
-extern BEEDLLAPI const keyedHashFunction hmacmd5;
+extern BEECRYPTAPI const keyedHashFunction hmacmd5;
 
-BEEDLLAPI
+BEECRYPTAPI
 int hmacmd5Setup (hmacmd5Param*, const uint32*, int);
-BEEDLLAPI
+BEECRYPTAPI
 int hmacmd5Reset (hmacmd5Param*);
-BEEDLLAPI
+BEECRYPTAPI
 int hmacmd5Update(hmacmd5Param*, const byte*, int);
-BEEDLLAPI
+BEECRYPTAPI
 int hmacmd5Digest(hmacmd5Param*, uint32*);
 
 #ifdef __cplusplus

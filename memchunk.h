@@ -39,12 +39,14 @@ typedef struct
 extern "C" {
 #endif
 
-BEEDLLAPI
+BEECRYPTAPI
 memchunk*	memchunkAlloc(int);
-BEEDLLAPI
+BEECRYPTAPI
 void		memchunkFree(memchunk*);
-BEEDLLAPI
+BEECRYPTAPI
 memchunk*	memchunkResize(memchunk*, int);
+BEECRYPTAPI
+memchunk*	memchunkClone(const memchunk*);
 
 #ifdef __cplusplus
 }

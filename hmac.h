@@ -40,13 +40,13 @@ extern "C" {
 
 /* not used directly as keyed hash function, but instead used as generic methods */
 
-BEEDLLAPI
+BEECRYPTAPI
 int hmacSetup (hmacParam*, const hashFunction*, hashFunctionParam*, const uint32*, int);
-BEEDLLAPI
+BEECRYPTAPI
 int hmacReset (hmacParam*, const hashFunction*, hashFunctionParam*);
-BEEDLLAPI
+BEECRYPTAPI
 int hmacUpdate(hmacParam*, const hashFunction*, hashFunctionParam*, const byte*, int);
-BEEDLLAPI
+BEECRYPTAPI
 int hmacDigest(hmacParam*, const hashFunction*, hashFunctionParam*, uint32*);
 
 #ifdef __cplusplus

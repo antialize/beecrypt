@@ -32,9 +32,9 @@
 extern "C" {
 #endif
 
-BEEDLLAPI
+BEECRYPTAPI
 char*		b64enc(const memchunk*);
-BEEDLLAPI
+BEECRYPTAPI
 memchunk*	b64dec(const char*);
 
 #ifdef __cplusplus

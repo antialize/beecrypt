@@ -38,19 +38,19 @@ typedef struct
 extern "C" {
 #endif
 
-BEEDLLAPI
+BEECRYPTAPI
 int dlpk_pInit(dlpk_p*);
-BEEDLLAPI
+BEECRYPTAPI
 int dlpk_pFree(dlpk_p*);
-BEEDLLAPI
+BEECRYPTAPI
 int dlpk_pCopy(dlpk_p*, const dlpk_p*);
 
-BEEDLLAPI
+BEECRYPTAPI
 int  dlpk_pEqual(const dlpk_p*, const dlpk_p*);
 
-BEEDLLAPI
+BEECRYPTAPI
 int  dlpk_pgoqValidate(const dlpk_p*, randomGeneratorContext*, int cofactor);
-BEEDLLAPI
+BEECRYPTAPI
 int  dlpk_pgonValidate(const dlpk_p*, randomGeneratorContext*);
 
 #ifdef __cplusplus

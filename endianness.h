@@ -107,81 +107,81 @@ uint32 swapu32(uint32);
 extern "C" {
 #endif
 
-BEEDLLAPI
+BEECRYPTAPI
 int encodeByte(javabyte, byte*);
-BEEDLLAPI
+BEECRYPTAPI
 int encodeShort(javashort, byte*);
-BEEDLLAPI
+BEECRYPTAPI
 int encodeInt(javaint, byte*);
 
-BEEDLLAPI
+BEECRYPTAPI
 int encodeLong(javalong, byte*);
-BEEDLLAPI
+BEECRYPTAPI
 int encodeChar(javachar, byte*);
-BEEDLLAPI
+BEECRYPTAPI
 int encodeFloat(javafloat, byte*);
-BEEDLLAPI
+BEECRYPTAPI
 int encodeDouble(javadouble, byte*);
 
-BEEDLLAPI
+BEECRYPTAPI
 int encodeInts(const javaint*, byte*, int);
-BEEDLLAPI
+BEECRYPTAPI
 int encodeIntsPartial(const javaint*, byte*, int);
-BEEDLLAPI
+BEECRYPTAPI
 int encodeChars(const javachar*, byte*, int);
 
-BEEDLLAPI
+BEECRYPTAPI
 int decodeByte(javabyte*, const byte*);
-BEEDLLAPI
+BEECRYPTAPI
 int decodeShort(javashort*, const byte*);
-BEEDLLAPI
+BEECRYPTAPI
 int decodeInt(javaint*, const byte*);
-BEEDLLAPI
+BEECRYPTAPI
 int decodeLong(javalong*, const byte*);
-BEEDLLAPI
+BEECRYPTAPI
 int decodeChar(javachar*, const byte*);
-BEEDLLAPI
+BEECRYPTAPI
 int decodeFloat(javafloat*, const byte*);
-BEEDLLAPI
+BEECRYPTAPI
 int decodeDouble(javadouble*, const byte*);
 
-BEEDLLAPI
+BEECRYPTAPI
 int decodeInts(javaint*, const byte*, int);
-BEEDLLAPI
+BEECRYPTAPI
 int decodeIntsPartial(javaint*, const byte*, int);
-BEEDLLAPI
+BEECRYPTAPI
 int decodeChars(javachar*, const byte*, int);
 
-BEEDLLAPI
+BEECRYPTAPI
 int writeByte(javabyte, FILE*);
-BEEDLLAPI
+BEECRYPTAPI
 int writeShort(javashort, FILE*);
-BEEDLLAPI
+BEECRYPTAPI
 int writeInt(javaint, FILE*);
-BEEDLLAPI
+BEECRYPTAPI
 int writeLong(javalong, FILE*);
-BEEDLLAPI
+BEECRYPTAPI
 int writeChar(javachar, FILE*);
 
-BEEDLLAPI
+BEECRYPTAPI
 int writeInts(const javaint*, FILE*, int);
-BEEDLLAPI
+BEECRYPTAPI
 int writeChars(const javachar*, FILE*, int);
 
-BEEDLLAPI
+BEECRYPTAPI
 int readByte(javabyte*, FILE*);
-BEEDLLAPI
+BEECRYPTAPI
 int readShort(javashort*, FILE*);
-BEEDLLAPI
+BEECRYPTAPI
 int readInt(javaint*, FILE*);
-BEEDLLAPI
+BEECRYPTAPI
 int readLong(javalong*, FILE*);
-BEEDLLAPI
+BEECRYPTAPI
 int readChar(javachar*, FILE*);
 
-BEEDLLAPI
+BEECRYPTAPI
 int readInts(javaint*, FILE*, int);
-BEEDLLAPI
+BEECRYPTAPI
 int readChars(javachar*, FILE*, int);
 
 #ifdef __cplusplus
