@@ -93,10 +93,6 @@ BlockCipher::BlockCipher(const blockCipher& cipher) : _ctxt(&cipher), _iv(cipher
 
 }
 
-BlockCipher::~BlockCipher()
-{
-}
-
 bytearray* BlockCipher::engineDoFinal(const byte* input, size_t inputOffset, size_t inputLength) throw (IllegalBlockSizeException, BadPaddingException)
 {
 	bytearray* tmp = 0;
@@ -136,10 +132,7 @@ size_t BlockCipher::engineDoFinal(const byte* input, size_t inputOffset, size_t 
 
 	if ((_padding == PADDING_PKCS5) && (_opmode == Cipher::ENCRYPT_MODE))
 	{
-		size_t padvalue = _bufcnt % blocksize;
-
-		if (padvalue == 0)
-			padvalue = blocksize;
+		size_t padvalue = blocksize - (_bufcnt % blocksize);
 
 		memset(_buffer.data() + _bufcnt, padvalue, padvalue);
 
@@ -154,7 +147,8 @@ size_t BlockCipher::engineDoFinal(const byte* input, size_t inputOffset, size_t 
 		throw BadPaddingException("input is not a whole number of blocks");
 
 	if ((_padding = PADDING_PKCS5) && (_opmode == Cipher::DECRYPT_MODE))
-	{	// sanity check: total must be a non-zero whole number of blocks
+	{
+		// sanity check: total must be a non-zero whole number of blocks
 		const byte* unpad_check = output.data() + outputOffset + total;
 
 		byte unpadvalue = *(--unpad_check);
@@ -245,30 +239,44 @@ void BlockCipher::engineInit(int opmode, const Key& key, SecureRandom* random) t
 
 void BlockCipher::engineInit(int opmode, const Key& key, AlgorithmParameters* params, SecureRandom* random) throw (InvalidKeyException, InvalidAlgorithmParameterException)
 {
-	engineInit(opmode, key, random);
-
-	if (params)
-		throw InvalidAlgorithmParameterException("BlockCipher doesn't support initialization with AlgorithmParameters");
-}
-
-void BlockCipher::engineInit(int opmode, const Key& key, AlgorithmParameterSpec* params, SecureRandom* random) throw (InvalidKeyException, InvalidAlgorithmParameterException)
-{
-	engineInit(opmode, key, random);
-
 	if (params)
 	{
-		const IvParameterSpec* iv = dynamic_cast<const IvParameterSpec*>(params);
-		if (!iv)
-			throw InvalidAlgorithmParameterException("BlockCipher only accepts an IvParameterSpec");
-
-		if (iv->getIV().size() != _ctxt.algo->blocksize)
-			throw InvalidAlgorithmParameterException("IV length must be equal to blocksize");
-
-		if (blockCipherContextSetIV(&_ctxt, iv->getIV().data()))
-			throw ProviderException("BeeCrypt internal error in blockCipherContextSetIV");
-
-		_iv = iv->getIV();
+		AlgorithmParameterSpec* tmp;
+		try
+		{
+			tmp = params->getParameterSpec(typeid(IvParameterSpec));
+			engineInit(opmode, key, *tmp, random);
+			delete tmp;
+		}
+		catch (InvalidParameterSpecException e)
+		{
+			throw InvalidAlgorithmParameterException(e.getMessage());
+		}
+		catch (...)
+		{
+			delete tmp;
+			throw;
+		}
 	}
+	else
+		engineInit(opmode, key, random);
+}
+
+void BlockCipher::engineInit(int opmode, const Key& key, const AlgorithmParameterSpec& params, SecureRandom* random) throw (InvalidKeyException, InvalidAlgorithmParameterException)
+{
+	const IvParameterSpec* iv = dynamic_cast<const IvParameterSpec*>(&params);
+	if (!iv)
+		throw InvalidAlgorithmParameterException("BlockCipher only accepts an IvParameterSpec");
+
+	if (iv->getIV().size() != _ctxt.algo->blocksize)
+		throw InvalidAlgorithmParameterException("IV length must be equal to blocksize");
+
+	if (blockCipherContextSetIV(&_ctxt, iv->getIV().data()))
+		throw ProviderException("BeeCrypt internal error in blockCipherContextSetIV");
+
+	_iv = iv->getIV();
+
+	engineInit(opmode, key, random);
 }
 
 bytearray* BlockCipher::engineUpdate(const byte* input, size_t inputOffset, size_t inputLength)
@@ -378,44 +386,49 @@ size_t BlockCipher::process(const byte* input, size_t inputLength, byte* output,
 		else
 			out = (uint32_t*) output;
 		 
-		bytes = blocks * blocksize;
-
-		if (bytes > outputLength)
-			throw ShortBufferException("BlockCipher output buffer too short");
-
-		switch (_blmode)
+		if (blocks)
 		{
-		case MODE_ECB:
-			blockCipherContextECB(&_ctxt, out, in, blocks);
-			break;
-		case MODE_CBC:
-			blockCipherContextCBC(&_ctxt, out, in, blocks);
-			break;
+			bytes = blocks * blocksize;
+
+			if (bytes > outputLength)
+				throw ShortBufferException("BlockCipher output buffer too short");
+
+			switch (_blmode)
+			{
+			case MODE_ECB:
+				blockCipherContextECB(&_ctxt, out, in, blocks);
+				break;
+			case MODE_CBC:
+				blockCipherContextCBC(&_ctxt, out, in, blocks);
+				break;
+			}
+
+			if (copyOut)
+				memcpy(output, out, bytes);
+
+			total += bytes;
+
+			if (copyIn)
+			{
+				_bufcnt -= bytes;
+			}
+			else
+			{
+				input += bytes;
+				inputLength -= bytes;
+			}
+
+			output += bytes;
+			outputLength -= bytes;
 		}
-
-		if (copyOut)
-			memcpy(output, out, bytes);
-
-		total += bytes;
+		else
+			bytes = 0;
 
 		if (_bufcnt > bytes)
 		{
 			// bytes remain in buffer; move them to the front
 			memmove(_buffer.data(), _buffer.data() + _bufcnt, _bufcnt - bytes);
 		}
-
-		if (copyIn)
-		{
-			_bufcnt -= bytes;
-		}
-		else
-		{
-			input += bytes;
-			inputLength -= bytes;
-		}
-
-		output += bytes;
-		outputLength -= bytes;
 
 		if (inputLength < (blocksize + _buflwm))
 		{

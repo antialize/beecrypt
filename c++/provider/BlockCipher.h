@@ -68,7 +68,7 @@ namespace beecrypt {
 
 			virtual void engineInit(int opmode, const Key& key, SecureRandom* random) throw (InvalidKeyException);
 			virtual void engineInit(int opmode, const Key& key, AlgorithmParameters* params, SecureRandom* random) throw (InvalidKeyException, InvalidAlgorithmParameterException);
-			virtual void engineInit(int opmode, const Key& key, AlgorithmParameterSpec* params, SecureRandom* random) throw (InvalidKeyException, InvalidAlgorithmParameterException);
+			virtual void engineInit(int opmode, const Key& key, const AlgorithmParameterSpec& params, SecureRandom* random) throw (InvalidKeyException, InvalidAlgorithmParameterException);
 
 			virtual bytearray* engineUpdate(const byte* input, size_t inputOffset, size_t inputLength);
 			virtual size_t engineUpdate(const byte* input, size_t inputOffset, size_t inputLength, bytearray& output, size_t outputOffset) throw (ShortBufferException);
@@ -79,7 +79,7 @@ namespace beecrypt {
 			BlockCipher(const blockCipher&);
 
 		public:
-			virtual ~BlockCipher();
+			virtual ~BlockCipher() {};
 		};
 	}
 }
