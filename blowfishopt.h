@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2002 Virtual Unlimited B.V.
+ * Copyright (c) 2000, 2002, 2003 Virtual Unlimited B.V.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -56,11 +56,18 @@ extern "C" {
 # endif
 #endif
 
-#if defined(__SUNPRO_C) || defined(__SUNPRO_CC)
-#if defined(OPTIMIZE_I586) || defined(OPTIMIZE_I686)
-#define ASM_BLOWFISHENCRYPT
-#define ASM_BLOWFISHDECRYPT
+#if defined(__INTEL_COMPILER)
+# if defined(OPTIMIZE_I586) || defined(OPTIMIZE_I686)
+#  define ASM_BLOWFISHENCRYPT
+#  define ASM_BLOWFISHDECRYPT
+# endif
 #endif
+
+#if defined(__SUNPRO_C) || defined(__SUNPRO_CC)
+# if defined(OPTIMIZE_I586) || defined(OPTIMIZE_I686)
+#  define ASM_BLOWFISHENCRYPT
+#  define ASM_BLOWFISHDECRYPT
+# endif
 #endif
 
 #ifdef __cplusplus

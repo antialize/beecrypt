@@ -3,7 +3,7 @@
  *
  * SHA-1 assembler-optimized routines, header
  *
- * Copyright (c) 2000 Virtual Unlimited B.V.
+ * Copyright (c) 2000, 2003 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -41,7 +41,13 @@ extern "C" {
 # endif
 #endif
 
-#ifdef __GNUC__
+#if defined(__GNUC__)
+# if defined(OPTIMIZE_I586) || defined(OPTIMIZE_I686)
+#  define ASM_SHA1PROCESS
+# endif
+#endif
+
+#if defined(__INTEL_COMPILER)
 # if defined(OPTIMIZE_I586) || defined(OPTIMIZE_I686)
 #  define ASM_SHA1PROCESS
 # endif
