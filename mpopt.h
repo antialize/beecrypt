@@ -82,6 +82,9 @@
 #  define ASM_MPADDMUL
 #  define ASM_MPADDSQRTRC
 # elif defined(OPTIMIZE_SPARCV8)
+#  define ASM_MPSETMUL
+#  define ASM_MPADDMUL
+#  define ASM_MPADDSQRTRC
 # elif defined(OPTIMIZE_SPARCV8PLUS) || defined(OPTIMIZE_SPARCV9)
 # endif
 #endif
@@ -119,6 +122,9 @@
 
 #if defined(__SUNPRO_C) || defined(__SUNPRO_CC)
 # if defined(OPTIMIZE_SPARCV8)
+#  define ASM_MPSETMUL
+#  define ASM_MPADDMUL
+#  define ASM_MPADDSQRTRC
 # elif defined(OPTIMIZE_SPARCV8PLUS) /* || defined(OPTIMIZE_SPARCV9) */
 # endif
 #endif

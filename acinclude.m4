@@ -412,6 +412,9 @@ AC_DEFUN(BEECRYPT_SUN_FORTE_CC,[
     if test "$ac_enable_debug" != yes; then
       CFLAGS="$CFLAGS -fast"
       case $bc_target_arch in
+      sparc)
+        CFLAGS="$CFLAGS -xtarget=generic -xarch=generic"
+        ;;
       sparcv8)
         CFLAGS="$CFLAGS -xtarget=generic -xarch=v8"
         ;;
@@ -540,6 +543,11 @@ AC_DEFUN(BEECRYPT_ASM_SOURCES,[
   powerpc64)
     AC_CONFIG_COMMANDS([mpopt.ppc64],[
       m4 $srcdir/gas/mpopt.ppc64.m4 > $srcdir/mpopt.s
+      ])
+    ;;
+  sparcv8)
+    AC_CONFIG_COMMANDS([mpopt.sparcv8],[
+      m4 $srcdir/gas/mpopt.sparcv8.m4 > $srcdir/mpopt.s
       ])
     ;;
   esac
