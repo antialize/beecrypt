@@ -23,7 +23,7 @@
 #ifndef _CLASS_MAC_H
 #define _CLASS_MAC_H
 
-// #include "beecrypt/beecrypt.api.h"
+// #include "beecrypt/api.h"
 
 #ifdef __cplusplus
 

@@ -35,6 +35,8 @@ using beecrypt::crypto::SecretKey;
 using beecrypt::lang::IllegalStateException;
 #include "beecrypt/c++/security/SecureRandom.h"
 using beecrypt::security::SecureRandom;
+#include "beecrypt/c++/security/InvalidAlgorithmParameterException.h"
+using beecrypt::security::InvalidAlgorithmParameterException;
 #include "beecrypt/c++/security/InvalidKeyException.h"
 using beecrypt::security::InvalidKeyException;
 #include "beecrypt/c++/security/ShortBufferException.h"
@@ -52,7 +54,7 @@ namespace beecrypt {
 
 		protected:
 			virtual void engineInit(const Key&, SecureRandom*) throw (InvalidKeyException) = 0;
-			virtual void engineInit(const Key&, const AlgorithmParameterSpec&, SecureRandom*) throw (InvalidKeyException) = 0;
+			virtual void engineInit(const Key&, const AlgorithmParameterSpec&, SecureRandom*) throw (InvalidKeyException, InvalidAlgorithmParameterException) = 0;
 			virtual Key* engineDoPhase(const Key&, bool) = 0;
 			virtual bytearray* engineGenerateSecret() throw (IllegalStateException) = 0;
 			virtual size_t engineGenerateSecret(bytearray&, size_t) throw (IllegalStateException, ShortBufferException) = 0;
