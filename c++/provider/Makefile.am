@@ -9,6 +9,7 @@ pkgaltlib_LTLIBRARIES = base.la
 
 base_la_SOURCES = \
 BeeCertificateFactory.cxx \
+BeeCertPathValidator.cxx \
 BeeCryptProvider.cxx \
 BeeKeyFactory.cxx \
 BeeKeyStore.cxx \
@@ -40,10 +41,12 @@ RSAPrivateKeyImpl.cxx \
 RSAPublicKeyImpl.cxx \
 SHA1Digest.cxx \
 SHA256Digest.cxx \
+SHA384Digest.cxx \
 SHA512Digest.cxx \
 SHA1withDSASignature.cxx \
 SHA1withRSASignature.cxx \
 SHA256withRSASignature.cxx \
+SHA384withRSASignature.cxx \
 SHA512withRSASignature.cxx
 
 base_la_LDFLAGS = -module
@@ -51,6 +54,7 @@ base_la_LIBADD = $(top_builddir)/c++/libbeecrypt_cxx.la
 
 noinst_HEADERS = \
 BeeCertificateFactory.h \
+BeeCertPathValidator.h \
 BeeCryptProvider.h \
 BeeKeyFactory.h \
 BeeKeyStore.h \
@@ -82,8 +86,10 @@ RSAPrivateKeyImpl.h \
 RSAPublicKeyImpl.h \
 SHA1Digest.h \
 SHA256Digest.h \
+SHA384Digest.h \
 SHA512Digest.h \
 SHA1withDSASignature.h \
 SHA1withRSASignature.h \
 SHA256withRSASignature.h \
-SHA256withRSASignature.h
+SHA384withRSASignature.h \
+SHA512withRSASignature.h 
