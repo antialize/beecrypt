@@ -1,8 +1,11 @@
 4.1.0:
-	- Added SHA-512 algorithm.
+	- Added SHA-384 and SHA-512 algorithms.
+	- Added generic SSE optimization for the above algorithms.
 	- Added more digest algorithms for PKCS#1 EMSA.
 	- Fixed missing definition in mpopt.h for s390x.
 	- Fixed nostackexec configuration bug.
+	- Fixed nostackexec problem with assembler files.
+	- Fixed problem in Date::toString.
 
 4.0.0:
 	- Added a C++ API interface, modeled after Java's security & crypto API.

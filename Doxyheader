@@ -49,6 +49,7 @@
  *    <li>MD5
  *    <li>SHA-1
  *    <li>SHA-256
+ *    <li>SHA-384
  *    <li>SHA-512
  *   </ul>
  *  <li>keyed hash functions (a.k.a. message authentication codes)
