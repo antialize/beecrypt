@@ -54,6 +54,13 @@ extern "C" {
 # endif
 #endif
 
+#if defined(__IBMC__)
+# if defined(OPTIMIZE_POWERPC)
+#  define ASM_BLOWFISHENCRYPT
+#  define ASM_BLOWFISHDECRYPT
+# endif
+#endif
+
 #if defined(__INTEL_COMPILER)
 # if defined(OPTIMIZE_I586) || defined(OPTIMIZE_I686)
 #  define ASM_BLOWFISHENCRYPT
@@ -62,10 +69,7 @@ extern "C" {
 #endif
 
 #if defined(__SUNPRO_C) || defined(__SUNPRO_CC)
-# if defined(OPTIMIZE_I586) || defined(OPTIMIZE_I686)
-#  define ASM_BLOWFISHENCRYPT
-#  define ASM_BLOWFISHDECRYPT
-# endif
+/* nothing here yet */
 #endif
 
 #ifdef __cplusplus
