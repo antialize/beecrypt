@@ -33,6 +33,14 @@ undefine(`C_FUNCTION_END')
 define(C_FUNCTION_END,`
 	.tbtag 0x0,0xc,0x0,0x0,0x0,0x0,0x0,0x0
 ')
+define(LOAD_ADDRESS,`
+	lwz $2,L$1(r2)
+')
+define(EXTERNAL_VARIABLE,`
+	.toc
+L$1:
+	.tc $1[TC],$1[RW]
+')
 
 	.machine	"ppc"
 
@@ -68,4 +76,10 @@ define(C_FUNCTION_END,`
 	.set r29,29
 	.set r30,30
 	.set r31,31
+',`
+define(LOAD_ADDRESS,`
+	lis $2,$1@ha
+	la $2,$1@l($2)
+')
+define(EXTERNAL_VARIABLE)
 ')
