@@ -384,9 +384,9 @@ int b64decode(const char* s, void** datap, size_t* lenp)
     
     /* Validate input buffer */
     ns = 0;
-    for (t = s; *t != '\0'; t++)
+    for (t = (unsigned char*) s; *t != '\0'; t++)
 	{
-		switch (b64dec[ (unsigned)*t ])
+		switch (b64dec[(unsigned) *t])
 		{
 		case 0x80:	/* invalid chararcter */
 			return 3;
