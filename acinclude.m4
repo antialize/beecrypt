@@ -450,7 +450,7 @@ AC_DEFUN([BEECRYPT_GNU_CC],[
     # Generic optimizations, including cpu tuning
     BEECRYPT_CFLAGS_REM([-g])
     BEECRYPT_CFLAGS_REM([-O2])
-    CFLAGS="$CFLAGS -O3 -fomit-frame-pointer"
+    CFLAGS="$CFLAGS -DNDEBUG -O3 -fomit-frame-pointer"
     if test "$bc_cv_c_aggressive_opt" = yes; then
       case $bc_target_cpu in
       athlon*)
@@ -543,6 +543,7 @@ AC_DEFUN([BEECRYPT_GNU_CXX],[
   else
     # Generic optimizations, including cpu tuning
     BEECRYPT_CXXFLAGS_REM([-g])
+	CXXFLAGS="$CXXFLAGS -DNDEBUG"
     if test "$bc_cv_c_aggressive_opt" = yes; then
       case $bc_target_cpu in
       athlon*)

@@ -107,6 +107,7 @@ AC_PROG_LIBTOOL
 # Predefines for autoheader
 BEECRYPT_OS_DEFS
 
+AH_TEMPLATE([HAVE_ASSERT_H],[.])
 AH_TEMPLATE([HAVE_CTYPE_H],[.])
 AH_TEMPLATE([HAVE_ERRNO_H],[.])
 AH_TEMPLATE([HAVE_FCNTL_H],[.])
@@ -150,7 +151,7 @@ AH_BOTTOM([
 AC_HEADER_STDC
 AC_CHECK_HEADERS([time.h sys/time.h])
 AC_HEADER_TIME
-AC_CHECK_HEADERS([stdio.h ctype.h errno.h fcntl.h malloc.h termio.h termios.h])
+AC_CHECK_HEADERS([assert.h stdio.h ctype.h errno.h fcntl.h malloc.h termio.h termios.h])
 AC_CHECK_HEADERS([sys/ioctl.h sys/mman.h sys/audioio.h sys/soundcard.h])
 
 bc_include_stdio_h=
