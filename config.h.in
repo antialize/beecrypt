@@ -27,6 +27,9 @@
 /* Define to 1 if you have the <aio.h> header file. */
 #undef HAVE_AIO_H
 
+/* Define to 1 if you have the <asm/byteorder.h> header file. */
+#undef HAVE_ASM_BYTEORDER_H
+
 /* Define to 1 if you have the <assert.h> header file. */
 #undef HAVE_ASSERT_H
 
@@ -62,6 +65,9 @@
 
 /* . */
 #undef HAVE_GETTIMEOFDAY
+
+/* . */
+#undef HAVE_INLINE
 
 /* */
 #undef HAVE_INT64_T

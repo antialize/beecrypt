@@ -30,6 +30,13 @@
 
 #include "beecrypt/endianness.h"
 
+#undef swap16
+#undef swapu16
+#undef swap32
+#undef swapu32
+#undef swap64
+#undef swapu64
+
 int16_t swap16(int16_t n)
 {
 	return (    ((n & 0xff) << 8) |
