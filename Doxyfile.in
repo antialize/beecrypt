@@ -306,89 +306,14 @@ WARN_LOGFILE           =
 
 INPUT = \
 	@top_srcdir@/Doxyheader \
-	@top_srcdir@/aes.c \
-	@top_srcdir@/aes.h \
-	@top_srcdir@/aesopt.h \
-	@top_srcdir@/base64.c \
-	@top_srcdir@/base64.h \
-	@top_srcdir@/beecrypt.c \
-	@top_srcdir@/beecrypt.h \
-	@top_srcdir@/beecrypt.api.h \
-	@top_srcdir@/beecrypt.gnu.h \
-	@top_srcdir@/beecrypt.win.h \
-	@top_srcdir@/blockmode.c \
-	@top_srcdir@/blockmode.h \
-	@top_srcdir@/blockpad.c \
-	@top_srcdir@/blockpad.h \
-	@top_srcdir@/blowfish.c \
-	@top_srcdir@/blowfish.h \
-	@top_srcdir@/blowfishopt.h \
-	@top_srcdir@/dsa.c \
-	@top_srcdir@/dsa.h \
-	@top_srcdir@/dhaes.c \
-	@top_srcdir@/dhaes.h \
-	@top_srcdir@/dldp.c \
-	@top_srcdir@/dldp.h \
-	@top_srcdir@/dlkp.c \
-	@top_srcdir@/dlkp.h \
-	@top_srcdir@/dlpk.c \
-	@top_srcdir@/dlpk.h \
-	@top_srcdir@/dlsvdp-dh.c \
-	@top_srcdir@/dlsvdp-dh.h \
-	@top_srcdir@/elgamal.c \
-	@top_srcdir@/elgamal.h \
-	@top_srcdir@/endianness.c \
-	@top_srcdir@/endianness.h \
-	@top_srcdir@/entropy.c \
-	@top_srcdir@/entropy.h \
-	@top_srcdir@/fips186.c \
-	@top_srcdir@/fips186.h \
-	@top_srcdir@/hmac.c \
-	@top_srcdir@/hmac.h \
-	@top_srcdir@/hmacmd5.c \
-	@top_srcdir@/hmacmd5.h \
-	@top_srcdir@/hmacsha1.c \
-	@top_srcdir@/hmacsha1.h \
-	@top_srcdir@/hmacsha256.c \
-	@top_srcdir@/hmacsha256.h \
-	@top_srcdir@/javaglue.c \
-	@top_srcdir@/javaglue.h \
-	@top_srcdir@/md5.c \
-	@top_srcdir@/md5.h \
-	@top_srcdir@/memchunk.c \
-	@top_srcdir@/memchunk.h \
-	@top_srcdir@/mpbarrett.c \
-	@top_srcdir@/mpbarrett.h \
-	@top_srcdir@/mp.c \
-	@top_srcdir@/mp.h \
-	@top_srcdir@/mpnumber.c \
-	@top_srcdir@/mpnumber.h \
-	@top_srcdir@/mpopt.h \
-	@top_srcdir@/mpprime.c \
-	@top_srcdir@/mpprime.h \
-	@top_srcdir@/mtprng.c \
-	@top_srcdir@/mtprng.h \
-	@top_srcdir@/rsa.c \
-	@top_srcdir@/rsa.h \
-	@top_srcdir@/rsakp.c \
-	@top_srcdir@/rsakp.h \
-	@top_srcdir@/rsapk.c \
-	@top_srcdir@/rsapk.h \
-	@top_srcdir@/sha1.c \
-	@top_srcdir@/sha1.h \
-	@top_srcdir@/sha1opt.h \
-	@top_srcdir@/sha256.c \
-	@top_srcdir@/sha256.h \
-	@top_srcdir@/timestamp.c \
-	@top_srcdir@/timestamp.h
-
+	@top_srcdir@/
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 
 # and *.h) to filter out the source-files in the directories. If left 
 # blank all files are included.
 
-FILE_PATTERNS          = *.c *.h
+FILE_PATTERNS          = *.h
 
 # The RECURSIVE tag can be used to turn specify whether or not subdirectories 
 # should be searched for input files as well. Possible values are YES and NO. 

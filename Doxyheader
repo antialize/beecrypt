@@ -1,69 +1,74 @@
 /*! \mainpage BeeCrypt API Documentation.
 
 Included in the library are:
-    - entropy sources for initializing pseudo-random generators
-    - pseudo-random generators
-        - FIPS-186
-        - Mersenne Twister
-    - block ciphers
-        - AES
-        - Blowfish
-    - hash functions
-        - MD5
-        - SHA-1
-        - SHA-256
-    - keyed hash functions (a.k.a. message authentication codes)
-        - HMAC-MD5
-        - HMAC-SHA-1
-        - HMAC-SHA-256
-    - multi-precision integer library, with assembler-optimized routines
-      for several processors
-    - probabilistic primality testing, with optimized small prime trial
-      division
-    - discrete logarithm parameter generation over a prime field
-    - Diffie-Hellman key agreement
-    - DSA signature scheme
-    - ElGamal signature scheme (two variants)
-    - RSA keypair generation with chinese remainder theorem variables
-    - RSA public & private key operations
-    - DHAES encryption scheme
+<ul>
+ <li>entropy sources for initializing pseudo-random generators
+ <li>pseudo-random generators
+  <ul>
+   <li>FIPS-186
+  </ul>
+ <li>block ciphers
+  <ul>
+   <li>AES
+   <li>Blowfish
+  </ul>
+ <li>hash functions
+  <ul>
+   <li>MD5
+   <li>SHA-1
+   <li>SHA-256
+  </ul>
+ <li>keyed hash functions (a.k.a. message authentication codes)
+  <ul>
+   <li>HMAC-MD5
+   <li>HMAC-SHA-1
+   <li>HMAC-SHA-256
+  </ul>
+ <li>multi-precision integer library, with assembler-optimized routines
+     for a range of processors; optimized to perform well on both 32-bit
+     and 64-bit machines
+ <li>probabilistic primality testing, with optimized small prime trial
+     division
+ <li>discrete logarithm parameter generation over a prime field
+ <li>Diffie-Hellman key agreement
+ <li>DHAES encryption scheme
+ <li>DSA signature scheme
+ <li>ElGamal signature scheme (two variants)
+ <li>RSA keypair generation with chinese remainder theorem variables
+ <li>RSA public & private key operations
+</ul>
 
-Planned for the near future are:
-    - mp64 library for operation on 64-bit computers (and possibly also
-      on certain 32-bit platforms)
-    - compliance with and compliance statements for IEEE P1363
-    - more blockciphers (Twofish, ... )
-    - more hash functions (RIPEMD-160, SHA-384, SHA-512, HAVAL, Tiger)
-    - RSA signatures as specified by RFC-2440.
-    - Elliptic Curves (ECDSA, ... )
-    - more blockcipher modes (OFB, ... )
+Planned for the future are:
+<ul>
+ <li>compliance with and compliance statements for IEEE P1363
+ <li>more blockciphers (Twofish, ... )
+ <li>more blockcipher modes (OFB, ... )
+ <li>more hash functions (RIPEMD-160, SHA-384, SHA-512, HAVAL, Tiger)
+ <li>RSA signatures as specified by RFC-2440.
+ <li>Elliptic Curves (ECDSA, ... )
+</ul>
 
 The library has been tested on the following platforms:
-    - FreeBSD 4.0 alpha
-    - FreeBSD 4.0, 4.2 x86
-        - includes assembler optimization (tuned for Pentium and higher)
-    - HP-UX 11a PA-RISC
-    - Linux glibc 2.x alpha
-    - Linux glibc 2.x arm
-        - includes assembler optimization
-    - Linux glibc 2.x ppc
-        - includes assembler optimization for 32-bit PowerPC
-     - Linux glibc 2.x sparc
-        - includes assembler optimization for Sparc v8
-    - Linux glibc 2.x x86
-        - includes assembler optimization (tuned for Pentium and higher)
-    - Solaris 2.[6789] sparc (with Forte or gnu compilers)
-        - includes assembler optimization for Sparc v8, v8plus and v9
-    - Solaris 2.[78] x86 (with Forte or gnu compilers)
-        - includes assembler optimization (tuned for Pentium and higher)
-    - Tru64 Unix alpha
-    - Win32 (Windows 95, 98, NT 4.0, 2000)
-        - includes assembler optimization (tuned for Pentium and higher)
+<ul>
+ <li>AIX 5.1 ppc64
+ <li>Linux glibc 2.x alpha
+ <li>Linux glibc 2.x arm
+ <li>Linux glibc 2.x ia64
+ <li>Linux glibc 2.x m68k
+ <li>Linux glibc 2.x ppc
+ <li>Linux glibc 2.x sparc
+ <li>Linux glibc 2.x x86
+ <li>Solaris 2.[6789] sparc (with Forte or GNU compilers)
+ <li>Solaris 2.[78] x86 (with Forte or GNU compilers)
+ <li>Tru64 Unix alpha
+ <li>Win32 (Windows 95, 98, NT 4.0, 2000, XP)
+</ul>
 
 The library is currently in the process of being ported to:
-    - Darwin (apparently Apple has decided to change the PPC assembler format;
-      this will need a fix)
-    - Cygwin (the DLL builds now, but needs to be tested)
+<ul>
+ <li>Darwin (the javaglue doesn't compile yet)
+ <li>Cygwin (the DLL builds now, but needs to be tested)
+</ul>
 
 The structures in the library are geared towards exchange with Java
 and its security and cryptography classes. This library can also be
