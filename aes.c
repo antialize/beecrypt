@@ -20,7 +20,8 @@
 /*!\file aes.c
  * \brief AES block cipher, as specified by NIST FIPS 197.
  *
- * Based on Brian Gladman's AES implementation.
+ * The table lookup method was inspired by Brian Gladman's AES implementation,
+ * which is much more readable than the standard code.
  *
  * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup BC_aes_m BC_m
