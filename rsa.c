@@ -39,10 +39,31 @@
  * \{
  */
 
+int rsapub(const rsapk* pk, const mp32number* m, mp32number* c)
+{
+	register uint32  size = pk->n.size;
+	register uint32* temp;
+
+	if (mp32gex(m->size, m->data, pk->n.size, pk->n.modl))
+		return -1;
+
+	temp = (uint32*) malloc((5*size+2)*sizeof(uint32));
+
+	if (temp)
+	{
+		mp32nsize(c, size);
+
+		mp32bpowmod_w(&pk->n, m->size, m->data, pk->e.size, pk->e.data, c->data, temp);
+
+		return 0;
+	}
+	return -1;
+}
+
 /*!\fn int rsapri(const rsakp* kp, const mp32number* c, mp32number* m)
  * \brief The raw RSA private key operation.
  *
- * This function can be used for encryption and signing.
+ * This function can be used for decryption and signing.
  *
  * It performs the operation:
  * \li \f$m=c^{d}\ \textrm{mod}\ n\f$
@@ -100,7 +121,10 @@ int rsapricrt(const rsakp* kp, const mp32number* c, mp32number* m)
 	register uint32* qtemp;
 
 	if (mp32gex(c->size, c->data, kp->n.size, kp->n.modl))
+	{
+		printf("ciphertext is too large\n");
 		return -1;
+	}
 
 	ptemp = (uint32*) malloc((6*psize+2)*sizeof(uint32));
 	if (ptemp == (uint32*) 0)
@@ -114,20 +138,31 @@ int rsapricrt(const rsakp* kp, const mp32number* c, mp32number* m)
 	}
 
 	/* c must be small enough to be exponentiated modulo p and q */
+	/*
 	if (c->size > psize || c->size > qsize)
+	{
+		printf("problem: c is too large to be exponentiated\n");
 		return -1;
+	}
+	*/
 
 	/* resize c for powmod p */
-	mp32setx(psize, ptemp+psize, c->size, c->data);
+	mp32setx(psize*2, ptemp, c->size, c->data);
+
+	/* reduce modulo p before we start */
+	mp32bmod_w(&kp->p, ptemp, ptemp+psize, ptemp+2*psize);
 
 	/* compute j1 = c^d1 mod p, store @ ptemp */
 	mp32bpowmod_w(&kp->p, psize, ptemp+psize, kp->d1.size, kp->d1.data, ptemp, ptemp+2*psize);
 
 	/* resize c for powmod p */
-	mp32setx(qsize, qtemp+psize, c->size, c->data);
+	mp32setx(qsize*2, qtemp, c->size, c->data);
+
+	/* reduce modulo q before we start */
+	mp32bmod_w(&kp->q, qtemp, qtemp+qsize, qtemp+2*qsize);
 
 	/* compute j2 = c^d2 mod q, store @ qtemp */
-	mp32bpowmod_w(&kp->q, qsize, qtemp+psize, kp->d2.size, kp->d2.data, qtemp, qtemp+2*qsize);
+	mp32bpowmod_w(&kp->q, qsize, qtemp+qsize, kp->d2.size, kp->d2.data, qtemp, qtemp+2*qsize);
 
 	/* compute j1-j2 mod p, store @ ptemp */
 	mp32bsubmod_w(&kp->p, psize, ptemp, qsize, qtemp, ptemp, ptemp+2*psize);
@@ -172,13 +207,16 @@ int rsavrfy(const rsapk* pk, const mp32number* m, const mp32number* c)
 	if (mp32gex(c->size, c->data, pk->n.size, pk->n.modl))
 		return 0;
 
+	if (mp32gex(m->size, m->data, pk->n.size, pk->n.modl))
+		return 0;
+
 	temp = (uint32*) malloc((5*size+2)*sizeof(uint32));
 
 	if (temp)
 	{
-		mp32bpowmod_w(&pk->n, c->size, c->data, pk->e.size, pk->e.data, temp, temp+size);
+		mp32bpowmod_w(&pk->n, m->size, m->data, pk->e.size, pk->e.data, temp, temp+size);
 
-		rc = mp32eqx(size, temp, m->size, m->data);
+		rc = mp32eqx(size, temp, c->size, c->data);
 
 		free(temp);
 
