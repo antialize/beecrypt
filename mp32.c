@@ -569,6 +569,7 @@ void mp32neg(register uint32 xsize, register uint32* xdata)
 #ifndef ASM_MP32SETMUL
 uint32 mp32setmul(register uint32 size, register uint32* result, register const uint32* xdata, register uint32 y)
 {
+# if HAVE_UNSIGNED_LONG_LONG
 	register uint64 temp;
 	register uint32 carry = 0;
 
@@ -583,13 +584,49 @@ uint32 mp32setmul(register uint32 size, register uint32* result, register const 
 		*(--result) = (uint32) temp;
 		carry = (uint32) (temp >> 32);
 	}
+	return carry
+# else
+	register uint32 temp, load, carry = 0;
+	register uint16 ylo, yhi;
+
+	ylo = (uint16)  y;
+	yhi = (uint16) (y >> 16);
+
+	xdata += size;
+	result += size;
+
+	while (size--)
+	{
+		register uint16 xlo, xhi;
+		register uint32 rlo, rhi;
+
+		xlo = (uint16) (temp = *(--xdata));
+		xhi = (uint16) (temp >> 16);
+
+		rlo = xlo * ylo;
+		rhi = xhi * yhi;
+		load = rlo;
+		temp = xhi * ylo;
+		rlo += (temp << 16);
+		rhi += (temp >> 16) + (load > rlo);
+		load = rlo;
+		temp = xlo * yhi;
+		rlo += (temp << 16);
+		rhi += (temp >> 16) + (load > rlo);
+		load = rlo;
+		temp = rlo + carry;
+		carry = rhi + (load > temp);
+		*(--result) = temp;
+	}
 	return carry;
+# endif
 }
 #endif
 
 #ifndef ASM_MP32ADDMUL
 uint32 mp32addmul(register uint32 size, register uint32* result, register const uint32* xdata, register uint32 y)
 {
+# if HAVE_UNSIGNED_LONG_LONG
 	register uint64 temp;
 	register uint32 carry = 0;
 
@@ -606,6 +643,47 @@ uint32 mp32addmul(register uint32 size, register uint32* result, register const 
 		carry = (uint32) (temp >> 32);
 	}
 	return carry;
+# else
+	register uint32 temp, load, carry = 0;
+	register uint16 ylo, yhi;
+
+	ylo = (uint16)  y;
+	yhi = (uint16) (y >> 16);
+
+	xdata += size;
+	result += size;
+
+	while (size--)
+	{
+		register uint16 xlo, xhi;
+		register uint32 rlo, rhi;
+
+		xlo = (uint16) (temp = *(--xdata));
+		xhi = (uint16) (temp >> 16);
+
+		rlo = xlo * ylo;
+		rhi = xhi * yhi;
+		load = rlo;
+		temp = xhi * ylo;
+		rlo += (temp << 16);
+		rhi += (temp >> 16) + (load > rlo);
+		load = rlo;
+		temp = xlo * yhi;
+		rlo += (temp << 16);
+		rhi += (temp >> 16) + (load > rlo);
+		load = rlo;
+		rlo += carry;
+		temp = (load > rlo);
+		load = rhi;
+		rhi += temp;
+		carry = (load > rhi);
+		load = rlo;
+		rlo += *(--result);
+		*result = rlo;
+		carry += rhi + (load > rlo);
+	}
+	return carry;
+# endif
 }
 #endif
 
@@ -651,6 +729,7 @@ void mp32mul(uint32* result, uint32 xsize, const uint32* xdata, uint32 ysize, co
 #ifndef ASM_MP32ADDSQRTRC
 uint32 mp32addsqrtrc(register uint32 size, register uint32* result, register const uint32* xdata)
 {
+# if HAVE_UNSIGNED_LONG_LONG
 	register uint64 temp;
 	register uint32 n, carry = 0;
 
@@ -669,6 +748,45 @@ uint32 mp32addsqrtrc(register uint32 size, register uint32* result, register con
 		carry = (uint32) (temp >> 32);
 	}
 	return carry;
+# else
+	register uint32 temp, load, carry = 0;
+
+	result += size*2;
+
+	while (size--)
+	{
+		register uint16 xlo, xhi;
+		register uint32 rlo, rhi;
+
+		xlo = (uint16) (temp = xdata[size]);
+		xhi = (uint16) (temp >> 16);
+
+		rlo = xlo * xlo;
+		rhi = xhi * xhi;
+		temp = xhi * xlo;
+		load = rlo;
+		rlo += (temp << 16);
+		rhi += (temp >> 16) + (load > rlo);
+		load = rlo;
+		rlo += (temp << 16);
+		rhi += (temp >> 16) + (load > rlo);
+		load = rlo;
+		rlo += carry;
+		rhi += (load > rlo);
+		load = rlo;
+		rlo += *(--result);
+		*result = rlo;
+		temp = (load > rlo);
+		load = rhi;
+		rhi += temp;
+		carry = (load > rhi);
+		load = rhi;
+		rhi += *(--result);
+		*result = rhi;
+		carry += (load > rhi);
+	}
+	return carry;
+# endif
 }
 #endif
 
