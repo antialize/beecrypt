@@ -46,7 +46,7 @@
 
 /*!\brief Discrete Logarithm Domain Parameters over a prime field.
  *
- * For the variables in this structure /f$p=qr+1/f$; if /f$p=2q+1 \Rightarrow r=2/f$.
+ * For the variables in this structure /f$p=qr+1/f$; if /f$p=2q+1 then r=2/f$.
  *
  * \ingroup DL_m
  */
