@@ -68,7 +68,7 @@ extern "C" {
 /*!\fn int entropySourceCount()
  * \brief This function returns the number of entropy sources implemented by
  *  the library.
- * \return The number of entropy sources implemented.
+ * \return The number of implemented entropy sources.
  */
 BEECRYPTAPI
 int						entropySourceCount(void);
@@ -511,24 +511,43 @@ typedef int (*blockCipherSetup  )(blockCipherParam*, const byte*, size_t, cipher
  */
 typedef int (*blockCipherSetIV  )(blockCipherParam*, const byte*);
 
-/*!\typedef int (*blockCipherEncrypt)(blockCipherParam* bp, uint32_t* dst, const uint32_t* src)
- * \brief Prototype for a \e raw encryption function.
+/*!\typedef int (*blockCipherRawcrypt)(blockCipherParam* bp, uint32_t* dst, const uint32_t* src)
+ * \brief Prototype for a \e raw encryption or decryption function.
  * \param bp The blockcipher's parameters.
- * \param dst The ciphertext address; must be aligned on 32-bit boundary;
- * \param src The cleartext address; must be aligned on 32-bit boundary;
+ * \param dst The ciphertext address; must be aligned on 32-bit boundary.
+ * \param src The cleartext address; must be aligned on 32-bit boundary.
  * \retval 0 on success.
  * \retval -1 on failure.
  * \ingroup BC_m
  */
-typedef int (*blockCipherEncrypt)(blockCipherParam*, uint32_t*, const uint32_t*);
+typedef int (*blockCipherRawcrypt)(blockCipherParam*, uint32_t*, const uint32_t*);
 
-/*!\typedef blockCipherDecrypt
- * \brief Prototype definition for a \e raw decryption function.
+/*!\typedef int (*blockCipherModcrypt)(blockCipherParam* bp, uint32_t* dst, const uint32_t* src, unsigned int nblocks)
+ * \brief Prototype for a \e encryption or decryption function which operates
+ *        on multiple blocks in a certain mode.
+ * \param bp The blockcipher's parameters.
+ * \param dst The ciphertext address; must be aligned on 32-bit boundary.
+ * \param src The cleartext address; must be aligned on 32-bit boundary.
+ * \param nblocks The number of blocks to process.
+ * \retval 0 on success.
+ * \retval -1 on failure.
  * \ingroup BC_m
  */
-typedef int (*blockCipherDecrypt)(blockCipherParam*, uint32_t*, const uint32_t*);
+typedef int (*blockCipherModcrypt)(blockCipherParam*, uint32_t*, const uint32_t*, unsigned int);
 
 typedef uint32_t* (*blockCipherFeedback)(blockCipherParam*);
+
+typedef struct
+{
+	const blockCipherRawcrypt encrypt;
+	const blockCipherRawcrypt decrypt;
+} blockCipherRaw;
+
+typedef struct
+{
+	const blockCipherModcrypt encrypt;
+	const blockCipherModcrypt decrypt;
+} blockCipherMode;
 
 /*!\brief Holds information and pointers to code specific to each cipher.
  *
@@ -571,44 +590,57 @@ typedef struct
 	 * \brief Pointer to the cipher's initialization vector setup function.
 	 */
 	const blockCipherSetIV		setiv;
-	/*!\var encrypt
-	 * \brief Pointer to the cipher's encryption function.
+	/*!\var raw
+	 * \brief The cipher's raw functions.
 	 */
-	const blockCipherEncrypt	encrypt;
-	/*!\var decrypt
-	 * \brief Pointer to the cipher's decryption function.
+	const blockCipherRaw		raw;
+	/*!\var ecb
+	 * \brief The cipher's ECB functions.
 	 */
-	const blockCipherDecrypt	decrypt;
+	const blockCipherMode		ecb;
+	const blockCipherMode		cbc;
 	/*!\var getfb
 	 * \brief Pointer to the cipher's feedback-returning function.
 	 */
-	const blockCipherFeedback   getfb;
+	const blockCipherFeedback		getfb;
 } blockCipher;
-
-/*
- * You can use the following functions to find blockciphers implemented by
- * the library:
- *
- * blockCipherCount returns the number of blockciphers available.
- *
- * blockCipherGet returns the blockcipher with a given index (starting
- * at zero, up to blockCipherCount() - 1), or NULL if the index was out of
- * bounds.
- *
- * blockCipherFind returns the blockcipher with the given name, or
- * NULL if no hash function exists with that name.
- */
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+/*!\fn int blockCipherCount()
+ * \brief This function returns the number of blockciphers implemented
+ *  by the library.
+ * \return The number of implemented blockciphers.
+ */
 BEECRYPTAPI
 int						blockCipherCount(void);
+
+/*!\fn const blockCipher* blockCipherGet(int n)
+ * \brief This function returns the \a n -th blockcipher implemented by
+ *  the library.
+ * \param n Index of the requested blockcipher; legal values are 0
+ *  through blockCipherCount() - 1.
+ * \return A pointer to a blockcipher or null, if the index was out of
+ *  range.
+ */
 BEECRYPTAPI
 const blockCipher*		blockCipherGet(int);
+
+/*!\fn const blockCIiher* blockCipherFind(const char* name)
+ * \brief This function returns the blockcipher specified by the given name.
+ * \param name Name of the requested blockcipher.
+ * \return A pointer to a blockcipher or null, if the name wasn't found.
+ */
 BEECRYPTAPI
 const blockCipher*		blockCipherFind(const char*);
+
+/*!\fn const blockCipher* blockCipherDefault()
+ * \brief This functions returns the default blockcipher; the default value
+ *  can be specified by setting environment variable BEECRYPT_CIPHER.
+ * \return A pointer to a blockcipher or null, in case an error occured.
+ */
 BEECRYPTAPI
 const blockCipher*		blockCipherDefault(void);
 
@@ -616,10 +648,6 @@ const blockCipher*		blockCipherDefault(void);
 }
 #endif
 
-/*
- * The struct 'blockCipherContext' is used to contain both the functional
- * part (the blockCipher), and its parameters.
- */
 /*!\brief Holds a pointer to a blockcipher as well as its parameters.
  * \warning A context can be used by only one thread at the same time.
  * \ingroup BC_m
