@@ -1359,14 +1359,13 @@ void mpndivmod(mpw* result, size_t xsize, const mpw* xdata, size_t ysize, const 
 	mpw msw = *ydata;
 	size_t qsize = xsize-ysize;
 
+	*result = (mpge(ysize, xdata, ydata) ? 1 : 0);
 	mpcopy(xsize, result+1, xdata);
-	if (mpge(ysize, result+1, ydata))
-	{
-		mpsub(ysize, result+1, ydata);
-		*(result++) = 1;
-	}
-	else
-		*(result++) = 0;
+
+	if (*result++)
+		(void) mpsub(ysize, result+1, ydata);
+
+	result++;
 
 	while (qsize--)
 	{
