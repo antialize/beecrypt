@@ -1,3 +1,12 @@
+4.2.0-pre:
+	- Major overhaul of the C++ API.
+	- Added synchronization methods to Object class; there's also a
+	  macro allowing the use of synchronized (...) { }.
+	- Added Runnable interface and Thread class; the latter provides
+	  basic support conform the Java API.
+	- Added collections.
+	- Improved gcc compilation flags for sparc.
+
 4.1.2:
 	- Fixed Cygwin DLL missing symbols problem.
 	- Fixed GNU-stack assembler section on some platforms (Debian-ARM).
