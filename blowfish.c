@@ -19,14 +19,6 @@
 
 /*!\file blowfish.c
  * \brief Blowfish block cipher.
- *
- * For more information on this blockcipher, see:
- * "Applied Cryptography", second edition
- *  Bruce Schneier
- *  Wiley & Sons
- *
- * Also see http://www.counterpane.com/blowfish.html
- *
  * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup BC_m BC_blowfish_m
  */
@@ -38,12 +30,6 @@
 
 #include <string.h>
 
-/*!\addtogroup BC_blowfish_m
- * \{
- */
-
-/*\!var _bf_p
- */
 static uint32_t _bf_p[BLOWFISHPSIZE] = {
 	0x243f6a88, 0x85a308d3, 0x13198a2e, 0x03707344,
 	0xa4093822, 0x299f31d0, 0x082efa98, 0xec4e6c89,
@@ -52,9 +38,6 @@ static uint32_t _bf_p[BLOWFISHPSIZE] = {
 	0x9216d5d9, 0x8979fb1b
 };
 
-/*!\var _bf_s
- * \brief Table with s-box data.
- */
 static uint32_t _bf_s[1024] = {
 	0xd1310ba6, 0x98dfb5ac, 0x2ffd72db, 0xd01adfb7,
 	0xb8e1afed, 0x6a267e96, 0xba7c9045, 0xf12c7f99,
@@ -317,27 +300,13 @@ static uint32_t _bf_s[1024] = {
 #define EROUND(l,r) l ^= *(p++); r ^= ((s[((l>>24)&0xff)+0x000]+s[((l>>16)&0xff)+0x100])^s[((l>>8)&0xff)+0x200])+s[((l>>0)&0xff)+0x300]
 #define DROUND(l,r) l ^= *(p--); r ^= ((s[((l>>24)&0xff)+0x000]+s[((l>>16)&0xff)+0x100])^s[((l>>8)&0xff)+0x200])+s[((l>>0)&0xff)+0x300]
 
-/*!\var blowfish
- * \brief Holds the full API description of the Blowfish algorithm.
- */
 const blockCipher blowfish = { "Blowfish", sizeof(blowfishParam), 8, 64, 448, 32, (blockCipherSetup) blowfishSetup, (blockCipherSetIV) blowfishSetIV, (blockCipherEncrypt) blowfishEncrypt, (blockCipherDecrypt) blowfishDecrypt, (blockCipherFeedback) blowfishFeedback };
 
-/*!\fn int blowfishSetup(blowfishParam* bp, const byte* key, size_t keybits, cipherOperation op)
- * \brief The cipher's setup function.
- *
- * This function expands the key depending on whether the ENCRYPT or DECRYPT
- * operation was selected.
- *
- * \param bp The cipher's parameter block.
- * \param key The key value.
- * \param keybits The number of bits in the key; legal values are: 32 to 448,
- *                in multiples of 8.
- * \param op ENCRYPT or DECRYPT.
- * \retval 0 on success.
- * \retval -1 on failure.
- */
 int blowfishSetup(blowfishParam* bp, const byte* key, size_t keybits, cipherOperation op)
 {
+	if ((op != ENCRYPT) && (op != DECRYPT))
+		return -1;
+
 	if (((keybits & 7) == 0) && (keybits >= 32) && (keybits <= 448))
 	{
 		register uint32_t* p = bp->p;
@@ -396,15 +365,6 @@ int blowfishSetup(blowfishParam* bp, const byte* key, size_t keybits, cipherOper
 	return -1;
 }
 
-/*!\fn int blowfishSetIV(blowfishParam* bp, const byte* iv)
- * \brief The Initialization Vector setup function.
- *
- * This function is only necessary in block chaining or feedback modes.
- *
- * \param bp The cipher's parameter block.
- * \param iv Te initialization vector; may be null.
- * \retval 0 on success.
- */
 #ifndef ASM_BLOWFISHSETIV
 int blowfishSetIV(blowfishParam* bp, const byte* iv)
 {
@@ -417,16 +377,6 @@ int blowfishSetIV(blowfishParam* bp, const byte* iv)
 }
 #endif
 
-/*!\fn int blowfishEncrypt(blowfishParam* bp, uint32_t* dst, const uint32_t* src)
- * \brief The raw encryption function.
- *
- * This function encrypts one block of data; the size of a block is 64 bits.
- *
- * \param bp The cipher's parameter block.
- * \param dst The ciphertext; should be aligned on 32-bit boundary.
- * \param src The cleartext; should be aligned on 32-bit boundary.
- * \retval 0 on success.
- */
 #ifndef ASM_BLOWFISHENCRYPT
 int blowfishEncrypt(blowfishParam* bp, uint32_t* dst, const uint32_t* src)
 {
@@ -459,16 +409,6 @@ int blowfishEncrypt(blowfishParam* bp, uint32_t* dst, const uint32_t* src)
 }
 #endif
 
-/*!\fn int blowfishDecrypt(blowfishParam* bp, uint32_t* dst, const uint32_t* src)
- * \brief The raw encryption function.
- *
- * This function encrypts one block of data; the size of a block is 64 bits.
- *
- * \param bp The cipher's parameter block.
- * \param dst The cleartext; should be aligned on 32-bit boundary.
- * \param src The ciphertext; should be aligned on 32-bit boundary.
- * \retval 0 on success.
- */
 #ifndef ASM_BLOWFISHDECRYPT
 int blowfishDecrypt(blowfishParam* bp, uint32_t* dst, const uint32_t* src)
 {
@@ -505,6 +445,3 @@ uint32_t* blowfishFeedback(blowfishParam* bp)
 {
 	return bp->fdback;
 }
-
-/*!\}
- */

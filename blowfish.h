@@ -18,7 +18,15 @@
  */
 
 /*!\file blowfish.h
- * \brief Blowfish block cipher, headers.
+ * \brief Blowfish block cipher.
+ *
+ * For more information on this blockcipher, see:
+ * "Applied Cryptography", second edition
+ *  Bruce Schneier
+ *  Wiley & Sons
+ *
+ * Also see http://www.counterpane.com/blowfish.html
+ *
  * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup BC_m BC_blowfish_m
  */
@@ -32,7 +40,7 @@
 #define BLOWFISHROUNDS	16
 #define BLOWFISHPSIZE	(BLOWFISHROUNDS+2)
 
-/*!\brief This struct holds all the parameters necessary for the Blowfish cipher.
+/*!\brief Holds all the parameters necessary for the Blowfish cipher.
  * \ingroup BC_blowfish_m
  */
 typedef struct
@@ -55,16 +63,57 @@ typedef struct
 extern "C" {
 #endif
 
+/*!\var blowfish
+ * \brief Holds the full API description of the Blowfish algorithm.
+ */
 extern const BEECRYPTAPI blockCipher blowfish;
 
+/*!\fn int blowfishSetup(blowfishParam* bp, const byte* key, size_t keybits, cipherOperation
+ op)
+ * \brief The function performs the cipher's key expansion.
+ * \param bp The cipher's parameter block.
+ * \param key The key value.
+ * \param keybits The number of bits in the key; legal values are: 32 to 448,
+ *  in multiples of 8.
+ * \param op ENCRYPT or DECRYPT.
+ * \retval 0 on success.
+ * \retval -1 on failure.
+ */
 BEECRYPTAPI
 int		blowfishSetup   (blowfishParam*, const byte*, size_t, cipherOperation);
+
+/*!\fn int blowfishSetIV(blowfishParam* bp, const byte* iv)
+ * \brief This function sets the Initialization Vector.
+ * \note This function is only useful in block chaining or feedback modes.
+ * \param bp The cipher's parameter block.
+ * \param iv The initialization vector; may be null.
+ * \retval 0 on success.
+ */
 BEECRYPTAPI
 int		blowfishSetIV   (blowfishParam*, const byte*);
+
+/*!\fn blowfishEncrypt(blowfishParam* bp, uint32_t* dst, const uint32_t* src)
+ * \brief This function performs the Blowfish encryption; it encrypts one block
+ *  of 64 bits.
+ * \param bp The cipher's parameter block.
+ * \param dst The ciphertext; should be aligned on 32-bit boundary.
+ * \param src The cleartext; should be aligned on 32-bit boundary.
+ * \retval 0 on success.
+ */
 BEECRYPTAPI
 int		blowfishEncrypt (blowfishParam*, uint32_t*, const uint32_t*);
+
+/*!\fn blowfishDecrypt(blowfishParam* bp, uint32_t* dst, const uint32_t* src)
+ * \brief This function performs the Blowfish decryption; it Rderypts one block
+ *  of 64 bits.
+ * \param bp The cipher's parameter block.
+ * \param dst The cleartext; should be aligned on 32-bit boundary.
+ * \param src The ciphertext; should be aligned on 32-bit boundary.
+ * \retval 0 on success.
+ */
 BEECRYPTAPI
 int		blowfishDecrypt (blowfishParam*, uint32_t*, const uint32_t*);
+
 BEECRYPTAPI
 uint32_t*	blowfishFeedback(blowfishParam*);
 

@@ -18,7 +18,7 @@
  */
 
 /*!\file aes.h
- * \brief AES block cipher, headers.
+ * \brief AES block cipher, as specified by NIST FIPS 197.
  * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup BC_m BC_aes_m
  */
@@ -29,7 +29,7 @@
 #include "beecrypt.h"
 #include "aesopt.h"
 
-/*!\brief This struct holds all the parameters necessary for the AES cipher.
+/*!\brief Holds all the parameters necessary for the AES cipher.
  * \ingroup BC_aes_m
  */
 typedef struct
@@ -52,18 +52,58 @@ typedef struct
 extern "C" {
 #endif
 
+/*!\var aes
+ * \brief Holds the full API description of the AES algorithm.
+ */
 extern const BEECRYPTAPI blockCipher aes;
 
+/*!\fn int aesSetup(aesParam* ap, const byte* key, size_t keybits, cipherOperation op)
+ * \brief This function performs the cipher's key expansion.
+ * \param ap The cipher's parameter block.
+ * \param key The key value.
+ * \param keybits The number of bits in the key; legal values are:
+ *  128, 192 and 256.
+ * \param op ENCRYPT or DECRYPT.
+ * \retval 0 on success.
+ * \retval -1 on failure.
+ */
 BEECRYPTAPI
-int			aesSetup   (aesParam*, const byte*, size_t, cipherOperation);
+int			aesSetup   (aesParam* ap, const byte* key, size_t keybits, cipherOperation op);
+
+/*!\fn int aesSetIV(aesParam* ap, const byte* iv)
+ * \brief This function sets the Initialization Vector.
+ * \note This function is only useful in block chaining or feedback modes.
+ * \param ap The cipher's parameter block.
+ * \param iv The initialization vector; may be null.
+ * \retval 0 on success.
+ */
 BEECRYPTAPI
-int			aesSetIV   (aesParam*, const byte*);
+int			aesSetIV   (aesParam* ap, const byte* iv);
+
+/*!\fn aesEncrypt(aesParam* ap, uint32_t* dst, const uint32_t* src)
+ * \brief This function performs the raw AES encryption; it encrypts one block
+ *  of 128 bits.
+ * \param ap The cipher's parameter block.
+ * \param dst The ciphertext; should be aligned on 32-bit boundary.
+ * \param src The cleartext; should be aligned on 32-bit boundary.
+ * \retval 0 on success.
+ */
 BEECRYPTAPI
-int			aesEncrypt (aesParam*, uint32_t*, const uint32_t*);
+int			aesEncrypt (aesParam* ap, uint32_t* dst, const uint32_t* src);
+
+/*!\fn aesDecrypt(aesParam* ap, uint32_t* dst, const uint32_t* src)
+ * \brief This function performs the raw AES decryption; it decrypts one block
+ *  of 128 bits.
+ * \param ap The cipher's parameter block.
+ * \param dst The cleartext; should be aligned on 32-bit boundary.
+ * \param src The ciphertext; should be aligned on 32-bit boundary.
+ * \retval 0 on success.
+ */
 BEECRYPTAPI
-int			aesDecrypt (aesParam*, uint32_t*, const uint32_t*);
+int			aesDecrypt (aesParam* ap, uint32_t* dst, const uint32_t* src);
+
 BEECRYPTAPI
-uint32_t*	aesFeedback(aesParam*);
+uint32_t*	aesFeedback(aesParam* ap);
 
 #ifdef __cplusplus
 }
