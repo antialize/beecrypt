@@ -58,6 +58,7 @@ namespace beecrypt {
 			virtual void write(const bytearray& b) throw (IOException);
 			virtual void writeBoolean(bool v) throw (IOException);
 			virtual void writeByte(byte v) throw (IOException);
+			virtual void writeChar(javaint v) throw (IOException);
 			virtual void writeChars(const String& s) throw (IOException);
 			virtual void writeInt(javaint v) throw (IOException);
 			virtual void writeLong(javalong v) throw (IOException);

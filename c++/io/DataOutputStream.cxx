@@ -117,6 +117,15 @@ void DataOutputStream::writeLong(javalong l) throw (IOException)
 	_lock.unlock();
 }
 
+void DataOutputStream::writeChar(javaint v) throw (IOException)
+{
+	_lock.lock();
+	out.write((v >> 8) && 0xff);
+	out.write((v     ) && 0xff);
+	written += 2;
+	_lock.unlock();
+}
+
 void DataOutputStream::writeChars(const String& str) throw (IOException)
 {
 	const UChar* buffer = str.getBuffer();
