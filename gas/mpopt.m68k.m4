@@ -21,9 +21,7 @@ dnl  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 include(config.m4)
 include(ASM_SRCDIR/m68k.m4)
 
-
-divert(-1)
-dnl to be tested
+dnl works
 C_FUNCTION_BEGIN(mpadd)
 	move.l 4(%sp),%d0
 	movea.l 8(%sp),%a0
@@ -43,11 +41,8 @@ LOCAL(mpadd_loop):
 	addx.l %d0,%d0
 	rts
 C_FUNCTION_END(mpadd)
-divert(0)
 
-
-divert(-1)
-dnl to be tested
+dnl works
 C_FUNCTION_BEGIN(mpsub)
 	move.l 4(%sp),%d0
 	movea.l 8(%sp),%a0
@@ -67,59 +62,60 @@ LOCAL(mpsub_loop):
 	addx.l %d0,%d0
 	rts
 C_FUNCTION_END(mpsub)
-divert(0)
 
-
+dnl works
 C_FUNCTION_BEGIN(mpsetmul)
-	movem.l %d2-%d4,-(%sp)
-	move.l 16(%sp),%d0
-	movea.l 20(%sp),%a0
-	movea.l 24(%sp),%a1
-	move.l 28(%sp),%d2
-	move.l %d0,%d3
+	movem.l %d2-%d5,-(%sp)
+	move.l 20(%sp),%d0
+	movea.l 24(%sp),%a0
+	movea.l 28(%sp),%a1
+	move.l 32(%sp),%d2
+	move.l %d0,%d5
 	lsl.l #2,%d0
-	subq.l #1,%d3
+	subq.l #1,%d5
 	adda.l %d0,%a0
 	adda.l %d0,%a1
+	clr.l %d3
 	clr.l %d4
 
 	.align 2
 LOCAL(mpsetmul_loop):
 	move.l -(%a1),%d1
 	mulu.l %d2,%d0:%d1
-	addx.l %d4,%d1
+	add.l  %d3,%d1
 	addx.l %d4,%d0
 	move.l %d1,-(%a0)
-	dbf %d3,LOCAL(mpsetmul_loop)
+	move.l %d0,%d3
+	dbf %d5,LOCAL(mpsetmul_loop)
 
 	movem.l (%sp)+,%d2-%d5
 	rts
 C_FUNCTION_END(mpsetmul)
 
-
+dnl works
 C_FUNCTION_BEGIN(mpaddmul)
 	movem.l %d2-%d5,-(%sp)
 	move.l 20(%sp),%d0
-	movea.l 24(%sp),%a1
-	movea.l 28(%sp),%a2
+	movea.l 24(%sp),%a0
+	movea.l 28(%sp),%a1
 	move.l 32(%sp),%d2
 	move.l %d0,%d5
 	lsl.l #2,%d0
 	subq.l #1,%d5
+	adda.l %d0,%a0
 	adda.l %d0,%a1
-	adda.l %d0,%a2
 	clr.l %d3
 	clr.l %d4
 
 	.align 2
 LOCAL(mpaddmul_loop):
-	move.l -(%a2),%d1
+	move.l -(%a1),%d1
 	mulu.l %d2,%d0:%d1
 	add.l %d3,%d1
 	addx.l %d4,%d0
-	add.l -(%a1),%d1
+	add.l -(%a0),%d1
 	addx.l %d4,%d0
-	move.l %d1,(%a1)
+	move.l %d1,(%a0)
 	move.l %d0,%d3
 	dbf %d5,LOCAL(mpaddmul_loop)
 
@@ -128,36 +124,35 @@ LOCAL(mpaddmul_loop):
 C_FUNCTION_END(mpaddmul)
 
 
-divert(-1)
-dnl in development
 C_FUNCTION_BEGIN(mpaddsqrtrc)
-	movem.l %d2-%d4,-(%sp)
+	movem.l %d3-%d5,-(%sp)
 	move.l 16(%sp),%d0
-	movea.l 20(%sp),%a1
-	movea.l 24(%sp),%a2
-	move.l %d0,%d3
+	movea.l 20(%sp),%a0
+	movea.l 24(%sp),%a1
+	move.l %d0,%d5
 	lsl.l #2,%d0
-	subq.l #1,%d3
+	subq.l #1,%d5
+	adda.l %d0,%a0
+	adda.l %d0,%a0
 	adda.l %d0,%a1
-	adda.l %d0,%a2
+	clr.l %d3
 	clr.l %d4
 
 LOCAL(mpaddsqrtrc_loop):
-	move.l -(%a2),%d1
+	move.l -(%a1),%d1
 dnl square %d1 into %d0 and %d1
 	mulu.l %d1,%d0:%d1
-	addx.l %d4,%d1
+	add.l %d3,%d1
 	addx.l %d4,%d0
-	movl.l -(%a1),%d2
-	add.l %d2,%d1
-	move.l %d1,(%a1)
-	add.l -(%a1),%d1
-	movl.l -(%a1),%d2
-	addx.l %d2,%d0
-	move.l %d0,0(%a1)
-	dbf %d3,LOCAL(mpaddsqrtrc_loop)
+	add.l -(%a0),%d1
+	addx.l %d4,%d0
+	move.l %d1,(%a0)
+	clr.l %d3
+	add.l -(%a0),%d0
+	addx.l %d4,%d3
+	move.l %d0,0(%a0)
+	dbf %d5,LOCAL(mpaddsqrtrc_loop)
 
-	movem.l (%sp)+,%d2-%d4
+	movem.l (%sp)+,%d3-%d5
 	rts
 C_FUNCTION_END(mpaddsqrtrc)
-divert(0)
