@@ -1362,7 +1362,7 @@ void mpndivmod(mpw* result, size_t xsize, const mpw* xdata, size_t ysize, const 
 	*result = (mpge(ysize, xdata, ydata) ? 1 : 0);
 	mpcopy(xsize, result+1, xdata);
 
-	if (*result++)
+	if (*result)
 		(void) mpsub(ysize, result+1, ydata);
 
 	result++;
