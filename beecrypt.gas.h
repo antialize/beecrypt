@@ -1,7 +1,7 @@
-#ifndef _CONFIG_GAS_H
-#define _CONFIG_GAS_H
+#ifndef _BEECRYPT_GAS_H
+#define _BEECRYPT_GAS_H
 
-#include "config.gnu.h"
+#include "beecrypt.gnu.h"
 
 #ifndef C_FUNCTION_NAME
 # if LEADING_UNDERSCORE
