@@ -34,11 +34,11 @@
 /*
  * Discrete Logarithm Domain Parameters - Prime
  *
- * Standard definition where p = 2qr+1; in case where p=2q+1, r=1
+ * Standard definition where p = qr+1; in case where p=2q+1, r=2
  *
- * IEEE P1363 definition is p = rk+1
+ * In IEEE P1363 naming is p = rk+1
  *
- * Hence, IEEE r = q and IEEE cofactor k = 2 or k = 2r
+ * Hence, IEEE prime r = q and cofactor k = r
  *
  * Make sure q is large enough to foil Pohlig-Hellman attacks
  *  See: "Handbook of Applied Cryptography", Chapter 3.6.4

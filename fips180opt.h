@@ -34,9 +34,11 @@ extern "C" {
 #endif
 
 #if WIN32
-#if __INTEL__ && __MWERKS__
-#define ASM_SHA1PROCESS
-#endif
+# if defined(_MSC_VER) && defined(_M_IX86)
+#  define ASM_SHA1PROCESS
+# elif __INTEL__ && __MWERKS__
+#  define ASM_SHA1PROCESS
+# endif
 #endif
 
 #ifdef __GNUC__

@@ -33,9 +33,6 @@
 #if HAVE_MALLOC_H
 #include <malloc.h>
 #endif
-#if HAVE_ALLOCA_H
-#include <alloca.h>
-#endif
 #if HAVE_STRING_H
 #include <string.h>
 #endif
@@ -45,9 +42,12 @@
 #include "fips180.h"
 #include "fips186.h"
 #include "md5.h"
+#include "md5hmac.h"
 #include "mp32.h"
 #include "mtprng.h"
 #include "sha1hmac.h"
+#include "sha256.h"
+#include "sha256hmac.h"
 
 #include "blowfish.h"
 #include "blockmode.h"
@@ -174,7 +174,7 @@ void randomGeneratorContextFree(randomGeneratorContext* ctxt)
 
 static const hashFunction* hashFunctionList[] =
 {
-	&sha1, &md5
+	&md5, &sha1, &sha256
 };
 
 #define HASHFUNCTIONS (sizeof(hashFunctionList) / sizeof(hashFunction*))
@@ -242,11 +242,7 @@ int hashFunctionContextUpdateMC(hashFunctionContext* ctxt, const memchunk* m)
 int hashFunctionContextUpdateMP32(hashFunctionContext* ctxt, const mp32number* n)
 {
 	register int rc;
-	#if HAVE_ALLOCA
-	byte* temp = (byte*) alloca((n->size << 2) + 1);
-	#else
-	byte* temp = (byte*) malloc((n->size << 2) + 1);
-	#endif
+	register byte* temp = (byte*) malloc((n->size << 2) + 1);
 
 	if (mp32msbset(n->size, n->data))
 	{
@@ -259,9 +255,7 @@ int hashFunctionContextUpdateMP32(hashFunctionContext* ctxt, const mp32number* n
 		encodeInts((javaint*) n->data, temp, n->size);
 		rc = ctxt->hash->update(ctxt->param, temp, n->size << 2);
 	}
-	#if !HAVE_ALLOCA
 	free(temp);
-	#endif
 
 	return rc;
 }
@@ -276,7 +270,9 @@ int hashFunctionContextDigest(hashFunctionContext* ctxt, mp32number* dig)
 
 static const keyedHashFunction* keyedHashFunctionList[] =
 {
-	&sha1hmac
+	&md5hmac,
+	&sha1hmac,
+	&sha256hmac
 };
 
 #define KEYEDHASHFUNCTIONS 	(sizeof(keyedHashFunctionList) / sizeof(keyedHashFunction*))
@@ -292,7 +288,7 @@ const keyedHashFunction* keyedHashFunctionDefault()
 	if (tmp)
 		return keyedHashFunctionFind(tmp);
 	else
-		return (const keyedHashFunction*) 0;
+		return &sha1hmac;
 }
 
 const keyedHashFunction* keyedHashFunctionGet(int index)
@@ -344,11 +340,7 @@ int keyedHashFunctionContextUpdateMC(keyedHashFunctionContext* ctxt, const memch
 int keyedHashFunctionContextUpdateMP32(keyedHashFunctionContext* ctxt, const mp32number* n)
 {
 	register int rc;
-	#if HAVE_ALLOCA
-	byte* temp = (byte*) alloca((n->size << 2) + 1);
-	#else
-	byte* temp = (byte*) malloc((n->size << 2) + 1);
-	#endif
+	register byte* temp = (byte*) malloc((n->size << 2) + 1);
 
 	if (mp32msbset(n->size, n->data))
 	{
@@ -361,9 +353,7 @@ int keyedHashFunctionContextUpdateMP32(keyedHashFunctionContext* ctxt, const mp3
 		encodeInts((javaint*) n->data, temp, n->size);
 		rc = ctxt->hash->update(ctxt->param, temp, n->size << 2);
 	}
-	#if !HAVE_ALLOCA
 	free(temp);
-	#endif
 
 	return rc;
 }

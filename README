@@ -65,39 +65,45 @@ Included in the library are:
     - entropy sources for initializing pseudo-random generators
     - pseudo-random generators: FIPS-186, Mersenne Twister
     - block ciphers: Blowfish
-    - hash functions: SHA-1
-    - keyed hash functions: SHA-1/HMAC
+    - hash functions: MD5, SHA-1, SHA-256
+    - keyed hash functions: MD5/HMAC, SHA-1/HMAC, SHA-256/HMAC
     - multi-precision integer library, with assembler-optimized routines
     - probabilistic primality testing, with optimized small prime trial division
     - discrete logarithm parameter generation over a prime field
     - Diffie-Hellman key agreement
     - ElGamal signature scheme (two variants)
+	- RSA keypair generation with chinese remainder theorem variables
+	- RSA public & private key operations
 
 Planned for the near future are:
     - compliance with and compliance statements for IEEE P1363
 	- DHAES
     - DSA (i.e. the rest of FIPS-186)
-    - more blockciphers (Twofish, Rijndael, Misty1, ... )
+    - more blockciphers (Rijndael, Twofish, .. )
 	- more hash functions (RIPEMD-160, HAVAL, ... )
 	- Elliptic Curves (ECDSA, ... )
 
 The library has been tested on the following platforms:
-    - Solaris 2.6/2.7 Sparc (with Workshop compilers, gnu binutils and make)
-        - includes assembler optimization for ultrasparc
-	- Solaris 2.7 Intel (with gnu compiler, binutils and make)
-		- includes assembler optimization (tuned for Pentium Pro and higher)
-    - Linux glibc 2.x x86
-        - includes assembler optimization (tuned for Pentium Pro and higher)
-    - Linux glibc 2.x ppc
-        - includes assembler optimization (for generic 32-bit PowerPC)
+	- FreeBSD 4.0 alpha
 	- FreeBSD 4.0 x86
 		- includes assembler optimization (tuned for Pentium Pro and higher)
+	- Linux glibc 2.x alpha
+    - Linux glibc 2.x ppc
+        - includes assembler optimization (for generic 32-bit PowerPC)
+    - Linux glibc 2.x x86
+        - includes assembler optimization (tuned for Pentium Pro and higher)
+    - Solaris 2.6/2.7 sparc (with Workshop compilers, gnu binutils and make)
+        - includes assembler optimization for ultrasparc
+	- Solaris 2.7 x86 (with gnu compiler, binutils and make)
+		- includes assembler optimization (tuned for Pentium Pro and higher)
+	- Tru64 Unix alpha
     - Win32 (Windows 95, 98, NT 4.0, 2000)
         - includes assembler optimization (tuned for Pentium Pro and higher)
 
 The library is currently in the process of being ported to:
 	- Cygwin
 	- Darwin 1.0
+	- QNX
 
 Consult file 'DOCUMENTATION' on how to use the library. There is also a program
 called 'beetest.c' included which gives an example of how to use the API. You

@@ -26,7 +26,6 @@
 #ifndef _ELGAMAL_H
 #define _ELGAMAL_H
 
-#include "mp32number.h"
 #include "mp32barrett.h"
 
 #ifdef __cplusplus

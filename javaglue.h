@@ -24,14 +24,6 @@ extern "C" {
 #endif
 /*
  * Class:     com_beeyond_security_NativeMessageDigest
- * Method:    find
- * Signature: (Ljava/lang/String;)J
- */
-JNIEXPORT jlong JNICALL Java_com_beeyond_security_NativeMessageDigest_find
-  (JNIEnv *, jclass, jstring);
-
-/*
- * Class:     com_beeyond_security_NativeMessageDigest
  * Method:    allocParam
  * Signature: (J)J
  */
@@ -45,6 +37,30 @@ JNIEXPORT jlong JNICALL Java_com_beeyond_security_NativeMessageDigest_allocParam
  */
 JNIEXPORT jlong JNICALL Java_com_beeyond_security_NativeMessageDigest_cloneParam
   (JNIEnv *, jclass, jlong, jlong);
+
+/*
+ * Class:     com_beeyond_security_NativeMessageDigest
+ * Method:    digest
+ * Signature: (JJ)[B
+ */
+JNIEXPORT jbyteArray JNICALL Java_com_beeyond_security_NativeMessageDigest_digest
+  (JNIEnv *, jclass, jlong, jlong);
+
+/*
+ * Class:     com_beeyond_security_NativeMessageDigest
+ * Method:    digestLength
+ * Signature: (J)I
+ */
+JNIEXPORT jint JNICALL Java_com_beeyond_security_NativeMessageDigest_digestLength
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     com_beeyond_security_NativeMessageDigest
+ * Method:    find
+ * Signature: (Ljava/lang/String;)J
+ */
+JNIEXPORT jlong JNICALL Java_com_beeyond_security_NativeMessageDigest_find
+  (JNIEnv *, jclass, jstring);
 
 /*
  * Class:     com_beeyond_security_NativeMessageDigest
@@ -78,22 +94,6 @@ JNIEXPORT void JNICALL Java_com_beeyond_security_NativeMessageDigest_update
 JNIEXPORT void JNICALL Java_com_beeyond_security_NativeMessageDigest_updateBlock
   (JNIEnv *, jclass, jlong, jlong, jbyteArray, jint, jint);
 
-/*
- * Class:     com_beeyond_security_NativeMessageDigest
- * Method:    digest
- * Signature: (JJ)[B
- */
-JNIEXPORT jbyteArray JNICALL Java_com_beeyond_security_NativeMessageDigest_digest
-  (JNIEnv *, jclass, jlong, jlong);
-
-/*
- * Class:     com_beeyond_security_NativeMessageDigest
- * Method:    digestLength
- * Signature: (J)I
- */
-JNIEXPORT jint JNICALL Java_com_beeyond_security_NativeMessageDigest_digestLength
-  (JNIEnv *, jclass, jlong);
-
 #ifdef __cplusplus
 }
 #endif
@@ -105,14 +105,6 @@ JNIEXPORT jint JNICALL Java_com_beeyond_security_NativeMessageDigest_digestLengt
 #ifdef __cplusplus
 extern "C" {
 #endif
-/*
- * Class:     com_beeyond_security_NativeSecureRandom
- * Method:    find
- * Signature: (Ljava/lang/String;)J
- */
-JNIEXPORT jlong JNICALL Java_com_beeyond_security_NativeSecureRandom_find
-  (JNIEnv *, jclass, jstring);
-
 /*
  * Class:     com_beeyond_security_NativeSecureRandom
  * Method:    allocParam
@@ -131,6 +123,14 @@ JNIEXPORT jlong JNICALL Java_com_beeyond_security_NativeSecureRandom_cloneParam
 
 /*
  * Class:     com_beeyond_security_NativeSecureRandom
+ * Method:    find
+ * Signature: (Ljava/lang/String;)J
+ */
+JNIEXPORT jlong JNICALL Java_com_beeyond_security_NativeSecureRandom_find
+  (JNIEnv *, jclass, jstring);
+
+/*
+ * Class:     com_beeyond_security_NativeSecureRandom
  * Method:    freeParam
  * Signature: (J)V
  */
@@ -139,19 +139,11 @@ JNIEXPORT void JNICALL Java_com_beeyond_security_NativeSecureRandom_freeParam
 
 /*
  * Class:     com_beeyond_security_NativeSecureRandom
- * Method:    setup
- * Signature: (JJ)V
+ * Method:    generateSeed
+ * Signature: ([B)V
  */
-JNIEXPORT void JNICALL Java_com_beeyond_security_NativeSecureRandom_setup
-  (JNIEnv *, jclass, jlong, jlong);
-
-/*
- * Class:     com_beeyond_security_NativeSecureRandom
- * Method:    setSeed
- * Signature: (JJ[B)V
- */
-JNIEXPORT void JNICALL Java_com_beeyond_security_NativeSecureRandom_setSeed
-  (JNIEnv *, jclass, jlong, jlong, jbyteArray);
+JNIEXPORT void JNICALL Java_com_beeyond_security_NativeSecureRandom_generateSeed
+  (JNIEnv *, jclass, jbyteArray);
 
 /*
  * Class:     com_beeyond_security_NativeSecureRandom
@@ -163,11 +155,19 @@ JNIEXPORT void JNICALL Java_com_beeyond_security_NativeSecureRandom_nextBytes
 
 /*
  * Class:     com_beeyond_security_NativeSecureRandom
- * Method:    generateSeed
- * Signature: ([B)V
+ * Method:    setSeed
+ * Signature: (JJ[B)V
  */
-JNIEXPORT void JNICALL Java_com_beeyond_security_NativeSecureRandom_generateSeed
-  (JNIEnv *, jclass, jbyteArray);
+JNIEXPORT void JNICALL Java_com_beeyond_security_NativeSecureRandom_setSeed
+  (JNIEnv *, jclass, jlong, jlong, jbyteArray);
+
+/*
+ * Class:     com_beeyond_security_NativeSecureRandom
+ * Method:    setup
+ * Signature: (JJ)V
+ */
+JNIEXPORT void JNICALL Java_com_beeyond_security_NativeSecureRandom_setup
+  (JNIEnv *, jclass, jlong, jlong);
 
 #ifdef __cplusplus
 }
@@ -190,15 +190,8 @@ extern "C" {
 #undef com_beeyond_crypto_NativeBlockCipher_PADDING_PKCS5
 #define com_beeyond_crypto_NativeBlockCipher_PADDING_PKCS5 1L
 /* Inaccessible static: PADDINGS */
+/* Inaccessible static: class_00024javax_00024crypto_00024spec_00024PBEParameterSpec */
 /* Inaccessible static: class_00024javax_00024crypto_00024spec_00024IvParameterSpec */
-/*
- * Class:     com_beeyond_crypto_NativeBlockCipher
- * Method:    find
- * Signature: (Ljava/lang/String;)J
- */
-JNIEXPORT jlong JNICALL Java_com_beeyond_crypto_NativeBlockCipher_find
-  (JNIEnv *, jclass, jstring);
-
 /*
  * Class:     com_beeyond_crypto_NativeBlockCipher
  * Method:    allocParam
@@ -209,42 +202,10 @@ JNIEXPORT jlong JNICALL Java_com_beeyond_crypto_NativeBlockCipher_allocParam
 
 /*
  * Class:     com_beeyond_crypto_NativeBlockCipher
- * Method:    freeParam
- * Signature: (J)V
- */
-JNIEXPORT void JNICALL Java_com_beeyond_crypto_NativeBlockCipher_freeParam
-  (JNIEnv *, jclass, jlong);
-
-/*
- * Class:     com_beeyond_crypto_NativeBlockCipher
- * Method:    getBlockSize
- * Signature: (J)I
- */
-JNIEXPORT jint JNICALL Java_com_beeyond_crypto_NativeBlockCipher_getBlockSize
-  (JNIEnv *, jclass, jlong);
-
-/*
- * Class:     com_beeyond_crypto_NativeBlockCipher
- * Method:    setup
- * Signature: (JJI[B)V
- */
-JNIEXPORT void JNICALL Java_com_beeyond_crypto_NativeBlockCipher_setup
-  (JNIEnv *, jclass, jlong, jlong, jint, jbyteArray);
-
-/*
- * Class:     com_beeyond_crypto_NativeBlockCipher
- * Method:    setIV
- * Signature: (JJ[B)V
- */
-JNIEXPORT void JNICALL Java_com_beeyond_crypto_NativeBlockCipher_setIV
-  (JNIEnv *, jclass, jlong, jlong, jbyteArray);
-
-/*
- * Class:     com_beeyond_crypto_NativeBlockCipher
- * Method:    encryptECB
+ * Method:    decryptCBC
  * Signature: (JJ[BI[BII)V
  */
-JNIEXPORT void JNICALL Java_com_beeyond_crypto_NativeBlockCipher_encryptECB
+JNIEXPORT void JNICALL Java_com_beeyond_crypto_NativeBlockCipher_decryptCBC
   (JNIEnv *, jclass, jlong, jlong, jbyteArray, jint, jbyteArray, jint, jint);
 
 /*
@@ -265,11 +226,51 @@ JNIEXPORT void JNICALL Java_com_beeyond_crypto_NativeBlockCipher_encryptCBC
 
 /*
  * Class:     com_beeyond_crypto_NativeBlockCipher
- * Method:    decryptCBC
+ * Method:    encryptECB
  * Signature: (JJ[BI[BII)V
  */
-JNIEXPORT void JNICALL Java_com_beeyond_crypto_NativeBlockCipher_decryptCBC
+JNIEXPORT void JNICALL Java_com_beeyond_crypto_NativeBlockCipher_encryptECB
   (JNIEnv *, jclass, jlong, jlong, jbyteArray, jint, jbyteArray, jint, jint);
+
+/*
+ * Class:     com_beeyond_crypto_NativeBlockCipher
+ * Method:    find
+ * Signature: (Ljava/lang/String;)J
+ */
+JNIEXPORT jlong JNICALL Java_com_beeyond_crypto_NativeBlockCipher_find
+  (JNIEnv *, jclass, jstring);
+
+/*
+ * Class:     com_beeyond_crypto_NativeBlockCipher
+ * Method:    freeParam
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_com_beeyond_crypto_NativeBlockCipher_freeParam
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     com_beeyond_crypto_NativeBlockCipher
+ * Method:    getBlockSize
+ * Signature: (J)I
+ */
+JNIEXPORT jint JNICALL Java_com_beeyond_crypto_NativeBlockCipher_getBlockSize
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     com_beeyond_crypto_NativeBlockCipher
+ * Method:    setIV
+ * Signature: (JJ[B)V
+ */
+JNIEXPORT void JNICALL Java_com_beeyond_crypto_NativeBlockCipher_setIV
+  (JNIEnv *, jclass, jlong, jlong, jbyteArray);
+
+/*
+ * Class:     com_beeyond_crypto_NativeBlockCipher
+ * Method:    setup
+ * Signature: (JJI[B)V
+ */
+JNIEXPORT void JNICALL Java_com_beeyond_crypto_NativeBlockCipher_setup
+  (JNIEnv *, jclass, jlong, jlong, jint, jbyteArray);
 
 #ifdef __cplusplus
 }

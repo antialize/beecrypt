@@ -88,19 +88,25 @@ OBJFILES = \
 	$(JAVAGLUE) \
 	hmac.o \
 	md5.o \
+	md5hmac.o \
 	mp32.o \
 	mp32barrett.o \
 	mp32number.o \
 	mp32opt.o \
 	mp32prime.o \
 	mtprng.o \
+	rsa.o \
+	rsakp.o \
+	rsapk.o \
 	sha1hmac.o \
+	sha256.o \
+	sha256hmac.o \
 	timestamp.o
 
 DISTFILES = \
 	LICENSE README DOCUMENTATION CHANGELOG BUGS BENCHMARKS \
 	config.guess config.sub install-sh \
-	configure.in configure Makefile.in \
+	configure.in configure Makefile.in Makefile.mak \
 	config.h \
 	base64.h base64.c \
 	beecrypt.h beecrypt.c \
@@ -120,13 +126,19 @@ DISTFILES = \
 	hmac.h hmac.c \
 	javaglue.h javaglue.c \
 	md5.h md5.c \
+	md5hmac.h md5hmac.c \
 	mp32barrett.h mp32barrett.c \
 	mp32.h mp32.c \
 	mp32number.h mp32number.c \
 	mp32opt.h mp32opt.c \
 	mp32prime.h mp32prime.c \
 	mtprng.h mtprng.c \
+	rsa.h rsa.c \
+	rsakp.h rsakp.c \
+	rsapk.h rsapk.c \
 	sha1hmac.h sha1hmac.c \
+	sha256.h sha256.c \
+	sha256hmac.h sha256hmac.c \
 	timestamp.h timestamp.c \
 	gnu/config.gnu.h.in \
 	gnu/config.gas.h \
@@ -137,6 +149,7 @@ DISTFILES = \
 	beecrypt.mcp \
 	win32/config.win.h \
 	win32/beecrypt.dll.c win32/beecrypt.rc win32/beecrypt.def \
+	win32/masm/blowfishopt.i586.asm win32/masm/fips180opt.i586.asm win32/masm/mp32opt.i386.asm \
 	win32/mwerks/blowfishopt.i586.asm win32/mwerks/fips180opt.i586.asm win32/mwerks/mp32opt.i386.asm \
 	win32/mwerks/beecrypt.pch \
 	beetest.c
@@ -163,6 +176,9 @@ $(LIBBEECRYPT): $(LIBBEECRYPT).$(MAJOR)
 $(LIBBEECRYPT).$(MAJOR): $(OBJFILES)
 	$(LD) $(LDFLAGS) -o $@ $(OBJFILES)
 
+java-header:
+	javah -o javaglue.h javax.crypto.Cipher com.beeyond.security.NativeMessageDigest com.beeyond.security.NativeSecureRandom com.beeyond.crypto.NativeBlockCipher
+
 install: $(LIBBEECRYPT).$(MAJOR)
 	$(INSTALL) -d ${libdir}
 	$(INSTALL) $(LIBBEECRYPT).$(MAJOR) ${libdir}
@@ -188,6 +204,7 @@ install-headers:
 	$(INSTALL_DATA) ${srcdir}/fips186.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/hmac.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/md5.h ${includedir}/beecrypt
+	$(INSTALL_DATA) ${srcdir}/md5hmac.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/mp32.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/mp32barrett.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/mp32number.h ${includedir}/beecrypt
@@ -195,6 +212,8 @@ install-headers:
 	$(INSTALL_DATA) ${srcdir}/mp32prime.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/mtprng.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/sha1hmac.h ${includedir}/beecrypt
+	$(INSTALL_DATA) ${srcdir}/sha256.h ${includedir}/beecrypt
+	$(INSTALL_DATA) ${srcdir}/sha256hmac.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/timestamp.h ${includedir}/beecrypt
 
 beetest: beetest.o

@@ -65,6 +65,11 @@ void mp32nfree(mp32number* n)
 	n->size = 0;
 }
 
+void mp32ncopy(mp32number* n, const mp32number* copy)
+{
+	mp32nset(n, copy->size, copy->data);
+}
+
 void mp32nset(mp32number* n, uint32 size, const uint32* data)
 {
 	if (size)
@@ -75,23 +80,19 @@ void mp32nset(mp32number* n, uint32 size, const uint32* data)
 				n->data = (uint32*) realloc(n->data, size * sizeof(uint32));
 		}
 		else
-		{
 			n->data = (uint32*) malloc(size * sizeof(uint32));
-		}
+
+		if (n->data)
+			mp32copy(n->size = size, n->data, data);
+		else
+			n->size = 0;
 	}
-	else
+	else if (n->data)
 	{
 		free(n->data);
 		n->data = (uint32*) 0;
-	}
-
-	if (n->data)
-	{
-		n->size = size;
-		mp32copy(size, n->data, data);
-	}
-	else
 		n->size = 0;
+	}
 }
 
 void mp32nsetw(mp32number* n, uint32 val)
@@ -129,7 +130,7 @@ void mp32nsethex(mp32number* n, const char* hex)
 
 	if (n->data)
 	{
-		register uint32  temp = 0;
+		register uint32  val = 0;
 		register uint32* dst = n->data;
 		register char ch;
 
@@ -138,22 +139,22 @@ void mp32nsethex(mp32number* n, const char* hex)
 		while (length-- > 0)
 		{
 			ch = *(hex++);
-			temp <<= 4;
+			val <<= 4;
 			if (ch >= '0' && ch <= '9')
-				temp += (ch - '0');
+				val += (ch - '0');
 			else if (ch >= 'A' && ch <= 'F')
-				temp += (ch - 'A') + 10;
+				val += (ch - 'A') + 10;
 			else if (ch >= 'a' && ch <= 'f')
-				temp += (ch - 'a') + 10;
+				val += (ch - 'a') + 10;
 
 			if ((length & 0x7) == 0)
 			{
-				*(dst++) = temp;
-				temp = 0;
+				*(dst++) = val;
+				val = 0;
 			}
 		}
 		if (rem)
-			*dst = temp;
+			*dst = val;
 	}
 	else
 		n->size = 0;

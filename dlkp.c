@@ -29,26 +29,33 @@
 
 #include "dlkp.h"
 
-void dlkp_pPair(dlkp_p* dp, randomGeneratorContext* rc, const dldp_p* param)
+void dlkp_pPair(dlkp_p* kp, randomGeneratorContext* rc, const dldp_p* param)
 {
 	/* copy the parameters */
-	dldp_pCopy(&dp->param, param);
+	dldp_pCopy(&kp->param, param);
 
-	dldp_pPair((const dldp_p*) param, rc, &dp->x, &dp->y);
+	dldp_pPair(param, rc, &kp->x, &kp->y);
 }
 
-void dlkp_pFree(dlkp_p* dp)
+void dlkp_pInit(dlkp_p* kp)
 {
-	dldp_pFree(&dp->param);
+	dldp_pInit(&kp->param);
+	mp32nzero(&kp->y);
+	mp32nzero(&kp->x);
+}
 
-	mp32nfree(&dp->y);
-	mp32nfree(&dp->x);
+void dlkp_pFree(dlkp_p* kp)
+{
+	dldp_pFree(&kp->param);
+
+	mp32nfree(&kp->y);
+	mp32nfree(&kp->x);
 }
 
 void dlkp_pCopy(dlkp_p* dst, const dlkp_p* src)
 {
 	dldp_pCopy(&dst->param, &src->param);
 
-	mp32nset(&dst->y, src->y.size, src->y.data);
-	mp32nset(&dst->x, src->x.size, src->x.data);
+	mp32ncopy(&dst->y, &src->y);
+	mp32ncopy(&dst->x, &src->x);
 }

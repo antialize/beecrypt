@@ -28,16 +28,22 @@
 #include "dlpk.h"
 #include "mp32.h"
 
-void dlpk_pFree(dlpk_p* dp)
+void dlpk_pInit(dlpk_p* pk)
 {
-	dldp_pFree(&dp->param);
-	mp32nfree(&dp->y);
+	dldp_pInit(&pk->param);
+	mp32nzero(&pk->y);
+}
+
+void dlpk_pFree(dlpk_p* pk)
+{
+	dldp_pFree(&pk->param);
+	mp32nfree(&pk->y);
 }
 
 void dlpk_pCopy(dlpk_p* dst, const dlpk_p* src)
 {
 	dldp_pCopy(&dst->param, &src->param);
-	mp32nset(&dst->y, src->y.size, src->y.data);
+	mp32ncopy(&dst->y, &src->y);
 }
 
 int dlpk_pEqual(const dlpk_p* a, const dlpk_p* b)
@@ -46,29 +52,29 @@ int dlpk_pEqual(const dlpk_p* a, const dlpk_p* b)
 		mp32eqx(a->y.size, a->y.data, b->y.size, b->y.data);
 }
 
-int dlpk_pgoqValidate(const dlpk_p* dp, randomGeneratorContext* rc, int cofactor)
+int dlpk_pgoqValidate(const dlpk_p* pk, randomGeneratorContext* rc, int cofactor)
 {
-	if (dldp_pgoqValidate(&dp->param, rc, cofactor) == 0)
+	if (dldp_pgoqValidate(&pk->param, rc, cofactor) == 0)
 		return 0;
 
-	if (mp32leone(dp->y.size, dp->y.data))
+	if (mp32leone(pk->y.size, pk->y.data))
 		return 0;
 
-	if (mp32gex(dp->y.size, dp->y.data, dp->param.p.size, dp->param.p.modl))
+	if (mp32gex(pk->y.size, pk->y.data, pk->param.p.size, pk->param.p.modl))
 		return 0;
 
 	return 1;
 }
 
-int dlpk_pgonValidate(const dlpk_p* dp, randomGeneratorContext* rc)
+int dlpk_pgonValidate(const dlpk_p* pk, randomGeneratorContext* rc)
 {
-	if (dldp_pgonValidate(&dp->param, rc) == 0)
+	if (dldp_pgonValidate(&pk->param, rc) == 0)
 		return 0;
 
-	if (mp32leone(dp->y.size, dp->y.data))
+	if (mp32leone(pk->y.size, pk->y.data))
 		return 0;
 
-	if (mp32gex(dp->y.size, dp->y.data, dp->param.p.size, dp->param.p.data))
+	if (mp32gex(pk->y.size, pk->y.data, pk->param.p.size, pk->param.p.modl))
 		return 0;
 
 	return 1;

@@ -28,6 +28,10 @@
 
 #include "beecrypt.h"
 
+#if WIN32
+#include <Windows.h>
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif

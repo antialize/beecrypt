@@ -49,6 +49,7 @@
 #define OPENBSD     0
 #define OSF         0
 #define QNX         0
+#define SCO_UNIX	0
 #define SOLARIS     0
 #define WIN32       0
 

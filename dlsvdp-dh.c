@@ -29,6 +29,5 @@
 
 void dlsvdp_pDHSecret(const dldp_p* dp, const mp32number* x, const mp32number* y, mp32number* s)
 {
-	mp32bpowmod(&dp->p, y->size, y->data, x->size, x->data);
-	mp32nset(s, dp->p.size, dp->p.data);
+	mp32bnpowmod(&dp->p, y, x, s);
 }

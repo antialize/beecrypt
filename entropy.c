@@ -31,6 +31,7 @@
 #if WIN32
 # include <mmsystem.h>
 # include <wincrypt.h>
+# include <winerror.h>
 #else 
 # if HAVE_SYS_IOCTL_H
 #  include <sys/ioctl.h>

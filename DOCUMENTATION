@@ -47,4 +47,4 @@ hmac.h, hmac.c: the base for the HMAC algorithm; combined with a hash function, 
 
 mtprng.h, mtprng.c: the Mersenne Twister pseudo-random number generator; it has a very high period, but needs more analysis on whether it's cryptographically strong enough.
 
-sha1hmac.h, sha1hmac.c: the implementation of the SHA-1/HMAC keyed hash function; uses routines from fips186 and hmac.
+sha1hmac.h, sha1hmac.c: the implementation of the SHA-1/HMAC keyed hash function; uses routines from fips180 and hmac.

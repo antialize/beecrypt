@@ -44,6 +44,8 @@ extern "C" {
 BEEDLLAPI
 void dlkp_pPair(dlkp_p*, randomGeneratorContext*, const dldp_p*);
 BEEDLLAPI
+void dlkp_pInit(dlkp_p*);
+BEEDLLAPI
 void dlkp_pFree(dlkp_p*);
 BEEDLLAPI
 void dlkp_pCopy(dlkp_p*, const dlkp_p*);

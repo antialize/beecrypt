@@ -48,6 +48,8 @@ BEEDLLAPI
 void mp32ninit(mp32number*, uint32, const uint32*);
 BEEDLLAPI
 void mp32nfree(mp32number*);
+BEEDLLAPI
+void mp32ncopy(mp32number*, const mp32number*);
 
 BEEDLLAPI
 void mp32nset   (mp32number*, uint32, const uint32*);

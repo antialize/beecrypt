@@ -72,15 +72,17 @@ EXPORTS
  dldp_pgoqValidate
  dlkp_pCopy
  dlkp_pFree
+ dlkp_pInit
  dlkp_pPair
  dlpk_pCopy
  dlpk_pEqual
  dlpk_pFree
+ dlpk_pInit
  dlpk_pgoqValidate
  dlpk_pgonValidate
  dlsvdp_pDHSecret
- ;elgv1sign
- ;elgv1vrfy 
+ elgv1sign
+ elgv1vrfy 
  elgv3sign
  elgv3vrfy
  encodeByte
@@ -122,6 +124,11 @@ EXPORTS
  md5Reset
  md5Update
  md5Digest
+ md5hmac data
+ md5hmacDigest
+ md5hmacReset
+ md5hmacSetup
+ md5hmacUpdate
  ;mp32copy
  ;mp32move
  mp32zero
@@ -177,7 +184,7 @@ EXPORTS
  mp32addsqrtrc
  mp32mul
  mp32sqr
- mp32gcd
+ mp32gcd_w
  mp32nmodw
  mp32nmod
  mp32ndivmod
@@ -186,39 +193,43 @@ EXPORTS
  mp32bzero
  mp32binit
  mp32bfree
+ mp32bcopy
  mp32bset
- mp32bmu
- mp32brnd
- mp32brndres
- mp32bmodsubone
+ mp32bsethex
+ mp32bsubone
  mp32bneg
- mp32bmod
- mp32baddmod
- ;mp32bsubmod
- mp32bmulmodres
- mp32bsqrmodres
- mp32bmulmod
- mp32bsqrmod
- mp32bpowmod
- mp32btwopowmod
+ mp32bmu_w
+ mp32brnd_w
+ mp32brndinv_w
+ mp32bmod_w
+ mp32baddmod_w
+ ;mp32bsubmod_w
+ mp32bmulmod_w
+ mp32bsqrmod_w
+ mp32bpowmod_w
+ mp32bpowmodsld_w
+ mp32btwopowmod_w
  ;mp32bsm2powmod
  ;mp32bsm3powmod
- mp32binv
- mp32bpprime
- mp32bnmulmodres
- mp32bnsqrmodres
+ mp32binv_w
+ mp32bnrnd
+ mp32bnmulmod
+ mp32bnsqrmod
  mp32bnpowmod
+ mp32bnpowmodsld
  mp32bnsqrmod
  mp32ptrials
- mp32pmilrab
- mp32prnd
- mp32prndsafe
+ mp32pmilrab_w
+ mp32bpprime_w
+ mp32prnd_w
  ;mp32prndcon
- mp32prndconone
+ mp32prndconone_w
+ mp32prndsafe_w
  mp32nzero
  mp32nsize
  mp32ninit
  mp32nfree
+ mp32ncopy
  mp32nset
  mp32nsetw
  mp32nsethex
@@ -233,6 +244,16 @@ EXPORTS
  randomGeneratorDefault
  randomGeneratorContextInit
  randomGeneratorContextFree
+ rsapri
+ rsapricrt
+ rsavrfy
+ rsakpMake
+ rsakpInit
+ rsakpFree
+ rsakpCopy
+ rsapkInit
+ rsapkFree
+ rsapkCopy
  readByte
  readChar
  readChars
@@ -250,6 +271,16 @@ EXPORTS
  sha1hmacReset
  sha1hmacSetup
  sha1hmacUpdate
+ sha256 data
+ sha256Process
+ sha256Reset
+ sha256Update
+ sha256Digest
+ sha256hmac data
+ sha256hmacDigest
+ sha256hmacReset
+ sha256hmacSetup
+ sha256hmacUpdate
  swap16
  swap32
  swap64

@@ -39,6 +39,8 @@ extern "C" {
 #endif
 
 BEEDLLAPI
+void dlpk_pInit(dlpk_p*);
+BEEDLLAPI
 void dlpk_pFree(dlpk_p*);
 BEEDLLAPI
 void dlpk_pCopy(dlpk_p*, const dlpk_p*);

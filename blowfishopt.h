@@ -34,10 +34,13 @@ extern "C" {
 #endif
 
 #if WIN32
-#if __INTEL__ && __MWERKS__
-#define ASM_BLOWFISHENCRYPT
-#define ASM_BLOWFISHDECRYPT
-#endif
+# if defined(_MSC_VER) && defined(_M_IX86)
+#  define ASM_BLOWFISHENCRYPT
+#  define ASM_BLOWFISHDECRYPT
+# elif __INTEL__ && __MWERKS__
+#  define ASM_BLOWFISHENCRYPT
+#  define ASM_BLOWFISHDECRYPT
+# endif
 #endif
 
 #if defined(__GNUC__)
