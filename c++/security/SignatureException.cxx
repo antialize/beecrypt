@@ -30,6 +30,10 @@ SignatureException::SignatureException() throw ()
 {
 }
 
+SignatureException::SignatureException(const String* message) throw () : GeneralSecurityException(message)
+{
+}
+
 SignatureException::SignatureException(const String& message) throw () : GeneralSecurityException(message)
 {
 }

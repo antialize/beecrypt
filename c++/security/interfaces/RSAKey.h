@@ -20,13 +20,13 @@
  * \ingroup CXX_SECURITY_INTERFACES_m
  */
 
-#ifndef _INTERFACE_RSAKEY_H
-#define _INTERFACE_RSAKEY_H
-
-#include "beecrypt/api.h"
-#include "beecrypt/mpbarrett.h"
+#ifndef _INTERFACE_BEE_SECURITY_INTERFACES_RSAKEY_H
+#define _INTERFACE_BEE_SECURITY_INTERFACES_RSAKEY_H
 
 #ifdef __cplusplus
+
+#include "beecrypt/c++/math/BigInteger.h"
+using beecrypt::math::BigInteger;
 
 namespace beecrypt {
 	namespace security {
@@ -37,7 +37,9 @@ namespace beecrypt {
 			class RSAKey
 			{
 			public:
-				virtual const mpbarrett& getModulus() const throw () = 0;
+				virtual ~RSAKey() {}
+
+				virtual const BigInteger& getModulus() const throw () = 0;
 			};
 		}
 	}

@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_CERT_m
  */
 
-#ifndef _CLASS_CERTIFICATEEXCEPTION_H
-#define _CLASS_CERTIFICATEEXCEPTION_H
+#ifndef _CLASS_BEE_SECURITY_CERT_CERTIFICATEEXCEPTION_H
+#define _CLASS_BEE_SECURITY_CERT_CERTIFICATEEXCEPTION_H
 
 #ifdef __cplusplus
 
@@ -37,6 +37,7 @@ namespace beecrypt {
 			{
 			public:
 				CertificateException() throw ();
+				CertificateException(const String* message) throw ();
 				CertificateException(const String& message) throw ();
 			};
 		}

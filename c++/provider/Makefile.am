@@ -2,7 +2,7 @@ INCLUDES = -I$(top_srcdir)/..
 
 LIBS = -licuuc -licuio
 
-AUTOMAKE_OPTIONS = gnu no-dependencies
+AUTOMAKE_OPTIONS = gnu
 
 pkgaltlibdir=$(prefix)/lib@LIBALT@/beecrypt
 pkgaltlib_LTLIBRARIES = base.la
@@ -14,7 +14,6 @@ AESCipher.cxx \
 BeeCertificateFactory.cxx \
 BeeCertPathValidator.cxx \
 BaseProvider.cxx \
-BeeKeyFactory.cxx \
 BeeKeyStore.cxx \
 BeeSecureRandom.cxx \
 BlockCipher.cxx \
@@ -68,7 +67,6 @@ AESCipher.h \
 BeeCertificateFactory.h \
 BeeCertPathValidator.h \
 BaseProvider.h \
-BeeKeyFactory.h \
 BeeKeyStore.h \
 BeeSecureRandom.h \
 BlockCipher.h \

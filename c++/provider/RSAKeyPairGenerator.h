@@ -41,8 +41,8 @@ namespace beecrypt {
 		class RSAKeyPairGenerator : public beecrypt::security::KeyPairGeneratorSpi
 		{
 		private:
-			size_t _size;
-			RSAKeyGenParameterSpec* _spec;
+			int _size;
+			BigInteger _e;
 			SecureRandom* _srng;
 
 			KeyPair* genpair(randomGeneratorContext*);
@@ -51,7 +51,7 @@ namespace beecrypt {
 			virtual KeyPair* engineGenerateKeyPair();
 
 			virtual void engineInitialize(const AlgorithmParameterSpec&, SecureRandom*) throw (InvalidAlgorithmParameterException);
-			virtual void engineInitialize(size_t, SecureRandom*) throw (InvalidParameterException);
+			virtual void engineInitialize(int, SecureRandom*) throw (InvalidParameterException);
 
 		public:
 			RSAKeyPairGenerator();

@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_SPEC_m
  */
 
-#ifndef _CLASS_RSAPRIVATECRTKEYSPEC_H
-#define _CLASS_RSAPRIVATECRTKEYSPEC_H
+#ifndef _CLASS_BEE_SECURITY_SPEC_RSAPRIVATECRTKEYSPEC_H
+#define _CLASS_BEE_SECURITY_SPEC_RSAPRIVATECRTKEYSPEC_H
 
 #ifdef __cplusplus
 
@@ -36,23 +36,23 @@ namespace beecrypt {
 			class BEECRYPTCXXAPI RSAPrivateCrtKeySpec : public beecrypt::security::spec::RSAPrivateKeySpec
 			{
 				private:
-					mpnumber _e;
-					mpbarrett _p;
-					mpbarrett _q;
-					mpnumber _dp;
-					mpnumber _dq;
-					mpnumber _qi;
+					BigInteger _e;
+					BigInteger _p;
+					BigInteger _q;
+					BigInteger _dp;
+					BigInteger _dq;
+					BigInteger _qi;
 
 				public:
-					RSAPrivateCrtKeySpec(const mpbarrett& modulus, const mpnumber& publicExponent, const mpnumber& privateExponent, const mpbarrett& primeP, const mpbarrett& primeQ, const mpnumber& primeExponentP, const mpnumber& primeExponentQ, const mpnumber& crtCoefficient);
-					virtual ~RSAPrivateCrtKeySpec();
+					RSAPrivateCrtKeySpec(const BigInteger& modulus, const BigInteger& publicExponent, const BigInteger& privateExponent, const BigInteger& primeP, const BigInteger& primeQ, const BigInteger& primeExponentP, const BigInteger& primeExponentQ, const BigInteger& crtCoefficient);
+					virtual ~RSAPrivateCrtKeySpec() {}
 
-					const mpnumber& getPublicExponent() const throw ();
-					const mpbarrett& getPrimeP() const throw ();
-					const mpbarrett& getPrimeQ() const throw ();
-					const mpnumber& getPrimeExponentP() const throw ();
-					const mpnumber& getPrimeExponentQ() const throw ();
-					const mpnumber& getCrtCoefficient() const throw ();
+					const BigInteger& getPublicExponent() const throw ();
+					const BigInteger& getPrimeP() const throw ();
+					const BigInteger& getPrimeQ() const throw ();
+					const BigInteger& getPrimeExponentP() const throw ();
+					const BigInteger& getPrimeExponentQ() const throw ();
+					const BigInteger& getCrtCoefficient() const throw ();
 			};
 		}
 	}

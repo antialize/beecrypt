@@ -20,30 +20,33 @@
  * \ingroup CXX_IO_m
  */
 
-#ifndef _CLASS_OUTPUTSTREAM_H
-#define _CLASS_OUTPUTSTREAM_H
+#ifndef _ABSTRACT_CLASS_BEE_IO_OUTPUTSTREAM_H
+#define _ABSTRACT_CLASS_BEE_IO_OUTPUTSTREAM_H
 
 #ifdef __cplusplus
 
 #include "beecrypt/c++/array.h"
 using beecrypt::bytearray;
-#include "beecrypt/c++/io/IOException.h"
-using beecrypt::io::IOException;
 #include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
+#include "beecrypt/c++/io/Closeable.h"
+using beecrypt::io::Closeable;
+#include "beecrypt/c++/io/Flushable.h"
+using beecrypt::io::Flushable;
 
 namespace beecrypt {
 	namespace io {
 		/*!\ingroup CXX_IO_m
 		 */
-		class BEECRYPTCXXAPI OutputStream : public beecrypt::lang::Object
+		class BEECRYPTCXXAPI OutputStream : public beecrypt::lang::Object, public virtual beecrypt::io::Closeable, public virtual beecrypt::io::Flushable
 		{
 		public:
-			virtual ~OutputStream() {};
+			virtual ~OutputStream() {}
 
 			virtual void close() throw (IOException);
 			virtual void flush() throw (IOException);
 			virtual void write(byte b) throw (IOException) = 0;
-			virtual void write(const byte* data, size_t offset, size_t length) throw (IOException);
+			virtual void write(const byte* data, int offset, int length) throw (IOException);
 			virtual void write(const bytearray& b) throw (IOException);
 		};
 	}

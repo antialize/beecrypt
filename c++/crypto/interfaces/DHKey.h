@@ -20,8 +20,8 @@
  * \ingroup CXX_CRYPTO_INTERFACES_m
  */
 
-#ifndef _INTERFACE_DHKEY_H
-#define _INTERFACE_DHKEY_H
+#ifndef _INTERFACE_BEE_CRYPTO_INTERFACES_DHKEY_H
+#define _INTERFACE_BEE_CRYPTO_INTERFACES_DHKEY_H
 
 #ifdef __cplusplus
 
@@ -37,6 +37,8 @@ namespace beecrypt {
 			class DHKey
 			{
 			public:
+				virtual ~DHKey() {}
+
 				virtual const DHParams& getParams() const throw () = 0;
 			};
 		}

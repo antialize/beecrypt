@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_NOSUCHPROVIDEREXCEPTION_H
-#define _CLASS_NOSUCHPROVIDEREXCEPTION_H
+#ifndef _CLASS_BEE_SECURITY_NOSUCHPROVIDEREXCEPTION_H
+#define _CLASS_BEE_SECURITY_NOSUCHPROVIDEREXCEPTION_H
 
 #ifdef __cplusplus
 
@@ -36,6 +36,7 @@ namespace beecrypt {
 		{
 		public:
 			NoSuchProviderException() throw ();
+			NoSuchProviderException(const String* message) throw ();
 			NoSuchProviderException(const String& message) throw ();
 		};
 	}

@@ -20,8 +20,8 @@
  * \ingroup CXX_LANG_m
  */
 
-#ifndef _CLASS_EXCEPTION_H
-#define _CLASS_EXCEPTION_H
+#ifndef _CLASS_BEE_LANG_EXCEPTION_H
+#define _CLASS_BEE_LANG_EXCEPTION_H
 
 #ifdef __cplusplus
 
@@ -38,6 +38,7 @@ namespace beecrypt {
 		{
 		public:
 			Exception() throw ();
+			Exception(const String* message) throw ();
 			Exception(const String& message) throw ();
 		};
 	}

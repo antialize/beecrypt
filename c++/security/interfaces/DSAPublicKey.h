@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_INTERFACES_m
  */
 
-#ifndef _INTERFACE_DSAPUBLICKEY_H
-#define _INTERFACE_DSAPUBLICKEY_H
+#ifndef _INTERFACE_BEE_SECURITY_INTERFACES_DSAPUBLICKEY_H
+#define _INTERFACE_BEE_SECURITY_INTERFACES_DSAPUBLICKEY_H
 
 #ifdef __cplusplus
 
@@ -36,10 +36,12 @@ namespace beecrypt {
 			/*!\brief DSA public key interface
 			 * \ingroup CXX_SECURITY_INTERFACES_m
 			 */
-			class DSAPublicKey : public PublicKey, public DSAKey
+			class DSAPublicKey : public virtual PublicKey, public virtual DSAKey
 			{
 			public:
-				virtual const mpnumber& getY() const throw () = 0;
+				virtual ~DSAPublicKey() {}
+
+				virtual const BigInteger& getY() const throw () = 0;
 			};
 		}
 	}

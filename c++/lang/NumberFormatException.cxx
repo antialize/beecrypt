@@ -29,6 +29,10 @@ NumberFormatException::NumberFormatException() throw ()
 {
 }
 
+NumberFormatException::NumberFormatException(const String* message) throw () : IllegalArgumentException(message)
+{
+}
+
 NumberFormatException::NumberFormatException(const String& message) throw () : IllegalArgumentException(message)
 {
 }

@@ -20,10 +20,9 @@
  * \ingroup CXX_CRYPTO_INTERFACES_m
  */
 
-#ifndef _INTERFACE_DHPUBLICKEY_H
-#define _INTERFACE_DHPUBLICKEY_H
+#ifndef _INTERFACE_BEE_CRYPTO_INTERFACES_DHPUBLICKEY_H
+#define _INTERFACE_BEE_CRYPTO_INTERFACES_DHPUBLICKEY_H
 
-#include "beecrypt/api.h"
 #include "beecrypt/mpnumber.h"
 
 #ifdef __cplusplus
@@ -39,10 +38,12 @@ namespace beecrypt {
 			/*!\brief Diffie-Hellman public key interface
 			 * \ingroup CXX_CRYPTO_INTERFACES_m
 			 */
-			class DHPublicKey : public beecrypt::security::PublicKey, public DHKey
+			class DHPublicKey : public virtual beecrypt::security::PublicKey, public beecrypt::crypto::interfaces::DHKey
 			{
 			public:
-				virtual const mpnumber& getY() const throw () = 0;
+				virtual ~DHPublicKey() {}
+
+				virtual const BigInteger& getY() const throw () = 0;
 			};
 		}
 	}

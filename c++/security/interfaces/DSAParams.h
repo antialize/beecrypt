@@ -20,13 +20,13 @@
  * \ingroup CXX_SECURITY_INTERFACES_m
  */
 
-#ifndef _INTERFACE_DSAPARAMS_H
-#define _INTERFACE_DSAPARAMS_H
-
-#include "beecrypt/api.h"
-#include "beecrypt/mpbarrett.h"
+#ifndef _INTERFACE_BEE_SECURITY_INTERFACES_DSAPARAMS_H
+#define _INTERFACE_BEE_SECURITY_INTERFACES_DSAPARAMS_H
 
 #ifdef __cplusplus
+
+#include "beecrypt/c++/math/BigInteger.h"
+using beecrypt::math::BigInteger;
 
 namespace beecrypt {
 	namespace security {
@@ -34,12 +34,14 @@ namespace beecrypt {
 			/*!\brief DSA parameter interface
 			 * \ingroup CXX_SECURITY_INTERFACES_m
 			 */
-			class DSAParams
+			class BEECRYPTCXXAPI DSAParams
 			{
 			public:
-				virtual const mpbarrett& getP() const throw () = 0;
-				virtual const mpbarrett& getQ() const throw () = 0;
-				virtual const mpnumber& getG() const throw () = 0;
+				virtual ~DSAParams() {}
+
+				virtual const BigInteger& getP() const throw () = 0;
+				virtual const BigInteger& getQ() const throw () = 0;
+				virtual const BigInteger& getG() const throw () = 0;
 			};
 		}
 	}

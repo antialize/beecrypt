@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_SPEC_m
  */
 
-#ifndef _CLASS_INVALIDKEYSPECEXCEPTION_H
-#define _CLASS_INVALIDKEYSPECEXCEPTION_H
+#ifndef _CLASS_BEE_SECURITY_SPEC_INVALIDKEYSPECEXCEPTION_H
+#define _CLASS_BEE_SECURITY_SPEC_INVALIDKEYSPECEXCEPTION_H
 
 #ifdef __cplusplus
 
@@ -37,6 +37,7 @@ namespace beecrypt {
 			{
 			public:
 				InvalidKeySpecException() throw ();
+				InvalidKeySpecException(const String* message) throw ();
 				InvalidKeySpecException(const String& message) throw ();
 			};
 		}

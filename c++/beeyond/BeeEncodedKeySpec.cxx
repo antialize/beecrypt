@@ -22,7 +22,7 @@
 
 using namespace beecrypt::beeyond;
 
-BeeEncodedKeySpec::BeeEncodedKeySpec(const byte* data, size_t size) : EncodedKeySpec(data, size)
+BeeEncodedKeySpec::BeeEncodedKeySpec(const byte* data, int size) : EncodedKeySpec(data, size)
 {
 }
 
@@ -30,16 +30,8 @@ BeeEncodedKeySpec::BeeEncodedKeySpec(const bytearray& copy) : EncodedKeySpec(cop
 {
 }
 
-BeeEncodedKeySpec::~BeeEncodedKeySpec()
-{
-}
-
 const String& BeeEncodedKeySpec::getFormat() const throw ()
 {
-	static const String* format = 0;
-
-	if (!format)
-		format = new String("BEE");
-
-	return *format;
+	static const String FORMAT("BEE");
+	return FORMAT;
 }

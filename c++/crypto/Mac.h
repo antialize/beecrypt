@@ -20,17 +20,13 @@
  * \ingroup CXX_CRYPTO_m
  */
 
-#ifndef _CLASS_MAC_H
-#define _CLASS_MAC_H
-
-// #include "beecrypt/api.h"
+#ifndef _CLASS_BEE_CRYPTO_MAC_H
+#define _CLASS_BEE_CRYPTO_MAC_H
 
 #ifdef __cplusplus
 
 #include "beecrypt/c++/crypto/MacSpi.h"
 using beecrypt::crypto::MacSpi;
-#include "beecrypt/c++/lang/Object.h"
-using beecrypt::lang::Object;
 #include "beecrypt/c++/security/Provider.h"
 using beecrypt::security::Provider;
 #include "beecrypt/c++/security/NoSuchAlgorithmException.h"
@@ -65,13 +61,13 @@ namespace beecrypt {
 
 			const bytearray& doFinal() throw (IllegalStateException);
 			const bytearray& doFinal(const bytearray&) throw (IllegalStateException);
-			size_t doFinal(byte* data, size_t offset, size_t length) throw (IllegalStateException, ShortBufferException);
-			size_t getMacLength();
+			int doFinal(byte* data, int offset, int length) throw (IllegalStateException, ShortBufferException);
+			int getMacLength();
 			void init(const Key&) throw (InvalidKeyException);
 			void init(const Key&, const AlgorithmParameterSpec*) throw (InvalidKeyException, InvalidAlgorithmParameterException);
 			void reset();
 			void update(byte) throw (IllegalStateException);
-			void update(const byte* data, size_t offset, size_t length) throw (IllegalStateException);
+			void update(const byte* data, int offset, int length) throw (IllegalStateException);
 			void update(const bytearray&) throw (IllegalStateException);
 
 			const String& getAlgorithm() const throw ();

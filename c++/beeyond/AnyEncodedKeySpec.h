@@ -34,16 +34,15 @@ namespace beecrypt {
 	namespace beeyond {
 		/*!\ingroup CXX_BEEYOND_m
 		 */
-		class BEECRYPTCXXAPI AnyEncodedKeySpec : public EncodedKeySpec
+		class BEECRYPTCXXAPI AnyEncodedKeySpec : public beecrypt::security::spec::EncodedKeySpec
 		{
 		private:
 			String _format;
 
 		public:
-			AnyEncodedKeySpec(const String& format, const byte*, size_t);
+			AnyEncodedKeySpec(const String& format, const byte*, int);
 			AnyEncodedKeySpec(const String& format, const bytearray&);
-
-			virtual ~AnyEncodedKeySpec();
+			virtual ~AnyEncodedKeySpec() {}
 
 			virtual const String& getFormat() const throw ();
 		};

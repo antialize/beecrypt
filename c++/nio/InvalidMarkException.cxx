@@ -29,6 +29,10 @@ InvalidMarkException::InvalidMarkException() throw ()
 {
 }
 
+InvalidMarkException::InvalidMarkException(const String* message) throw () : IllegalStateException(message)
+{
+}
+
 InvalidMarkException::InvalidMarkException(const String& message) throw () : IllegalStateException(message)
 {
 }

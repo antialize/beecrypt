@@ -34,7 +34,7 @@ namespace beecrypt {
 		{
 		public:
 			BlowfishCipher();
-			virtual ~BlowfishCipher() {};
+			virtual ~BlowfishCipher() {}
 		};
 	}
 }

@@ -33,15 +33,19 @@ using beecrypt::security::InvalidAlgorithmParameterException;
 using beecrypt::security::KeyStore;
 #include "beecrypt/c++/security/KeyStoreException.h"
 using beecrypt::security::KeyStoreException;
+#include "beecrypt/c++/security/cert/Certificate.h"
+using beecrypt::security::cert::Certificate;
 #include "beecrypt/c++/security/cert/CertPathParameters.h"
 using beecrypt::security::cert::CertPathParameters;
+#include "beecrypt/c++/util/ArrayList.h"
+using beecrypt::util::ArrayList;
 
 namespace beecrypt {
 	namespace beeyond {
 		class BEECRYPTCXXAPI BeeCertPathParameters : public beecrypt::lang::Object, public beecrypt::security::cert::CertPathParameters
 		{
 		private:
-			vector<const Certificate*> _cert;
+			ArrayList<Certificate> _cert;
 
 		protected:
 			BeeCertPathParameters();
@@ -52,7 +56,7 @@ namespace beecrypt {
 
 			virtual BeeCertPathParameters* clone() const throw ();
 
-			const vector<const Certificate*>& getTrustedCertificates() const;
+			const List<Certificate>& getTrustedCertificates() const;
 		};
 	}
 }

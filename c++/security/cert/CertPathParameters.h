@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_CERT_m
  */
 
-#ifndef _INTERFACE_CERTPATHPARAMETERS_H
-#define _INTERFACE_CERTPATHPARAMETERS_H
+#ifndef _INTERFACE_BEE_SECURITY_CERT_CERTPATHPARAMETERS_H
+#define _INTERFACE_BEE_SECURITY_CERT_CERTPATHPARAMETERS_H
 
 #ifdef __cplusplus
 
@@ -33,8 +33,10 @@ namespace beecrypt {
 		namespace cert {
 			/*!\ingroup CXX_SECURITY_CERT_m
 			 */
-			class BEECRYPTCXXAPI CertPathParameters : public beecrypt::lang::Cloneable
+			class BEECRYPTCXXAPI CertPathParameters : public virtual beecrypt::lang::Cloneable
 			{
+			public:
+				virtual ~CertPathParameters() {}
 			};
 		}
 	}

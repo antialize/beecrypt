@@ -35,12 +35,12 @@ namespace beecrypt {
 		class BaseProvider : public beecrypt::security::Provider
 		{
 		private:
-			void putall();
+			void init();
 
 		public:
 			BaseProvider();
 			BaseProvider(void*);
-			virtual ~BaseProvider();
+			virtual ~BaseProvider() {}
 		};
 	}
 }

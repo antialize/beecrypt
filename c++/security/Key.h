@@ -20,27 +20,25 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _INTERFACE_KEY_H
-#define _INTERFACE_KEY_H
+#ifndef _INTERFACE_BEE_SECURITY_KEY_H
+#define _INTERFACE_BEE_SECURITY_KEY_H
 
 #ifdef __cplusplus
 
-#include "beecrypt/c++/array.h"
-using beecrypt::bytearray;
 #include "beecrypt/c++/lang/String.h"
 using beecrypt::lang::String;
 
 namespace beecrypt {
 	namespace security {
 		/*!\brief The top-level interface for all keys.
-		* \ingroup CXX_SECURITY_m
-		*/
+		 * \ingroup CXX_SECURITY_m
+		 */
 		class BEECRYPTCXXAPI Key
 		{
 		public:
-			virtual ~Key() {};
+			virtual ~Key() {}
 
-			virtual const bytearray* getEncoded() const = 0;
+			virtual const bytearray* getEncoded() const throw () = 0;
 			virtual const String& getAlgorithm() const throw () = 0;
 			virtual const String* getFormat() const throw () = 0;
 		};

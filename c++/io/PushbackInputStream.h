@@ -20,8 +20,8 @@
  * \ingroup CXX_IO_m
  */
 
-#ifndef _CLASS_PUSHBACKINPUTSTREAM_H
-#define _CLASS_PUSHBACKINPUTSTREAM_H
+#ifndef _CLASS_BEE_IO_PUSHBACKINPUTSTREAM_H
+#define _CLASS_BEE_IO_PUSHBACKINPUTSTREAM_H
 
 #ifdef __cplusplus
 
@@ -39,21 +39,21 @@ namespace beecrypt {
 
 		protected:
 			bytearray buf;
-			size_t pos;
+			jint pos;
 
 		public:
-			PushbackInputStream(InputStream& in, size_t size = 1);
+			PushbackInputStream(InputStream& in, jint size = 1);
 			virtual ~PushbackInputStream();
 
-			virtual off_t available() throw (IOException);
+			virtual jint available() throw (IOException);
 			virtual void close() throw (IOException);
 			virtual bool markSupported() throw ();
-			virtual int read() throw (IOException);
-			virtual int read(byte* data, size_t offset, size_t length) throw (IOException);
-			virtual off_t skip(off_t n) throw (IOException);
+			virtual jint read() throw (IOException);
+			virtual jint read(byte* data, jint offset, jint length) throw (IOException);
+			virtual jint skip(jint n) throw (IOException);
 
 			void unread(byte) throw (IOException);
-			void unread(const byte* data, size_t offset, size_t length) throw (IOException);
+			void unread(const byte* data, jint offset, jint length) throw (IOException);
 			void unread(const bytearray& b) throw (IOException);
 		};
 	}

@@ -36,31 +36,50 @@ DHParameterSpec::DHParameterSpec(const DHParameterSpec& copy)
 	_l = copy._l;
 }
 
-DHParameterSpec::DHParameterSpec(const mpbarrett& p, const mpnumber& g)
+DHParameterSpec::DHParameterSpec(const BigInteger& p, const BigInteger& g)
 {
 	_p = p;
 	_g = g;
 	_l = 0;
 }
 
-DHParameterSpec::DHParameterSpec(const mpbarrett& p, const mpnumber& g, size_t l)
+DHParameterSpec::DHParameterSpec(const BigInteger& p, const BigInteger& g, int l)
 {
 	_p = p;
 	_g = g;
 	_l = l;
 }
 
-const mpbarrett& DHParameterSpec::getP() const throw ()
+bool DHParameterSpec::equals(const Object* obj) const throw ()
+{
+	if (this == obj)
+		return true;
+
+	const DHParameterSpec* spec = dynamic_cast<const DHParameterSpec*>(obj);
+	if (spec)
+	{
+		if (_p != spec->_p)
+			return false;
+		if (_g != spec->_g)
+			return false;
+
+		return true;
+	}
+
+	return false;
+}
+
+const BigInteger& DHParameterSpec::getP() const throw ()
 {
 	return _p;
 }
 
-const mpnumber& DHParameterSpec::getG() const throw ()
+const BigInteger& DHParameterSpec::getG() const throw ()
 {
 	return _g;
 }
 
-size_t DHParameterSpec::getL() const throw ()
+int DHParameterSpec::getL() const throw ()
 {
 	return _l;
 }

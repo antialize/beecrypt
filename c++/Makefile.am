@@ -1,12 +1,12 @@
-LIBBEECRYPT_CXX_LT_CURRENT = 10
-LIBBEECRYPT_CXX_LT_AGE = 4
+LIBBEECRYPT_CXX_LT_CURRENT = 11
+LIBBEECRYPT_CXX_LT_AGE = 5
 LIBBEECRYPT_CXX_LT_REVISION = 0
 
 INCLUDES = -I$(top_srcdir)/..
 
-AUTOMAKE_OPTIONS = gnu no-dependencies
+AUTOMAKE_OPTIONS = gnu
 
-SUBDIRS = lang io nio util security crypto beeyond . provider
+SUBDIRS = lang math io nio util security crypto beeyond . provider
 
 libaltdir=$(prefix)/lib@LIBALT@
 cxxdir=$(pkgincludedir)/c++
@@ -15,20 +15,19 @@ libalt_LTLIBRARIES = libbeecrypt_cxx.la
 
 libbeecrypt_cxx_la_SOURCES = \
 adapter.cxx \
-bstream.cxx \
 resource.cxx
 
-libbeecrypt_cxx_la_LIBADD = ../libbeecrypt.la beeyond/libcxxbeeyond.la crypto/libcxxcrypto.la io/libcxxio.la lang/libcxxlang.la util/libcxxutil.la security/libcxxsecurity.la -licuuc -licuio
+libbeecrypt_cxx_la_LIBADD = ../libbeecrypt.la lang/libcxxlang.la math/libcxxmath.la io/libcxxio.la nio/libcxxnio.la util/libcxxutil.la security/libcxxsecurity.la crypto/libcxxcrypto.la beeyond/libcxxbeeyond.la -licuuc -licuio
 libbeecrypt_cxx_la_LDFLAGS = -no-undefined -version-info $(LIBBEECRYPT_CXX_LT_CURRENT):$(LIBBEECRYPT_CXX_LT_REVISION):$(LIBBEECRYPT_CXX_LT_AGE)
 
 cxx_HEADERS = \
-array.h \
-bstream.h \
-mutex.h
+array.h
 
 noinst_HEADERS = \
 adapter.h \
 resource.h
+
+EXTRA_DIST = Doxyheader
 
 TESTS = testks testdsa testrsa testdhaes 
 

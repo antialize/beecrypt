@@ -20,8 +20,8 @@
  * \ingroup CXX_CRYPTO_INTERFACES_m
  */
 
-#ifndef _INTERFACE_PBEKEY_H
-#define _INTERFACE_PBEKEY_H
+#ifndef _INTERFACE_BEE_CRYPTO_INTERFACES_PBEKEY_H
+#define _INTERFACE_BEE_CRYPTO_INTERFACES_PBEKEY_H
 
 #ifdef __cplusplus
 
@@ -37,8 +37,10 @@ namespace beecrypt {
 			class BEECRYPTCXXAPI PBEKey : public beecrypt::crypto::SecretKey
 			{
 			public:
-				virtual size_t getIterationCount() const throw () = 0;
-				virtual const array<javachar>& getPassword() const throw () = 0;
+				virtual ~PBEKey() {}
+
+				virtual int getIterationCount() const throw () = 0;
+				virtual const array<jchar>& getPassword() const throw () = 0;
 				virtual const bytearray* getSalt() const throw () = 0;
 			};
 		}

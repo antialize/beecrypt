@@ -20,16 +20,15 @@
  * \ingroup CXX_SECURITY_SPEC_m
  */
 
-#ifndef _CLASS_DSAPUBLICKEYSPEC_H
-#define _CLASS_DSAPUBLICKEYSPEC_H
-
-#include "beecrypt/api.h"
-#include "beecrypt/mpbarrett.h"
+#ifndef _CLASS_BEE_SECURITY_SPEC_DSAPUBLICKEYSPEC_H
+#define _CLASS_BEE_SECURITY_SPEC_DSAPUBLICKEYSPEC_H
 
 #ifdef __cplusplus
 
 #include "beecrypt/c++/lang/Object.h"
 using beecrypt::lang::Object;
+#include "beecrypt/c++/math/BigInteger.h"
+using beecrypt::math::BigInteger;
 #include "beecrypt/c++/security/spec/KeySpec.h"
 using beecrypt::security::spec::KeySpec;
 
@@ -39,22 +38,22 @@ namespace beecrypt {
 			/*!\brief DSA public key specification
 			 * \ingroup CXX_SECURITY_SPEC_m
 			 */
-			class BEECRYPTCXXAPI DSAPublicKeySpec : public beecrypt::lang::Object, public beecrypt::security::spec::KeySpec
+			class BEECRYPTCXXAPI DSAPublicKeySpec : public beecrypt::lang::Object, public virtual beecrypt::security::spec::KeySpec
 			{
 			private:
-				mpbarrett _p;
-				mpbarrett _q;
-				mpnumber _g;
-				mpnumber _y;
+				BigInteger _p;
+				BigInteger _q;
+				BigInteger _g;
+				BigInteger _y;
 
 			public:
-				DSAPublicKeySpec(const mpbarrett& p, const mpbarrett& q, const mpnumber& g, const mpnumber& y);
-				virtual ~DSAPublicKeySpec();
+				DSAPublicKeySpec(const BigInteger& y, const BigInteger& p, const BigInteger& q, const BigInteger& g);
+				virtual ~DSAPublicKeySpec() {}
 
-				const mpbarrett& getP() const throw ();
-				const mpbarrett& getQ() const throw ();
-				const mpnumber& getG() const throw ();
-				const mpnumber& getY() const throw ();
+				const BigInteger& getP() const throw ();
+				const BigInteger& getQ() const throw ();
+				const BigInteger& getG() const throw ();
+				const BigInteger& getY() const throw ();
 			};
 		}
 	}

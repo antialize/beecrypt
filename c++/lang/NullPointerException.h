@@ -20,8 +20,8 @@
  * \ingroup CXX_LANG_m
  */
 
-#ifndef _CLASS_NULLPOINTEREXCEPTION_H
-#define _CLASS_NULLPOINTEREXCEPTION_H
+#ifndef _CLASS_BEE_LANG_NULLPOINTEREXCEPTION_H
+#define _CLASS_BEE_LANG_NULLPOINTEREXCEPTION_H
 
 #ifdef __cplusplus
 
@@ -38,6 +38,7 @@ namespace beecrypt {
 		{
 		public:
 			NullPointerException() throw ();
+			NullPointerException(const String* message) throw ();
 			NullPointerException(const String& message) throw ();
 		};
 	}

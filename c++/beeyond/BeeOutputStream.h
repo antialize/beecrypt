@@ -23,12 +23,12 @@
 #ifndef _CLASS_BEEOUTPUTSTREAM_H
 #define _CLASS_BEEOUTPUTSTREAM_H
 
-#include "beecrypt/mpbarrett.h"
-
 #ifdef __cplusplus
 
 #include "beecrypt/c++/io/DataOutputStream.h"
 using beecrypt::io::DataOutputStream;
+#include "beecrypt/c++/math/BigInteger.h"
+using beecrypt::math::BigInteger;
 
 namespace beecrypt {
 	namespace beeyond {
@@ -40,8 +40,7 @@ namespace beecrypt {
 			BeeOutputStream(OutputStream& out);
 			virtual ~BeeOutputStream();
 
-			void write(const mpnumber&) throw (IOException);
-			void write(const mpbarrett&) throw (IOException);
+			void writeBigInteger(const BigInteger&) throw (IOException);
 		};
 	}
 }

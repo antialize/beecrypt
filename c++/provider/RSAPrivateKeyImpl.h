@@ -37,24 +37,24 @@ namespace beecrypt {
 		class RSAPrivateKeyImpl : public beecrypt::lang::Object, public beecrypt::security::interfaces::RSAPrivateKey, public beecrypt::lang::Cloneable
 		{
 		protected:
-			mpbarrett _n;
-			mpnumber _d;
+			BigInteger _n;
+			BigInteger _d;
 			mutable bytearray* _enc;
 
 		public:
 			RSAPrivateKeyImpl(const RSAPrivateKey&);
 			RSAPrivateKeyImpl(const RSAPrivateKeyImpl&);
-			RSAPrivateKeyImpl(const mpbarrett&, const mpnumber&);
+			RSAPrivateKeyImpl(const BigInteger&, const BigInteger&);
 			virtual ~RSAPrivateKeyImpl();
 
 			virtual RSAPrivateKeyImpl* clone() const throw ();
 
-			virtual bool equals(const Object& compare) const throw ();
+			virtual bool equals(const Object* obj) const throw ();
 
-			virtual const mpbarrett& getModulus() const throw ();
-			virtual const mpnumber& getPrivateExponent() const throw ();
+			virtual const BigInteger& getModulus() const throw ();
+			virtual const BigInteger& getPrivateExponent() const throw ();
 
-			virtual const bytearray* getEncoded() const;
+			virtual const bytearray* getEncoded() const throw ();
 			virtual const String& getAlgorithm() const throw ();
 			virtual const String* getFormat() const throw ();
 		};

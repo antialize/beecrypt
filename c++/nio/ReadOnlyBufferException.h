@@ -20,12 +20,13 @@
  * \ingroup CXX_NIO_m
  */
 
-#ifndef _CLASS_READONLYBUFFEREXCEPTION_H
-#define _CLASS_READONLYBUFFEREXCEPTION_H
+#ifndef _CLASS_BEE_NIO_READONLYBUFFEREXCEPTION_H
+#define _CLASS_BEE_NIO_READONLYBUFFEREXCEPTION_H
 
 #ifdef __cplusplus
 
 #include "beecrypt/c++/lang/UnsupportedOperationException.h"
+using beecrypt::lang::String;
 
 namespace beecrypt {
 	namespace nio {
@@ -35,6 +36,7 @@ namespace beecrypt {
 		{
 		public:
 			ReadOnlyBufferException() throw ();
+			ReadOnlyBufferException(const String* message) throw ();
 			ReadOnlyBufferException(const String& message) throw ();
 		};
 	}

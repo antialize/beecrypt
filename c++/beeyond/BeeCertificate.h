@@ -20,8 +20,8 @@
  * \ingroup CXX_BEEYOND_m
  */
 
-#ifndef _CLASS_BEECERTIFICATE_H
-#define _CLASS_BEECERTIFICATE_H
+#ifndef _CLASS_BEE_BEEYOND_BEECERTIFICATE_H
+#define _CLASS_BEE_BEEYOND_BEECERTIFICATE_H
 
 #ifdef __cplusplus
 
@@ -47,9 +47,8 @@ using beecrypt::security::cert::CertificateExpiredException;
 using beecrypt::security::cert::CertificateNotYetValidException;
 #include "beecrypt/c++/util/Date.h"
 using beecrypt::util::Date;
-
-#include <vector>
-using std::vector;
+#include "beecrypt/c++/util/ArrayList.h"
+using beecrypt::util::ArrayList;
 
 namespace beecrypt {
 	namespace beeyond {
@@ -61,7 +60,7 @@ namespace beecrypt {
 		 */
 		class BEECRYPTCXXAPI BeeCertificate : public beecrypt::security::cert::Certificate, public beecrypt::lang::Cloneable
 		{
-			friend class BeeCertificateFactory;
+			friend class ::BeeCertificateFactory;
 
 		public:
 			static const Date FOREVER;
@@ -70,11 +69,12 @@ namespace beecrypt {
 			static PublicKey* clonePublicKey(const PublicKey& pub) throw (CloneNotSupportedException);
 
 		protected:
-			struct Field
+			class BEECRYPTCXXAPI Field : public beecrypt::lang::Object
 			{
-				javaint type;
+			public:
+				jint type;
 
-				virtual ~Field() throw ();
+				virtual ~Field() {}
 
 				virtual Field* clone() const throw (CloneNotSupportedException) = 0;
 
@@ -82,13 +82,14 @@ namespace beecrypt {
 				virtual void encode(DataOutputStream&) const throw (IOException) = 0;
 			};
 
-			struct UnknownField : public Field
+			class BEECRYPTCXXAPI UnknownField : public Field
 			{
+			public:
 				bytearray encoding;
 
 				UnknownField() throw ();
 				UnknownField(const UnknownField&) throw ();
-				virtual ~UnknownField() throw ();
+				virtual ~UnknownField() {}
 					
 				virtual Field* clone() const throw ();
 
@@ -96,16 +97,17 @@ namespace beecrypt {
 				virtual void encode(DataOutputStream&) const throw (IOException);
 			};
 
-			struct PublicKeyField : public Field
+			class BEECRYPTCXXAPI PublicKeyField : public Field
 			{
-				static const javaint FIELD_TYPE;
+			public:
+				static const jint FIELD_TYPE;
 
 				PublicKey* pub;
 
 				PublicKeyField() throw ();
 				PublicKeyField(PublicKey* key) throw ();
 				PublicKeyField(const PublicKey& key) throw (CloneNotSupportedException);
-				virtual ~PublicKeyField() throw ();
+				virtual ~PublicKeyField();
 
 				virtual Field* clone() const throw (CloneNotSupportedException);
 
@@ -113,16 +115,17 @@ namespace beecrypt {
 				virtual void encode(DataOutputStream&) const throw (IOException);
 			};
 
-			struct ParentCertificateField : public Field
+			class BEECRYPTCXXAPI ParentCertificateField : public Field
 			{
-				static const javaint FIELD_TYPE;
+			public:
+				static const jint FIELD_TYPE;
 
 				Certificate* parent;
 
 				ParentCertificateField() throw ();
 				ParentCertificateField(Certificate*) throw ();
 				ParentCertificateField(const Certificate&) throw (CloneNotSupportedException);
-				virtual ~ParentCertificateField() throw ();
+				virtual ~ParentCertificateField();
 
 				virtual Field* clone() const throw (CloneNotSupportedException);
 
@@ -130,42 +133,38 @@ namespace beecrypt {
 				virtual void encode(DataOutputStream&) const throw (IOException);
 			};
 
-			virtual Field* instantiateField(javaint type);
-
-		public:
-			typedef vector<Field*> fields_vector;
-			typedef vector<Field*>::iterator fields_iterator;
-			typedef vector<Field*>::const_iterator fields_const_iterator;
+			virtual Field* instantiateField(jint type);
 
 		protected:
-			String        issuer;
-			String        subject;
-			Date          created;
-			Date          expires;
-			fields_vector fields;
-			String        signature_algorithm;
-			bytearray     signature;
+			String           issuer;
+			String           subject;
+			Date             created;
+			Date             expires;
+			ArrayList<Field> fields;
+			String           signatureAlgorithm;
+			bytearray        signature;
 
 			mutable bytearray* enc;
-			mutable String* str;
 
 			BeeCertificate();
 			BeeCertificate(InputStream& in) throw (IOException);
 
-			bytearray* encodeTBS() const;
+			void encodeTBS(DataOutputStream& out) const throw (IOException);
+
+			bytearray* encodeTBS() const throw (CertificateEncodingException);
 
 		public:
-			BeeCertificate(const BeeCertificate&);
+			BeeCertificate(const BeeCertificate&) throw (CloneNotSupportedException);
 			virtual ~BeeCertificate();
 
 			virtual BeeCertificate* clone() const throw ();
 
-			virtual const bytearray& getEncoded() const;
+			virtual const bytearray& getEncoded() const throw (CertificateEncodingException);
 			virtual const PublicKey& getPublicKey() const;
 
 			virtual void verify(const PublicKey&) const throw (CertificateException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException, SignatureException);
 			virtual void verify(const PublicKey&, const String&) const throw (CertificateException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException, SignatureException);
-			virtual const String& toString() const throw ();
+			virtual String toString() const throw ();
 
 			void checkValidity() const throw (CertificateExpiredException, CertificateNotYetValidException);
 			void checkValidity(const Date&) const throw (CertificateExpiredException, CertificateNotYetValidException);
@@ -187,9 +186,11 @@ namespace beecrypt {
 			const Certificate& getParentCertificate() const;
 
 		public:
-			static BeeCertificate* self(const PublicKey& pub, const PrivateKey& pri, const String& signatureAlgorithm) throw (InvalidKeyException, NoSuchAlgorithmException);
-			static BeeCertificate* make(const PublicKey& pub, const PrivateKey& pri, const String& signatureAlgorithm, const Certificate& parent) throw (InvalidKeyException, NoSuchAlgorithmException);
+			static BeeCertificate* self(const PublicKey& pub, const PrivateKey& pri, const String& signatureAlgorithm) throw (InvalidKeyException, CertificateEncodingException, SignatureException, NoSuchAlgorithmException);
+			static BeeCertificate* make(const PublicKey& pub, const PrivateKey& pri, const String& signatureAlgorithm, const Certificate& parent) throw (InvalidKeyException, CertificateEncodingException, SignatureException, NoSuchAlgorithmException);
+
 		};
+
 	}
 }
 

@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_INVALIDALGORITHMPARAMETEREXCEPTION_H
-#define _CLASS_INVALIDALGORITHMPARAMETEREXCEPTION_H
+#ifndef _CLASS_BEE_SECURITY_INVALIDALGORITHMPARAMETEREXCEPTION_H
+#define _CLASS_BEE_SECURITY_INVALIDALGORITHMPARAMETEREXCEPTION_H
 
 #ifdef __cplusplus
 
@@ -36,6 +36,7 @@ namespace beecrypt {
 		{
 		public:
 			InvalidAlgorithmParameterException() throw ();
+			InvalidAlgorithmParameterException(const String* message) throw ();
 			InvalidAlgorithmParameterException(const String& message) throw ();
 		};
 	}

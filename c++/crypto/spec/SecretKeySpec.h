@@ -20,14 +20,11 @@
  * \ingroup CXX_CRYPTO_SPEC_m
  */
 
-#ifndef _CLASS_SECRETKEYSPEC_H
-#define _CLASS_SECRETKEYSPEC_H
+#ifndef _CLASS_BEE_CRYPTO_SPEC_SECRETKEYSPEC_H
+#define _CLASS_BEE_CRYPTO_SPEC_SECRETKEYSPEC_H
 
 #ifdef __cplusplus
 
-#include "beecrypt/c++/array.h"
-using beecrypt::array;
-using beecrypt::bytearray;
 #include "beecrypt/c++/security/spec/KeySpec.h"
 using beecrypt::security::spec::KeySpec;
 #include "beecrypt/c++/crypto/SecretKey.h"
@@ -38,7 +35,7 @@ namespace beecrypt {
 		namespace spec {
 			/*!\ingroup CXX_CRYPTO_SPEC_m
 			 */
-			class BEECRYPTCXXAPI SecretKeySpec : public beecrypt::security::spec::KeySpec, public beecrypt::crypto::SecretKey
+			class BEECRYPTCXXAPI SecretKeySpec : public beecrypt::security::spec::KeySpec, public virtual beecrypt::crypto::SecretKey
 			{
 			private:
 				bytearray _data;
@@ -47,13 +44,11 @@ namespace beecrypt {
 			public:
 				SecretKeySpec(const byte* data, size_t offset, size_t length, const String& algorithm);
 				SecretKeySpec(const bytearray& b, const String& algorithm);
-				virtual ~SecretKeySpec();
+				virtual ~SecretKeySpec() {}
 
 				virtual const String& getAlgorithm() const throw ();
 				virtual const String* getFormat() const throw ();
 				virtual const bytearray* getEncoded() const throw ();
-
-				bool operator==(const Key& compare) const throw ();
 			};
 		}
 	}

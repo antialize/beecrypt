@@ -52,7 +52,7 @@ namespace beecrypt {
 
 		public:
 			RSAKeyFactory();
-			virtual ~RSAKeyFactory();
+			virtual ~RSAKeyFactory() {}
 		};
 	}
 }

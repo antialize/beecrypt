@@ -36,11 +36,10 @@ namespace beecrypt {
 		{
 		protected:
 			virtual Certificate* engineGenerateCertificate(InputStream& in) throw (CertificateException);
-			virtual vector<Certificate*>* engineGenerateCertificates(InputStream& in) throw (CertificateException);
+			virtual Collection<Certificate>* engineGenerateCertificates(InputStream& in) throw (CertificateException);
 
 		public:
 			BeeCertificateFactory();
-			virtual ~BeeCertificateFactory();
 		};
 	}
 }

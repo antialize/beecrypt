@@ -35,10 +35,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI BeeEncodedKeySpec : public EncodedKeySpec
 		{
 		public:
-			BeeEncodedKeySpec(const byte*, size_t);
+			BeeEncodedKeySpec(const byte*, int);
 			BeeEncodedKeySpec(const bytearray&);
-
-			virtual ~BeeEncodedKeySpec();
+			virtual ~BeeEncodedKeySpec() {}
 
 			virtual const String& getFormat() const throw ();
 		};

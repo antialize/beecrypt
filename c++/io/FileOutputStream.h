@@ -20,8 +20,8 @@
  * \ingroup CXX_IO_m
  */
 
-#ifndef _CLASS_FILEOUTPUTSTREAM_H
-#define _CLASS_FILEOUTPUTSTREAM_H
+#ifndef _CLASS_BEE_IO_FILEOUTPUTSTREAM_H
+#define _CLASS_BEE_IO_FILEOUTPUTSTREAM_H
 
 #ifdef __cplusplus
 
@@ -44,7 +44,7 @@ namespace beecrypt {
 			virtual void close() throw (IOException);
 			virtual void flush() throw (IOException);
 			virtual void write(byte b) throw (IOException);
-			virtual void write(const byte* data, size_t offset, size_t length) throw (IOException);
+			virtual void write(const byte* data, int offset, int length) throw (IOException);
 			virtual void write(const bytearray& b) throw (IOException);
 		};
 	}

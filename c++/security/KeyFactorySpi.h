@@ -20,10 +20,8 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_KEYFACTORYSPI_H
-#define _CLASS_KEYFACTORYSPI_H
-
-#include "beecrypt/api.h"
+#ifndef _CLASS_BEE_SECURITY_KEYFACTORYSPI_H
+#define _CLASS_BEE_SECURITY_KEYFACTORYSPI_H
 
 #ifdef __cplusplus
 
@@ -59,7 +57,7 @@ namespace beecrypt {
 			virtual Key* engineTranslateKey(const Key& key) throw (InvalidKeyException) = 0;
 
 		public:
-			virtual ~KeyFactorySpi() {};
+			virtual ~KeyFactorySpi() {}
 		};
 	}
 }

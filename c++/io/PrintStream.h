@@ -20,14 +20,11 @@
  * \ingroup CXX_IO_m
  */
 
-#ifndef _CLASS_PRINTSTREAM_H
-#define _CLASS_PRINTSTREAM_H
+#ifndef _CLASS_BEE_IO_PRINTSTREAM_H
+#define _CLASS_BEE_IO_PRINTSTREAM_H
 
 #ifdef __cplusplus
 
-#include "beecrypt/c++/array.h"
-using beecrypt::array;
-using beecrypt::bytearray;
 #include "beecrypt/c++/io/FilterOutputStream.h"
 using beecrypt::io::FilterOutputStream;
 
@@ -61,25 +58,25 @@ namespace beecrypt {
 
 			bool checkError() throw ();
 			void print(bool) throw ();
-			void print(javachar) throw ();
-			void print(javaint) throw ();
-			void print(javalong) throw ();
-			void print(javashort) throw ();
-	//		void print(javafloat) throw ();
-	//		void print(javadouble) throw ();
+			void print(jchar) throw ();
+			void print(jint) throw ();
+			void print(jlong) throw ();
+			void print(jshort) throw ();
+	//		void print(jfloat) throw ();
+	//		void print(jdouble) throw ();
 	//		void print(const char*) throw ();
-			void print(const array<javachar>&) throw ();
+			void print(const array<jchar>&) throw ();
 			void print(const String&) throw ();
 			void println() throw ();
 			void println(bool) throw ();
-			void println(javachar) throw ();
-			void println(javaint) throw ();
-			void println(javalong) throw ();
-			void println(javashort) throw ();
-	//		void println(javafloat) throw ();
-	//		void println(javadouble) throw ();
+			void println(jchar) throw ();
+			void println(jint) throw ();
+			void println(jlong) throw ();
+			void println(jshort) throw ();
+	//		void println(jfloat) throw ();
+	//		void println(jdouble) throw ();
 	//		void println(const char*) throw ();
-			void println(const array<javachar>&) throw ();
+			void println(const array<jchar>&) throw ();
 			void println(const String&) throw ();
 		};
 	}

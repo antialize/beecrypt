@@ -20,20 +20,17 @@
  * \ingroup CXX_SECURITY_CERT_m
  */
 
-#ifndef _CLASS_CERTPATH_H
-#define _CLASS_CERTPATH_H
+#ifndef _CLASS_BEE_SECURITY_CERT_CERTPATH_H
+#define _CLASS_BEE_SECURITY_CERT_CERTPATH_H
 
 #include "beecrypt/api.h"
 
 #ifdef __cplusplus
 
-#include "beecrypt/c++/lang/Object.h"
-using beecrypt::lang::Object;
 #include "beecrypt/c++/security/cert/Certificate.h"
 using beecrypt::security::cert::Certificate;
-
-#include <vector>
-using std::vector;
+#include "beecrypt/c++/util/List.h"
+using beecrypt::util::List;
 
 namespace beecrypt {
 	namespace security {
@@ -49,12 +46,10 @@ namespace beecrypt {
 				CertPath(const String& type);
 
 			public:
-				virtual ~CertPath();
+				virtual ~CertPath() {}
 
-				virtual const vector<const Certificate*>& getCertificates() const = 0;
-
+				virtual const List<Certificate>& getCertificates() const = 0;
 				virtual const bytearray& getEncoded() const = 0;
-
 				const String& getType() const throw ();
 			};
 		}

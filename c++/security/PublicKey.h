@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _INTERFACE_PUBLICKEY_H
-#define _INTERFACE_PUBLICKEY_H
+#ifndef _INTERFACE_BEE_SECURITY_PUBLICKEY_H
+#define _INTERFACE_BEE_SECURITY_PUBLICKEY_H
 
 #ifdef __cplusplus
 
@@ -35,6 +35,8 @@ namespace beecrypt {
 		 */
 		class PublicKey : public Key
 		{
+		public:
+			virtual ~PublicKey() {}
 		};
 	}
 }

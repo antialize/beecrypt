@@ -48,18 +48,18 @@ namespace beecrypt {
 
 		protected:
 			virtual const bytearray& engineDoFinal();
-			virtual size_t engineDoFinal(byte*, size_t, size_t) throw (ShortBufferException);
-			virtual size_t engineGetMacLength();
+			virtual int engineDoFinal(byte*, int, int) throw (ShortBufferException);
+			virtual int engineGetMacLength();
 			virtual void engineInit(const Key&, const AlgorithmParameterSpec* spec) throw (InvalidKeyException, InvalidAlgorithmParameterException);
 			virtual void engineReset();
 			virtual void engineUpdate(byte);
-			virtual void engineUpdate(const byte*, size_t, size_t);
+			virtual void engineUpdate(const byte*, int, int);
 
 		protected:
 			HMAC(const keyedHashFunction&, const hashFunction&);
 
 		public:
-			virtual ~HMAC() {};
+			virtual ~HMAC() {}
 		};
 	}
 }

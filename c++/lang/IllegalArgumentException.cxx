@@ -29,6 +29,10 @@ IllegalArgumentException::IllegalArgumentException() throw ()
 {
 }
 
+IllegalArgumentException::IllegalArgumentException(const String* message) throw () : RuntimeException(message)
+{
+}
+
 IllegalArgumentException::IllegalArgumentException(const String& message) throw () : RuntimeException(message)
 {
 }

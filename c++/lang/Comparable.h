@@ -20,19 +20,21 @@
  * \ingroup CXX_LANG_m
  */
 
-#ifndef _INTERFACE_COMPARABLE_H
-#define _INTERFACE_COMPARABLE_H
+#ifndef _INTERFACE_BEE_LANG_COMPARABLE_H
+#define _INTERFACE_BEE_LANG_COMPARABLE_H
+
+#include "beecrypt/api.h"
 
 #ifdef __cplusplus
 
-// #include "beecrypt/c++/lang/ClassCastException.h"
-
 namespace beecrypt {
 	namespace lang {
-		template <typename T> class Comparable
+		template<typename T> class Comparable
 		{
 		public:
-			virtual int compareTo(const T&) const throw () = 0;
+			virtual ~Comparable() {}
+
+			virtual jint compareTo(const T&) const throw () = 0;
 		};
 	}
 }

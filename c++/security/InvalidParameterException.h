@@ -20,13 +20,14 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_INVALIDPARAMETEREXCEPTION_H
-#define _CLASS_INVALIDPARAMETEREXCEPTION_H
+#ifndef _CLASS_BEE_SECURITY_INVALIDPARAMETEREXCEPTION_H
+#define _CLASS_BEE_SECURITY_INVALIDPARAMETEREXCEPTION_H
 
 #ifdef __cplusplus
 
 #include "beecrypt/c++/lang/IllegalArgumentException.h"
 using beecrypt::lang::IllegalArgumentException;
+using beecrypt::lang::String;
 
 namespace beecrypt {
 	namespace security {
@@ -36,6 +37,7 @@ namespace beecrypt {
 		{
 		public:
 			InvalidParameterException() throw ();
+			InvalidParameterException(const String* message) throw ();
 			InvalidParameterException(const String& message) throw ();
 		};
 	}

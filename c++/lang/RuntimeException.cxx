@@ -29,6 +29,10 @@ RuntimeException::RuntimeException() throw ()
 {
 }
 
+RuntimeException::RuntimeException(const String* message) throw () : Exception(message)
+{
+}
+
 RuntimeException::RuntimeException(const String& message) throw () : Exception(message)
 {
 }

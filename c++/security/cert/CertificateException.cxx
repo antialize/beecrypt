@@ -30,6 +30,10 @@ CertificateException::CertificateException() throw ()
 {
 }
 
+CertificateException::CertificateException(const String* message) throw () : GeneralSecurityException(message)
+{
+}
+
 CertificateException::CertificateException(const String& message) throw () : GeneralSecurityException(message)
 {
 }

@@ -23,6 +23,8 @@
 #ifndef _CLASS_DSAPUBLICKEYIMPL_H
 #define _CLASS_DSAPUBLICKEYIMPL_H
 
+#include "beecrypt/dsa.h"
+
 #ifdef __cplusplus
 
 #include "beecrypt/c++/lang/Cloneable.h"
@@ -40,25 +42,25 @@ namespace beecrypt {
 		{
 		private:
 			DSAParameterSpec* _params;
-			mpnumber _y;
+			BigInteger _y;
 			mutable bytearray* _enc;
 
 		public:
 			DSAPublicKeyImpl(const DSAPublicKey&);
 			DSAPublicKeyImpl(const DSAPublicKeyImpl&);
-			DSAPublicKeyImpl(const DSAParams&, const mpnumber&);
+			DSAPublicKeyImpl(const DSAParams&, const BigInteger&);
 			DSAPublicKeyImpl(const dsaparam&, const mpnumber&);
-			DSAPublicKeyImpl(const mpbarrett&, const mpbarrett&, const mpnumber&, const mpnumber&);
+			DSAPublicKeyImpl(const BigInteger&, const BigInteger&, const BigInteger&, const BigInteger&);
 			virtual ~DSAPublicKeyImpl();
 
 			virtual DSAPublicKeyImpl* clone() const throw ();
 
-			virtual bool equals(const Object& compare) const throw ();
+			virtual bool equals(const Object* obj) const throw ();
 
 			virtual const DSAParams& getParams() const throw ();
-			virtual const mpnumber& getY() const throw ();
+			virtual const BigInteger& getY() const throw ();
 
-			virtual const bytearray* getEncoded() const;
+			virtual const bytearray* getEncoded() const throw ();
 			virtual const String& getAlgorithm() const throw ();
 			virtual const String* getFormat() const throw ();
 		};

@@ -20,15 +20,15 @@
  * \ingroup CXX_SECURITY_SPEC_m
  */
 
-#ifndef _CLASS_RSAKEYGENPARAMETERSPEC
-#define _CLASS_RSAKEYGENPARAMETERSPEC
-
-#include "beecrypt/beecrypt.h"
+#ifndef _CLASS_BEE_SECURITY_SPEC_RSAKEYGENPARAMETERSPEC
+#define _CLASS_BEE_SECURITY_SPEC_RSAKEYGENPARAMETERSPEC
 
 #ifdef __cplusplus
 
 #include "beecrypt/c++/lang/Object.h"
 using beecrypt::lang::Object;
+#include "beecrypt/c++/math/BigInteger.h"
+using beecrypt::math::BigInteger;
 #include "beecrypt/c++/security/spec/AlgorithmParameterSpec.h"
 using beecrypt::security::spec::AlgorithmParameterSpec;
 
@@ -37,22 +37,22 @@ namespace beecrypt {
 		namespace spec {
 			/*!\ingroup CXX_SECURITY_SPEC_m
 			 */
-			class BEECRYPTCXXAPI RSAKeyGenParameterSpec : public beecrypt::lang::Object, public beecrypt::security::spec::AlgorithmParameterSpec
+			class BEECRYPTCXXAPI RSAKeyGenParameterSpec : public beecrypt::lang::Object, public virtual beecrypt::security::spec::AlgorithmParameterSpec
 			{
 			public:
-				static const mpnumber F0;
-				static const mpnumber F4;
+				static const BigInteger F0;
+				static const BigInteger F4;
 
 			private:
-				size_t _keysize;
-				mpnumber _e;
+				int _keysize;
+				BigInteger _e;
 				
 			public:
-				RSAKeyGenParameterSpec(size_t, const mpnumber&);
-				virtual ~RSAKeyGenParameterSpec();
+				RSAKeyGenParameterSpec(int, const BigInteger&);
+				virtual ~RSAKeyGenParameterSpec() {}
 
-				size_t getKeysize() const throw ();
-				const mpnumber& getPublicExponent() const throw ();
+				int getKeysize() const throw ();
+				const BigInteger& getPublicExponent() const throw ();
 			};
 		}
 	}

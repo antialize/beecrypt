@@ -20,8 +20,8 @@
  * \ingroup CXX_CRYPTO_m
  */
 
-#ifndef _CLASS_CIPHERSPI_H
-#define _CLASS_CIPHERSPI_H
+#ifndef _CLASS_BEE_CRYPTO_CIPHERSPI_H
+#define _CLASS_BEE_CRYPTO_CIPHERSPI_H
 
 #include "beecrypt/api.h"
 
@@ -61,14 +61,14 @@ namespace beecrypt {
 			friend class Cipher;
 
 		protected:
-			virtual bytearray* engineDoFinal(const byte* input, size_t inputOffset, size_t inputLength) throw (IllegalBlockSizeException, BadPaddingException) = 0;
-			virtual size_t engineDoFinal(const byte* input, size_t inputOffset, size_t inputLength, bytearray& output, size_t outputOffset) throw (ShortBufferException, IllegalBlockSizeException, BadPaddingException) = 0;
-//			virtual size_t engineDoFinal(ByteBuffer& input, ByteBuffer& output) throw (ShortBufferException, IllegalBlockSizeException, BadPaddingException) = 0;
+			virtual bytearray* engineDoFinal(const byte* input, int inputOffset, int inputLength) throw (IllegalBlockSizeException, BadPaddingException) = 0;
+			virtual int engineDoFinal(const byte* input, int inputOffset, int inputLength, bytearray& output, int outputOffset) throw (ShortBufferException, IllegalBlockSizeException, BadPaddingException) = 0;
+//			virtual int engineDoFinal(ByteBuffer& input, ByteBuffer& output) throw (ShortBufferException, IllegalBlockSizeException, BadPaddingException) = 0;
 
-			virtual size_t engineGetBlockSize() const throw () = 0;
+			virtual int engineGetBlockSize() const throw () = 0;
 			virtual bytearray* engineGetIV() = 0;
-			virtual size_t engineGetKeySize(const Key& key) const throw (InvalidKeyException);
-			virtual size_t engineGetOutputSize(size_t inputLength) throw () = 0;
+			virtual int engineGetKeySize(const Key& key) const throw (InvalidKeyException);
+			virtual int engineGetOutputSize(int inputLength) throw () = 0;
 			virtual AlgorithmParameters* engineGetParameters() throw () = 0;
 
 			virtual void engineInit(int opmode, const Key& key, SecureRandom* random) throw (InvalidKeyException) = 0;
@@ -80,14 +80,14 @@ namespace beecrypt {
 
 //			virtual Key* engineUnwrap(const bytearray& wrappedKey, const String& wrappedKeyAlgorithm, int wrappedKeyType) throw (InvalidKeyException, NoSuchAlgorithmException) = 0;
 
-			virtual bytearray* engineUpdate(const byte* input, size_t inputOffset, size_t inputLength) = 0;
-			virtual size_t engineUpdate(const byte* input, size_t inputOffset, size_t inputLength, bytearray& output, size_t outputOffset) throw (ShortBufferException) = 0;
-//			virtual size_t engineUpdate(ByteBuffer& input, ByteBuffer& output) throw (ShortBufferException) = 0;
+			virtual bytearray* engineUpdate(const byte* input, int inputOffset, int inputLength) = 0;
+			virtual int engineUpdate(const byte* input, int inputOffset, int inputLength, bytearray& output, int outputOffset) throw (ShortBufferException) = 0;
+//			virtual int engineUpdate(ByteBuffer& input, ByteBuffer& output) throw (ShortBufferException) = 0;
 
 //			virtual bytearray* engineWrap(const Key& key) throw (IllegalBlockSizeException, InvalidKeyException) = 0;
 
 		public:
-			virtual ~CipherSpi() {};
+			virtual ~CipherSpi() {}
 		};
 	}
 }

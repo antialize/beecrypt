@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_SHORTBUFFEREXCEPTION_H
-#define _CLASS_SHORTBUFFEREXCEPTION_H
+#ifndef _CLASS_BEE_SECURITY_SHORTBUFFEREXCEPTION_H
+#define _CLASS_BEE_SECURITY_SHORTBUFFEREXCEPTION_H
 
 #ifdef __cplusplus
 
@@ -36,6 +36,7 @@ namespace beecrypt {
 		{
 		public:
 			ShortBufferException() throw ();
+			ShortBufferException(const String* message) throw ();
 			ShortBufferException(const String& message) throw ();
 		};
 	}

@@ -48,7 +48,7 @@ namespace beecrypt {
 
 		public:
 			DHKeyFactory();
-			virtual ~DHKeyFactory();
+			virtual ~DHKeyFactory() {}
 		};
 	}
 }

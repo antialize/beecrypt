@@ -20,15 +20,11 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_KEYFACTORY_H
-#define _CLASS_KEYFACTORY_H
-
-#include "beecrypt/api.h"
+#ifndef _CLASS_BEE_SECURITY_KEYFACTORY_H
+#define _CLASS_BEE_SECURITY_KEYFACTORY_H
 
 #ifdef __cplusplus
 
-#include "beecrypt/c++/lang/Object.h"
-using beecrypt::lang::Object;
 #include "beecrypt/c++/security/KeyFactorySpi.h"
 using beecrypt::security::KeyFactorySpi;
 #include "beecrypt/c++/security/Provider.h"
@@ -37,9 +33,6 @@ using beecrypt::security::Provider;
 using beecrypt::security::NoSuchAlgorithmException;
 #include "beecrypt/c++/security/NoSuchProviderException.h"
 using beecrypt::security::NoSuchProviderException;
-
-#include <typeinfo>
-using std::type_info;
 
 namespace beecrypt {
 	namespace security {

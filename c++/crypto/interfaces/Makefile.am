@@ -1,6 +1,6 @@
 INCLUDES = -I$(top_srcdir)/..
 
-AUTOMAKE_OPTIONS = gnu no-dependencies
+AUTOMAKE_OPTIONS = gnu
 
 cxxcryptointerfacesdir=$(pkgincludedir)/c++/crypto/interfaces
 

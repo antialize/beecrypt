@@ -30,6 +30,10 @@ ProviderException::ProviderException() throw ()
 {
 }
 
+ProviderException::ProviderException(const String* message) throw () : RuntimeException(message)
+{
+}
+
 ProviderException::ProviderException(const String& message) throw () : RuntimeException(message)
 {
 }

@@ -20,8 +20,8 @@
  * \ingroup CXX_LANG_m
  */
 
-#ifndef _CLASS_OUTOFMEMORYERROR_H
-#define _CLASS_OUTOFMEMORYERROR_H
+#ifndef _CLASS_BEE_LANG_OUTOFMEMORYERROR_H
+#define _CLASS_BEE_LANG_OUTOFMEMORYERROR_H
 
 #ifdef __cplusplus
 
@@ -38,6 +38,7 @@ namespace beecrypt {
 		{
 		public:
 			OutOfMemoryError() throw ();
+			OutOfMemoryError(const String* message) throw ();
 			OutOfMemoryError(const String& message) throw ();
 		};
 	}

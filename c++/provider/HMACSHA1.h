@@ -35,7 +35,7 @@ namespace beecrypt {
 		{
 		public:
 			HMACSHA1();
-			virtual ~HMACSHA1() {};
+			virtual ~HMACSHA1() {}
 
 			virtual HMACSHA1* clone() const throw ();
 		};

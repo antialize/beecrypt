@@ -20,10 +20,8 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_ALGORITHMPARAMETERGENERATORSPI_H
-#define _CLASS_ALGORITHMPARAMETERGENERATORSPI_H
-
-#include "beecrypt/api.h"
+#ifndef _CLASS_BEE_SECURITY_ALGORITHMPARAMETERGENERATORSPI_H
+#define _CLASS_BEE_SECURITY_ALGORITHMPARAMETERGENERATORSPI_H
 
 #ifdef __cplusplus
 
@@ -40,24 +38,21 @@ using beecrypt::security::InvalidParameterException;
 #include "beecrypt/c++/security/spec/AlgorithmParameterSpec.h"
 using beecrypt::security::spec::AlgorithmParameterSpec;
 
-#include <typeinfo>
-using std::type_info;
-
 namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
 		class BEECRYPTCXXAPI AlgorithmParameterGeneratorSpi : public beecrypt::lang::Object
 		{
-			friend class BEECRYPTCXXAPI AlgorithmParameterGenerator;
+			friend class AlgorithmParameterGenerator;
 
 		protected:
 			virtual AlgorithmParameters* engineGenerateParameters() = 0;
 			virtual void engineInit(const AlgorithmParameterSpec& genParamSpec, SecureRandom* random) throw (InvalidAlgorithmParameterException) = 0;
-			virtual void engineInit(size_t size, SecureRandom* random) throw (InvalidParameterException) = 0;
+			virtual void engineInit(int size, SecureRandom* random) throw (InvalidParameterException) = 0;
 
 		public:
-			virtual ~AlgorithmParameterGeneratorSpi() {};
+			virtual ~AlgorithmParameterGeneratorSpi() {}
 		};
 	}
 }

@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_INTERFACES_m
  */
 
-#ifndef _INTERFACE_DSAKEY_H
-#define _INTERFACE_DSAKEY_H
+#ifndef _INTERFACE_BEE_SECURITY_INTERFACES_DSAKEY_H
+#define _INTERFACE_BEE_SECURITY_INTERFACES_DSAKEY_H
 
 #ifdef __cplusplus
 
@@ -37,6 +37,8 @@ namespace beecrypt {
 			class DSAKey
 			{
 			public:
+				virtual ~DSAKey() {}
+
 				virtual const DSAParams& getParams() const throw () = 0;
 			};
 		}

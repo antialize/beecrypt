@@ -20,14 +20,15 @@
  * \ingroup CXX_NIO_m
  */
 
-#ifndef _CLASS_BUFFER_H
-#define _CLASS_BUFFER_H
+#ifndef _ABSTRACT_CLASS_BEE_NIO_BUFFER_H
+#define _ABSTRACT_CLASS_BEE_NIO_BUFFER_H
 
 #ifdef __cplusplus
 
 #include "beecrypt/c++/lang/IllegalArgumentException.h"
 using beecrypt::lang::IllegalArgumentException;
 #include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 #include "beecrypt/c++/nio/InvalidMarkException.h"
 using beecrypt::nio::InvalidMarkException;
 
@@ -52,7 +53,7 @@ namespace beecrypt {
 			Buffer& clear() throw ();
 			Buffer& flip() throw ();
 			bool hasRemaining() const throw ();
-			bool isReadOnly() const throw ();
+			virtual bool isReadOnly() const throw () = 0;
 			size_t limit() const throw ();
 			Buffer& limit(size_t newLimit) throw (IllegalArgumentException);
 			Buffer& mark() throw ();

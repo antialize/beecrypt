@@ -30,6 +30,10 @@ KeyStoreException::KeyStoreException() throw ()
 {
 }
 
+KeyStoreException::KeyStoreException(const String* message) throw () : GeneralSecurityException(message)
+{
+}
+
 KeyStoreException::KeyStoreException(const String& message) throw () : GeneralSecurityException(message)
 {
 }

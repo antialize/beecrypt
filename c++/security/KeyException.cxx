@@ -30,6 +30,10 @@ KeyException::KeyException() throw ()
 {
 }
 
+KeyException::KeyException(const String* message) throw () : GeneralSecurityException(message)
+{
+}
+
 KeyException::KeyException(const String& message) throw () : GeneralSecurityException(message)
 {
 }

@@ -20,10 +20,8 @@
  * \ingroup CXX_SECURITY_CERT_m
  */
 
-#ifndef _CLASS_CERTPATHVALIDATOR_H
-#define _CLASS_CERTPATHVALIDATOR_H
-
-#include "beecrypt/api.h"
+#ifndef _CLASS_BEE_SECURITY_CERT_CERTPATHVALIDATOR_H
+#define _CLASS_BEE_SECURITY_CERT_CERTPATHVALIDATOR_H
 
 #ifdef __cplusplus
 

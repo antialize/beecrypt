@@ -20,13 +20,15 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_PROVIDEREXCEPTION_H
-#define _CLASS_PROVIDEREXCEPTION_H
+#ifndef _CLASS_BEE_SECURITY_PROVIDEREXCEPTION_H
+#define _CLASS_BEE_SECURITY_PROVIDEREXCEPTION_H
 
 #ifdef __cplusplus
 
 #include "beecrypt/c++/lang/RuntimeException.h"
 using beecrypt::lang::RuntimeException;
+#include "beecrypt/c++/lang/String.h"
+using beecrypt::lang::String;
 
 namespace beecrypt {
 	namespace security {
@@ -36,6 +38,7 @@ namespace beecrypt {
 		{
 		public:
 			ProviderException() throw ();
+			ProviderException(const String* message) throw ();
 			ProviderException(const String& message) throw ();
 		};
 	}

@@ -20,24 +20,19 @@
  * \ingroup CXX_CRYPTO_m
  */
 
-#ifndef _CLASS_SECRETKEYFACTORY_H
-#define _CLASS_SECRETKEYFACTORY_H
+#ifndef _CLASS_BEE_CRYPTO_SECRETKEYFACTORY_H
+#define _CLASS_BEE_CRYPTO_SECRETKEYFACTORY_H
 
 #ifdef __cplusplus
 
 #include "beecrypt/c++/crypto/SecretKeyFactorySpi.h"
 using beecrypt::crypto::SecretKeyFactorySpi;
-#include "beecrypt/c++/lang/Object.h"
-using beecrypt::lang::Object;
 #include "beecrypt/c++/security/Provider.h"
 using beecrypt::security::Provider;
 #include "beecrypt/c++/security/NoSuchAlgorithmException.h"
 using beecrypt::security::NoSuchAlgorithmException;
 #include "beecrypt/c++/security/NoSuchProviderException.h"
 using beecrypt::security::NoSuchProviderException;
-
-#include <typeinfo>
-using std::type_info;
 
 namespace beecrypt {
 	namespace crypto {

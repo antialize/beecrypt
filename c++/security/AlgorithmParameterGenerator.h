@@ -21,8 +21,8 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_ALGORITHMPARAMETERGENERATOR_H
-#define _CLASS_ALGORITHMPARAMETERGENERATOR_H
+#ifndef _CLASS_BEE_SECURITY_ALGORITHMPARAMETERGENERATOR_H
+#define _CLASS_BEE_SECURITY_ALGORITHMPARAMETERGENERATOR_H
 
 #ifdef __cplusplus
 
@@ -61,8 +61,8 @@ namespace beecrypt {
 
 			void init(const AlgorithmParameterSpec& genParamSpec) throw (InvalidAlgorithmParameterException);
 			void init(const AlgorithmParameterSpec&, SecureRandom* random) throw (InvalidAlgorithmParameterException);
-			void init(size_t size) throw (InvalidParameterException);
-			void init(size_t size, SecureRandom* random) throw (InvalidParameterException);
+			void init(int size) throw (InvalidParameterException);
+			void init(int size, SecureRandom* random) throw (InvalidParameterException);
 
 			const String& getAlgorithm() const throw ();
 			const Provider& getProvider() const throw ();

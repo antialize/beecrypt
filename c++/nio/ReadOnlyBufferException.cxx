@@ -23,9 +23,14 @@
 #endif
 
 #include "beecrypt/c++/nio/ReadOnlyBufferException.h"
+
 using namespace beecrypt::nio;
 
 ReadOnlyBufferException::ReadOnlyBufferException() throw ()
+{
+}
+
+ReadOnlyBufferException::ReadOnlyBufferException(const String* message) throw () : UnsupportedOperationException(message)
 {
 }
 

@@ -27,6 +27,8 @@
 #endif
 
 #include "beecrypt/c++/io/FileOutputStream.h"
+#include "beecrypt/c++/lang/String.h"
+using beecrypt::lang::String;
 #include "beecrypt/c++/lang/NullPointerException.h"
 using beecrypt::lang::NullPointerException;
 
@@ -74,7 +76,7 @@ void FileOutputStream::write(byte b) throw (IOException)
 	if (!_f)
 		throw IOException("no valid file handle to write");
 
-	size_t rc = fwrite(&b, 1, 1, _f);
+	int rc = fwrite(&b, 1, 1, _f);
 
 	if (rc < 1)
 		#if HAVE_ERRNO_H
@@ -84,7 +86,7 @@ void FileOutputStream::write(byte b) throw (IOException)
 		#endif
 }
 
-void FileOutputStream::write(const byte* data, size_t offset, size_t length) throw (IOException)
+void FileOutputStream::write(const byte* data, int offset, int length) throw (IOException)
 {
 	if (length)
 	{
@@ -94,7 +96,7 @@ void FileOutputStream::write(const byte* data, size_t offset, size_t length) thr
 		if (!_f)
 			throw IOException("no valid file handle to write");
 
-		size_t rc = fwrite(data+offset, 1, length, _f);
+		int rc = fwrite(data+offset, 1, length, _f);
 
 		if (rc < length)
 			#if HAVE_ERRNO_H

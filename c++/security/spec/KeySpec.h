@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_SPEC_m
  */
 
-#ifndef _INTERFACE_KEYSPEC_H
-#define _INTERFACE_KEYSPEC_H
+#ifndef _INTERFACE_BEE_SECURITY_SPEC_KEYSPEC_H
+#define _INTERFACE_BEE_SECURITY_SPEC_KEYSPEC_H
 
 #include "beecrypt/api.h"
 
@@ -36,7 +36,7 @@ namespace beecrypt {
 			class BEECRYPTCXXAPI KeySpec
 			{
 			public:
-				virtual ~KeySpec() {};
+				virtual ~KeySpec() {}
 			};
 		}
 	}

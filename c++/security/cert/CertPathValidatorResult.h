@@ -20,10 +20,8 @@
  * \ingroup CXX_SECURITY_CERT_m
  */
 
-#ifndef _INTERFACE_CERTPATHVALIDATORRESULT_H
-#define _INTERFACE_CERTPATHVALIDATORRESULT_H
-
-#include "beecrypt/api.h"
+#ifndef _INTERFACE_BEE_SECURITY_CERT_CERTPATHVALIDATORRESULT_H
+#define _INTERFACE_BEE_SECURITY_CERT_CERTPATHVALIDATORRESULT_H
 
 #ifdef __cplusplus
 
@@ -35,8 +33,10 @@ namespace beecrypt {
 		namespace cert {
 			/*!\ingroup CXX_SECURITY_CERT_m
 			 */
-			class BEECRYPTCXXAPI CertPathValidatorResult : public beecrypt::lang::Cloneable
+			class BEECRYPTCXXAPI CertPathValidatorResult : public virtual beecrypt::lang::Cloneable
 			{
+			public:
+				virtual ~CertPathValidatorResult() {}
 			};
 		}
 	}

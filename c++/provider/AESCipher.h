@@ -34,7 +34,7 @@ namespace beecrypt {
 		{
 		public:
 			AESCipher();
-			virtual ~AESCipher() {};
+			virtual ~AESCipher() {}
 		};
 	}
 }

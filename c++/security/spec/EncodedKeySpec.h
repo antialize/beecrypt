@@ -20,15 +20,11 @@
  * \ingroup CXX_SECURITY_SPEC_m
  */
 
-#ifndef _CLASS_ENCODEDKEYSPEC_H
-#define _CLASS_ENCODEDKEYSPEC_H
+#ifndef _CLASS_BEE_SECURITY_SPEC_ENCODEDKEYSPEC_H
+#define _CLASS_BEE_SECURITY_SPEC_ENCODEDKEYSPEC_H
 
 #ifdef __cplusplus
 
-#include "beecrypt/c++/array.h"
-using beecrypt::bytearray;
-#include "beecrypt/c++/lang/Object.h"
-using beecrypt::lang::Object;
 #include "beecrypt/c++/lang/String.h"
 using beecrypt::lang::String;
 #include "beecrypt/c++/security/spec/KeySpec.h"
@@ -40,15 +36,15 @@ namespace beecrypt {
 			/*!\brief Encoded key specification
 			 * \ingroup CXX_SECURITY_SPEC_m
 			 */
-			class BEECRYPTCXXAPI EncodedKeySpec : public beecrypt::lang::Object, public beecrypt::security::spec::KeySpec
+			class BEECRYPTCXXAPI EncodedKeySpec : public beecrypt::lang::Object, public virtual beecrypt::security::spec::KeySpec
 			{
 			private:
 				bytearray _encoded;
 
 			public:
-				EncodedKeySpec(const byte*, size_t);
+				EncodedKeySpec(const byte*, int);
 				EncodedKeySpec(const bytearray&);
-				virtual ~EncodedKeySpec() {};
+				virtual ~EncodedKeySpec() {}
 
 				const bytearray& getEncoded() const throw ();
 				virtual const String& getFormat() const throw () = 0;

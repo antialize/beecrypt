@@ -29,6 +29,10 @@ Error::Error() throw ()
 {
 }
 
+Error::Error(const String* message) throw () : Throwable(message)
+{
+}
+
 Error::Error(const String& message) throw () : Throwable(message)
 {
 }

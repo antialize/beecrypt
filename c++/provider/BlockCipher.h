@@ -47,31 +47,31 @@ namespace beecrypt {
 			int _blmode;
 			int _padding;
 			bytearray _key;
-			size_t _keybits;
+			int _keybits;
 			bytearray _buffer;
-			size_t _bufcnt;
-			size_t _buflwm;
+			int _bufcnt;
+			int _buflwm;
 			bytearray _iv;
 
-			size_t process(const byte* input, size_t inputLength, byte* output, size_t outputLength) throw (ShortBufferException);
+			int process(const byte* input, int inputLength, byte* output, int outputLength) throw (ShortBufferException);
 			void reset();
 
 		protected:
-			virtual bytearray* engineDoFinal(const byte* input, size_t inputOffset, size_t inputLength) throw (IllegalBlockSizeException, BadPaddingException);
-			virtual size_t engineDoFinal(const byte* input, size_t inputOffset, size_t inputLength, bytearray& output, size_t outputOffset) throw (ShortBufferException, IllegalBlockSizeException, BadPaddingException);
+			virtual bytearray* engineDoFinal(const byte* input, int inputOffset, int inputLength) throw (IllegalBlockSizeException, BadPaddingException);
+			virtual int engineDoFinal(const byte* input, int inputOffset, int inputLength, bytearray& output, int outputOffset) throw (ShortBufferException, IllegalBlockSizeException, BadPaddingException);
 
-			virtual size_t engineGetBlockSize() const throw ();
+			virtual int engineGetBlockSize() const throw ();
 			virtual bytearray* engineGetIV();
-			virtual size_t engineGetKeySize(const Key& key) const throw (InvalidKeyException);
-			virtual size_t engineGetOutputSize(size_t inputLength) throw ();
+			virtual int engineGetKeySize(const Key& key) const throw (InvalidKeyException);
+			virtual int engineGetOutputSize(int inputLength) throw ();
 			virtual AlgorithmParameters* engineGetParameters() throw ();
 
 			virtual void engineInit(int opmode, const Key& key, SecureRandom* random) throw (InvalidKeyException);
 			virtual void engineInit(int opmode, const Key& key, AlgorithmParameters* params, SecureRandom* random) throw (InvalidKeyException, InvalidAlgorithmParameterException);
 			virtual void engineInit(int opmode, const Key& key, const AlgorithmParameterSpec& params, SecureRandom* random) throw (InvalidKeyException, InvalidAlgorithmParameterException);
 
-			virtual bytearray* engineUpdate(const byte* input, size_t inputOffset, size_t inputLength);
-			virtual size_t engineUpdate(const byte* input, size_t inputOffset, size_t inputLength, bytearray& output, size_t outputOffset) throw (ShortBufferException);
+			virtual bytearray* engineUpdate(const byte* input, int inputOffset, int inputLength);
+			virtual int engineUpdate(const byte* input, int inputOffset, int inputLength, bytearray& output, int outputOffset) throw (ShortBufferException);
 
             virtual void engineSetMode(const String& mode) throw (NoSuchAlgorithmException);
             virtual void engineSetPadding(const String& padding) throw (NoSuchPaddingException);
@@ -79,7 +79,7 @@ namespace beecrypt {
 			BlockCipher(const blockCipher&);
 
 		public:
-			virtual ~BlockCipher() {};
+			virtual ~BlockCipher() {}
 		};
 	}
 }

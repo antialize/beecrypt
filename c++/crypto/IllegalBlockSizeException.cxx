@@ -30,6 +30,10 @@ IllegalBlockSizeException::IllegalBlockSizeException() throw ()
 {
 }
 
+IllegalBlockSizeException::IllegalBlockSizeException(const String* message) throw () : GeneralSecurityException(message)
+{
+}
+
 IllegalBlockSizeException::IllegalBlockSizeException(const String& message) throw () : GeneralSecurityException(message)
 {
 }

@@ -20,15 +20,13 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_SECURERANDOM_H
-#define _CLASS_SECURERANDOM_H
+#ifndef _CLASS_BEE_SECURITY_SECURERANDOM_H
+#define _CLASS_BEE_SECURITY_SECURERANDOM_H
 
 #include "beecrypt/beecrypt.h"
 
 #ifdef __cplusplus
 
-#include "beecrypt/c++/lang/Object.h"
-using beecrypt::lang::Object;
 #include "beecrypt/c++/security/SecureRandomSpi.h"
 using beecrypt::security::SecureRandomSpi;
 #include "beecrypt/c++/security/Provider.h"
@@ -49,7 +47,7 @@ namespace beecrypt {
 			static SecureRandom* getInstance(const String& type, const String& provider) throw (NoSuchAlgorithmException, NoSuchProviderException);
 			static SecureRandom* getInstance(const String& type, const Provider& provider) throw (NoSuchAlgorithmException);
 
-			static void getSeed(byte*, size_t);
+			static void getSeed(byte*, int);
 
 		private:
 			SecureRandomSpi* _rspi;
@@ -63,9 +61,9 @@ namespace beecrypt {
 			SecureRandom();
 			virtual ~SecureRandom();
 
-			void generateSeed(byte*, size_t);
-			void nextBytes(byte*, size_t);
-			void setSeed(const byte*, size_t);
+			void generateSeed(byte*, int);
+			void nextBytes(byte*, int);
+			void setSeed(const byte*, int);
 
 			const String& getType() const throw ();
 			const Provider& getProvider() const throw ();

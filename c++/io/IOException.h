@@ -20,12 +20,14 @@
  * \ingroup CXX_IO_m
  */
 
-#ifndef _CLASS_IOEXCEPTION_H
-#define _CLASS_IOEXCEPTION_H
+#ifndef _CLASS_BEE_IO_IOEXCEPTION_H
+#define _CLASS_BEE_IO_IOEXCEPTION_H
 
 #ifdef __cplusplus
 
 #include "beecrypt/c++/lang/Exception.h"
+using beecrypt::lang::Exception;
+using beecrypt::lang::String;
 
 namespace beecrypt {
 	namespace io {
@@ -35,6 +37,7 @@ namespace beecrypt {
 		{
 		public:
 			IOException();
+			IOException(const String* message);
 			IOException(const String& message);
 		};
 	}

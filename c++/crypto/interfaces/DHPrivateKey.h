@@ -20,11 +20,8 @@
  * \ingroup CXX_CRYPTO_INTERFACES_m
  */
 
-#ifndef _INTERFACE_DHPRIVATEKEY_H
-#define _INTERFACE_DHPRIVATEKEY_H
-
-#include "beecrypt/api.h"
-#include "beecrypt/dldp.h"
+#ifndef _INTERFACE_BEE_CRYPTO_INTERFACES_DHPRIVATEKEY_H
+#define _INTERFACE_BEE_CRYPTO_INTERFACES_DHPRIVATEKEY_H
 
 #ifdef __cplusplus
 
@@ -39,10 +36,12 @@ namespace beecrypt {
 			/*!\brief Diffie-Hellman private key interface
 			 * \ingroup CXX_CRYPTO_INTERFACES_m
 			 */
-			class DHPrivateKey : public PrivateKey, public DHKey
+			class DHPrivateKey : public virtual beecrypt::security::PrivateKey, public beecrypt::crypto::interfaces::DHKey
 			{
 			public:
-				virtual const mpnumber& getX() const throw () = 0;
+				virtual ~DHPrivateKey() {}
+
+				virtual const BigInteger& getX() const throw () = 0;
 			};
 		}
 	}

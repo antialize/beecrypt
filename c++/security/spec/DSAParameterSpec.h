@@ -20,17 +20,15 @@
  * \ingroup CXX_SECURITY_SPEC_m
  */
 
-#ifndef _CLASS_DSAPARAMETERSPEC_H
-#define _CLASS_DSAPARAMETERSPEC_H
-
-#include "beecrypt/api.h"
-#include "beecrypt/mpbarrett.h"
-#include "beecrypt/dsa.h"
+#ifndef _CLASS_BEE_SECURITY_SPEC_DSAPARAMETERSPEC_H
+#define _CLASS_BEE_SECURITY_SPEC_DSAPARAMETERSPEC_H
 
 #ifdef __cplusplus
 
 #include "beecrypt/c++/lang/Object.h"
 using beecrypt::lang::Object;
+#include "beecrypt/c++/math/BigInteger.h"
+using beecrypt::math::BigInteger;
 #include "beecrypt/c++/security/interfaces/DSAParams.h"
 using beecrypt::security::interfaces::DSAParams;
 #include "beecrypt/c++/security/spec/AlgorithmParameterSpec.h"
@@ -42,21 +40,21 @@ namespace beecrypt {
 			/*!\brief DSA parameter specification
 			 * \ingroup CXX_SECURITY_SPEC_m
 			 */
-			class BEECRYPTCXXAPI DSAParameterSpec : public beecrypt::lang::Object, public beecrypt::security::spec::AlgorithmParameterSpec, public beecrypt::security::interfaces::DSAParams
+			class BEECRYPTCXXAPI DSAParameterSpec : public beecrypt::lang::Object, public virtual beecrypt::security::spec::AlgorithmParameterSpec, public virtual beecrypt::security::interfaces::DSAParams
 			{
 			private:
-				mpbarrett _p;
-				mpbarrett _q;
-				mpnumber _g;
+				BigInteger _p;
+				BigInteger _q;
+				BigInteger _g;
 
 			public:
 				DSAParameterSpec(const DSAParams&);
-				DSAParameterSpec(const mpbarrett& p, const mpbarrett& q, const mpnumber& g);
-				virtual ~DSAParameterSpec();
+				DSAParameterSpec(const BigInteger& p, const BigInteger& q, const BigInteger& g);
+				virtual ~DSAParameterSpec() {}
 
-				const mpbarrett& getP() const throw ();
-				const mpbarrett& getQ() const throw ();
-				const mpnumber& getG() const throw ();
+				const BigInteger& getP() const throw ();
+				const BigInteger& getQ() const throw ();
+				const BigInteger& getG() const throw ();
 			};
 		}
 	}

@@ -25,8 +25,6 @@
 
 #ifdef __cplusplus
 
-#include "beecrypt/c++/mutex.h"
-using beecrypt::mutex;
 #include "beecrypt/c++/security/KeyStoreSpi.h"
 using beecrypt::security::KeyStoreSpi;
 #include "beecrypt/c++/security/KeyFactory.h"
@@ -35,9 +33,8 @@ using beecrypt::security::KeyFactory;
 using beecrypt::security::cert::CertificateFactory;
 #include "beecrypt/c++/util/Enumeration.h"
 using beecrypt::util::Enumeration;
-
-#include <map>
-using std::map;
+#include "beecrypt/c++/util/Hashtable.h"
+using beecrypt::util::Hashtable;
 
 namespace beecrypt {
 	namespace provider {
@@ -47,36 +44,49 @@ namespace beecrypt {
 		class BeeKeyStore : public beecrypt::security::KeyStoreSpi
 		{
 		private:
-			mutex _lock;
-			bytearray _bmac;
-			bytearray _salt;
-			size_t _iter;
-
-			struct Entry
+			class Entry : public beecrypt::lang::Object
 			{
+			public:
 				Date date;
-				virtual ~Entry() throw ();
+				virtual ~Entry() {}
 			};
 
-			struct KeyEntry : public Entry
+			class KeyEntry : public Entry
 			{
+			public:
 				bytearray encryptedkey;
-				vector<Certificate*> chain;
+				array<Certificate*> chain;
 
 				KeyEntry() throw ();
-				KeyEntry(const bytearray& key, const vector<Certificate*>&) throw (CloneNotSupportedException);
-				virtual ~KeyEntry() throw ();
+				KeyEntry(const bytearray& key, const array<Certificate*>&) throw (CloneNotSupportedException);
+				virtual ~KeyEntry();
 			};
 
-			struct CertEntry : public Entry
+			class CertEntry : public Entry
 			{
+			public:
 				Certificate* cert;
 
 				CertEntry() throw ();
 				CertEntry(const Certificate&) throw (CloneNotSupportedException);
-				virtual ~CertEntry() throw ();
+				virtual ~CertEntry();
 			};
 
+			class Names : public beecrypt::lang::Object, public virtual beecrypt::util::Enumeration<const String>
+			{
+			private:
+				array<String*> _list;
+				int _pos;
+
+			public:
+				Names(Hashtable<String,Entry>& h);
+				virtual ~Names();
+
+				virtual bool hasMoreElements() throw ();
+				virtual const String* nextElement() throw (NoSuchElementException);
+			};
+
+			#if 0
 			typedef map<String, KeyFactory*> keyfactory_map;
 			keyfactory_map _keyfactories;
 
@@ -86,22 +96,33 @@ namespace beecrypt {
 			typedef map<String, Entry*> entry_map;
 			entry_map _entries;
 
-			struct AliasEnum : public Enumeration
+			class AliasEnum : public beecrypt::util::Enumeration<const String>
 			{
+			private:
 				entry_map::const_iterator _it;
 				entry_map::const_iterator _end;
 
+			public:
 				AliasEnum(const entry_map&);
 				virtual ~AliasEnum() throw ();
 
 				virtual bool hasMoreElements() throw ();
-				virtual const void* nextElement() throw (NoSuchElementException);
+				virtual const String* nextElement() throw (NoSuchElementException);
 			};
 
 			void clearall();
+			#else
+			#endif
+
+		private:
+			bytearray _bmac;
+			bytearray _salt;
+			int _iter;
+
+			Hashtable<String,Entry> _entries;
 
 		protected:
-			virtual Enumeration* engineAliases();
+			virtual Enumeration<const String>* engineAliases();
 
 			virtual bool engineContainsAlias(const String& alias);
 
@@ -110,23 +131,23 @@ namespace beecrypt {
 
 			virtual const Certificate* engineGetCertificate(const String& alias);
 			virtual const String* engineGetCertificateAlias(const Certificate& cert);
-			virtual const vector<Certificate*>* engineGetCertificateChain(const String& alias);
+			virtual const array<Certificate*>* engineGetCertificateChain(const String& alias);
 			virtual bool engineIsCertificateEntry(const String& alias);
 			virtual void engineSetCertificateEntry(const String& alias, const Certificate& cert) throw (KeyStoreException);
 
-			virtual Key* engineGetKey(const String& alias, const array<javachar>& password) throw (NoSuchAlgorithmException, UnrecoverableKeyException);
+			virtual Key* engineGetKey(const String& alias, const array<jchar>& password) throw (NoSuchAlgorithmException, UnrecoverableKeyException);
 			virtual bool engineIsKeyEntry(const String& alias);
-			virtual void engineSetKeyEntry(const String& alias, const bytearray& key, const vector<Certificate*>&) throw (KeyStoreException);
-			virtual void engineSetKeyEntry(const String& alias, const Key& key, const array<javachar>& password, const vector<Certificate*>&) throw (KeyStoreException);
+			virtual void engineSetKeyEntry(const String& alias, const bytearray& key, const array<Certificate*>&) throw (KeyStoreException);
+			virtual void engineSetKeyEntry(const String& alias, const Key& key, const array<jchar>& password, const array<Certificate*>&) throw (KeyStoreException);
 
-			virtual size_t engineSize() const;
+			virtual int engineSize() const;
 
-			virtual void engineLoad(InputStream* in, const array<javachar>* password) throw (IOException, CertificateException, NoSuchAlgorithmException);
-			virtual void engineStore(OutputStream& out, const array<javachar>* password) throw (IOException, CertificateException, NoSuchAlgorithmException);
+			virtual void engineLoad(InputStream* in, const array<jchar>* password) throw (IOException, CertificateException, NoSuchAlgorithmException);
+			virtual void engineStore(OutputStream& out, const array<jchar>* password) throw (IOException, CertificateException, NoSuchAlgorithmException);
 
 		public:
 			BeeKeyStore();
-			~BeeKeyStore();
+			virtual ~BeeKeyStore() {}
 		};
 	}
 }

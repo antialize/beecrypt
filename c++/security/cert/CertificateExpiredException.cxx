@@ -30,6 +30,10 @@ CertificateExpiredException::CertificateExpiredException() throw ()
 {
 }
 
+CertificateExpiredException::CertificateExpiredException(const String* message) throw () : CertificateException(message)
+{
+}
+
 CertificateExpiredException::CertificateExpiredException(const String& message) throw () : CertificateException(message)
 {
 }

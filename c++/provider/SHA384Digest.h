@@ -43,11 +43,11 @@ namespace beecrypt {
 
 		protected:
 			virtual const bytearray& engineDigest();
-			virtual size_t engineDigest(byte*, size_t, size_t) throw (ShortBufferException);
-			virtual size_t engineGetDigestLength();
+			virtual int engineDigest(byte*, int, int) throw (ShortBufferException);
+			virtual int engineGetDigestLength();
 			virtual void engineReset();
 			virtual void engineUpdate(byte);
-			virtual void engineUpdate(const byte*, size_t, size_t);
+			virtual void engineUpdate(const byte*, int, int);
 
 		public:
 			SHA384Digest();

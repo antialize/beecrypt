@@ -2,7 +2,7 @@ INCLUDES = -I$(top_srcdir)/..
 
 LIBS = -licuuc -licuio
 
-AUTOMAKE_OPTIONS = gnu no-dependencies
+AUTOMAKE_OPTIONS = gnu
 
 noinst_LTLIBRARIES = libcxxbeeyond.la
 
@@ -16,6 +16,7 @@ BeeEncodedKeySpec.cxx \
 BeeInputStream.cxx \
 BeeOutputStream.cxx \
 DHAESParameterSpec.cxx \
+DHAESDecryptParameterSpec.cxx \
 PKCS12PBEKey.cxx
 
 noinst_HEADERS = \
@@ -28,6 +29,7 @@ BeeEncodedKeySpec.h \
 BeeInputStream.h \
 BeeOutputStream.h \
 DHAESParameterSpec.h \
+DHAESDecryptParameterSpec.h \
 PKCS12PBEKey.h
 
 TESTS = testcert

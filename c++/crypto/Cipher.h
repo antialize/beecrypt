@@ -20,23 +20,15 @@
  * \ingroup CXX_CRYPTO_m
  */
 
-#ifndef _CLASS_CIPHER_H
-#define _CLASS_CIPHER_H
+#ifndef _CLASS_BEE_CRYPTO_CIPHER_H
+#define _CLASS_BEE_CRYPTO_CIPHER_H
 
 #ifdef __cplusplus
 
 #include "beecrypt/c++/crypto/CipherSpi.h"
 using beecrypt::crypto::CipherSpi;
-#include "beecrypt/c++/crypto/NoSuchPaddingException.h"
-using beecrypt::crypto::NoSuchPaddingException;
-#include "beecrypt/c++/lang/Object.h"
-using beecrypt::lang::Object;
 #include "beecrypt/c++/security/Provider.h"
 using beecrypt::security::Provider;
-#include "beecrypt/c++/security/NoSuchAlgorithmException.h"
-using beecrypt::security::NoSuchAlgorithmException;
-#include "beecrypt/c++/security/NoSuchProviderException.h"
-using beecrypt::security::NoSuchProviderException;
 #include "beecrypt/c++/security/cert/Certificate.h"
 using beecrypt::security::cert::Certificate;
 
@@ -56,7 +48,7 @@ namespace beecrypt {
 			static const int WRAP_MODE;
 			static const int UNWRAP_MODE;
 
-			static size_t getMaxAllowedKeyLength(const String& transformation) throw (NoSuchAlgorithmException);
+			static int getMaxAllowedKeyLength(const String& transformation) throw (NoSuchAlgorithmException);
 			static AlgorithmParameterSpec* getMaxAllowedParameterSpec(const String& transformation) throw (NoSuchAlgorithmException);
 
 		private:
@@ -73,14 +65,14 @@ namespace beecrypt {
 
 			bytearray* doFinal() throw (IllegalStateException, IllegalBlockSizeException, BadPaddingException);
 			bytearray* doFinal(const bytearray& input) throw (IllegalStateException, IllegalBlockSizeException, BadPaddingException);
-			size_t doFinal(bytearray& output, size_t outputOffset) throw (IllegalStateException, IllegalBlockSizeException, ShortBufferException, BadPaddingException);
-			bytearray* doFinal(const byte* input, size_t inputOffset, size_t inputLength) throw (IllegalStateException, IllegalBlockSizeException, BadPaddingException);
-			size_t doFinal(const byte* input, size_t inputOffset, size_t inputLength, bytearray& output, size_t outputOffset = 0) throw (IllegalStateException, IllegalBlockSizeException, ShortBufferException, BadPaddingException);
-//			virtual size_t doFinal(ByteBuffer& input, ByteBuffer& output) throw (IllegalStateException, ShortBufferException, BadPaddingException);
+			int doFinal(bytearray& output, int outputOffset) throw (IllegalStateException, IllegalBlockSizeException, ShortBufferException, BadPaddingException);
+			bytearray* doFinal(const byte* input, int inputOffset, int inputLength) throw (IllegalStateException, IllegalBlockSizeException, BadPaddingException);
+			int doFinal(const byte* input, int inputOffset, int inputLength, bytearray& output, int outputOffset = 0) throw (IllegalStateException, IllegalBlockSizeException, ShortBufferException, BadPaddingException);
+//			virtual int doFinal(ByteBuffer& input, ByteBuffer& output) throw (IllegalStateException, ShortBufferException, BadPaddingException);
 
-			size_t getBlockSize() const throw ();
-			size_t getKeySize() const throw ();
-			size_t getOutputSize(size_t inputLength) throw ();
+			int getBlockSize() const throw ();
+			int getKeySize() const throw ();
+			int getOutputSize(int inputLength) throw ();
 			AlgorithmParameters* getParameters() throw ();
 
 			bytearray* getIV();
@@ -91,9 +83,9 @@ namespace beecrypt {
 			void init(int opmode, const Key& key, const AlgorithmParameterSpec& params, SecureRandom* random = 0) throw (InvalidKeyException, InvalidAlgorithmParameterException);
 
 			bytearray* update(const bytearray& input) throw (IllegalStateException);
-			bytearray* update(const byte* input, size_t inputOffset, size_t inputLength) throw (IllegalStateException);
-			size_t update(const byte* input, size_t inputOffset, size_t inputLength, bytearray& output, size_t outputOffset = 0) throw (IllegalStateException, ShortBufferException);
-//			size_t update(ByteBuffer& input, ByteBuffer& output) throw (IllegalStateException, ShortBufferException);
+			bytearray* update(const byte* input, int inputOffset, int inputLength) throw (IllegalStateException);
+			int update(const byte* input, int inputOffset, int inputLength, bytearray& output, int outputOffset = 0) throw (IllegalStateException, ShortBufferException);
+//			int update(ByteBuffer& input, ByteBuffer& output) throw (IllegalStateException, ShortBufferException);
 
 			const String& getAlgorithm() const throw ();
 			const Provider& getProvider() const throw ();

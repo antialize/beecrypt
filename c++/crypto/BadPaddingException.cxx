@@ -30,6 +30,10 @@ BadPaddingException::BadPaddingException() throw ()
 {
 }
 
+BadPaddingException::BadPaddingException(const String* message) throw () : GeneralSecurityException(message)
+{
+}
+
 BadPaddingException::BadPaddingException(const String& message) throw () : GeneralSecurityException(message)
 {
 }

@@ -20,8 +20,8 @@
  * \ingroup CXX_CRYPTO_m
  */
 
-#ifndef _CLASS_MACOUTPUTSTREAM_H
-#define _CLASS_MACOUTPUTSTREAM_H
+#ifndef _CLASS_BEE_CRYPTO_MACOUTPUTSTREAM_H
+#define _CLASS_BEE_CRYPTO_MACOUTPUTSTREAM_H
 
 #ifdef __cplusplus
 
@@ -47,7 +47,7 @@ namespace beecrypt {
 			virtual ~MacOutputStream();
 
 			virtual void write(byte) throw (IOException);
-			virtual void write(const byte* data, size_t offset, size_t length) throw (IOException);
+			virtual void write(const byte* data, int offset, int length) throw (IOException);
 
 			void on(bool);
 

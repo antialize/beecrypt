@@ -20,15 +20,11 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_MESSAGEDIGEST_H
-#define _CLASS_MESSAGEDIGEST_H
-
-#include "beecrypt/api.h"
+#ifndef _CLASS_BEE_SECURITY_MESSAGEDIGEST_H
+#define _CLASS_BEE_SECURITY_MESSAGEDIGEST_H
 
 #ifdef __cplusplus
 
-#include "beecrypt/c++/lang/Object.h"
-using beecrypt::lang::Object;
 #include "beecrypt/c++/security/MessageDigestSpi.h"
 using beecrypt::security::MessageDigestSpi;
 #include "beecrypt/c++/security/Provider.h"
@@ -64,11 +60,11 @@ namespace beecrypt {
 
 			const bytearray& digest();
 			const bytearray& digest(const bytearray& b);
-			size_t digest(byte* data, size_t offset, size_t length) throw (ShortBufferException);
-			size_t getDigestLength();
+			int digest(byte* data, int offset, int length) throw (ShortBufferException);
+			int getDigestLength();
 			void reset();
 			void update(byte b);
-			void update(const byte* data, size_t offset, size_t length);
+			void update(const byte* data, int offset, int length);
 			void update(const bytearray& b);
 
 			const String& getAlgorithm() const throw ();

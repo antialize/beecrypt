@@ -20,15 +20,11 @@
  * \ingroup CXX_IO_m
  */
 
-#ifndef _CLASS_BYTEARRAYINPUTSTREAM_H
-#define _CLASS_BYTEARRAYINPUTSTREAM_H
+#ifndef _CLASS_BEE_IO_BYTEARRAYINPUTSTREAM_H
+#define _CLASS_BEE_IO_BYTEARRAYINPUTSTREAM_H
 
 #ifdef __cplusplus
 
-#include "beecrypt/c++/array.h"
-using beecrypt::bytearray;
-#include "beecrypt/c++/mutex.h"
-using beecrypt::mutex;
 #include "beecrypt/c++/io/InputStream.h"
 using beecrypt::io::InputStream;
 
@@ -38,29 +34,26 @@ namespace beecrypt {
 		 */
 		class BEECRYPTCXXAPI ByteArrayInputStream : public InputStream
 		{
-		private:
-			mutex _lock;
-
 		protected:
 			bytearray _buf;
-			size_t    _count;
-			size_t    _mark;
-			size_t    _pos;
+			jint      _count;
+			jint      _mark;
+			jint      _pos;
 
 		public:
-			ByteArrayInputStream(const byte* data, size_t offset, size_t length);
+			ByteArrayInputStream(const byte* data, jint offset, jint length);
 			ByteArrayInputStream(const bytearray& b);
 			virtual ~ByteArrayInputStream();
 
-			virtual off_t available() throw (IOException);
+			virtual jint available() throw (IOException);
 			virtual void close() throw (IOException);
-			virtual void mark(off_t readlimit) throw ();
+			virtual void mark(jint readlimit) throw ();
 			virtual bool markSupported() throw ();
-			virtual int read() throw (IOException);
-			virtual int read(byte* data, size_t offset, size_t length) throw (IOException);
-			virtual int read(bytearray& b) throw (IOException);
+			virtual jint read() throw (IOException);
+			virtual jint read(byte* data, jint offset, jint length) throw (IOException);
+			virtual jint read(bytearray& b) throw (IOException);
 			virtual void reset() throw (IOException);
-			virtual off_t skip(off_t n) throw (IOException);
+			virtual jint skip(jint n) throw (IOException);
 		};
 	}
 }

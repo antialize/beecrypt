@@ -43,7 +43,7 @@ const bytearray& HMAC::engineDoFinal()
 	return _digest;
 }
 
-size_t HMAC::engineDoFinal(byte* data, size_t offset, size_t length) throw (ShortBufferException)
+int HMAC::engineDoFinal(byte* data, int offset, int length) throw (ShortBufferException)
 {
 	if (!data)
 		throw NullPointerException();
@@ -56,7 +56,7 @@ size_t HMAC::engineDoFinal(byte* data, size_t offset, size_t length) throw (Shor
 	return _digest.size();
 }
 
-size_t HMAC::engineGetMacLength()
+int HMAC::engineGetMacLength()
 {
 	return _digest.size();
 }
@@ -71,7 +71,7 @@ void HMAC::engineUpdate(byte b)
 	keyedHashFunctionContextUpdate(&_ctxt, &b, 1);
 }
 
-void HMAC::engineUpdate(const byte* data, size_t offset, size_t length)
+void HMAC::engineUpdate(const byte* data, int offset, int length)
 {
 	keyedHashFunctionContextUpdate(&_ctxt, data+offset, length);
 }
@@ -81,25 +81,11 @@ void HMAC::engineInit(const Key& key, const AlgorithmParameterSpec* spec) throw 
 	if (spec)
 		throw InvalidAlgorithmParameterException("No AlgorithmParameterSpec supported");
 
-	const SecretKey* sec = dynamic_cast<const SecretKey*>(&key);
-	if (sec)
-	{
-		bytearray _rawk;
-		if (sec->getEncoded())
-			_rawk = *(sec->getEncoded());
-		else
-			throw InvalidKeyException("SecretKey must have an encoding");
-
-		keyedHashFunctionContextSetup(&_ctxt, _rawk.data(), _rawk.size() << 3);
-
-		return;
-	}
-
 	const PBEKey* pbe = dynamic_cast<const PBEKey*>(&key);
 	if (pbe)
 	{
 		bytearray _rawk, _salt, _mack(_digest.size());
-		size_t _iter;
+		int _iter;
 
 		if (pbe->getEncoded())
 			_rawk = *(pbe->getEncoded());
@@ -115,6 +101,20 @@ void HMAC::engineInit(const Key& key, const AlgorithmParameterSpec* spec) throw 
 			throw InvalidKeyException("pkcs12_derive_key returned error");
 
 		keyedHashFunctionContextSetup(&_ctxt, _mack.data(), _mack.size() << 3);
+
+		return;
+	}
+
+	const SecretKey* sec = dynamic_cast<const SecretKey*>(&key);
+	if (sec)
+	{
+		bytearray _rawk;
+		if (sec->getEncoded())
+			_rawk = *(sec->getEncoded());
+		else
+			throw InvalidKeyException("SecretKey must have an encoding");
+
+		keyedHashFunctionContextSetup(&_ctxt, _rawk.data(), _rawk.size() << 3);
 
 		return;
 	}

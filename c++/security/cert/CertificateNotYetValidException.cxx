@@ -30,6 +30,10 @@ CertificateNotYetValidException::CertificateNotYetValidException() throw ()
 {
 }
 
+CertificateNotYetValidException::CertificateNotYetValidException(const String* message) throw () : CertificateException(message)
+{
+}
+
 CertificateNotYetValidException::CertificateNotYetValidException(const String& message) throw () : CertificateException(message)
 {
 }

@@ -30,6 +30,10 @@ IOException::IOException()
 {
 }
 
+IOException::IOException(const String* message) : Exception(message)
+{
+}
+
 IOException::IOException(const String& message) : Exception(message)
 {
 }

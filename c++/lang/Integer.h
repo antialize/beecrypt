@@ -20,15 +20,13 @@
  * \ingroup CXX_LANG_m
  */
 
-#ifndef _BEECRYPT_CLASS_INTEGER_H
-#define _BEECRYPT_CLASS_INTEGER_H
-
-#include "beecrypt/api.h"
+#ifndef _CLASS_BEE_LANG_INTEGER_H
+#define _CLASS_BEE_LANG_INTEGER_H
 
 #ifdef __cplusplus
 
-#include "beecrypt/c++/lang/Comparable.h"
-using beecrypt::lang::Comparable;
+#include "beecrypt/c++/lang/String.h"
+using beecrypt::lang::String;
 #include "beecrypt/c++/lang/Number.h"
 using beecrypt::lang::Number;
 #include "beecrypt/c++/lang/NumberFormatException.h"
@@ -38,32 +36,33 @@ namespace beecrypt {
 	namespace lang {
 		/*!\ingroup CXX_LANG_m
 		 */
-		class BEECRYPTCXXAPI Integer : public beecrypt::lang::Number, public beecrypt::lang::Comparable<Integer>
+		class BEECRYPTCXXAPI Integer : public beecrypt::lang::Number, public virtual beecrypt::lang::Comparable<Integer>
 		{
 		private:
-			javaint _val;
+			jint _val;
 
 		public:
-			static const javaint MIN_VALUE;
-			static const javaint MAX_VALUE;
+			static const jint MIN_VALUE;
+			static const jint MAX_VALUE;
 
-			static const String& toHexString(javaint l) throw ();
-			static const String& toOctalString(javaint l) throw ();
-			static const String& toString(javaint l) throw ();
+			static String toHexString(jint l) throw ();
+			static String toOctalString(jint l) throw ();
+			static String toString(jint l) throw ();
 
-			static javaint parseInteger(const String& s) throw (NumberFormatException);
+			static jint parseInteger(const String& s) throw (NumberFormatException);
 
 		public:
-			Integer(javaint value);
+			Integer(jint value) throw ();
 			Integer(const String& s) throw (NumberFormatException);
-			virtual ~Integer() {};
+			virtual ~Integer() {}
 
-			virtual javabyte byteValue() const throw ();
-			virtual javashort shortValue() const throw ();
-			virtual javaint intValue() const throw ();
-			virtual javalong longValue() const throw ();
-
-			virtual int compareTo(const Integer& anotherInteger) const throw ();
+			virtual jint hashCode() const throw ();
+			virtual jbyte byteValue() const throw ();
+			virtual jshort shortValue() const throw ();
+			virtual jint intValue() const throw ();
+			virtual jlong longValue() const throw ();
+			virtual jint compareTo(const Integer& anotherInteger) const throw ();
+			virtual String toString() const throw ();
 		};
 	}
 }

@@ -29,15 +29,17 @@ using beecrypt::crypto::spec::SecretKeySpec;
 #include "beecrypt/c++/security/ProviderException.h"
 using beecrypt::security::ProviderException;
 
-#include <unicode/ustream.h>
+#include <memory>
+using std::auto_ptr;
 
 using namespace beecrypt::provider;
 
 DHAESCipher::DHAESCipher()
 {
+	_dspec = 0;
 	_spec = 0;
-	_srng = 0;
 
+	_srng = 0;
 	_kpg = 0;
 	_ka = 0;
 
@@ -46,13 +48,14 @@ DHAESCipher::DHAESCipher()
 	_m = 0;
 
 	_msg = 0;
+	_buf = 0;
 
 	try
 	{
 		_kpg = KeyPairGenerator::getInstance("DiffieHellman");
 		_ka = KeyAgreement::getInstance("DiffieHellman");
 	}
-	catch (NoSuchAlgorithmException e)
+	catch (NoSuchAlgorithmException& e)
 	{
 		throw ProviderException(e.getMessage());
 	}
@@ -60,45 +63,17 @@ DHAESCipher::DHAESCipher()
 
 DHAESCipher::~DHAESCipher()
 {
-	if (_spec)
-	{
-		delete _spec;
-		_spec = 0;
-	}
-	if (_kpg)
-	{
-		delete _kpg;
-		_kpg = 0;
-	}
-	if (_ka)
-	{
-		delete _ka;
-		_ka = 0;
-	}
-	if (_m)
-	{
-		delete _m;
-		_m = 0;
-	}
-	if (_c)
-	{
-		delete _c;
-		_c = 0;
-	}
-	if (_d)
-	{
-		delete _d;
-		_d = 0;
-	}
-	if (_msg)
-	{
-		delete _msg;
-		_msg = 0;
-	}
-	_srng = 0;
+	delete _dspec;
+	delete _spec;
+	delete _kpg;
+	delete _ka;
+	delete _m;
+	delete _c;
+	delete _d;
+	delete _msg;
 }
 
-bytearray* DHAESCipher::engineDoFinal(const byte* input, size_t inputOffset, size_t inputLength) throw (IllegalBlockSizeException, BadPaddingException)
+bytearray* DHAESCipher::engineDoFinal(const byte* input, int inputOffset, int inputLength) throw (IllegalBlockSizeException, BadPaddingException)
 {
 	bytearray* tmp;
 
@@ -109,7 +84,7 @@ bytearray* DHAESCipher::engineDoFinal(const byte* input, size_t inputOffset, siz
 		_buf->write(input, inputOffset, inputLength);
 		_buf->toByteArray(ciphertext);
 
-		if (_m->doFinal(ciphertext) == _spec->getMac())
+		if (_m->doFinal(ciphertext) == _dspec->getMac())
 		{
 			// MAC matches; we can decrypt
 			tmp = _c->doFinal(ciphertext);
@@ -123,11 +98,7 @@ bytearray* DHAESCipher::engineDoFinal(const byte* input, size_t inputOffset, siz
 
 		_m->update(*tmp);
 
-		DHAESParameterSpec* newspec = new DHAESParameterSpec(_msg->getY(), _m->doFinal(), _spec->getMessageDigestAlgorithm(), _spec->getCipherAlgorithm(), _spec->getMacAlgorithm(), _spec->getCipherKeyLength(), _spec->getMacKeyLength());
-
-		delete _spec;
-
-		_spec = newspec;
+		_dspec = new DHAESDecryptParameterSpec(*_spec, _msg->getY(), _m->doFinal());
 	}
 
 	reset();
@@ -135,9 +106,9 @@ bytearray* DHAESCipher::engineDoFinal(const byte* input, size_t inputOffset, siz
 	return tmp;
 }
 
-size_t DHAESCipher::engineDoFinal(const byte* input, size_t inputOffset, size_t inputLength, bytearray& output, size_t outputOffset) throw (ShortBufferException, IllegalBlockSizeException, BadPaddingException)
+int DHAESCipher::engineDoFinal(const byte* input, int inputOffset, int inputLength, bytearray& output, int outputOffset) throw (ShortBufferException, IllegalBlockSizeException, BadPaddingException)
 {
-	size_t tmp;
+	int tmp;
 
 	if (_buf)
 	{
@@ -146,7 +117,7 @@ size_t DHAESCipher::engineDoFinal(const byte* input, size_t inputOffset, size_t 
 		_buf->write(input, inputOffset, inputLength);
 		_buf->toByteArray(ciphertext);
 
-		if (_m->doFinal(ciphertext) == _spec->getMac())
+		if (_m->doFinal(ciphertext) == _dspec->getMac())
 		{
 			// Mac matches; we can decrypt
 			tmp = _c->doFinal(ciphertext.data(), 0, ciphertext.size(), output, outputOffset);
@@ -160,11 +131,7 @@ size_t DHAESCipher::engineDoFinal(const byte* input, size_t inputOffset, size_t 
 
 		_m->update(output.data(), outputOffset, tmp);
 
-		DHAESParameterSpec* newspec = new DHAESParameterSpec(_msg->getY(), _m->doFinal(), _spec->getMessageDigestAlgorithm(), _spec->getCipherAlgorithm(), _spec->getMacAlgorithm(), _spec->getCipherKeyLength(), _spec->getMacKeyLength());
-
-		delete _spec;
-
-		_spec = newspec;
+		_dspec = new DHAESDecryptParameterSpec(*_spec, _msg->getY(), _m->doFinal());
 	}
 
 	reset();
@@ -172,7 +139,7 @@ size_t DHAESCipher::engineDoFinal(const byte* input, size_t inputOffset, size_t 
 	return tmp;
 }
 
-size_t DHAESCipher::engineGetBlockSize() const throw ()
+int DHAESCipher::engineGetBlockSize() const throw ()
 {
 	return _c->getBlockSize();
 }
@@ -182,59 +149,45 @@ bytearray* DHAESCipher::engineGetIV()
 	return _c->getIV();
 }
 
-size_t DHAESCipher::engineGetOutputSize(size_t inputLength) throw ()
+int DHAESCipher::engineGetOutputSize(int inputLength) throw ()
 {
 	return _c->getOutputSize(inputLength + (_buf ? _buf->size() : 0));
 }
 
 AlgorithmParameters* DHAESCipher::engineGetParameters() throw ()
 {
-	AlgorithmParameters* tmp = 0;
-
 	try
 	{
-		tmp = AlgorithmParameters::getInstance("DHAES");
+		auto_ptr<AlgorithmParameters> tmp(AlgorithmParameters::getInstance("DHAES"));
 
-		tmp->init(*_spec);
-	}
-	catch (InvalidAlgorithmParameterException e)
-	{
-		delete tmp;
+		tmp->init(*_dspec);
 
-		throw ProviderException(e.getMessage());
+		return tmp.release();
 	}
-	catch (NoSuchAlgorithmException e)
+	catch (Exception& e)
 	{
 		throw ProviderException(e.getMessage());
 	}
-
-	return tmp;
 }
 
 void DHAESCipher::engineInit(int opmode, const Key& key, SecureRandom* random) throw (InvalidKeyException)
 {
-	throw ProviderException("DHAESCipher must be initialized with a key and parameters");
+	throw InvalidKeyException("DHAESCipher must be initialized with a key and parameters");
 }
 
 void DHAESCipher::engineInit(int opmode, const Key& key, AlgorithmParameters* params, SecureRandom* random) throw (InvalidKeyException, InvalidAlgorithmParameterException)
 {
 	if (params)
 	{
-		AlgorithmParameterSpec* tmp;
 		try
 		{
-			tmp = params->getParameterSpec(typeid(DHAESParameterSpec));
-			engineInit(opmode, key, *tmp, random);
-			delete tmp;
+			auto_ptr<AlgorithmParameterSpec> tmp(params->getParameterSpec((opmode == Cipher::DECRYPT_MODE) ? typeid(DHAESDecryptParameterSpec) : typeid(DHAESParameterSpec)));
+
+			engineInit(opmode, key, *tmp.get(), random);
 		}
-		catch (InvalidParameterSpecException e)
+		catch (InvalidParameterSpecException& e)
 		{
 			throw InvalidAlgorithmParameterException(e.getMessage());
-		}
-		catch (...)
-		{
-			delete tmp;
-			throw;
 		}
 	}
 	else
@@ -243,66 +196,56 @@ void DHAESCipher::engineInit(int opmode, const Key& key, AlgorithmParameters* pa
 
 void DHAESCipher::engineInit(int opmode, const Key& key, const AlgorithmParameterSpec& params, SecureRandom *random) throw (InvalidKeyException, InvalidAlgorithmParameterException)
 {
-	const DHAESParameterSpec* tmp = dynamic_cast<const DHAESParameterSpec*>(&params);
+	const DHAESParameterSpec* spec;
+	const DHAESDecryptParameterSpec* dspec;
 
-	if (tmp)
-	{
-		if (_spec)
-		{
-			delete _spec;
-			_spec = 0;
-		}
-
-		if (_d)
-		{
-			delete _d;
-			_d = 0;
-		}
-		if (_c)
-		{
-			delete _c;
-			_c = 0;
-		}
-		if (_m)
-		{
-			delete _m;
-			_m = 0;
-		}
-
-		try
-		{
-			_d = MessageDigest::getInstance(tmp->getMessageDigestAlgorithm());
-			_c = Cipher::getInstance(tmp->getCipherAlgorithm() + "/CBC/PKCS5Padding");
-			_m = Mac::getInstance(tmp->getMacAlgorithm());
-		}
-		catch (NoSuchAlgorithmException e)
-		{
-			throw InvalidAlgorithmParameterException(e.getMessage());
-		}
-
-		if (tmp->getCipherKeyLength() == 0)
-		{
-			if (tmp->getCipherKeyLength() != 0)
-				throw new InvalidAlgorithmParameterException("DHAESParameterSpec invalid: if cipher key length equals 0 then mac key length must also be 0");
-		}
-		else
-		{
-			size_t total = _d->getDigestLength();
-
-			if (tmp->getCipherKeyLength() >= total)
-				throw new InvalidAlgorithmParameterException("DHAESParameterSpec invalid: cipher key length must be less than digest size");
-
-			if (tmp->getMacKeyLength() >= total)
-				throw new InvalidAlgorithmParameterException("DHAESParameterSpec invalid: mac key length must be less than digest size");
-
-			if (tmp->getCipherKeyLength() + tmp->getMacKeyLength() > total)
-				throw new InvalidAlgorithmParameterException("DHAESParameterSpec invalid: sum of cipher and mac key length exceeds digest size");
-		}
-
-		_spec = new DHAESParameterSpec(*tmp);
-	}
-	else
+	spec = dynamic_cast<const DHAESParameterSpec*>(&params);
+	if (!spec)
 		throw InvalidAlgorithmParameterException("not a DHAESParameterSpec");
+
+	if (opmode == Cipher::DECRYPT_MODE)
+	{
+		dspec = dynamic_cast<const DHAESDecryptParameterSpec*>(spec);
+		if (!dspec)
+			throw InvalidAlgorithmParameterException("not a DHAESParameterSpec");
+	}
+
+	delete _spec;
+	delete _dspec;
+	delete _d;
+	delete _c;
+	delete _m;
+
+	_spec = 0;
+	_dspec = 0;
+	_d = 0;
+	_c = 0;
+	_m = 0;
+
+	try
+	{
+		_d = MessageDigest::getInstance(spec->getMessageDigestAlgorithm());
+		_c = Cipher::getInstance(spec->getCipherAlgorithm() + "/CBC/PKCS5Padding");
+		_m = Mac::getInstance(spec->getMacAlgorithm());
+	}
+	catch (NoSuchAlgorithmException& e)
+	{
+		throw InvalidAlgorithmParameterException(e.getMessage());
+	}
+
+	if (spec->getCipherKeyLength())
+	{
+		int keybits = _d->getDigestLength() << 3;
+
+		if (spec->getCipherKeyLength() >= keybits)
+			throw new InvalidAlgorithmParameterException("DHAESParameterSpec invalid: cipher key length must be less than digest size");
+
+		if (spec->getMacKeyLength() >= keybits)
+			throw new InvalidAlgorithmParameterException("DHAESParameterSpec invalid: mac key length must be less than digest size");
+
+		if (spec->getCipherKeyLength() + spec->getMacKeyLength() > keybits)
+			throw new InvalidAlgorithmParameterException("DHAESParameterSpec invalid: sum of cipher and mac key lengths exceeds digest size");
+	}
 
 	if (opmode == Cipher::ENCRYPT_MODE)
 	{
@@ -312,10 +255,12 @@ void DHAESCipher::engineInit(int opmode, const Key& key, const AlgorithmParamete
 			_enc = pub;
 			_dec = 0;
 			_buf = 0;
-			_opmode = Cipher::ENCRYPT_MODE;
 		}
 		else
-			throw InvalidKeyException("DHPublicKey expected when encrypting");
+			throw InvalidKeyException("not a DHPublicKey");
+
+		_spec = new DHAESParameterSpec(*spec);
+		_dspec = 0;
 	}
 	else if (opmode == Cipher::DECRYPT_MODE)
 	{
@@ -325,20 +270,23 @@ void DHAESCipher::engineInit(int opmode, const Key& key, const AlgorithmParamete
 			_enc = 0;
 			_dec = pri;
 			_buf = new ByteArrayOutputStream();
-			_opmode = Cipher::DECRYPT_MODE;
 		}
 		else
 			throw InvalidKeyException("DHPrivateKey expected when decrypting");
+
+		_spec = new DHAESParameterSpec(*spec);
+		_dspec = new DHAESDecryptParameterSpec(*dspec);
 	}
 	else
 		throw ProviderException("unsupported opmode");
 
+	_opmode = opmode;
 	_srng = random;
 
 	reset();
 }
 
-bytearray* DHAESCipher::engineUpdate(const byte* input, size_t inputOffset, size_t inputLength)
+bytearray* DHAESCipher::engineUpdate(const byte* input, int inputOffset, int inputLength)
 {
 	if (_buf)
 	{
@@ -348,11 +296,15 @@ bytearray* DHAESCipher::engineUpdate(const byte* input, size_t inputOffset, size
 	}
 	else
 	{
-		return _c->update(input, inputOffset, inputLength);
+		bytearray* tmp = _c->update(input, inputOffset, inputLength);
+		if (tmp)
+			_m->update(*tmp);
+
+		return tmp;
 	}
 }
 
-size_t DHAESCipher::engineUpdate(const byte* input, size_t inputOffset, size_t inputLength, bytearray& output, size_t outputOffset) throw (ShortBufferException)
+int DHAESCipher::engineUpdate(const byte* input, int inputOffset, int inputLength, bytearray& output, int outputOffset) throw (ShortBufferException)
 {
 	if (_buf)
 	{
@@ -362,33 +314,33 @@ size_t DHAESCipher::engineUpdate(const byte* input, size_t inputOffset, size_t i
 	}
 	else
 	{
-		return _c->update(input, inputOffset, inputLength, output, outputOffset);
+		int tmp = _c->update(input, inputOffset, inputLength, output, outputOffset);
+		if (tmp)
+			_m->update(output.data(), outputOffset, tmp);
+
+		return tmp;
 	}
 }
 
 void DHAESCipher::engineSetMode(const String& mode) throw (NoSuchAlgorithmException)
 {
-	throw ProviderException("unsupported method");
+	throw NoSuchAlgorithmException();
 }
 
 void DHAESCipher::engineSetPadding(const String& padding) throw (NoSuchPaddingException)
 {
-	throw ProviderException("unsupported method");
+	throw NoSuchPaddingException();
 }
 
 void DHAESCipher::reset()
 {
-	if (_msg)
-	{
-		delete _msg;
-		_msg = 0;
-	}
+	delete _msg;
 
 	try
 	{
 		if (_buf)
 		{
-			_msg = new DHPublicKeyImpl(_dec->getParams(), _spec->getEphemeralPublicKey());
+			_msg = new DHPublicKeyImpl(_dec->getParams(), _dspec->getEphemeralPublicKey());
 
 			_ka->init(*_dec, _srng);
 			_ka->doPhase(*_msg, true);
@@ -398,36 +350,24 @@ void DHAESCipher::reset()
 			// generate an ephemeral keypair
 			_kpg->initialize(DHParameterSpec(_enc->getParams()), _srng);
 
-			KeyPair* pair;
-
 			try
 			{
-				pair = _kpg->generateKeyPair();
+				auto_ptr<KeyPair> pair(_kpg->generateKeyPair());
 
 				_msg = new DHPublicKeyImpl(dynamic_cast<const DHPublicKey&>(pair->getPublic()));
 
 				_ka->init(pair->getPrivate(), _srng);
 				_ka->doPhase(*_enc, true);
-
-				delete pair;
 			}
-			catch (...)
+			catch (Exception&)
 			{
-				delete pair;
-
 				throw ProviderException();
 			}
-
 		}
 
-		const mpnumber& y = _msg->getY();
+		bytearray tmp;
 
-		size_t bits = mpnbits(&y);
-		size_t bytes = ((bits+7) >> 3) + (((bits&7) == 0) ? 1 : 0);
-
-		bytearray tmp(bytes);
-
-		i2osp(tmp.data(), bytes, y.data, y.size);
+		_msg->getY().toByteArray(tmp);
 
 		_d->reset();
 		_d->update(tmp);
@@ -437,24 +377,20 @@ void DHAESCipher::reset()
 
 		_d->digest(key.data(), 0, key.size());
 
-		size_t cl = _spec->getCipherKeyLength(), ml = _spec->getMacKeyLength();
+		int cl = _spec->getCipherKeyLength() >> 3, ml = _spec->getMacKeyLength() >> 3;
 		SecretKeySpec *cipherKeySpec, *macKeySpec;
 
-		if ((cl & 0x3) || (ml & 0x3))
-			throw InvalidAlgorithmParameterException("cipher and mac key lengths must be a whole number of butes");
-
-		cl <<= 3;
-		ml <<= 3;
-	
 		if (cl == 0 && ml == 0)
 		{
 			// both key lengths are zero; divide available key in two equal halves
-			cipherKeySpec = new SecretKeySpec(key.data(), 0, key.size() >> 1, "RAW");
-			macKeySpec = new SecretKeySpec(key.data(), key.size() >> 1, key.size() >> 1, "RAW");
+			int half = key.size() >> 1;
+
+			cipherKeySpec = new SecretKeySpec(key.data(), 0, half, "RAW");
+			macKeySpec = new SecretKeySpec(key.data(), half, half, "RAW");
 		}
 		else if (cl == 0)
 		{
-			throw InvalidAlgorithmParameterException("when specifying a non-zero mac key size you must also specify a non-zero cipher key size");
+			throw InvalidAlgorithmParameterException("if cipherKeyLength equals 0, then macKeyLength must also be 0");
 		}
 		else if (ml == 0)
 		{
@@ -476,33 +412,21 @@ void DHAESCipher::reset()
 		try
 		{
 			// first try initializing the Cipher with the SecretKeySpec
-			_c->init(_opmode, (const Key&) *cipherKeySpec, (SecureRandom*) 0);
+			_c->init(_opmode, *cipherKeySpec, _srng);
 		}
-		catch (InvalidKeyException)
+		catch (InvalidKeyException&)
 		{
 			// on failure, let's see if there's a SecretKeyFactory for the Cipher
-			SecretKeyFactory* skf;
-			SecretKey* s;
-
 			try
 			{
-				skf = SecretKeyFactory::getInstance(_c->getAlgorithm());
+				auto_ptr<SecretKeyFactory> skf(SecretKeyFactory::getInstance(_c->getAlgorithm()));
+				auto_ptr<SecretKey> s(skf->generateSecret(*cipherKeySpec));
 
-				s = skf->generateSecret(*cipherKeySpec);
-
-				_c->init(_opmode, (const Key&) *s, (SecureRandom*) 0);
-
-				delete s;
+				_c->init(_opmode, *s.get(), _srng);
 			}
-			catch (InvalidKeySpecException e)
+			catch (Exception& e)
 			{
-				delete s;
-
 				throw InvalidKeyException(e.getMessage());
-			}
-			catch (NoSuchAlgorithmException)
-			{
-				throw ProviderException("cannot initialize cipher");
 			}
 		}
 
@@ -511,42 +435,24 @@ void DHAESCipher::reset()
 			// first try initializing the Mac with the SecretKeySpec
 			_m->init(*macKeySpec);
 		}
-		catch (InvalidKeyException)
+		catch (InvalidKeyException&)
 		{
 			// on failure, let's see if there's a SecretKeyFactory for the Mac
-			SecretKeyFactory* skf;
-			SecretKey* s;
-
 			try
 			{
-				skf = SecretKeyFactory::getInstance(_m->getAlgorithm());
+				auto_ptr<SecretKeyFactory> skf(SecretKeyFactory::getInstance(_m->getAlgorithm()));
+				auto_ptr<SecretKey> s(skf->generateSecret(*macKeySpec));
 
-				s = skf->generateSecret(*macKeySpec);
-
-				_m->init(*s);
-
-				delete s;
+				_m->init(*s.get());
 			}
-			catch (InvalidKeySpecException e)
+			catch (Exception& e)
 			{
-				delete s;
-
 				throw InvalidKeyException(e.getMessage());
-			}
-			catch (NoSuchAlgorithmException)
-			{
-				throw ProviderException("cannot initialize mac");
 			}
 		}
 	}
-	catch (InvalidAlgorithmParameterException e)
+	catch (InvalidAlgorithmParameterException& e)
 	{
-		std::cout << "got InvalidAlgorithmParameterException " << e.getMessage() << std::endl;
 		throw ProviderException(e.getMessage());
-	}
-	catch (Exception e)
-	{
-		std::cout << "got Exception " << e.getMessage() << std::endl;
-		throw e;
 	}
 }

@@ -20,15 +20,13 @@
  * \ingroup CXX_CRYPTO_m
  */
 
-#ifndef _CLASS_KEYAGREEMENT_H
-#define _CLASS_KEYAGREEMENT_H
+#ifndef _CLASS_BEE_CRYPTO_KEYAGREEMENT_H
+#define _CLASS_BEE_CRYPTO_KEYAGREEMENT_H
 
 #ifdef __cplusplus
 
 #include "beecrypt/c++/crypto/KeyAgreementSpi.h"
 using beecrypt::crypto::KeyAgreementSpi;
-#include "beecrypt/c++/lang/Object.h"
-using beecrypt::lang::Object;
 
 namespace beecrypt {
 	namespace crypto {
@@ -58,7 +56,7 @@ namespace beecrypt {
 			Key* doPhase(const Key&, bool) throw (InvalidKeyException, IllegalStateException);
 
 			bytearray* generateSecret() throw (IllegalStateException);
-			size_t generateSecret(bytearray&, size_t) throw (IllegalStateException, ShortBufferException);
+			int generateSecret(bytearray&, int) throw (IllegalStateException, ShortBufferException);
 			SecretKey* generateSecret(const String&) throw (IllegalStateException, NoSuchAlgorithmException, InvalidKeyException);
 		};
 	}

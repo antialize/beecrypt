@@ -24,8 +24,8 @@
 using beecrypt::lang::NullPointerException;
 #include "beecrypt/c++/lang/UnsupportedOperationException.h"
 using beecrypt::lang::UnsupportedOperationException;
-#include "beecrypt/c++/lang/Long.h"
-using beecrypt::lang::Long;
+#include "beecrypt/c++/lang/Integer.h"
+using beecrypt::lang::Integer;
 #include "beecrypt/c++/crypto/Cipher.h"
 using beecrypt::crypto::Cipher;
 #include "beecrypt/c++/crypto/SecretKey.h"
@@ -38,6 +38,9 @@ using beecrypt::security::ProviderException;
 using beecrypt::security::Security;
 #include "beecrypt/c++/provider/BlockCipher.h"
 
+#include <memory>
+using std::auto_ptr;
+
 using namespace beecrypt::provider;
 
 #define BUFFER_SIZE		4096	// must be a whole number of blocks
@@ -48,11 +51,15 @@ const int BlockCipher::MODE_CBC = 1;
 const int BlockCipher::PADDING_NONE = 0;
 const int BlockCipher::PADDING_PKCS5 = 1;
 
+namespace {
+	String FORMAT_RAW("RAW");
+}
+
 /*!\todo investigate getting buffer size from beecrypt.conf
  */
 BlockCipher::BlockCipher(const blockCipher& cipher) : _ctxt(&cipher), _iv(cipher.blocksize)
 {
-	size_t blocksize = _ctxt.algo->blocksize;
+	jint blocksize = _ctxt.algo->blocksize;
 
 	try
 	{
@@ -61,15 +68,15 @@ BlockCipher::BlockCipher(const blockCipher& cipher) : _ctxt(&cipher), _iv(cipher
 		if (tmp)
 		{
 			// value was configured
-			javalong l = Long::parseLong(*tmp);
+			jint size = Integer::parseInteger(*tmp);
 
-			if (l <= 1024)
+			if (size <= 1024)
 				throw ProviderException("blockcipher.buffer.size must be greater than or equal to 1024");
 
-			if (l % blocksize)
+			if (size % blocksize)
 				throw ProviderException("blockcipher.buffer.size is not a multiple of this cipher's blocksize");
 
-			_buffer.resize((size_t) l);
+			_buffer.resize(size);
 		}
 		else
 		{
@@ -77,7 +84,7 @@ BlockCipher::BlockCipher(const blockCipher& cipher) : _ctxt(&cipher), _iv(cipher
 			_buffer.resize(1024 * blocksize);
 		}
 	}
-	catch (NumberFormatException)
+	catch (NumberFormatException&)
 	{
 		throw ProviderException("blockcipher.buffer.size not set to a numeric value");
 	}
@@ -93,17 +100,17 @@ BlockCipher::BlockCipher(const blockCipher& cipher) : _ctxt(&cipher), _iv(cipher
 
 }
 
-bytearray* BlockCipher::engineDoFinal(const byte* input, size_t inputOffset, size_t inputLength) throw (IllegalBlockSizeException, BadPaddingException)
+bytearray* BlockCipher::engineDoFinal(const byte* input, int inputOffset, int inputLength) throw (IllegalBlockSizeException, BadPaddingException)
 {
 	bytearray* tmp = 0;
 
-	size_t outputLength = engineGetOutputSize(inputLength);
+	int outputLength = engineGetOutputSize(inputLength);
 
 	if (outputLength > 0)
 	{
 		tmp = new bytearray(outputLength);
 
-		size_t realLength = engineDoFinal(input, inputOffset, inputLength, *tmp, 0);
+		int realLength = engineDoFinal(input, inputOffset, inputLength, *tmp, 0);
 
 		// unpadding may have shortened the output
 		if (realLength == 0)
@@ -122,17 +129,17 @@ bytearray* BlockCipher::engineDoFinal(const byte* input, size_t inputOffset, siz
 	return tmp;
 }
 
-size_t BlockCipher::engineDoFinal(const byte* input, size_t inputOffset, size_t inputLength, bytearray& output, size_t outputOffset) throw (ShortBufferException, IllegalBlockSizeException, BadPaddingException)
+int BlockCipher::engineDoFinal(const byte* input, int inputOffset, int inputLength, bytearray& output, int outputOffset) throw (ShortBufferException, IllegalBlockSizeException, BadPaddingException)
 {
-	size_t blocksize = _ctxt.algo->blocksize;
+	int blocksize = _ctxt.algo->blocksize;
 
 	_buflwm = 0;
 
-	size_t total = process(input+inputOffset, inputLength, output.data() + outputOffset, output.size() - outputOffset);
+	int total = process(input+inputOffset, inputLength, output.data() + outputOffset, output.size() - outputOffset);
 
 	if ((_padding == PADDING_PKCS5) && (_opmode == Cipher::ENCRYPT_MODE))
 	{
-		size_t padvalue = blocksize - (_bufcnt % blocksize);
+		int padvalue = blocksize - (_bufcnt % blocksize);
 
 		memset(_buffer.data() + _bufcnt, padvalue, padvalue);
 
@@ -169,12 +176,12 @@ size_t BlockCipher::engineDoFinal(const byte* input, size_t inputOffset, size_t 
 	return total;
 }
 
-size_t BlockCipher::engineGetBlockSize() const throw ()
+int BlockCipher::engineGetBlockSize() const throw ()
 {
 	return _ctxt.algo->blocksize;
 }
 
-size_t BlockCipher::engineGetKeySize(const Key& key) const throw (InvalidKeyException)
+int BlockCipher::engineGetKeySize(const Key& key) const throw (InvalidKeyException)
 {
 	const SecretKey* secret = dynamic_cast<const SecretKey*>(&key);
 	if (secret)
@@ -184,7 +191,7 @@ size_t BlockCipher::engineGetKeySize(const Key& key) const throw (InvalidKeyExce
 		if (!format)
 			throw InvalidKeyException("key has no format");
 
-		if (format->compare("RAW"))
+		if (!format->equals(&FORMAT_RAW))
 			throw InvalidKeyException("key format isn't RAW");
 			
 		const bytearray* raw = secret->getEncoded();
@@ -198,14 +205,14 @@ size_t BlockCipher::engineGetKeySize(const Key& key) const throw (InvalidKeyExce
 		throw InvalidKeyException("not a SecretKey");
 }
 
-size_t BlockCipher::engineGetOutputSize(size_t inputLength) throw ()
+int BlockCipher::engineGetOutputSize(int inputLength) throw ()
 {
-	size_t total = _bufcnt + inputLength;
+	int total = _bufcnt + inputLength;
 
 	// PKCS5 padding + encryption can add up to (blocksize) bytes
 	if ((_padding == PADDING_PKCS5) && (_opmode == Cipher::ENCRYPT_MODE))
 	{
-		size_t blocksize = _ctxt.algo->blocksize;
+		int blocksize = _ctxt.algo->blocksize;
 
 		total += blocksize - (total % blocksize);
 	}
@@ -241,21 +248,15 @@ void BlockCipher::engineInit(int opmode, const Key& key, AlgorithmParameters* pa
 {
 	if (params)
 	{
-		AlgorithmParameterSpec* tmp;
 		try
 		{
-			tmp = params->getParameterSpec(typeid(IvParameterSpec));
+			auto_ptr<AlgorithmParameterSpec> tmp(params->getParameterSpec(typeid(IvParameterSpec)));
+
 			engineInit(opmode, key, *tmp, random);
-			delete tmp;
 		}
-		catch (InvalidParameterSpecException e)
+		catch (InvalidParameterSpecException& e)
 		{
 			throw InvalidAlgorithmParameterException(e.getMessage());
-		}
-		catch (...)
-		{
-			delete tmp;
-			throw;
 		}
 	}
 	else
@@ -279,11 +280,11 @@ void BlockCipher::engineInit(int opmode, const Key& key, const AlgorithmParamete
 	engineInit(opmode, key, random);
 }
 
-bytearray* BlockCipher::engineUpdate(const byte* input, size_t inputOffset, size_t inputLength)
+bytearray* BlockCipher::engineUpdate(const byte* input, int inputOffset, int inputLength)
 {
 	bytearray* tmp = new bytearray(engineGetOutputSize(inputLength));
 
-	size_t total = process(input+inputOffset, inputLength, tmp->data(), tmp->size());
+	int total = process(input+inputOffset, inputLength, tmp->data(), tmp->size());
 
 	if (total == 0)
 	{
@@ -298,16 +299,16 @@ bytearray* BlockCipher::engineUpdate(const byte* input, size_t inputOffset, size
 	return tmp;
 }
 
-size_t BlockCipher::engineUpdate(const byte* input, size_t inputOffset, size_t inputLength, bytearray& output, size_t outputOffset) throw (ShortBufferException)
+int BlockCipher::engineUpdate(const byte* input, int inputOffset, int inputLength, bytearray& output, int outputOffset) throw (ShortBufferException)
 {
 	return process(input+inputOffset, inputLength, output.data() + outputOffset, output.size() - outputOffset);
 }
 
 void BlockCipher::engineSetMode(const String& mode) throw (NoSuchAlgorithmException)
 {
-	if (mode.length() == 0 || mode.caseCompare("ECB", 0) == 0)
+	if (mode.length() == 0 || mode.equalsIgnoreCase("ECB"))
 		_blmode = MODE_ECB;
-	else if (mode.caseCompare("CBC", 0) == 0)
+	else if (mode.equalsIgnoreCase("CBC"))
 		_blmode = MODE_CBC;
 	else
 		throw NoSuchAlgorithmException();
@@ -316,12 +317,12 @@ void BlockCipher::engineSetMode(const String& mode) throw (NoSuchAlgorithmExcept
 void BlockCipher::engineSetPadding(const String& padding) throw (NoSuchPaddingException)
 {
 	if (padding.length() == 0 ||
-			padding.caseCompare("None", 0) == 0 ||
-			padding.caseCompare("NoPadding", 0) == 0)
+			padding.equalsIgnoreCase("None") ||
+			padding.equalsIgnoreCase("NoPadding"))
 		_padding = PADDING_NONE;
-	else if (padding.caseCompare("PKCS5", 0) == 0 ||
-			padding.caseCompare("PKCS#5", 0) == 0 ||
-			padding.caseCompare("PKCS5Padding", 0) == 0)
+	else if (padding.equalsIgnoreCase("PKCS5") ||
+			padding.equalsIgnoreCase("PKCS#5") ||
+			padding.equalsIgnoreCase("PKCS5Padding"))
 		_padding = PADDING_PKCS5;
 	else
 		throw NoSuchPaddingException();
@@ -332,23 +333,23 @@ void BlockCipher::engineSetPadding(const String& padding) throw (NoSuchPaddingEx
  *        - all input and output is properly 32-bit aligned
  *        - at least 'buffer low water mark' bytes remain in the buffer (for unpadding)
  */
-size_t BlockCipher::process(const byte* input, size_t inputLength, byte* output, size_t outputLength) throw (ShortBufferException)
+int BlockCipher::process(const byte* input, int inputLength, byte* output, int outputLength) throw (ShortBufferException)
 {
-	size_t blocksize = _ctxt.algo->blocksize;
-	size_t total = 0;
+	int blocksize = _ctxt.algo->blocksize;
+	int total = 0;
 
 	do
 	{
 		bool copyIn, copyOut;
 		const uint32_t *in;
 		uint32_t *out;
-		size_t blocks;
-		size_t bytes;
+		int blocks;
+		int bytes;
 
-		copyIn = ((((size_t) input) & 0x3) != 0) || (_bufcnt > 0) || (_bufcnt < _buflwm);
+		copyIn = ((((byte) (unsigned long) input) & 0x3) != 0) || (_bufcnt > 0) || (_bufcnt < _buflwm);
 		if (copyIn)
 		{
-			size_t copy = _buffer.size() - _bufcnt;
+			int copy = _buffer.size() - _bufcnt;
 
 			if (copy > inputLength)
 				copy = inputLength;
@@ -373,10 +374,10 @@ size_t BlockCipher::process(const byte* input, size_t inputLength, byte* output,
 			in = (const uint32_t*) input;
 		}
  
-		copyOut = (((size_t) output) & 0x3) != 0;
+		copyOut = (((byte) (unsigned long) output) & 0x3) != 0;
 		if (copyOut)
 		{
-			size_t maxblocks = _buffer.size() / blocksize;
+			int maxblocks = _buffer.size() / blocksize;
 
 			if (blocks > maxblocks)
 				blocks = maxblocks;

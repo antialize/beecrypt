@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_MESSAGEDIGESTSPI_H
-#define _CLASS_MESSAGEDIGESTSPI_H
+#ifndef _CLASS_BEE_SECURITY_MESSAGEDIGESTSPI_H
+#define _CLASS_BEE_SECURITY_MESSAGEDIGESTSPI_H
 
 #include "beecrypt/api.h"
 
@@ -44,14 +44,14 @@ namespace beecrypt {
 
 		protected:
 			virtual const bytearray& engineDigest() = 0;
-			virtual size_t engineDigest(byte* data, size_t offset, size_t length) throw (ShortBufferException) = 0;
-			virtual size_t engineGetDigestLength() = 0;
+			virtual int engineDigest(byte* data, int offset, int length) throw (ShortBufferException) = 0;
+			virtual int engineGetDigestLength() = 0;
 			virtual void engineReset() = 0;
 			virtual void engineUpdate(byte b) = 0;
-			virtual void engineUpdate(const byte* data, size_t offset, size_t length) = 0;
+			virtual void engineUpdate(const byte* data, int offset, int length) = 0;
 
 		public:
-			virtual ~MessageDigestSpi() {};
+			virtual ~MessageDigestSpi() {}
 
 			virtual MessageDigestSpi* clone() const throw (CloneNotSupportedException) = 0;
 		};

@@ -20,13 +20,11 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_KEYPAIRGENERATOR_H
-#define _CLASS_KEYPAIRGENERATOR_H
+#ifndef _CLASS_BEE_SECURITY_KEYPAIRGENERATOR_H
+#define _CLASS_BEE_SECURITY_KEYPAIRGENERATOR_H
 
 #ifdef __cplusplus
 
-#include "beecrypt/c++/lang/Object.h"
-using beecrypt::lang::Object;
 #include "beecrypt/c++/security/KeyPairGeneratorSpi.h"
 using beecrypt::security::KeyPairGeneratorSpi;
 #include "beecrypt/c++/security/Provider.h"
@@ -62,8 +60,8 @@ namespace beecrypt {
 
 			void initialize(const AlgorithmParameterSpec&) throw (InvalidAlgorithmParameterException);
 			void initialize(const AlgorithmParameterSpec&, SecureRandom*) throw (InvalidAlgorithmParameterException);
-			void initialize(size_t) throw(InvalidParameterException);
-			void initialize(size_t, SecureRandom*) throw (InvalidParameterException);
+			void initialize(int) throw(InvalidParameterException);
+			void initialize(int, SecureRandom*) throw (InvalidParameterException);
 
 			const String& getAlgorithm() const throw ();
 			const Provider& getProvider() const throw ();

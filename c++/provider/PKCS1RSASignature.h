@@ -60,15 +60,15 @@ namespace beecrypt {
 			virtual void engineInitVerify(const PublicKey&) throw (InvalidKeyException);
 
 			virtual bytearray* engineSign() throw (SignatureException);
-			virtual size_t engineSign(byte*, size_t, size_t) throw (ShortBufferException, SignatureException);
-			virtual size_t engineSign(bytearray&) throw (SignatureException);
-			virtual bool engineVerify(const byte*, size_t, size_t) throw (SignatureException);
+			virtual int engineSign(byte*, int, int) throw (ShortBufferException, SignatureException);
+			virtual int engineSign(bytearray&) throw (SignatureException);
+			virtual bool engineVerify(const byte*, int, int) throw (SignatureException);
 
 			virtual void engineUpdate(byte);
-			virtual void engineUpdate(const byte*, size_t, size_t);
+			virtual void engineUpdate(const byte*, int, int);
 
 		public:
-			virtual ~PKCS1RSASignature();
+			virtual ~PKCS1RSASignature() {}
 		};
 	}
 }

@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_SPEC_m
  */
 
-#ifndef _INTERFACE_ALGORITHMPARAMETERSPEC_H
-#define _INTERFACE_ALGORITHMPARAMETERSPEC_H
+#ifndef _INTERFACE_BEE_SECURITY_SPEC_ALGORITHMPARAMETERSPEC_H
+#define _INTERFACE_BEE_SECURITY_SPEC_ALGORITHMPARAMETERSPEC_H
 
 #include "beecrypt/api.h"
 
@@ -36,7 +36,7 @@ namespace beecrypt {
 			class BEECRYPTCXXAPI AlgorithmParameterSpec
 			{
 			public:
-				virtual ~AlgorithmParameterSpec() {};
+				virtual ~AlgorithmParameterSpec() {}
 			};
 		}
 	}

@@ -20,8 +20,8 @@
  * \ingroup CXX_LANG_m
  */
 
-#ifndef _CLASS_CLASSCASTEXCEPTION_H
-#define _CLASS_CLASSCASTEXCEPTION_H
+#ifndef _CLASS_BEE_LANG_CLASSCASTEXCEPTION_H
+#define _CLASS_BEE_LANG_CLASSCASTEXCEPTION_H
 
 #ifdef __cplusplus
 
@@ -36,6 +36,7 @@ namespace beecrypt {
 		{
 		public:
 			ClassCastException() throw ();
+			ClassCastException(const String* message) throw ();
 			ClassCastException(const String& message) throw ();
 		};
 	}

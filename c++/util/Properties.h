@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004 Beeyond Software Holding BV
+ * Copyright (c) 2004, 2005 Beeyond Software Holding BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,47 +25,39 @@
 
 #ifdef __cplusplus
 
-#include "beecrypt/c++/mutex.h"
-using beecrypt::mutex;
 #include "beecrypt/c++/io/InputStream.h"
 using beecrypt::io::InputStream;
 #include "beecrypt/c++/io/OutputStream.h"
 using beecrypt::io::OutputStream;
-#include "beecrypt/c++/lang/Object.h"
-using beecrypt::lang::Object;
 #include "beecrypt/c++/lang/String.h"
 using beecrypt::lang::String;
 #include "beecrypt/c++/util/Enumeration.h"
 using beecrypt::util::Enumeration;
-
-#include <map>
-using std::map;
+#include "beecrypt/c++/util/Hashtable.h"
+using beecrypt::util::Hashtable;
 
 namespace beecrypt {
 	namespace util {
 		/*!\ingroup CXX_UTIL_m
 		 */
-		class BEECRYPTCXXAPI Properties : public beecrypt::lang::Object
+		class BEECRYPTCXXAPI Properties : public beecrypt::util::Hashtable<Object,Object>
 		{
 		private:
-			typedef map<String,String> properties_map;
-
-			class PropEnum : public Enumeration
+			class Names : public beecrypt::lang::Object, public virtual beecrypt::util::Enumeration<const String>
 			{
-			public:
-				properties_map::const_iterator _it;
-				properties_map::const_iterator _end;
+			private:
+				array<String*> _list;
+				jint _pos;
 
 			public:
-				PropEnum(const properties_map& map) throw ();
-				virtual ~PropEnum() throw ();
+				Names(Hashtable<Object,Object>& h);
+				virtual ~Names();
 
 				virtual bool hasMoreElements() throw ();
-				virtual const void* nextElement() throw (NoSuchElementException);
+				virtual const String* nextElement() throw (NoSuchElementException);
 			};
 
-			properties_map _pmap;
-			mutex _lock;
+			void enumerate(Hashtable<Object,Object>& h) const;
 
 		protected:
 			const Properties* defaults;
@@ -74,16 +66,23 @@ namespace beecrypt {
 			Properties();
 			Properties(const Properties& copy);
 			Properties(const Properties* defaults);
-			virtual ~Properties();
+			virtual ~Properties() {}
 
 			const String* getProperty(const String& key) const throw ();
 			const String* getProperty(const String& key, const String& defaultValue) const throw ();
 
-			void setProperty(const String& key, const String& value) throw ();
+			/*!\warning If this method returns a non-null value, make sure
+			 *  you pass it to beecrypt::lang::collection_rcheck(), which will delete
+			 *  it if it's no longer attached to any other collection.
+			 */
+			Object* setProperty(const String& key, const String& value);
 
-			Enumeration* propertyNames() const;
+			Enumeration<const String>* propertyNames() const;
 
 			void load(InputStream& in) throw (IOException);
+			/*!\todo rewrite this method using an OutputWriter after obtaining all
+			 *  keys through the enumerate method
+			 */
 			void store(OutputStream& out, const String& header) throw (IOException);
 		};
 	}

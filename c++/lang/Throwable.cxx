@@ -29,17 +29,19 @@ Throwable::Throwable() throw ()
 {
 }
 
-Throwable::Throwable(const String& message) throw ()
+Throwable::Throwable(const String* message) throw () : _msg(message)
 {
-	_msg = message;
 }
 
-Throwable::Throwable(const Throwable& copy) throw ()
+Throwable::Throwable(const String& message) throw () : _msg(&message)
 {
-	_msg = copy._msg;
 }
 
-const String& Throwable::getMessage() const throw ()
+Throwable::Throwable(const Throwable& copy) throw () : _msg(copy._msg)
+{
+}
+
+const String* Throwable::getMessage() const throw ()
 {
 	return _msg;
 }

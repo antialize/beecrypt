@@ -20,13 +20,11 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_KEYPAIR_H
-#define _CLASS_KEYPAIR_H
+#ifndef _CLASS_BEE_SECURITY_KEYPAIR_H
+#define _CLASS_BEE_SECURITY_KEYPAIR_H
 
 #ifdef __cplusplus
 
-#include "beecrypt/c++/lang/Object.h"
-using beecrypt::lang::Object;
 #include "beecrypt/c++/security/PrivateKey.h"
 using beecrypt::security::PrivateKey;
 #include "beecrypt/c++/security/PublicKey.h"

@@ -30,6 +30,10 @@ CertPathValidatorException::CertPathValidatorException() throw ()
 {
 }
 
+CertPathValidatorException::CertPathValidatorException(const String* message) throw () : GeneralSecurityException(message)
+{
+}
+
 CertPathValidatorException::CertPathValidatorException(const String& message) throw () : GeneralSecurityException(message)
 {
 }

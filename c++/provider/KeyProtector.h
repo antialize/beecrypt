@@ -56,7 +56,7 @@ namespace beecrypt {
 			bytearray* protect(const PrivateKey&) throw ();
 
 			PrivateKey* recover(const bytearray&) throw (NoSuchAlgorithmException, UnrecoverableKeyException);
-			PrivateKey* recover(const byte*, size_t) throw (NoSuchAlgorithmException, UnrecoverableKeyException);
+			PrivateKey* recover(const byte*, int) throw (NoSuchAlgorithmException, UnrecoverableKeyException);
 		};
 	}
 }

@@ -20,8 +20,8 @@
  * \ingroup CXX_CRYPTO_m
  */
 
-#ifndef _CLASS_ILLEGALBLOCKSIZEEXCEPTION_H
-#define _CLASS_ILLEGALBLOCKSIZEEXCEPTION_H
+#ifndef _CLASS_BEE_CRYPTO_ILLEGALBLOCKSIZEEXCEPTION_H
+#define _CLASS_BEE_CRYPTO_ILLEGALBLOCKSIZEEXCEPTION_H
 
 #ifdef __cplusplus
 
@@ -36,6 +36,7 @@ namespace beecrypt {
 		{
 		public:
 			IllegalBlockSizeException() throw ();
+			IllegalBlockSizeException(const String* message) throw ();
 			IllegalBlockSizeException(const String& message) throw ();
 		};
 	}

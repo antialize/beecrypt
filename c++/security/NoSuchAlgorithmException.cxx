@@ -30,6 +30,10 @@ NoSuchAlgorithmException::NoSuchAlgorithmException() throw ()
 {
 }
 
+NoSuchAlgorithmException::NoSuchAlgorithmException(const String* message) throw () : GeneralSecurityException(message)
+{
+}
+
 NoSuchAlgorithmException::NoSuchAlgorithmException(const String& message) throw () : GeneralSecurityException(message)
 {
 }

@@ -20,8 +20,8 @@
  * \ingroup CXX_IO_m
  */
 
-#ifndef _CLASS_EOFEXCEPTION_H
-#define _CLASS_EOFEXCEPTION_H
+#ifndef _CLASS_BEE_IO_EOFEXCEPTION_H
+#define _CLASS_BEE_IO_EOFEXCEPTION_H
 
 #ifdef __cplusplus
 
@@ -36,6 +36,7 @@ namespace beecrypt {
 		{
 		public:
 			EOFException() throw ();
+			EOFException(const String* message) throw ();
 			EOFException(const String& message) throw ();
 		};
 	}

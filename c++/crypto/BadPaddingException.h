@@ -20,8 +20,8 @@
  * \ingroup CXX_CRYPTO_m
  */
 
-#ifndef _CLASS_BADPADDINGEXCEPTION_H
-#define _CLASS_BADPADDINGEXCEPTION_H
+#ifndef _CLASS_BEE_CRYPTO_BADPADDINGEXCEPTION_H
+#define _CLASS_BEE_CRYPTO_BADPADDINGEXCEPTION_H
 
 #ifdef __cplusplus
 
@@ -36,6 +36,7 @@ namespace beecrypt {
 		{
 		public:
 			BadPaddingException() throw ();
+			BadPaddingException(const String* message) throw ();
 			BadPaddingException(const String& message) throw ();
 		};
 	}

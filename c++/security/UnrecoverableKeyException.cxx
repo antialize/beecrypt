@@ -30,6 +30,10 @@ UnrecoverableKeyException::UnrecoverableKeyException() throw ()
 {
 }
 
+UnrecoverableKeyException::UnrecoverableKeyException(const String* message) throw () : GeneralSecurityException(message)
+{
+}
+
 UnrecoverableKeyException::UnrecoverableKeyException(const String& message) throw () : GeneralSecurityException(message)
 {
 }

@@ -20,8 +20,8 @@
  * \ingroup CXX_LANG_m
  */
 
-#ifndef _CLASS_NUMBERFORMATEXCEPTION_H
-#define _CLASS_NUMBERFORMATEXCEPTION_H
+#ifndef _CLASS_BEE_LANG_NUMBERFORMATEXCEPTION_H
+#define _CLASS_BEE_LANG_NUMBERFORMATEXCEPTION_H
 
 #ifdef __cplusplus
 
@@ -38,6 +38,7 @@ namespace beecrypt {
 		{
 		public:
 			NumberFormatException() throw ();
+			NumberFormatException(const String* message) throw ();
 			NumberFormatException(const String& message) throw ();
 		};
 	}

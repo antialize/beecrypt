@@ -33,7 +33,7 @@ namespace beecrypt {
 		{
 		public:
 			HMACSHA256();
-			virtual ~HMACSHA256() {};
+			virtual ~HMACSHA256() {}
 
 			virtual HMACSHA256* clone() const throw ();
 		};

@@ -22,7 +22,7 @@
 # include "config.h"
 #endif
 
-#include "c++/util/Date.h"
+#include "beecrypt/c++/util/Date.h"
 using beecrypt::util::Date;
 
 #include <unicode/ustream.h>

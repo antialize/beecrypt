@@ -20,8 +20,8 @@
  * \ingroup CXX_IO_m
  */
 
-#ifndef _CLASS_INPUTSTREAM_H
-#define _CLASS_INPUTSTREAM_H
+#ifndef _ABSTRACT_CLASS_BEE_IO_INPUTSTREAM_H
+#define _ABSTRACT_CLASS_BEE_IO_INPUTSTREAM_H
 
 #ifdef __cplusplus
 
@@ -40,15 +40,15 @@ namespace beecrypt {
 		public:
 			virtual ~InputStream() {};
 
-			virtual off_t available() throw (IOException);
+			virtual jint available() throw (IOException);
 			virtual void close() throw (IOException);
-			virtual void mark(off_t readlimit) throw ();
+			virtual void mark(jint readlimit) throw ();
 			virtual bool markSupported() throw ();
-			virtual int read() throw (IOException) = 0;
-			virtual int read(byte* data, size_t offset, size_t length) throw (IOException);
-			virtual int read(bytearray& b) throw (IOException);
+			virtual jint read() throw (IOException) = 0;
+			virtual jint read(byte* data, jint offset, jint length) throw (IOException);
+			virtual jint read(bytearray& b) throw (IOException);
 			virtual void reset() throw (IOException);
-			virtual off_t skip(off_t n) throw (IOException);
+			virtual jint skip(jint n) throw (IOException);
 		};
 	}
 }

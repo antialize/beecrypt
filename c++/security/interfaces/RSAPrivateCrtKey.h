@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_INTERFACES_m
  */
 
-#ifndef _INTERFACE_RSAPRIVATECRTKEY_H
-#define _INTERFACE_RSAPRIVATECRTKEY_H
+#ifndef _INTERFACE_BEE_SECURITY_INTERFACES_RSAPRIVATECRTKEY_H
+#define _INTERFACE_BEE_SECURITY_INTERFACES_RSAPRIVATECRTKEY_H
 
 #ifdef __cplusplus
 
@@ -34,15 +34,17 @@ namespace beecrypt {
 			/*!\brief The interface to an RSA private key, as defined in the PKCS#1 standard, using the Chinese Remainder Theorem (CRT) information values.
 			 * \ingroup CXX_SECURITY_INTERFACES_m
 			 */
-			class RSAPrivateCrtKey : public RSAPrivateKey
+			class RSAPrivateCrtKey : public virtual beecrypt::security::interfaces::RSAPrivateKey
 			{
 			public:
-				virtual const mpnumber& getPublicExponent() const throw () = 0;
-				virtual const mpbarrett& getPrimeP() const throw () = 0;
-				virtual const mpbarrett& getPrimeQ() const throw () = 0;
-				virtual const mpnumber& getPrimeExponentP() const throw () = 0;
-				virtual const mpnumber& getPrimeExponentQ() const throw () = 0;
-				virtual const mpnumber& getCrtCoefficient() const throw () = 0;
+				virtual ~RSAPrivateCrtKey() {}
+
+				virtual const BigInteger& getPublicExponent() const throw () = 0;
+				virtual const BigInteger& getPrimeP() const throw () = 0;
+				virtual const BigInteger& getPrimeQ() const throw () = 0;
+				virtual const BigInteger& getPrimeExponentP() const throw () = 0;
+				virtual const BigInteger& getPrimeExponentQ() const throw () = 0;
+				virtual const BigInteger& getCrtCoefficient() const throw () = 0;
 			};
 		}
 	}

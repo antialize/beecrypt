@@ -29,6 +29,10 @@ CloneNotSupportedException::CloneNotSupportedException() throw ()
 {
 }
 
+CloneNotSupportedException::CloneNotSupportedException(const String* message) throw () : Exception(message)
+{
+}
+
 CloneNotSupportedException::CloneNotSupportedException(const String& message) throw () : Exception(message)
 {
 }

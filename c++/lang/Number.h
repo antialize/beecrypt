@@ -20,14 +20,13 @@
  * \ingroup CXX_LANG_m
  */
 
-#ifndef _BEECRYPT_CLASS_NUMBER_H
-#define _BEECRYPT_CLASS_NUMBER_H
-
-#include "beecrypt/api.h"
+#ifndef _ABSTRACT_CLASS_BEE_LANG_NUMBER_H
+#define _ABSTRACT_CLASS_BEE_LANG_NUMBER_H
 
 #ifdef __cplusplus
 
 #include "beecrypt/c++/lang/Object.h"
+using beecrypt::lang::Object;
 
 namespace beecrypt {
 	namespace lang {
@@ -36,12 +35,14 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI Number : public beecrypt::lang::Object
 		{
 		public:
-			virtual javabyte byteValue() const throw () = 0;
-			virtual javashort shortValue() const throw () = 0;
-			virtual javaint intValue() const throw () = 0;
-			virtual javalong longValue() const throw () = 0;
-			// virtual javafloat floatValue() const throw () = 0;
-			// virtual javadouble doubeValue() const throw () = 0;
+			virtual ~Number() {}
+
+			virtual jbyte byteValue() const throw () = 0;
+			virtual jint intValue() const throw () = 0;
+			virtual jlong longValue() const throw () = 0;
+			virtual jshort shortValue() const throw () = 0;
+		//	virtual jfloat floatValue() const throw () = 0;
+		//	virtual jdouble doubeValue() const throw () = 0;
 		};
 	}
 }

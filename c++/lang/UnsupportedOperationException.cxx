@@ -29,6 +29,10 @@ UnsupportedOperationException::UnsupportedOperationException() throw ()
 {
 }
 
+UnsupportedOperationException::UnsupportedOperationException(const String* message) throw () : RuntimeException(message)
+{
+}
+
 UnsupportedOperationException::UnsupportedOperationException(const String& message) throw () : RuntimeException(message)
 {
 }

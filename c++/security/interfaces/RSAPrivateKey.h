@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_INTERFACES_m
  */
 
-#ifndef _INTERFACE_RSAPRIVATEKEY_H
-#define _INTERFACE_RSAPRIVATEKEY_H
+#ifndef _INTERFACE_BEE_SECURITY_INTERFACES_RSAPRIVATEKEY_H
+#define _INTERFACE_BEE_SECURITY_INTERFACES_RSAPRIVATEKEY_H
 
 #ifdef __cplusplus
 
@@ -36,10 +36,12 @@ namespace beecrypt {
 			/*!\brief RSA private key interface
 			 * \ingroup CXX_SECURITY_INTERFACES_m
 			 */
-			class RSAPrivateKey : public PrivateKey, public RSAKey
+			class RSAPrivateKey : public virtual beecrypt::security::PrivateKey, public virtual beecrypt::security::interfaces::RSAKey
 			{
 			public:
-				virtual const mpnumber& getPrivateExponent() const throw () = 0;
+				virtual ~RSAPrivateKey() {}
+
+				virtual const BigInteger& getPrivateExponent() const throw () = 0;
 			};
 		}
 	}

@@ -33,7 +33,7 @@ namespace beecrypt {
 		{
 		public:
 			MD5withRSASignature();
-			~MD5withRSASignature();
+			virtual ~MD5withRSASignature() {}
 		};
 	}
 }

@@ -48,7 +48,7 @@ namespace beecrypt {
 
 		public:
 			DSAKeyFactory();
-			virtual ~DSAKeyFactory();
+			virtual ~DSAKeyFactory() {}
 		};
 	}
 }

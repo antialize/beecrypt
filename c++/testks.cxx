@@ -69,9 +69,9 @@ int main(int argc, char* argv[])
 
 			KeyPair* pair = kpg->generateKeyPair();
 
-			vector<Certificate*> chain;
+			array<Certificate*> chain(1);
 
-			chain.push_back(BeeCertificate::self(pair->getPublic(), pair->getPrivate(), "SHA1withRSA"));
+			chain[0] = BeeCertificate::self(pair->getPublic(), pair->getPrivate(), "SHA1withRSA");
 
 			FileOutputStream fos(fopen("keystore", "wb"));
 
@@ -85,6 +85,7 @@ int main(int argc, char* argv[])
 	}
 	catch (Exception e)
 	{
-		cout << "Exception: " + e.getMessage() << endl;
+		if (e.getMessage())
+			cout << "Exception: " + *e.getMessage() << endl;
 	}
 }

@@ -20,8 +20,8 @@
  * \ingroup CXX_CRYPTO_m
  */
 
-#ifndef _CLASS_MACINPUTSTREAM_H
-#define _CLASS_MACINPUTSTREAM_H
+#ifndef _CLASS_BEE_CRYPTO_MACINPUTSTREAM_H
+#define _CLASS_BEE_CRYPTO_MACINPUTSTREAM_H
 
 #ifdef __cplusplus
 
@@ -47,7 +47,7 @@ namespace beecrypt {
 			virtual ~MacInputStream();
 
 			virtual int read() throw (IOException);
-			virtual int read(byte* data, size_t offset, size_t length) throw (IOException);
+			virtual int read(byte* data, int offset, int length) throw (IOException);
 
 			void on(bool);
 

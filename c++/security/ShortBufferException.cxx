@@ -30,6 +30,10 @@ ShortBufferException::ShortBufferException() throw ()
 {
 }
 
+ShortBufferException::ShortBufferException(const String* message) throw () : GeneralSecurityException(message)
+{
+}
+
 ShortBufferException::ShortBufferException(const String& message) throw () : GeneralSecurityException(message)
 {
 }

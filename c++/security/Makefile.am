@@ -1,8 +1,8 @@
 INCLUDES = -I$(top_srcdir)/..
 
-AUTOMAKE_OPTIONS = gnu no-dependencies
+AUTOMAKE_OPTIONS = gnu
 
-SUBDIRS = cert interfaces spec
+SUBDIRS = auth cert interfaces spec
 
 noinst_LTLIBRARIES = libcxxsecurity.la
 
@@ -34,7 +34,7 @@ ShortBufferException.cxx \
 Signature.cxx \
 SignatureException.cxx \
 UnrecoverableKeyException.cxx
-libcxxsecurity_la_LIBADD = cert/libcxxsecuritycert.la spec/libcxxsecurityspec.la
+libcxxsecurity_la_LIBADD = auth/libcxxsecurityauth.la cert/libcxxsecuritycert.la spec/libcxxsecurityspec.la
 
 cxxsecurity_HEADERS =\
 AlgorithmParameterGenerator.h \

@@ -20,12 +20,13 @@
  * \ingroup CXX_NIO_m
  */
 
-#ifndef _CLASS_INVALIDMARKEXCEPTION_H
-#define _CLASS_INVALIDMARKEXCEPTION_H
+#ifndef _CLASS_BEE_NIO_INVALIDMARKEXCEPTION_H
+#define _CLASS_BEE_NIO_INVALIDMARKEXCEPTION_H
 
 #ifdef __cplusplus
 
 #include "beecrypt/c++/lang/IllegalStateException.h"
+using beecrypt::lang::String;
 
 namespace beecrypt {
 	namespace nio {
@@ -35,6 +36,7 @@ namespace beecrypt {
 		{
 		public:
 			InvalidMarkException() throw ();
+			InvalidMarkException(const String* message) throw ();
 			InvalidMarkException(const String& message) throw ();
 		};
 	}

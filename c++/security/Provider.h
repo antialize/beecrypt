@@ -20,61 +20,71 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_PROVIDER_H
-#define _CLASS_PROVIDER_H
+#ifndef _CLASS_BEE_SECURITY_PROVIDER_H
+#define _CLASS_BEE_SECURITY_PROVIDER_H
 
 #ifdef __cplusplus
 
-#include "beecrypt/c++/mutex.h"
-using beecrypt::mutex;
-#include "beecrypt/c++/lang/String.h"
-using beecrypt::lang::String;
 #include "beecrypt/c++/util/Properties.h"
 using beecrypt::util::Properties;
 
 #include <unicode/ucnv.h>
-#include <map>
-using std::map;
 
 namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI Provider : public beecrypt::util::Properties
+		class Provider : public beecrypt::util::Properties
 		{
 			friend class Security;
 
 		private:
+			typedef Object* (*instantiator)();
+
+			class Instantiator : public beecrypt::lang::Object
+			{
+			private:
+				instantiator _inst;
+
+			public:
+				Instantiator(instantiator inst);
+				virtual ~Instantiator() {}
+
+				Object* instantiate();
+			};
+
 			String _name;
 			String _info;
 			double _vers;
 
-			mutex _lock;
 			UConverter* _conv;
 
-			typedef Object* (*instantiator)();
-			typedef map<String,instantiator> instantiator_map;
+			Hashtable<String,Instantiator> _imap;
 
-			instantiator_map _imap;
-
-			instantiator getInstantiator(const String& name) const;
+			Object* instantiate(const String& name) const;
 
 		protected:
 			#if WIN32
-			HANDLE _dlhandle;
+			HANDLE  _dlhandle;
 			#else
 			void* _dlhandle;
 			#endif
 
+			BEECRYPTCXXAPI
 			Provider(const String& name, double version, const String& info);
 
 		public:
+			BEECRYPTCXXAPI
 			virtual ~Provider();
 
-			void put(const String& key, const String& value);
+			BEECRYPTCXXAPI
+			Object* setProperty(const String& key, const String& value);
 
+			BEECRYPTCXXAPI
 			const String& getName() const throw ();
+			BEECRYPTCXXAPI
 			const String& getInfo() const throw ();
+			BEECRYPTCXXAPI
 			double getVersion() const throw ();
 		};
 	}

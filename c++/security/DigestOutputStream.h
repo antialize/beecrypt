@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_DIGESTOUTPUTSTREAM_H
-#define _CLASS_DIGESTOUTPUTSTREAM_H
+#ifndef _CLASS_BEE_SECURITY_DIGESTOUTPUTSTREAM_H
+#define _CLASS_BEE_SECURITY_DIGESTOUTPUTSTREAM_H
 
 #ifdef __cplusplus
 
@@ -44,10 +44,10 @@ namespace beecrypt {
 
 		public:
 			DigestOutputStream(OutputStream& out, MessageDigest& m);
-			virtual ~DigestOutputStream();
+			virtual ~DigestOutputStream() {}
 
 			virtual void write(byte b) throw (IOException);
-			virtual void write(const byte* data, size_t offset, size_t length) throw (IOException);
+			virtual void write(const byte* data, int offset, int length) throw (IOException);
 
 			void on(bool on);
 

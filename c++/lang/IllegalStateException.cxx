@@ -29,6 +29,10 @@ IllegalStateException::IllegalStateException() throw ()
 {
 }
 
+IllegalStateException::IllegalStateException(const String* message) throw () : RuntimeException(message)
+{
+}
+
 IllegalStateException::IllegalStateException(const String& message) throw () : RuntimeException(message)
 {
 }

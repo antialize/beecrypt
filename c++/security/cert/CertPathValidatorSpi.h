@@ -20,10 +20,8 @@
  * \ingroup CXX_SECURITY_SPEC_m
  */
 
-#ifndef _CLASS_CERTPATHVALIDATORSPI_H
-#define _CLASS_CERTPATHVALIDATORSPI_H
-
-#include "beecrypt/api.h"
+#ifndef _CLASS_BEE_SECURITY_CERT_CERTPATHVALIDATORSPI_H
+#define _CLASS_BEE_SECURITY_CERT_CERTPATHVALIDATORSPI_H
 
 #ifdef __cplusplus
 
@@ -53,7 +51,7 @@ namespace beecrypt {
 				virtual CertPathValidatorResult* engineValidate(const CertPath& path, const CertPathParameters& params) throw (CertPathValidatorException, InvalidAlgorithmParameterException) = 0;
 
 			public:
-				virtual ~CertPathValidatorSpi() {};
+				virtual ~CertPathValidatorSpi() {}
 			};
 		}
 	}

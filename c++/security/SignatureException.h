@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_SIGNATUREEXCEPTION_H
-#define _CLASS_SIGNATUREEXCEPTION_H
+#ifndef _CLASS_BEE_SECURITY_SIGNATUREEXCEPTION_H
+#define _CLASS_BEE_SECURITY_SIGNATUREEXCEPTION_H
 
 #ifdef __cplusplus
 
@@ -36,6 +36,7 @@ namespace beecrypt {
 		{
 		public:
 			SignatureException() throw ();
+			SignatureException(const String* message) throw ();
 			SignatureException(const String& message) throw ();
 		};
 	}

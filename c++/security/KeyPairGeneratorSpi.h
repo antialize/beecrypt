@@ -20,10 +20,8 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_KEYPAIRGENERATORSPI_H
-#define _CLASS_KEYPAIRGENERATORSPI_H
-
-#include "beecrypt/api.h"
+#ifndef _CLASS_BEE_SECURITY_KEYPAIRGENERATORSPI_H
+#define _CLASS_BEE_SECURITY_KEYPAIRGENERATORSPI_H
 
 #ifdef __cplusplus
 
@@ -52,10 +50,10 @@ namespace beecrypt {
 			virtual KeyPair* engineGenerateKeyPair() = 0;
 
 			virtual void engineInitialize(const AlgorithmParameterSpec&, SecureRandom*) throw (InvalidAlgorithmParameterException) = 0;
-			virtual void engineInitialize(size_t, SecureRandom*) throw (InvalidParameterException) = 0;
+			virtual void engineInitialize(int, SecureRandom*) throw (InvalidParameterException) = 0;
 
 		public:
-			virtual ~KeyPairGeneratorSpi() {};
+			virtual ~KeyPairGeneratorSpi() {}
 		};
 	}
 }

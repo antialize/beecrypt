@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_NOSUCHALGORITHMEXCEPTION_H
-#define _CLASS_NOSUCHALGORITHMEXCEPTION_H
+#ifndef _CLASS_BEE_SECURITY_NOSUCHALGORITHMEXCEPTION_H
+#define _CLASS_BEE_SECURITY_NOSUCHALGORITHMEXCEPTION_H
 
 #ifdef __cplusplus
 
@@ -36,6 +36,7 @@ namespace beecrypt {
 		{
 		public:
 			NoSuchAlgorithmException() throw ();
+			NoSuchAlgorithmException(const String* message) throw ();
 			NoSuchAlgorithmException(const String& message) throw ();
 		};
 	}

@@ -20,8 +20,8 @@
  * \ingroup CXX_IO_m
  */
 
-#ifndef _CLASS_DATAINPUTSTREAM_H
-#define _CLASS_DATAINPUTSTREAM_H
+#ifndef _CLASS_BEE_IO_DATAINPUTSTREAM_H
+#define _CLASS_BEE_IO_DATAINPUTSTREAM_H
 
 #ifdef __cplusplus
 
@@ -36,7 +36,7 @@ namespace beecrypt {
 	namespace io {
 		/*!\ingroup CXX_IO_m
 		 */
-		class BEECRYPTCXXAPI DataInputStream : public FilterInputStream, public DataInput
+		class BEECRYPTCXXAPI DataInputStream : public beecrypt::io::FilterInputStream, public virtual beecrypt::io::DataInput
 		{
 		private:
 			bool _del;
@@ -49,20 +49,18 @@ namespace beecrypt {
 			virtual ~DataInputStream();
 
 			virtual bool readBoolean() throw (IOException);
-			virtual javabyte readByte() throw (IOException);
-			virtual javachar readChar() throw (IOException);
-			virtual void readFully(byte* data, size_t offset, size_t length) throw (IOException);
+			virtual jbyte readByte() throw (IOException);
+			virtual jchar readChar() throw (IOException);
+			virtual void readFully(byte* data, jint offset, jint length) throw (IOException);
 			virtual void readFully(bytearray& b) throw (IOException);
-			virtual javaint readInt() throw (IOException);
-			virtual String* readLine() throw (IOException);
-			virtual void readLine(String& line) throw (IOException);
-			virtual javalong readLong() throw (IOException);
-			virtual javashort readShort() throw (IOException);
-			virtual int readUnsignedByte() throw (IOException);
-			virtual int readUnsignedShort() throw (IOException);
-			virtual String* readUTF() throw (IOException);
-			virtual void readUTF(String& str) throw (IOException);
-			virtual off_t skipBytes(off_t n) throw (IOException);
+			virtual jint readInt() throw (IOException);
+			virtual String readLine() throw (IOException);
+			virtual jlong readLong() throw (IOException);
+			virtual jshort readShort() throw (IOException);
+			virtual jint readUnsignedByte() throw (IOException);
+			virtual jint readUnsignedShort() throw (IOException);
+			virtual String readUTF() throw (IOException);
+			virtual jint skipBytes(jint n) throw (IOException);
 		};
 	}
 }

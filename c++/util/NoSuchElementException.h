@@ -20,12 +20,14 @@
  * \ingroup CXX_UTIL_m
  */
 
-#ifndef _CLASS_NOSUCHELEMENTEXCEPTION_H
-#define _CLASS_NOSUCHELEMENTEXCEPTION_H
+#ifndef _CLASS_BEE_UTIL_NOSUCHELEMENTEXCEPTION_H
+#define _CLASS_BEE_UTIL_NOSUCHELEMENTEXCEPTION_H
 
 #ifdef __cplusplus
 
 #include "beecrypt/c++/lang/RuntimeException.h"
+#include "beecrypt/c++/lang/String.h"
+using beecrypt::lang::String;
 
 namespace beecrypt {
 	namespace util {
@@ -35,6 +37,7 @@ namespace beecrypt {
 		{
 		public:
 			NoSuchElementException() throw ();
+			NoSuchElementException(const String*) throw ();
 			NoSuchElementException(const String&) throw ();
 		};
 	}

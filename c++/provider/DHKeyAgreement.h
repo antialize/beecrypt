@@ -29,6 +29,8 @@
 
 #include "beecrypt/c++/crypto/KeyAgreementSpi.h"
 using beecrypt::crypto::KeyAgreementSpi;
+#include "beecrypt/c++/math/BigInteger.h"
+using beecrypt::math::BigInteger;
 
 namespace beecrypt {
 	namespace provider {
@@ -55,7 +57,7 @@ namespace beecrypt {
 			virtual Key* engineDoPhase(const Key&, bool) throw (InvalidKeyException, IllegalStateException);
 
 			virtual bytearray* engineGenerateSecret() throw (IllegalStateException);
-			virtual size_t engineGenerateSecret(bytearray&, size_t) throw (IllegalStateException, ShortBufferException);
+			virtual int engineGenerateSecret(bytearray&, int) throw (IllegalStateException, ShortBufferException);
 			virtual SecretKey* engineGenerateSecret(const String&) throw (IllegalStateException, NoSuchAlgorithmException, InvalidKeyException);
 		public:
 			DHKeyAgreement();

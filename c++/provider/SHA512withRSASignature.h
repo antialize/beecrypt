@@ -33,7 +33,7 @@ namespace beecrypt {
 		{
 		public:
 			SHA512withRSASignature();
-			~SHA512withRSASignature();
+			virtual ~SHA512withRSASignature() {}
 		};
 	}
 }

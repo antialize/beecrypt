@@ -30,6 +30,10 @@ InvalidKeySpecException::InvalidKeySpecException() throw ()
 {
 }
 
+InvalidKeySpecException::InvalidKeySpecException(const String* message) throw () : GeneralSecurityException(message)
+{
+}
+
 InvalidKeySpecException::InvalidKeySpecException(const String& message) throw () : GeneralSecurityException(message)
 {
 }

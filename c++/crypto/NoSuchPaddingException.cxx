@@ -30,6 +30,10 @@ NoSuchPaddingException::NoSuchPaddingException() throw ()
 {
 }
 
+NoSuchPaddingException::NoSuchPaddingException(const String* message) throw () : GeneralSecurityException(message)
+{
+}
+
 NoSuchPaddingException::NoSuchPaddingException(const String& message) throw () : GeneralSecurityException(message)
 {
 }

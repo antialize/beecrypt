@@ -33,7 +33,7 @@ namespace beecrypt {
 		{
 		public:
 			HMACMD5();
-			virtual ~HMACMD5() {};
+			virtual ~HMACMD5() {}
 
 			virtual HMACMD5* clone() const throw ();
 		};

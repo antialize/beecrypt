@@ -20,15 +20,17 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_ALGORITHMPARAMETERSSPI_H
-#define _CLASS_ALGORITHMPARAMETERSSPI_H
-
-#include "beecrypt/api.h"
+#ifndef _CLASS_BEE_SECURITY_ALGORITHMPARAMETERSSPI_H
+#define _CLASS_BEE_SECURITY_ALGORITHMPARAMETERSSPI_H
 
 #ifdef __cplusplus
 
+#include "beecrypt/c++/array.h"
+using beecrypt::bytearray;
 #include "beecrypt/c++/lang/Object.h"
 using beecrypt::lang::Object;
+#include "beecrypt/c++/io/IOException.h"
+using beecrypt::io::IOException;
 #include "beecrypt/c++/security/spec/AlgorithmParameterSpec.h"
 using beecrypt::security::spec::AlgorithmParameterSpec;
 #include "beecrypt/c++/security/spec/InvalidParameterSpecException.h"
@@ -43,17 +45,19 @@ namespace beecrypt {
 		 */
 		class BEECRYPTCXXAPI AlgorithmParametersSpi : public beecrypt::lang::Object
 		{
-			friend class BEECRYPTCXXAPI AlgorithmParameters;
+			friend class AlgorithmParameters;
 
 		protected:
+			virtual const bytearray& engineGetEncoded(const String* format = 0) throw (IOException) = 0;
 			virtual AlgorithmParameterSpec* engineGetParameterSpec(const type_info& info) = 0;
 
 			virtual void engineInit(const AlgorithmParameterSpec& spec) throw (InvalidParameterSpecException) = 0;
-			virtual void engineInit(const byte* data, size_t size) = 0;
-			virtual void engineInit(const byte* data, size_t size, const String& format) = 0;
+			virtual void engineInit(const byte* data, int size, const String* format = 0) = 0;
+
+			virtual String engineToString() throw () = 0;
 
 		public:
-			virtual ~AlgorithmParametersSpi() {};
+			virtual ~AlgorithmParametersSpi() {}
 		};
 	}
 }

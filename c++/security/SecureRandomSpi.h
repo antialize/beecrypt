@@ -20,10 +20,8 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_SECURERANDOMSPI_H
-#define _CLASS_SECURERANDOMSPI_H
-
-#include "beecrypt/api.h"
+#ifndef _CLASS_BEE_SECURITY_SECURERANDOMSPI_H
+#define _CLASS_BEE_SECURITY_SECURERANDOMSPI_H
 
 #ifdef __cplusplus
 
@@ -39,12 +37,12 @@ namespace beecrypt {
 			friend class SecureRandom;
 
 		protected:
-			virtual void engineGenerateSeed(byte*, size_t) = 0;
-			virtual void engineNextBytes(byte*, size_t) = 0;
-			virtual void engineSetSeed(const byte*, size_t) = 0;
+			virtual void engineGenerateSeed(byte*, int) = 0;
+			virtual void engineNextBytes(byte*, int) = 0;
+			virtual void engineSetSeed(const byte*, int) = 0;
 
 		public:
-			virtual ~SecureRandomSpi() {};
+			virtual ~SecureRandomSpi() {}
 		};
 	}
 }

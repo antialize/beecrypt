@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_CERT_m
  */
 
-#ifndef _CLASS_CERTIFICATEEXPIREDEXCEPTION_H
-#define _CLASS_CERTIFICATEEXPIREDEXCEPTION_H
+#ifndef _CLASS_BEE_SECURITY_CERT_CERTIFICATEEXPIREDEXCEPTION_H
+#define _CLASS_BEE_SECURITY_CERT_CERTIFICATEEXPIREDEXCEPTION_H
 
 #ifdef __cplusplus
 
@@ -37,6 +37,7 @@ namespace beecrypt {
 			{
 			public:
 				CertificateExpiredException() throw ();
+				CertificateExpiredException(const String* message) throw ();
 				CertificateExpiredException(const String& message) throw ();
 			};
 		}

@@ -45,9 +45,9 @@ namespace beecrypt {
 		private:
 			static SecureRandomSpi* create();
 
-			virtual void engineGenerateSeed(byte*, size_t);
-			virtual void engineNextBytes(byte*, size_t);
-			virtual void engineSetSeed(const byte*, size_t);
+			virtual void engineGenerateSeed(byte*, int);
+			virtual void engineNextBytes(byte*, int);
+			virtual void engineSetSeed(const byte*, int);
 
 		public:
 			BeeSecureRandom();

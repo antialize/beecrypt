@@ -20,16 +20,15 @@
  * \ingroup CXX_SECURITY_SPEC_m
  */
 
-#ifndef _CLASS_RSAPRIVATEKEYSPEC_H
-#define _CLASS_RSAPRIVATEKEYSPEC_H
-
-#include "beecrypt/api.h"
-#include "beecrypt/mpbarrett.h"
+#ifndef _CLASS_BEE_SECURITY_SPEC_RSAPRIVATEKEYSPEC_H
+#define _CLASS_BEE_SECURITY_SPEC_RSAPRIVATEKEYSPEC_H
 
 #ifdef __cplusplus
 
 #include "beecrypt/c++/lang/Object.h"
 using beecrypt::lang::Object;
+#include "beecrypt/c++/math/BigInteger.h"
+using beecrypt::math::BigInteger;
 #include "beecrypt/c++/security/spec/KeySpec.h"
 using beecrypt::security::spec::KeySpec;
 
@@ -38,18 +37,18 @@ namespace beecrypt {
 		namespace spec {
 			/*!\ingroup CXX_SECURITY_SPEC_m
 			 */
-			class BEECRYPTCXXAPI RSAPrivateKeySpec : public beecrypt::lang::Object, public beecrypt::security::spec::KeySpec
+			class BEECRYPTCXXAPI RSAPrivateKeySpec : public beecrypt::lang::Object, public virtual beecrypt::security::spec::KeySpec
 			{
 			private:
-				mpbarrett _n;
-				mpnumber _d;
+				BigInteger _n;
+				BigInteger _d;
 
 			public:
-				RSAPrivateKeySpec(const mpbarrett& modulus, const mpnumber& privateExponent);
-				virtual ~RSAPrivateKeySpec();
+				RSAPrivateKeySpec(const BigInteger& modulus, const BigInteger& privateExponent);
+				virtual ~RSAPrivateKeySpec() {}
 
-				const mpbarrett& getModulus() const throw ();
-				const mpnumber& getPrivateExponent() const throw ();
+				const BigInteger& getModulus() const throw ();
+				const BigInteger& getPrivateExponent() const throw ();
 			};
 		}
 	}

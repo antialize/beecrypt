@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_CERT_m
  */
 
-#ifndef _CLASS_CERTIFICATEFACTORYSPI_H
-#define _CLASS_CERTIFICATEFACTORYSPI_H
+#ifndef _CLASS_BEE_SECURITY_CERT_CERTIFICATEFACTORYSPI_H
+#define _CLASS_BEE_SECURITY_CERT_CERTIFICATEFACTORYSPI_H
 
 #include "beecrypt/api.h"
 
@@ -31,13 +31,10 @@
 using beecrypt::io::InputStream;
 #include "beecrypt/c++/io/OutputStream.h"
 using beecrypt::io::OutputStream;
-#include "beecrypt/c++/lang/Object.h"
-using beecrypt::lang::Object;
 #include "beecrypt/c++/security/cert/Certificate.h"
 using beecrypt::security::cert::Certificate;
-
-#include <vector>
-using std::vector;
+#include "beecrypt/c++/util/Collection.h"
+using beecrypt::util::Collection;
 
 namespace beecrypt {
 	namespace security {
@@ -50,10 +47,10 @@ namespace beecrypt {
 
 			protected:
 				virtual Certificate* engineGenerateCertificate(InputStream& in) throw (CertificateException) = 0;
-				virtual vector<Certificate*>* engineGenerateCertificates(InputStream& in) throw (CertificateException) = 0;
+				virtual Collection<Certificate>* engineGenerateCertificates(InputStream& in) throw (CertificateException) = 0;
 
 			public:
-				virtual ~CertificateFactorySpi() {};
+				virtual ~CertificateFactorySpi() {}
 			};
 		}
 	}

@@ -20,8 +20,8 @@
  * \ingroup CXX_CRYPTO_SPEC_m
  */
 
-#ifndef _CLASS_PBEKEYSPEC_H
-#define _CLASS_PBEKEYSPEC_H
+#ifndef _CLASS_BEE_CRYPTO_SPEC_PBEKEYSPEC_H
+#define _CLASS_BEE_CRYPTO_SPEC_PBEKEYSPEC_H
 
 #ifdef __cplusplus
 
@@ -38,20 +38,20 @@ namespace beecrypt {
 		namespace spec {
 			/*!\ingroup CXX_CRYPTO_SPEC_m
 			 */
-			class BEECRYPTCXXAPI PBEKeySpec : public beecrypt::lang::Object, public beecrypt::security::spec::KeySpec
+			class BEECRYPTCXXAPI PBEKeySpec : public beecrypt::lang::Object, public virtual beecrypt::security::spec::KeySpec
 			{
 			private:
-				array<javachar> _password;
+				array<jchar> _password;
 				bytearray* _salt;
 				size_t _iteration_count;
 				size_t _key_length;
 
 			public:
-				PBEKeySpec(const array<javachar>* password);
-				PBEKeySpec(const array<javachar>* password, const bytearray* salt, size_t iterationCount, size_t keyLength);
+				PBEKeySpec(const array<jchar>* password);
+				PBEKeySpec(const array<jchar>* password, const bytearray* salt, size_t iterationCount, size_t keyLength);
 				virtual ~PBEKeySpec();
 
-				const array<javachar>& getPassword() const throw ();
+				const array<jchar>& getPassword() const throw ();
 				const bytearray* getSalt() const throw ();
 				size_t getIterationCount() const throw ();
 				size_t getKeyLength() const throw ();

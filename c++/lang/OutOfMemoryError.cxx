@@ -29,6 +29,10 @@ OutOfMemoryError::OutOfMemoryError() throw ()
 {
 }
 
+OutOfMemoryError::OutOfMemoryError(const String* message) throw () : Error(message)
+{
+}
+
 OutOfMemoryError::OutOfMemoryError(const String& message) throw () : Error(message)
 {
 }

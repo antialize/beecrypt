@@ -57,9 +57,7 @@ int main(int argc, char* argv[])
 
 		Cipher* c = Cipher::getInstance("DHAES");
 
-		DHAESParameterSpec* s = new DHAESParameterSpec("SHA-512", "AES", "HMAC-SHA-512");
-
-		c->init(Cipher::ENCRYPT_MODE, pair->getPublic(), *s);
+		c->init(Cipher::ENCRYPT_MODE, pair->getPublic(), DHAESParameterSpec("SHA-512", "AES", "HMAC-SHA-512"));
 
 		size_t ciphertextsize = c->getOutputSize(original.size());
 
@@ -85,14 +83,13 @@ int main(int argc, char* argv[])
 			failures++;
 
 		delete p;
-		delete s;
 		delete c;
 		delete pair;
 		delete kpg;
 	}
 	catch (Exception& ex)
 	{
-		cerr << "exception: " << ex.getMessage() << endl;
+		cerr << "exception: " << *ex.getMessage() << endl;
 		failures++;
 	}
 	catch (...)
@@ -100,5 +97,6 @@ int main(int argc, char* argv[])
 		cerr << "exception" << endl;
 		failures++;
 	}
+
 	return failures;
 }

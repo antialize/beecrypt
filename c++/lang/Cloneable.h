@@ -20,8 +20,8 @@
  * \ingroup CXX_LANG_m
  */
 
-#ifndef _INTERFACE_CLONEABLE_H
-#define _INTERFACE_CLONEABLE_H
+#ifndef _INTERFACE_BEE_LANG_CLONEABLE_H
+#define _INTERFACE_BEE_LANG_CLONEABLE_H
 
 #ifdef __cplusplus
 
@@ -30,10 +30,12 @@ using beecrypt::lang::Object;
 
 namespace beecrypt {
 	namespace lang {
-		class Cloneable
+		class BEECRYPTCXXAPI Cloneable
 		{
 		public:
-			virtual Object* clone() const throw () = 0;
+			virtual ~Cloneable() {}
+
+			virtual Object* clone() const throw (CloneNotSupportedException) = 0;
 		};
 	}
 }

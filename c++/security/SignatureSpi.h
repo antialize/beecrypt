@@ -20,10 +20,8 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_SIGNATURESPI_H
-#define _CLASS_SIGNATURESPI_H
-
-#include "beecrypt/api.h"
+#ifndef _CLASS_BEE_SECURITY_SIGNATURESPI_H
+#define _CLASS_BEE_SECURITY_SIGNATURESPI_H
 
 #ifdef __cplusplus
 
@@ -31,8 +29,6 @@
 using beecrypt::bytearray;
 #include "beecrypt/c++/lang/IllegalStateException.h"
 using beecrypt::lang::IllegalStateException;
-#include "beecrypt/c++/lang/Object.h"
-using beecrypt::lang::Object;
 #include "beecrypt/c++/security/AlgorithmParameters.h"
 using beecrypt::security::AlgorithmParameters;
 #include "beecrypt/c++/security/PrivateKey.h"
@@ -69,15 +65,15 @@ namespace beecrypt {
 			virtual void engineInitVerify(const PublicKey&) = 0;
 
 			virtual void engineUpdate(byte) = 0;
-			virtual void engineUpdate(const byte*, size_t, size_t) = 0;
+			virtual void engineUpdate(const byte*, int, int) = 0;
 
 			virtual bytearray* engineSign() throw (SignatureException) = 0;
-			virtual size_t engineSign(byte*, size_t, size_t) throw (ShortBufferException, SignatureException) = 0;
-			virtual size_t engineSign(bytearray&) throw (SignatureException) = 0;
-			virtual bool engineVerify(const byte*, size_t, size_t) throw (SignatureException) = 0;
+			virtual int engineSign(byte*, int, int) throw (ShortBufferException, SignatureException) = 0;
+			virtual int engineSign(bytearray&) throw (SignatureException) = 0;
+			virtual bool engineVerify(const byte*, int, int) throw (SignatureException) = 0;
 
 		public:
-			virtual ~SignatureSpi() {};
+			virtual ~SignatureSpi() {}
 		};
 	}
 }

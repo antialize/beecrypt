@@ -20,8 +20,8 @@
  * \ingroup CXX_LANG_m
  */
 
-#ifndef _CLASS_ILLEGALARGUMENTEXCEPTION_H
-#define _CLASS_ILLEGALARGUMENTEXCEPTION_H
+#ifndef _CLASS_BEE_LANG_ILLEGALARGUMENTEXCEPTION_H
+#define _CLASS_BEE_LANG_ILLEGALARGUMENTEXCEPTION_H
 
 #ifdef __cplusplus
 
@@ -38,6 +38,7 @@ namespace beecrypt {
 		{
 		public:
 			IllegalArgumentException() throw ();
+			IllegalArgumentException(const String* message) throw ();
 			IllegalArgumentException(const String& message) throw ();
 		};
 	}

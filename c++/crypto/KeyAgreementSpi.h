@@ -20,10 +20,8 @@
  * \ingroup CXX_CRYPTO_m
  */
 
-#ifndef _CLASS_KEYAGREEMENTSPI_H
-#define _CLASS_KEYAGREEMENTSPI_H
-
-#include "beecrypt/api.h"
+#ifndef _CLASS_BEE_CRYPTO_KEYAGREEMENTSPI_H
+#define _CLASS_BEE_CRYPTO_KEYAGREEMENTSPI_H
 
 #ifdef __cplusplus
 
@@ -59,11 +57,10 @@ namespace beecrypt {
 			virtual void engineInit(const Key&, const AlgorithmParameterSpec&, SecureRandom*) throw (InvalidKeyException, InvalidAlgorithmParameterException) = 0;
 			virtual Key* engineDoPhase(const Key&, bool) = 0;
 			virtual bytearray* engineGenerateSecret() throw (IllegalStateException) = 0;
-			virtual size_t engineGenerateSecret(bytearray&, size_t) throw (IllegalStateException, ShortBufferException) = 0;
+			virtual int engineGenerateSecret(bytearray&, int) throw (IllegalStateException, ShortBufferException) = 0;
 			virtual SecretKey* engineGenerateSecret(const String&) throw (IllegalStateException, NoSuchAlgorithmException, InvalidKeyException) = 0;
-
 		public:
-			virtual ~KeyAgreementSpi() {};
+			virtual ~KeyAgreementSpi() {}
 		};
 	}
 }

@@ -23,6 +23,8 @@
 #ifndef _CLASS_DHPUBLICKEYIMPL_H
 #define _CLASS_DHPUBLICKEYIMPL_H
 
+#include "beecrypt/dlsvdp-dh.h"
+
 #ifdef __cplusplus
 
 #include "beecrypt/c++/crypto/interfaces/DHPublicKey.h"
@@ -44,25 +46,25 @@ namespace beecrypt {
 		{
 		private:
 			DHParameterSpec* _params;
-			mpnumber _y;
+			BigInteger _y;
 			mutable bytearray* _enc;
 
 		public:
 			DHPublicKeyImpl(const DHPublicKey&);
 			DHPublicKeyImpl(const DHPublicKeyImpl&);
-			DHPublicKeyImpl(const DHParams&, const mpnumber&);
+			DHPublicKeyImpl(const DHParams&, const BigInteger&);
 			DHPublicKeyImpl(const dhparam&, const mpnumber&);
-			DHPublicKeyImpl(const mpbarrett&, const mpnumber&, const mpnumber&);
+			DHPublicKeyImpl(const BigInteger&, const BigInteger&, const BigInteger&);
 			~DHPublicKeyImpl();
 
 			virtual DHPublicKeyImpl* clone() const throw ();
 
-			virtual bool equals(const Object& compare) const throw ();
+			virtual bool equals(const Object* obj) const throw ();
 
 			virtual const DHParams& getParams() const throw ();
-			virtual const mpnumber& getY() const throw ();
+			virtual const BigInteger& getY() const throw ();
 
-			virtual const bytearray* getEncoded() const;
+			virtual const bytearray* getEncoded() const throw ();
 
 			virtual const String& getAlgorithm() const throw ();
 			virtual const String* getFormat() const throw ();

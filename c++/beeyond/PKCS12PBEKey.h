@@ -38,27 +38,27 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI PKCS12PBEKey : public PBEKey
 		{
 		private:
-			array<javachar>    _pswd;
+			array<jchar>    _pswd;
 			bytearray*         _salt;
-			size_t             _iter;
+			int                _iter;
 			mutable bytearray* _enc;
 
 		public:
-			static bytearray* encode(const array<javachar>&, const bytearray*, size_t);
+			static bytearray* encode(const array<jchar>&);
 
 		public:
-			PKCS12PBEKey(const array<javachar>&, const bytearray*, size_t);
+			PKCS12PBEKey(const array<jchar>&, const bytearray*, int);
 			virtual ~PKCS12PBEKey();
 
 			virtual bool operator==(const Key& compare) const throw ();
 
 			virtual PKCS12PBEKey* clone() const;
 
-			virtual size_t getIterationCount() const throw ();
-			virtual const array<javachar>& getPassword() const throw ();
+			virtual int getIterationCount() const throw ();
+			virtual const array<jchar>& getPassword() const throw ();
 			virtual const bytearray* getSalt() const throw ();
 
-			virtual const bytearray* getEncoded() const;
+			virtual const bytearray* getEncoded() const throw ();
 
 			virtual const String& getAlgorithm() const throw();
 			virtual const String* getFormat() const throw ();

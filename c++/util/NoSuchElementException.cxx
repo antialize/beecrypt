@@ -30,6 +30,10 @@ NoSuchElementException::NoSuchElementException() throw ()
 {
 }
 
+NoSuchElementException::NoSuchElementException(const String* message) throw () : RuntimeException(message)
+{
+}
+
 NoSuchElementException::NoSuchElementException(const String& message) throw () : RuntimeException(message)
 {
 }

@@ -20,12 +20,8 @@
  * \ingroup CXX_CRYPTO_SPEC_m
  */
 
-#ifndef _CLASS_DHPARAMETERSPEC_H
-#define _CLASS_DHPARAMETERSPEC_H
-
-#include "beecrypt/api.h"
-#include "beecrypt/mpbarrett.h"
-#include "beecrypt/dlsvdp-dh.h"
+#ifndef _CLASS_BEE_CRYPTO_SPEC_DHPARAMETERSPEC_H
+#define _CLASS_BEE_CRYPTO_SPEC_DHPARAMETERSPEC_H
 
 #ifdef __cplusplus
 
@@ -41,23 +37,25 @@ namespace beecrypt {
 		namespace spec {
 			/*!\ingroup CXX_CRYPTO_SPEC_m
 			 */
-			class BEECRYPTCXXAPI DHParameterSpec : public beecrypt::lang::Object, public beecrypt::security::spec::AlgorithmParameterSpec, public beecrypt::crypto::interfaces::DHParams
+			class BEECRYPTCXXAPI DHParameterSpec : public beecrypt::lang::Object, public virtual beecrypt::security::spec::AlgorithmParameterSpec, public virtual beecrypt::crypto::interfaces::DHParams
 			{
 			private:
-				mpbarrett _p;
-				mpnumber _g;
-				size_t  _l;
+				BigInteger _p;
+				BigInteger _g;
+				int  _l;
 
 			public:
 				DHParameterSpec(const DHParams&);
 				DHParameterSpec(const DHParameterSpec&);
-				DHParameterSpec(const mpbarrett& p, const mpnumber& g);
-				DHParameterSpec(const mpbarrett& p, const mpnumber& g, size_t l);
-				virtual ~DHParameterSpec() {};
+				DHParameterSpec(const BigInteger& p, const BigInteger& g);
+				DHParameterSpec(const BigInteger& p, const BigInteger& g, int l);
+				virtual ~DHParameterSpec() {}
 
-				const mpbarrett& getP() const throw ();
-				const mpnumber& getG() const throw ();
-				size_t getL() const throw ();
+				virtual bool equals(const Object* obj) const throw ();
+
+				const BigInteger& getP() const throw ();
+				const BigInteger& getG() const throw ();
+				int getL() const throw ();
 			};
 		}
 	}

@@ -23,16 +23,10 @@
 #ifndef _CLASS_DATE_H
 #define _CLASS_DATE_H
 
-#include "beecrypt/api.h"
-
 #ifdef __cplusplus
 
 #include "beecrypt/c++/lang/Cloneable.h"
 using beecrypt::lang::Cloneable;
-#include "beecrypt/c++/lang/Comparable.h"
-using beecrypt::lang::Comparable;
-#include "beecrypt/c++/lang/Object.h"
-using beecrypt::lang::Object;
 #include "beecrypt/c++/lang/String.h"
 using beecrypt::lang::String;
 
@@ -43,28 +37,27 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI Date : public beecrypt::lang::Object, public beecrypt::lang::Cloneable, public beecrypt::lang::Comparable<Date>
 		{
 		private:
-			javalong _time;
+			jlong _time;
 
 		public:
 			Date() throw ();
-			Date(javalong) throw ();
-			virtual ~Date() {};
-
-			virtual bool equals(const Object&) const throw ();
+			Date(jlong) throw ();
+			virtual ~Date() {}
 
 			virtual Date* clone() const throw ();
 
-			virtual int compareTo(const Date& anotherDate) const throw ();
+			virtual bool equals(const Object* obj) const throw ();
+			bool equals(const Date& d) const throw ();
 
-			const Date& operator=(const Date&) throw ();
+			virtual jint compareTo(const Date& anotherDate) const throw ();
+			virtual jint hashCode() const throw ();
+			virtual String toString() const throw ();
 
 			bool after(const Date&) const throw ();
 			bool before(const Date&) const throw ();
 
-			javalong getTime() const throw ();
-			void setTime(javalong) throw ();
-
-			const String& toString() const;
+			jlong getTime() const throw ();
+			void setTime(jlong) throw ();
 		};
 	}
 }

@@ -20,18 +20,18 @@
  * \ingroup CXX_LANG_m
  */
 
-#ifndef _CLASS_THROWABLE_H
-#define _CLASS_THROWABLE_H
+#ifndef _CLASS_BEE_LANG_THROWABLE_H
+#define _CLASS_BEE_LANG_THROWABLE_H
 
 #include "beecrypt/api.h"
 
 #ifdef __cplusplus
 
-#include "beecrypt/c++/lang/String.h"
-using beecrypt::lang::String;
-
 namespace beecrypt {
 	namespace lang {
+		/* forward declaration
+		 */
+		class BEECRYPTCXXAPI String;
 		/*!\brief This class is the superclass of all errors and exceptions
 		 *        used by the BeeCrypt C++ API
 		 * \ingroup CXX_LANG_m
@@ -39,15 +39,16 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI Throwable
 		{
 		private:
-			String _msg;
+			const String* _msg;
 
 		public:
 			Throwable() throw ();
+			Throwable(const String* message) throw ();
 			Throwable(const String& message) throw ();
 			Throwable(const Throwable& cause) throw ();
-			virtual ~Throwable() throw () {};
+			virtual ~Throwable() throw () {}
 
-			const String& getMessage() const throw ();
+			const String* getMessage() const throw ();
 		};
 	}
 }

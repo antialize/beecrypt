@@ -1,6 +1,6 @@
 INCLUDES = -I$(top_srcdir)/..
 
-AUTOMAKE_OPTIONS = gnu no-dependencies
+AUTOMAKE_OPTIONS = gnu
 
 noinst_LTLIBRARIES = libcxxnio.la
 cxxniodir= $(pkgincludedir)/c++/nio

@@ -29,6 +29,10 @@ ClassCastException::ClassCastException() throw ()
 {
 }
 
+ClassCastException::ClassCastException(const String* message) throw () : RuntimeException(message)
+{
+}
+
 ClassCastException::ClassCastException(const String& message) throw () : RuntimeException(message)
 {
 }

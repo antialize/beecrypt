@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_CERT_m
  */
 
-#ifndef _CLASS_CERTIFICATENOTYETVALIDEXCEPTION_H
-#define _CLASS_CERTIFICATENOTYETVALIDEXCEPTION_H
+#ifndef _CLASS_BEE_SECURITY_CERT_CERTIFICATENOTYETVALIDEXCEPTION_H
+#define _CLASS_BEE_SECURITY_CERT_CERTIFICATENOTYETVALIDEXCEPTION_H
 
 #ifdef __cplusplus
 
@@ -37,6 +37,7 @@ namespace beecrypt {
 			{
 			public:
 				CertificateNotYetValidException() throw ();
+				CertificateNotYetValidException(const String* message) throw ();
 				CertificateNotYetValidException(const String& message) throw ();
 			};
 		}

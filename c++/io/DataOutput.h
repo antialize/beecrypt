@@ -20,13 +20,13 @@
  * \ingroup CXX_IO_m
  */
 
-#ifndef _INTERFACE_DATAOUTPUT_H
-#define _INTERFACE_DATAOUTPUT_H
+#ifndef _INTERFACE_BEE_IO_DATAOUTPUT_H
+#define _INTERFACE_BEE_IO_DATAOUTPUT_H
 
 #ifdef __cplusplus
 
-#include "beecrypt/c++/array.h"
-using beecrypt::bytearray;
+#include "beecrypt/c++/lang/String.h"
+using beecrypt::lang::String;
 #include "beecrypt/c++/io/IOException.h"
 using beecrypt::io::IOException;
 
@@ -34,18 +34,20 @@ namespace beecrypt {
 	namespace io {
 		/*!\ingroup CXX_IO_m
 		 */
-		class DataOutput
+		class BEECRYPTCXXAPI DataOutput
 		{
 		public:
+			virtual ~DataOutput() {}
+
 			virtual void write(const bytearray& b) throw (IOException) = 0;
-			virtual void write(const byte* data, size_t offset, size_t length) throw (IOException) = 0;
+			virtual void write(const byte* data, jint offset, jint length) throw (IOException) = 0;
 			virtual void write(byte v) throw (IOException) = 0;
 			virtual void writeBoolean(bool v) throw (IOException) = 0;
 			virtual void writeByte(byte v) throw (IOException) = 0;
 			virtual void writeChars(const String& s) throw (IOException) = 0;
-			virtual void writeInt(javaint v) throw (IOException) = 0;
-			virtual void writeLong(javalong v) throw (IOException) = 0;
-			virtual void writeShort(javashort v) throw (IOException) = 0;
+			virtual void writeInt(jint v) throw (IOException) = 0;
+			virtual void writeLong(jlong v) throw (IOException) = 0;
+			virtual void writeShort(jshort v) throw (IOException) = 0;
 			virtual void writeUTF(const String& str) throw (IOException) = 0;
 		};
 	}

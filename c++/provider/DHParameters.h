@@ -38,11 +38,13 @@ namespace beecrypt {
 			DHParameterSpec* _spec;
 
 		protected:
+			virtual const bytearray& engineGetEncoded(const String* format = 0) throw (IOException);
 			virtual AlgorithmParameterSpec* engineGetParameterSpec(const type_info&) throw (InvalidParameterSpecException);
 
 			virtual void engineInit(const AlgorithmParameterSpec&) throw (InvalidParameterSpecException);
-			virtual void engineInit(const byte*, size_t);
-			virtual void engineInit(const byte*, size_t, const String&);
+			virtual void engineInit(const byte*, int, const String* format = 0);
+
+			virtual String engineToString() throw ();
 
 		public:
 			DHParameters();

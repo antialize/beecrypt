@@ -29,55 +29,67 @@ using namespace beecrypt::provider;
 DHAESParameters::DHAESParameters()
 {
 	_spec = 0;
+	_dspec = 0;
 }
 
 DHAESParameters::~DHAESParameters()
 {
-	if (_spec)
-	{
-		delete _spec;
-		_spec = 0;
-	}
+	delete _spec;
+	delete _dspec;
+}
+
+const bytearray& DHAESParameters::engineGetEncoded(const String* format) throw (IOException)
+{
+	throw IOException("not implemented");
 }
 
 AlgorithmParameterSpec* DHAESParameters::engineGetParameterSpec(const type_info& info) throw (InvalidParameterSpecException)
 {
-	if (info == typeid(AlgorithmParameterSpec) || info == typeid(DHAESParameterSpec))
+	if (info == typeid(DHAESDecryptParameterSpec))
+	{
+		if (_dspec)
+			return new DHAESDecryptParameterSpec(*_dspec);
+	}
+	else if (info == typeid(DHAESParameterSpec) || info == typeid(AlgorithmParameterSpec))
 	{
 		if (_spec)
-		{
 			return new DHAESParameterSpec(*_spec);
-		}
-		else
-			throw InvalidParameterSpecException("not initialized");
 	}
-	else
-		throw InvalidParameterSpecException("expected a DHAESParameterSpec");
+	throw InvalidParameterSpecException();
 }
 
-void DHAESParameters::engineInit(const AlgorithmParameterSpec& spec) throw (InvalidParameterSpecException)
+void DHAESParameters::engineInit(const AlgorithmParameterSpec& param) throw (InvalidParameterSpecException)
 {
-	const DHAESParameterSpec* tmp = dynamic_cast<const DHAESParameterSpec*>(&spec);
+	delete _spec;
+	delete _dspec;
 
-	if (tmp)
+	_spec = 0;
+	_dspec = 0;
+
+	const DHAESParameterSpec* spec = dynamic_cast<const DHAESParameterSpec*>(&param);
+	if (spec)
 	{
-		if (_spec)
-		{
-			delete _spec;
-			_spec = 0;
-		}
-		_spec = new DHAESParameterSpec(*tmp);
+		_spec = new DHAESParameterSpec(*spec);
+
+		const DHAESDecryptParameterSpec* dspec = dynamic_cast<const DHAESDecryptParameterSpec*>(spec);
+		if (dspec)
+			_dspec = new DHAESDecryptParameterSpec(*dspec);
 	}
 	else
-		throw InvalidParameterSpecException("expected a DHAESParameterSpec");
+		throw InvalidParameterSpecException("Expected a DHAESParameterSpec");
 }
 
-void DHAESParameters::engineInit(const byte*, size_t)
+void DHAESParameters::engineInit(const byte*, int, const String* format)
 {
-	throw ProviderException("not implemented");
+	throw ProviderException("Not implemented");
 }
 
-void DHAESParameters::engineInit(const byte*, size_t, const String& format)
+String DHAESParameters::engineToString() throw ()
 {
-	throw ProviderException("not implemented");
+	if (_dspec)
+		return _dspec->toString();
+	if (_spec)
+		return _spec->toString();
+
+	return String("(uninitialized)");
 }

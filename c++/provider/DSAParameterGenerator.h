@@ -35,7 +35,7 @@ namespace beecrypt {
 		class DSAParameterGenerator : public beecrypt::security::AlgorithmParameterGeneratorSpi
 		{
 		private:
-			size_t _size;
+			int _size;
 			DSAParameterSpec* _spec;
 			SecureRandom* _srng;
 
@@ -43,7 +43,7 @@ namespace beecrypt {
 			virtual AlgorithmParameters* engineGenerateParameters();
 
 			virtual void engineInit(const AlgorithmParameterSpec&, SecureRandom*) throw (InvalidAlgorithmParameterException);
-			virtual void engineInit(size_t, SecureRandom*) throw (InvalidParameterException);
+			virtual void engineInit(int, SecureRandom*) throw (InvalidParameterException);
 
 		public:
 			DSAParameterGenerator();

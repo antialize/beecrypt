@@ -43,48 +43,50 @@ using beecrypt::io::ByteArrayOutputStream;
 using beecrypt::security::KeyPairGenerator;
 #include "beecrypt/c++/security/MessageDigest.h"
 using beecrypt::security::MessageDigest;
-#include "beecrypt/c++/beeyond/DHAESParameterSpec.h"
-using beecrypt::beeyond::DHAESParameterSpec;
+#include "beecrypt/c++/beeyond/DHAESDecryptParameterSpec.h"
+using beecrypt::beeyond::DHAESDecryptParameterSpec;
 
 namespace beecrypt {
 	namespace provider {
 		class DHAESCipher : public beecrypt::crypto::CipherSpi
 		{
 		private:
-			DHAESParameterSpec*     _spec;
-			SecureRandom*           _srng;
-			KeyPairGenerator*       _kpg;
-			KeyAgreement*           _ka;
-			MessageDigest*          _d;
-			Cipher*                 _c;
-			Mac*                    _m;
+			DHAESDecryptParameterSpec* _dspec;
+			DHAESParameterSpec*        _spec;
 
-			DHPublicKey*			_msg;
+			SecureRandom*     _srng;
+			KeyPairGenerator* _kpg;
+			KeyAgreement*     _ka;
+			MessageDigest*    _d;
+			Cipher*           _c;
+			Mac*              _m;
 
-			ByteArrayOutputStream*  _buf;
+			DHPublicKey* _msg;
 
-			int                     _opmode;
+			ByteArrayOutputStream* _buf;
 
-			const DHPublicKey*      _enc;
-			const DHPrivateKey*     _dec;
+			int _opmode;
+
+			const DHPublicKey*  _enc;
+			const DHPrivateKey* _dec;
 
 			void reset();
 
 		protected:
-			virtual bytearray* engineDoFinal(const byte* input, size_t inputOffset, size_t inputLength) throw (IllegalBlockSizeException, BadPaddingException);
-			virtual size_t engineDoFinal(const byte* input, size_t inputOffset, size_t inputLength, bytearray& output, size_t outputOffset) throw (ShortBufferException, IllegalBlockSizeException, BadPaddingException);
+			virtual bytearray* engineDoFinal(const byte* input, int inputOffset, int inputLength) throw (IllegalBlockSizeException, BadPaddingException);
+			virtual int engineDoFinal(const byte* input, int inputOffset, int inputLength, bytearray& output, int outputOffset) throw (ShortBufferException, IllegalBlockSizeException, BadPaddingException);
 
-			virtual size_t engineGetBlockSize() const throw ();
+			virtual int engineGetBlockSize() const throw ();
 			virtual bytearray* engineGetIV();
-			virtual size_t engineGetOutputSize(size_t inputLength) throw ();
+			virtual int engineGetOutputSize(int inputLength) throw ();
 			virtual AlgorithmParameters* engineGetParameters() throw ();
 
 			virtual void engineInit(int opmode, const Key& key, SecureRandom* random) throw (InvalidKeyException);
 			virtual void engineInit(int opmode, const Key& key, AlgorithmParameters* params, SecureRandom* random) throw (InvalidKeyException, InvalidAlgorithmParameterException);
 			virtual void engineInit(int opmode, const Key& key, const AlgorithmParameterSpec& params, SecureRandom* random) throw (InvalidKeyException, InvalidAlgorithmParameterException);
 
-			virtual bytearray* engineUpdate(const byte* input, size_t inputOffset, size_t inputLength);
-			virtual size_t engineUpdate(const byte* input, size_t inputOffset, size_t inputLength, bytearray& output, size_t outputOffset) throw (ShortBufferException);
+			virtual bytearray* engineUpdate(const byte* input, int inputOffset, int inputLength);
+			virtual int engineUpdate(const byte* input, int inputOffset, int inputLength, bytearray& output, int outputOffset) throw (ShortBufferException);
 
             virtual void engineSetMode(const String& mode) throw (NoSuchAlgorithmException);
             virtual void engineSetPadding(const String& padding) throw (NoSuchPaddingException);

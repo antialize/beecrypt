@@ -20,8 +20,8 @@
  * \ingroup CXX_LANG_m
  */
 
-#ifndef _BEECRYPT_CLASS_SYSTEM_H
-#define _BEECRYPT_CLASS_SYSTEM_H
+#ifndef _CLASS_BEE_LANG_SYSTEM_H
+#define _CLASS_BEE_LANG_SYSTEM_H
 
 #include "beecrypt/api.h"
 

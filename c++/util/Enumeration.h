@@ -20,8 +20,8 @@
  * \ingroup CXX_UTIL_m
  */
 
-#ifndef _INTERFACE_ENUMERATION_H
-#define _INTERFACE_ENUMERATION_H
+#ifndef _INTERFACE_BEE_UTIL_ENUMERATION_H
+#define _INTERFACE_BEE_UTIL_ENUMERATION_H
 
 #ifdef __cplusplus
 
@@ -32,11 +32,11 @@ namespace beecrypt {
 	namespace util {
 		/*!\ingroup CXX_UTIL_m
 		 */
-		class BEECRYPTCXXAPI Enumeration
+		template<class E> class Enumeration
 		{
 		public:
 			virtual bool hasMoreElements() throw () = 0;
-			virtual const void* nextElement() throw (NoSuchElementException) = 0;
+			virtual E* nextElement() throw (NoSuchElementException) = 0;
 		};
 	}
 }

@@ -30,6 +30,10 @@ InvalidParameterSpecException::InvalidParameterSpecException() throw ()
 {
 }
 
+InvalidParameterSpecException::InvalidParameterSpecException(const String* message) throw () : GeneralSecurityException(message)
+{
+}
+
 InvalidParameterSpecException::InvalidParameterSpecException(const String& message) throw () : GeneralSecurityException(message)
 {
 }

@@ -1,6 +1,6 @@
 INCLUDES = -I$(top_srcdir)/..
 
-AUTOMAKE_OPTIONS = gnu no-dependencies
+AUTOMAKE_OPTIONS = gnu
 
 noinst_LTLIBRARIES = libcxxsecuritycert.la
 
@@ -8,6 +8,7 @@ cxxsecuritycertdir=$(pkgincludedir)/c++/security/cert
 
 libcxxsecuritycert_la_SOURCES =\
 Certificate.cxx \
+CertificateEncodingException.cxx \
 CertificateException.cxx \
 CertificateExpiredException.cxx \
 CertificateFactory.cxx \
@@ -18,6 +19,7 @@ CertPathValidatorException.cxx
 
 cxxsecuritycert_HEADERS =\
 Certificate.h \
+CertificateEncodingException.h \
 CertificateException.h \
 CertificateExpiredException.h \
 CertificateFactory.h \

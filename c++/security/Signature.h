@@ -20,10 +20,8 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_SIGNATURE_H
-#define _CLASS_SIGNATURE_H
-
-#include "beecrypt/api.h"
+#ifndef _CLASS_BEE_SECURITY_SIGNATURE_H
+#define _CLASS_BEE_SECURITY_SIGNATURE_H
 
 #ifdef __cplusplus
 
@@ -91,13 +89,13 @@ namespace beecrypt {
 			void initVerify(const PublicKey&) throw (InvalidKeyException);
 
 			bytearray* sign() throw (IllegalStateException, SignatureException);
-			size_t sign(byte*, size_t, size_t) throw (ShortBufferException, IllegalStateException, SignatureException);
-			size_t sign(bytearray&) throw (IllegalStateException, SignatureException);
+			int sign(byte*, int, int) throw (ShortBufferException, IllegalStateException, SignatureException);
+			int sign(bytearray&) throw (IllegalStateException, SignatureException);
 			bool verify(const bytearray&) throw (IllegalStateException, SignatureException);
-			bool verify(const byte*, size_t, size_t) throw (IllegalStateException, SignatureException);
+			bool verify(const byte*, int, int) throw (IllegalStateException, SignatureException);
 
 			void update(byte) throw (IllegalStateException);
-			void update(const byte*, size_t, size_t) throw (IllegalStateException);
+			void update(const byte*, int, int) throw (IllegalStateException);
 			void update(const bytearray&) throw (IllegalStateException);
 
 			const String& getAlgorithm() const throw ();

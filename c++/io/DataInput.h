@@ -20,13 +20,13 @@
  * \ingroup CXX_IO_m
  */
 
-#ifndef _INTERFACE_DATAINPUT_H
-#define _INTERFACE_DATAINPUT_H
+#ifndef _INTERFACE_BEE_IO_DATAINPUT_H
+#define _INTERFACE_BEE_IO_DATAINPUT_H
 
 #ifdef __cplusplus
 
-#include "beecrypt/c++/array.h"
-using beecrypt::bytearray;
+#include "beecrypt/c++/lang/String.h"
+using beecrypt::lang::String;
 #include "beecrypt/c++/io/IOException.h"
 using beecrypt::io::IOException;
 
@@ -34,24 +34,24 @@ namespace beecrypt {
 	namespace io {
 		/*!\ingroup CXX_IO_m
 		 */
-		class DataInput
+		class BEECRYPTCXXAPI DataInput
 		{
 		public:
+			virtual ~DataInput() {}
+
 			virtual bool readBoolean() throw (IOException) = 0;
-			virtual javabyte readByte() throw (IOException) = 0;
-			virtual javachar readChar() throw (IOException) = 0;
-			virtual void readFully(byte* data, size_t offset, size_t length) = 0;
+			virtual jbyte readByte() throw (IOException) = 0;
+			virtual jchar readChar() throw (IOException) = 0;
+			virtual void readFully(byte* data, jint offset, jint length) = 0;
 			virtual void readFully(bytearray& b) = 0;
-			virtual javaint readInt() throw (IOException) = 0;
-			virtual String* readLine() throw (IOException) = 0;
-			virtual void readLine(String& line) throw (IOException) = 0;
-			virtual javalong readLong() throw (IOException) = 0;
-			virtual javashort readShort() throw (IOException) = 0;
-			virtual int readUnsignedByte() throw (IOException) = 0;
-			virtual int readUnsignedShort() throw (IOException) = 0;
-			virtual String* readUTF() throw (IOException) = 0;
-			virtual void readUTF(String& str) throw (IOException) = 0;
-			virtual off_t skipBytes(off_t n) throw (IOException) = 0;
+			virtual jint readInt() throw (IOException) = 0;
+			virtual String readLine() throw (IOException) = 0;
+			virtual jlong readLong() throw (IOException) = 0;
+			virtual jshort readShort() throw (IOException) = 0;
+			virtual jint readUnsignedByte() throw (IOException) = 0;
+			virtual jint readUnsignedShort() throw (IOException) = 0;
+			virtual String readUTF() throw (IOException) = 0;
+			virtual jint skipBytes(jint n) throw (IOException) = 0;
 		};
 	}
 }

@@ -20,13 +20,14 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_GENERALSECURITYEXCEPTION_H
-#define _CLASS_GENERALSECURITYEXCEPTION_H
+#ifndef _CLASS_BEE_SECURITY_GENERALSECURITYEXCEPTION_H
+#define _CLASS_BEE_SECURITY_GENERALSECURITYEXCEPTION_H
 
 #ifdef __cplusplus
 
 #include "beecrypt/c++/lang/Exception.h"
 using beecrypt::lang::Exception;
+using beecrypt::lang::String;
 
 namespace beecrypt {
 	namespace security {
@@ -36,6 +37,7 @@ namespace beecrypt {
 		{
 		public:
 			GeneralSecurityException() throw ();
+			GeneralSecurityException(const String* message) throw ();
 			GeneralSecurityException(const String& message) throw ();
 		};
 	}

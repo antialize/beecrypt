@@ -30,6 +30,10 @@ InvalidKeyException::InvalidKeyException() throw ()
 {
 }
 
+InvalidKeyException::InvalidKeyException(const String* message) throw () : KeyException(message)
+{
+}
+
 InvalidKeyException::InvalidKeyException(const String& message) throw () : KeyException(message)
 {
 }

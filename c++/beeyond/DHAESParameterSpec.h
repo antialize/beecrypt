@@ -43,37 +43,26 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI DHAESParameterSpec : public beecrypt::lang::Object, public beecrypt::security::spec::AlgorithmParameterSpec
 		{
 		private:
-			String _fullName;
 			String _messageDigestAlgorithm;
 			String _cipherAlgorithm;
 			String _macAlgorithm;
 
-			size_t _cipherKeyLength;
-			size_t _macKeyLength;
-
-			bytearray _mac;
-
-			mpnumber _y;
+			int _cipherKeyLength;
+			int _macKeyLength;
 
 		public:
 			DHAESParameterSpec(const DHAESParameterSpec& copy);
-			DHAESParameterSpec(const DHAESParameterSpec& copy, const mpnumber& key, const bytearray& mac);
-			DHAESParameterSpec(const String& messageDigestAlgorithm, const String& cipherAlgorithm, const String& macAlgorithm, size_t cipherKeyLength = 0, size_t macKeyLength = 0);
-			DHAESParameterSpec(const mpnumber& key, const bytearray& mac, const String& messageDigestAlgorithm, const String& cipherAlgorithm, const String& macAlgorithm, size_t cipherKeyLength = 0, size_t macKeyLength = 0);
-			virtual ~DHAESParameterSpec();
+			DHAESParameterSpec(const String& messageDigestAlgorithm, const String& cipherAlgorithm, const String& macAlgorithm, int cipherKeyLength = 0, int macKeyLength = 0);
+			virtual ~DHAESParameterSpec() {}
+
+			virtual String toString() const throw ();
 
 			const String& getCipherAlgorithm() const throw ();
 			const String& getMacAlgorithm() const throw ();
 			const String& getMessageDigestAlgorithm() const throw ();
 
-			size_t getCipherKeyLength() const throw ();
-			size_t getMacKeyLength() const throw ();
-
-			const mpnumber& getEphemeralPublicKey() const throw ();
-
-			const bytearray& getMac() const throw ();
-
-			const String& toString() const throw ();
+			int getCipherKeyLength() const throw ();
+			int getMacKeyLength() const throw ();
 		};
 	}
 }

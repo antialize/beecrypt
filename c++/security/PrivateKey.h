@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _INTERFACE_PRIVATEKEY_H
-#define _INTERFACE_PRIVATEKEY_H
+#ifndef _INTERFACE_BEE_SECURITY_PRIVATEKEY_H
+#define _INTERFACE_BEE_SECURITY_PRIVATEKEY_H
 
 #ifdef __cplusplus
 
@@ -35,6 +35,8 @@ namespace beecrypt {
 		 */
 		class PrivateKey : public Key
 		{
+		public:
+			virtual ~PrivateKey() {}
 		};
 	}
 }

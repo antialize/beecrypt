@@ -30,6 +30,10 @@ InvalidParameterException::InvalidParameterException() throw ()
 {
 }
 
+InvalidParameterException::InvalidParameterException(const String* message) throw () : IllegalArgumentException(message)
+{
+}
+
 InvalidParameterException::InvalidParameterException(const String& message) throw () : IllegalArgumentException(message)
 {
 }

@@ -20,17 +20,13 @@
  * \ingroup CXX_CRYPTO_m
  */
 
-#ifndef _CLASS_SECRETKEYFACTORYSPI_H
-#define _CLASS_SECRETKEYFACTORYSPI_H
-
-#include "beecrypt/api.h"
+#ifndef _CLASS_BEE_CRYPTO_SECRETKEYFACTORYSPI_H
+#define _CLASS_BEE_CRYPTO_SECRETKEYFACTORYSPI_H
 
 #ifdef __cplusplus
 
 #include "beecrypt/c++/crypto/SecretKey.h"
 using beecrypt::crypto::SecretKey;
-#include "beecrypt/c++/lang/Object.h"
-using beecrypt::lang::Object;
 #include "beecrypt/c++/security/InvalidKeyException.h"
 using beecrypt::security::InvalidKeyException;
 #include "beecrypt/c++/security/spec/KeySpec.h"
@@ -55,7 +51,7 @@ namespace beecrypt {
 			virtual SecretKey* engineTranslateKey(const SecretKey&) throw (InvalidKeyException) = 0;
 
 		public:
-			virtual ~SecretKeyFactorySpi() {};
+			virtual ~SecretKeyFactorySpi() {}
 		};
 	}
 }

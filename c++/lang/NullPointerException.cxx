@@ -29,6 +29,10 @@ NullPointerException::NullPointerException() throw ()
 {
 }
 
+NullPointerException::NullPointerException(const String* message) throw () : RuntimeException(message)
+{
+}
+
 NullPointerException::NullPointerException(const String& message) throw () : RuntimeException(message)
 {
 }

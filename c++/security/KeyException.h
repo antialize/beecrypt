@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_KEYEXCEPTION_H
-#define _CLASS_KEYEXCEPTION_H
+#ifndef _CLASS_BEE_SECURITY_KEYEXCEPTION_H
+#define _CLASS_BEE_SECURITY_KEYEXCEPTION_H
 
 #ifdef __cplusplus
 
@@ -36,6 +36,7 @@ namespace beecrypt {
 		{
 		public:
 			KeyException() throw ();
+			KeyException(const String* message) throw ();
 			KeyException(const String& message) throw ();
 		};
 	}

@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_UNRECOVERABLEKEYEXCEPTION_H
-#define _CLASS_UNRECOVERABLEKEYEXCEPTION_H
+#ifndef _CLASS_BEE_SECURITY_UNRECOVERABLEKEYEXCEPTION_H
+#define _CLASS_BEE_SECURITY_UNRECOVERABLEKEYEXCEPTION_H
 
 #ifdef __cplusplus
 
@@ -36,6 +36,7 @@ namespace beecrypt {
 		{
 		public:
 			UnrecoverableKeyException() throw ();
+			UnrecoverableKeyException(const String* message) throw ();
 			UnrecoverableKeyException(const String& message) throw ();
 		};
 	}

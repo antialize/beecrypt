@@ -20,25 +20,27 @@
  * \ingroup CXX_CRYPTO_INTERFACES_m
  */
 
-#ifndef _INTERFACE_DHPARAMS_H
-#define _INTERFACE_DHPARAMS_H
-
-#include "beecrypt/api.h"
-#include "beecrypt/mpbarrett.h"
+#ifndef _INTERFACE_BEE_CRYPTO_INTERFACES_DHPARAMS_H
+#define _INTERFACE_BEE_CRYPTO_INTERFACES_DHPARAMS_H
 
 #ifdef __cplusplus
+
+#include "beecrypt/c++/math/BigInteger.h"
+using beecrypt::math::BigInteger;
 
 namespace beecrypt {
 	namespace crypto {
 		namespace interfaces {
 			/*!\ingroup CXX_CRYPTO_INTERFACES_m
 			 */
-			class DHParams
+			class BEECRYPTCXXAPI DHParams
 			{
 			public:
-				virtual const mpbarrett& getP() const throw () = 0;
-				virtual const mpnumber& getG() const throw () = 0;
-				virtual size_t getL() const throw () = 0;
+				virtual ~DHParams() {}
+
+				virtual const BigInteger& getP() const throw () = 0;
+				virtual const BigInteger& getG() const throw () = 0;
+				virtual int getL() const throw () = 0;
 			};
 		}
 	}

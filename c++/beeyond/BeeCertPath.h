@@ -29,6 +29,8 @@
 using beecrypt::security::cert::CertPath;
 #include "beecrypt/c++/beeyond/BeeCertificate.h"
 using beecrypt::beeyond::BeeCertificate;
+#include "beecrypt/c++/util/ArrayList.h"
+using beecrypt::util::ArrayList;
 
 namespace beecrypt {
 	namespace beeyond {
@@ -37,15 +39,15 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI BeeCertPath : public CertPath
 		{
 		private:
-			vector<const Certificate*> _cert;
+			ArrayList<Certificate> _cert;
 
 		public:
 			BeeCertPath(const BeeCertificate& cert);
-			virtual ~BeeCertPath();
+			virtual ~BeeCertPath() {}
 
-			virtual bool equals(const Object& compare) const throw ();
+			virtual bool equals(const Object* obj) const throw ();
 
-			virtual const vector<const Certificate*>& getCertificates() const;
+			virtual const List<Certificate>& getCertificates() const;
 
 			virtual const bytearray& getEncoded() const;
 		};

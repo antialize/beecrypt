@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_ALGORITHMPARAMETERS_H
-#define _CLASS_ALGORITHMPARAMETERS_H
+#ifndef _CLASS_BEE_SECURITY_ALGORITHMPARAMETERS_H
+#define _CLASS_BEE_SECURITY_ALGORITHMPARAMETERS_H
 
 #ifdef __cplusplus
 
@@ -33,9 +33,6 @@ using beecrypt::security::Provider;
 using beecrypt::security::NoSuchAlgorithmException;
 #include "beecrypt/c++/security/NoSuchProviderException.h"
 using beecrypt::security::NoSuchProviderException;
-
-#include <typeinfo>
-using std::type_info;
 
 namespace beecrypt {
 	namespace security {
@@ -59,14 +56,16 @@ namespace beecrypt {
 		public:
 			virtual ~AlgorithmParameters();
 
+			const bytearray& getEncoded(const String* format = 0) throw (IOException);
 			AlgorithmParameterSpec* getParameterSpec(const type_info&) throw (InvalidParameterSpecException);
 
 			void init(const AlgorithmParameterSpec& spec) throw (InvalidParameterSpecException);
-			void init(const byte* data, size_t size);
-			void init(const byte* data, size_t size, const String& format);
+			void init(const byte* data, int size, const String* format = 0);
 
 			const String& getAlgorithm() const throw ();
 			const Provider& getProvider() const throw ();
+
+			String toString() throw ();
 		};
 	}
 }

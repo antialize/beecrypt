@@ -20,12 +20,14 @@
 
 #include "beecrypt/c++/beeyond/DHAESParameterSpec.h"
 
-#include "beecrypt/c++/lang/Long.h"
-using beecrypt::lang::Long;
+#include "beecrypt/c++/lang/Integer.h"
+using beecrypt::lang::Integer;
+#include "beecrypt/c++/lang/StringBuilder.h"
+using beecrypt::lang::StringBuilder;
 
 using namespace beecrypt::beeyond;
 
-DHAESParameterSpec::DHAESParameterSpec(const DHAESParameterSpec& copy) : _fullName(copy._fullName), _mac(copy._mac)
+DHAESParameterSpec::DHAESParameterSpec(const DHAESParameterSpec& copy)
 {
 	_messageDigestAlgorithm = copy._messageDigestAlgorithm;
 	_cipherAlgorithm = copy._cipherAlgorithm;
@@ -33,30 +35,18 @@ DHAESParameterSpec::DHAESParameterSpec(const DHAESParameterSpec& copy) : _fullNa
 
 	_cipherKeyLength = copy._cipherKeyLength;
 	_macKeyLength = copy._macKeyLength;
-
-	_y = copy._y;
 }
 
-DHAESParameterSpec::DHAESParameterSpec(const DHAESParameterSpec& copy, const mpnumber& key, const bytearray& mac) : _fullName(copy._fullName), _mac(mac)
+DHAESParameterSpec::DHAESParameterSpec(const String& messageDigestAlgorithm, const String& cipherAlgorithm, const String& macAlgorithm, int cipherKeyLength, int macKeyLength)
 {
-	_messageDigestAlgorithm = copy._messageDigestAlgorithm;
-	_cipherAlgorithm = copy._cipherAlgorithm;
-	_macAlgorithm = copy._macAlgorithm;
+	if (cipherKeyLength < 0 || macKeyLength < 0)
+		throw IllegalArgumentException("key lengths must be >= 0");
 
-	_cipherKeyLength = copy._cipherKeyLength;
-	_macKeyLength = copy._macKeyLength;
+	if (cipherKeyLength & 0x3 || macKeyLength & 0x3)
+		throw IllegalArgumentException("key lengths must be a multiple of 8 bits");
 
-	_y = key;
-}
-
-DHAESParameterSpec::DHAESParameterSpec(const String& messageDigestAlgorithm, const String& cipherAlgorithm, const String& macAlgorithm, size_t cipherKeyLength, size_t macKeyLength) : _mac()
-{
-	if (cipherKeyLength == 0 && macKeyLength == 0)
-		_fullName = "DHAES(" + messageDigestAlgorithm + "," + cipherAlgorithm + "," + macAlgorithm + ")";
-	else if (macKeyLength == 0)
-		_fullName = "DHAES(" + messageDigestAlgorithm + "," + cipherAlgorithm + "," + macAlgorithm + "," + Long::toString(cipherKeyLength) + ")";
-	else
-		_fullName = "DHAES(" + messageDigestAlgorithm + "," + cipherAlgorithm + "," + macAlgorithm + "," + Long::toString(cipherKeyLength) + "," + Long::toString(macKeyLength) + ")";
+	if (cipherKeyLength == 0 && macKeyLength != 0)
+		throw IllegalArgumentException("if cipherKeyLength equals 0, then macKeyLength must also be 0");
 
 	_messageDigestAlgorithm = messageDigestAlgorithm;
 	_cipherAlgorithm = cipherAlgorithm;
@@ -64,29 +54,6 @@ DHAESParameterSpec::DHAESParameterSpec(const String& messageDigestAlgorithm, con
 
 	_cipherKeyLength = cipherKeyLength;
 	_macKeyLength = macKeyLength;
-}
-
-DHAESParameterSpec::DHAESParameterSpec(const mpnumber& key, const bytearray& mac, const String& messageDigestAlgorithm, const String& cipherAlgorithm, const String& macAlgorithm, size_t cipherKeyLength, size_t macKeyLength) : _mac(mac)
-{
-	if (cipherKeyLength == 0 && macKeyLength == 0)
-		_fullName = "DHAES(" + messageDigestAlgorithm + "," + cipherAlgorithm + "," + macAlgorithm + ")";
-	else if (macKeyLength == 0)
-		_fullName = "DHAES(" + messageDigestAlgorithm + "," + cipherAlgorithm + "," + macAlgorithm + "," + Long::toString(cipherKeyLength) + ")";
-	else
-		_fullName = "DHAES(" + messageDigestAlgorithm + "," + cipherAlgorithm + "," + macAlgorithm + "," + Long::toString(cipherKeyLength) + "," + Long::toString(macKeyLength) + ")";
-
-	_messageDigestAlgorithm = messageDigestAlgorithm;
-	_cipherAlgorithm = cipherAlgorithm;
-	_macAlgorithm = macAlgorithm;
-
-	_cipherKeyLength = cipherKeyLength;
-	_macKeyLength = macKeyLength;
-
-	_y = key;
-}
-
-DHAESParameterSpec::~DHAESParameterSpec()
-{
 }
 
 const String& DHAESParameterSpec::getCipherAlgorithm() const throw ()
@@ -94,7 +61,7 @@ const String& DHAESParameterSpec::getCipherAlgorithm() const throw ()
 	return _cipherAlgorithm;
 }
 
-size_t DHAESParameterSpec::getCipherKeyLength() const throw ()
+int DHAESParameterSpec::getCipherKeyLength() const throw ()
 {
 	return _cipherKeyLength;
 }
@@ -104,7 +71,7 @@ const String& DHAESParameterSpec::getMacAlgorithm() const throw ()
 	return _macAlgorithm;
 }
 
-size_t DHAESParameterSpec::getMacKeyLength() const throw ()
+int DHAESParameterSpec::getMacKeyLength() const throw ()
 {
 	return _macKeyLength;
 }
@@ -114,17 +81,21 @@ const String& DHAESParameterSpec::getMessageDigestAlgorithm() const throw ()
 	return _messageDigestAlgorithm;
 }
 
-const mpnumber& DHAESParameterSpec::getEphemeralPublicKey() const throw ()
+String DHAESParameterSpec::toString() const throw ()
 {
-	return _y;
-}
+	StringBuilder tmp("DHAES(");
 
-const bytearray& DHAESParameterSpec::getMac() const throw ()
-{
-	return _mac;
-}
+	tmp.append(_messageDigestAlgorithm).append(',').append(_cipherAlgorithm).append(',').append(_macAlgorithm);
 
-const String& DHAESParameterSpec::toString() const throw ()
-{
-	return _fullName;
+	if (_macKeyLength)
+	{
+		tmp.append(',').append(Integer::toString(_cipherKeyLength));
+		tmp.append(',').append(Integer::toString(_macKeyLength));
+	}
+	else if (_cipherKeyLength)
+	{
+		tmp.append(',').append(Integer::toString(_cipherKeyLength));
+	}
+
+	return tmp.append(')').toString();
 }

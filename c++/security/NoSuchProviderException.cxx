@@ -30,6 +30,10 @@ NoSuchProviderException::NoSuchProviderException() throw ()
 {
 }
 
+NoSuchProviderException::NoSuchProviderException(const String* message) throw () : GeneralSecurityException(message)
+{
+}
+
 NoSuchProviderException::NoSuchProviderException(const String& message) throw () : GeneralSecurityException(message)
 {
 }

@@ -20,8 +20,8 @@
  * \ingroup CXX_CRYPTO_SPEC_m
  */
 
-#ifndef _CLASS_IVPARAMETERSPEC_H
-#define _CLASS_IVPARAMETERSPEC_H
+#ifndef _CLASS_BEE_CRYPTO_SPEC_IVPARAMETERSPEC_H
+#define _CLASS_BEE_CRYPTO_SPEC_IVPARAMETERSPEC_H
 
 #ifdef __cplusplus
 
@@ -37,7 +37,7 @@ namespace beecrypt {
 		namespace spec {
 			/*!\ingroup CXX_CRYPTO_SPEC_m
 			 */
-			class BEECRYPTCXXAPI IvParameterSpec : public beecrypt::lang::Object, public beecrypt::security::spec::AlgorithmParameterSpec
+			class BEECRYPTCXXAPI IvParameterSpec : public beecrypt::lang::Object, public virtual beecrypt::security::spec::AlgorithmParameterSpec
 			{
 			private:
 				bytearray _iv;
@@ -45,7 +45,7 @@ namespace beecrypt {
 			public:
 				IvParameterSpec(const byte* iv, size_t offset, size_t length);
 				IvParameterSpec(const bytearray& iv);
-				virtual ~IvParameterSpec();
+				virtual ~IvParameterSpec() {}
 
 				const bytearray& getIV() const throw ();
 				bytearray* getIV();

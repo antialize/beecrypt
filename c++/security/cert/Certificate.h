@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_CERT_m
  */
 
-#ifndef _CLASS_CERTIFICATE_H
-#define _CLASS_CERTIFICATE_H
+#ifndef _CLASS_BEE_SECURITY_CERT_CERTIFICATE_H
+#define _CLASS_BEE_SECURITY_CERT_CERTIFICATE_H
 
 #ifdef __cplusplus
 
@@ -39,8 +39,8 @@ using beecrypt::security::NoSuchAlgorithmException;
 using beecrypt::security::NoSuchProviderException;
 #include "beecrypt/c++/security/SignatureException.h"
 using beecrypt::security::SignatureException;
-#include "beecrypt/c++/security/cert/CertificateException.h"
-using beecrypt::security::cert::CertificateException;
+#include "beecrypt/c++/security/cert/CertificateEncodingException.h"
+using beecrypt::security::cert::CertificateEncodingException;
 
 namespace beecrypt {
 	namespace security {
@@ -56,17 +56,15 @@ namespace beecrypt {
 				Certificate(const String& type);
 
 			public:
-				virtual ~Certificate();
+				virtual ~Certificate() {}
 
-				virtual bool equals(const Object& compare) const throw ();
+				virtual bool equals(const Object* obj) const throw ();
 
-				virtual const bytearray& getEncoded() const = 0;
+				virtual const bytearray& getEncoded() const throw (CertificateEncodingException) = 0;
 				virtual const PublicKey& getPublicKey() const = 0;
 
 				virtual void verify(const PublicKey&) const throw (CertificateException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException, SignatureException) = 0;
 				virtual void verify(const PublicKey&, const String&) const throw (CertificateException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException, SignatureException) = 0;
-
-				virtual const String& toString() const throw () = 0;
 
 				const String& getType() const throw ();
 			};

@@ -20,8 +20,8 @@
  * \ingroup CXX_LANG_m
  */
 
-#ifndef _CLASS_RUNTIMEEXCEPTION_H
-#define _CLASS_RUNTIMEEXCEPTION_H
+#ifndef _CLASS_BEE_LANG_RUNTIMEEXCEPTION_H
+#define _CLASS_BEE_LANG_RUNTIMEEXCEPTION_H
 
 #ifdef __cplusplus
 
@@ -38,6 +38,7 @@ namespace beecrypt {
 		{
 		public:
 			RuntimeException() throw ();
+			RuntimeException(const String* message) throw ();
 			RuntimeException(const String& message) throw ();
 		};
 	}

@@ -30,6 +30,10 @@ InvalidAlgorithmParameterException::InvalidAlgorithmParameterException() throw (
 {
 }
 
+InvalidAlgorithmParameterException::InvalidAlgorithmParameterException(const String* message) throw () : GeneralSecurityException(message)
+{
+}
+
 InvalidAlgorithmParameterException::InvalidAlgorithmParameterException(const String& message) throw () : GeneralSecurityException(message)
 {
 }

@@ -20,26 +20,17 @@
  * \ingroup CXX_SECURITY_CERT_m
  */
 
-#ifndef _CLASS_CERTIFICATEFACTORY_H
-#define _CLASS_CERTIFICATEFACTORY_H
+#ifndef _CLASS_BEE_SECURITY_CERT_CERTIFICATEFACTORY_H
+#define _CLASS_BEE_SECURITY_CERT_CERTIFICATEFACTORY_H
 
 #ifdef __cplusplus
 
-#include "beecrypt/c++/lang/Object.h"
-using beecrypt::lang::Object;
-#include "beecrypt/c++/lang/String.h"
-using beecrypt::lang::String;
 #include "beecrypt/c++/security/Provider.h"
 using beecrypt::security::Provider;
 #include "beecrypt/c++/security/NoSuchAlgorithmException.h"
 using beecrypt::security::NoSuchAlgorithmException;
-#include "beecrypt/c++/security/cert/Certificate.h"
-using beecrypt::security::cert::Certificate;
 #include "beecrypt/c++/security/cert/CertificateFactorySpi.h"
 using beecrypt::security::cert::CertificateFactorySpi;
-
-#include <vector>
-using std::vector;
 
 namespace beecrypt {
 	namespace security {
@@ -65,7 +56,7 @@ namespace beecrypt {
 				virtual ~CertificateFactory();
 
 				Certificate* generateCertificate(InputStream& in) throw (CertificateException);
-				vector<Certificate*>* generateCertificates(InputStream& in) throw (CertificateException);
+				Collection<Certificate>* generateCertificates(InputStream& in) throw (CertificateException);
 
 				const String& getType() const throw ();
 				const Provider& getProvider() const throw ();

@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_m
  */
 
-#ifndef _CLASS_KEYSTOREEXCEPTION_H
-#define _CLASS_KEYSTOREEXCEPTION_H
+#ifndef _CLASS_BEE_SECURITY_KEYSTOREEXCEPTION_H
+#define _CLASS_BEE_SECURITY_KEYSTOREEXCEPTION_H
 
 #ifdef __cplusplus
 
@@ -36,6 +36,7 @@ namespace beecrypt {
 		{
 		public:
 			KeyStoreException() throw ();
+			KeyStoreException(const String* message) throw ();
 			KeyStoreException(const String& message) throw ();
 		};
 	}

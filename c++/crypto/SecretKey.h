@@ -20,8 +20,8 @@
  * \ingroup CXX_CRYPTO_m
  */
 
-#ifndef _INTERFACE_SECRETKEY_H
-#define _INTERFACE_SECRETKEY_H
+#ifndef _INTERFACE_BEE_CRYPTO_SECRETKEY_H
+#define _INTERFACE_BEE_CRYPTO_SECRETKEY_H
 
 #ifdef __cplusplus
 
@@ -33,8 +33,10 @@ namespace beecrypt {
 		/*!\brief Secret key interface
 		 * \ingroup CXX_CRYPTO_m
 		 */
-		class BEECRYPTCXXAPI SecretKey : public beecrypt::security::Key
+		class BEECRYPTCXXAPI SecretKey : public virtual beecrypt::security::Key
 		{
+		public:
+			virtual ~SecretKey() {}
 		};
 	}
 }

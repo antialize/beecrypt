@@ -20,8 +20,8 @@
  * \ingroup CXX_SECURITY_CERT_m
  */
 
-#ifndef _CLASS_CERTIFICATEVALIDATOREXCEPTION_H
-#define _CLASS_CERTIFICATEVALIDATOREXCEPTION_H
+#ifndef _CLASS_BEE_SECURITY_CERT_CERTIFICATEVALIDATOREXCEPTION_H
+#define _CLASS_BEE_SECURITY_CERT_CERTIFICATEVALIDATOREXCEPTION_H
 
 #ifdef __cplusplus
 
@@ -37,6 +37,7 @@ namespace beecrypt {
 			{
 			public:
 				CertPathValidatorException() throw ();
+				CertPathValidatorException(const String* message) throw ();
 				CertPathValidatorException(const String& message) throw ();
 			};
 		}

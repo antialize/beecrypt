@@ -20,14 +20,11 @@
  * \ingroup CXX_NIO_m
  */
 
-#ifndef _CLASS_BYTEORDER_H
-#define _CLASS_BYTEORDER_H
-
-#include "beecrypt/api.h"
+#ifndef _CLASS_BEE_NIO_BYTEORDER_H
+#define _CLASS_BEE_NIO_BYTEORDER_H
 
 #ifdef __cplusplus
 
-#include "beecrypt/c++/lang/Object.h"
 #include "beecrypt/c++/lang/String.h"
 using beecrypt::lang::String;
 
@@ -54,9 +51,9 @@ namespace beecrypt {
 			static const ByteOrder& nativeOrder();
 
 		public:
-			virtual ~ByteOrder() {};
+			virtual ~ByteOrder() {}
 
-			const String& toString() const;
+			virtual String toString() const throw ();
 		};
 	}
 }

@@ -20,11 +20,8 @@
  * \ingroup CXX_CRYPTO_SPEC_m
  */
 
-#ifndef _CLASS_DHPRIVATEKEYSPEC_H
-#define _CLASS_DHPRIVATEKEYSPEC_H
-
-#include "beecrypt/api.h"
-#include "beecrypt/mpbarrett.h"
+#ifndef _CLASS_BEE_CRYPTO_SPEC_DHPRIVATEKEYSPEC_H
+#define _CLASS_BEE_CRYPTO_SPEC_DHPRIVATEKEYSPEC_H
 
 #ifdef __cplusplus
 
@@ -32,26 +29,28 @@
 using beecrypt::security::spec::KeySpec;
 #include "beecrypt/c++/lang/Object.h"
 using beecrypt::lang::Object;
+#include "beecrypt/c++/math/BigInteger.h"
+using beecrypt::math::BigInteger;
 
 namespace beecrypt {
 	namespace crypto {
 		namespace spec {
 			/*!\ingroup CXX_CRYPTO_SPEC_m
 			 */
-			class BEECRYPTCXXAPI DHPrivateKeySpec : public beecrypt::lang::Object, public beecrypt::security::spec::KeySpec
+			class BEECRYPTCXXAPI DHPrivateKeySpec : public beecrypt::lang::Object, public virtual beecrypt::security::spec::KeySpec
 			{
 			private:
-				mpbarrett _p;
-				mpnumber _g;
-				mpnumber _x;
+				BigInteger _p;
+				BigInteger _g;
+				BigInteger _x;
 
 			public:
-				DHPrivateKeySpec(const mpbarrett& p, const mpnumber& g, const mpnumber& x);
-				virtual ~DHPrivateKeySpec();
+				DHPrivateKeySpec(const BigInteger& x, const BigInteger& p, const BigInteger& g);
+				virtual ~DHPrivateKeySpec() {}
 
-				const mpbarrett& getP() const throw ();
-				const mpnumber& getG() const throw ();
-				const mpnumber& getX() const throw ();
+				const BigInteger& getP() const throw ();
+				const BigInteger& getG() const throw ();
+				const BigInteger& getX() const throw ();
 			};
 		}
 	}
