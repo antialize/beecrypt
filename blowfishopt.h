@@ -3,7 +3,7 @@
  *
  * Blowfish block cipher assembler-optimized routines, header
  *
- * Copyright (c) 2000 Virtual Unlimited B.V.
+ * Copyright (c) 2000, 2002 Virtual Unlimited B.V.
  *
  * Author: Bob Deblier <bob@virtualunlimited.com>
  *
@@ -47,6 +47,12 @@ extern "C" {
 # if defined(OPTIMIZE_I586) || defined(OPTIMIZE_I686)
 #  define ASM_BLOWFISHENCRYPT
 #  define ASM_BLOWFISHDECRYPT
+# endif
+# if defined(OPTIMIZE_POWERPC)
+#  define ASM_BLOWFISHENCRYPT
+#  define ASM_BLOWFISHDECRYPT
+#  define ASM_BLOWFISHECBENCRYPT
+#  define ASM_BLOWFISHECBDECRYPT
 # endif
 #endif
 
