@@ -70,7 +70,7 @@ AC_DEFUN(BEECRYPT_INT_TYPES,[
     ])
   AC_CHECK_TYPE([uint64_t],[
     AC_DEFINE([HAVE_UINT64_T],1)
-	],[
+    ],[
     # Candidates are [unsigned long] and [unsigned long long]
     AC_CHECK_SIZEOF([unsigned long])
     if test $ac_cv_sizeof_unsigned_long -eq 8; then
@@ -250,7 +250,6 @@ AC_DEFUN(BEECRYPT_GNU_CC,[
     # Generic optimizations, including cpu tuning
     BEECRYPT_CFLAGS_REM([-g])
     BEECRYPT_CFLAGS_REM([-O2])
-    # -mcpu= doesn't work on ia64!
     CFLAGS="$CFLAGS -O3 -fomit-frame-pointer"
     case $bc_target_cpu in
     athlon*)
@@ -261,6 +260,11 @@ AC_DEFUN(BEECRYPT_GNU_CC,[
       ;;
     i686)
       CFLAGS="$CFLAGS -mcpu=pentiumpro"
+      ;;
+    ia64)
+      # -mcpu=... doesn't work on ia64, and -O3 can lead to invalid code
+      BEECRYPT_CFLAGS_REM([-O3])
+      CFLAGS="$CFLAGS -O"
       ;;
     pentium*)
       CFLAGS="$CFLAGS -mcpu=$bc_target_arch"
@@ -280,10 +284,10 @@ AC_DEFUN(BEECRYPT_GNU_CC,[
     pentium*)
       CFLAGS="$CFLAGS -march=$bc_target_arch"
       ;;
-   sparcv8)
+    sparcv8)
       CFLAGS="$CFLAGS -mv8"
       ;;
-   sparcv8plus)
+    sparcv8plus)
       CFLAGS="$CFLAGS -mv8plus"
       ;;
     esac
@@ -523,52 +527,50 @@ AC_DEFUN(BEECRYPT_ASM_SOURCES,[
   case $bc_target_arch in
   arm)
     AC_CONFIG_COMMANDS([mpopt.arm],[
-      m4 $srcdir/gas/mpopt.arm.m4 > $srcdir/mpopt.s
+      m4 $srcdir/gas/mpopt.arm.m4 > mpopt.s
       ])
     ;;
   alpha*)
     AC_CONFIG_COMMANDS([mpopt.alpha],[
-      m4 $srcdir/gas/mpopt.alpha.m4 > $srcdir/mpopt.s
+      m4 $srcdir/gas/mpopt.alpha.m4 > mpopt.s
       ])
     ;;
   athlon* | i[[3456]]86 | pentium*)
     AC_CONFIG_COMMANDS([mpopt.x86],[
-      m4 $srcdir/gas/mpopt.x86.m4 > $srcdir/mpopt.s
+      m4 $srcdir/gas/mpopt.x86.m4 > mpopt.s
       ])
     ;;
   ia64)
     AC_CONFIG_COMMANDS([mpopt.ia64],[
-      m4 $srcdir/gas/mpopt.ia64.m4 > $srcdir/mpopt.s
+      m4 $srcdir/gas/mpopt.ia64.m4 > mpopt.s
       ])
     ;;
   m68k)
     AC_CONFIG_COMMANDS([mpopt.m68k],[
-      m4 $srcdir/gas/mpopt.m68k.m4 > $srcdir/mpopt.s
+      m4 $srcdir/gas/mpopt.m68k.m4 > mpopt.s
       ])
     ;;
   powerpc)
     AC_CONFIG_COMMANDS([mpopt.ppc],[
-      m4 $srcdir/gas/mpopt.ppc.m4 > $srcdir/mpopt.s
+      m4 $srcdir/gas/mpopt.ppc.m4 > mpopt.s
       ])
-    if test "$ac_cv_c_bigendian" = yes; then
-      AC_CONFIG_COMMANDS([blowfishopt.ppc],[
-        m4 $srcdir/gas/blowfishopt.ppc.m4 > $srcdir/blowfishopt.s
-        ])
-    fi
+    AC_CONFIG_COMMANDS([blowfishopt.ppc],[
+      m4 $srcdir/gas/blowfishopt.ppc.m4 > blowfishopt.s
+      ])
     ;;
   powerpc64)
     AC_CONFIG_COMMANDS([mpopt.ppc64],[
-      m4 $srcdir/gas/mpopt.ppc64.m4 > $srcdir/mpopt.s
+      m4 $srcdir/gas/mpopt.ppc64.m4 > mpopt.s
       ])
     ;;
   sparcv8)
     AC_CONFIG_COMMANDS([mpopt.sparcv8],[
-      m4 $srcdir/gas/mpopt.sparcv8.m4 > $srcdir/mpopt.s
+      m4 $srcdir/gas/mpopt.sparcv8.m4 > mpopt.s
       ])
     ;;
   sparcv8plus)
     AC_CONFIG_COMMANDS([mpopt.sparcv8plus],[
-      m4 $srcdir/gas/mpopt.sparcv8plus.m4 > $srcdir/mpopt.s
+      m4 $srcdir/gas/mpopt.sparcv8plus.m4 > mpopt.s
       ])
     ;;
   esac
@@ -577,19 +579,19 @@ AC_DEFUN(BEECRYPT_ASM_SOURCES,[
     case $bc_target_arch in
     athlon* | i[[56]]86 | pentium*)
       AC_CONFIG_COMMANDS([aesopt],[
-        m4 $srcdir/gas/aesopt.i586.m4 > $srcdir/aesopt.s
+        m4 $srcdir/gas/aesopt.i586.m4 > aesopt.s
         ])
       AC_CONFIG_COMMANDS([blowfishopt],[
-        m4 $srcdir/gas/blowfishopt.i586.m4 > $srcdir/blowfishopt.s
+        m4 $srcdir/gas/blowfishopt.i586.m4 > blowfishopt.s
         ])
       AC_CONFIG_COMMANDS([sha1opt],[
-        m4 $srcdir/gas/sha1opt.i586.m4 > $srcdir/sha1opt.s
+        m4 $srcdir/gas/sha1opt.i586.m4 > sha1opt.s
         ])
       ;;
     esac
   fi
-  touch $srcdir/mpopt.s
-  touch $srcdir/aesopt.s
-  touch $srcdir/blowfishopt.s
-  touch $srcdir/sha1opt.s
+  touch mpopt.s
+  touch aesopt.s
+  touch blowfishopt.s
+  touch sha1opt.s
   ])
