@@ -449,7 +449,7 @@ int hashFunctionContextDigestMP(hashFunctionContext* ctxt, mpnumber* d)
 			return -1;
 		}
 
-		rc = os2ip(d->data, d->size, digest, ctxt->algo->digestsize);
+		rc = mpnsetbin(d, digest, ctxt->algo->digestsize);
 
 		free(digest);
 
@@ -836,6 +836,20 @@ int blockCipherContextFree(blockCipherContext* ctxt)
 	ctxt->param = (blockCipherParam*) 0;
 
 	return 0;
+}
+
+int blockCipherContextValidKeylen(blockCipherContext* ctxt, size_t bits)
+{
+	if (ctxt == (blockCipherContext*) 0)
+		return -1;
+
+	if (ctxt->algo == (blockCipher*) 0)
+		return -1;
+
+	if (bits < ctxt->algo->keybitsmin || bits > ctxt->algo->keybitsmax)
+		return 0;
+
+	return ((bits - ctxt->algo->keybitsmin) % ctxt->algo->keybitsinc) == 0;
 }
 
 int blockCipherContextECB(blockCipherContext* ctxt, uint32_t* dst, const uint32_t* src, int nblocks)
