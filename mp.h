@@ -441,7 +441,7 @@ void mpsetw(size_t size, mpw* xdata, mpw y);
  *  zeroing the most significant words if ysize < xsize.
  * \param xsize The size of the first multi-precision integer.
  * \param xdata The first multi-precision integer.
- * \param xsize The size of the second multi-precision integer.
+ * \param ysize The size of the second multi-precision integer.
  * \param ydata The second multi-precision integer.
  */
 void mpsetx(size_t xsize, mpw* xdata, size_t ysize, const mpw* ydata);
@@ -603,6 +603,8 @@ void mpsqr(mpw*, size_t, const mpw*);
 
 BEECRYPTAPI
 void mpgcd_w(size_t, const mpw*, const mpw*, mpw*, mpw*);
+BEECRYPTAPI
+int  mpextgcd_w(size_t, const mpw*, const mpw*, mpw*, mpw*);
 
 BEECRYPTAPI
 mpw mppndiv(mpw, mpw, mpw);

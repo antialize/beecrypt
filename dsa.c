@@ -139,8 +139,10 @@ int dsavrfy(const mpbarrett* p, const mpbarrett* q, const mpnumber* g, const mpn
 	pwksp = ptemp+2*psize;
 	qwksp = qtemp+2*qsize;
 
+	mpsetx(qsize, qtemp+qsize, s->size, s->data);
+
 	/* compute w = inv(s) mod q */
-	if (mpninv_w((mpnumber*) q, s->size, s->data, qtemp, qwksp))
+	if (mpextgcd_w(qsize, qtemp+qsize, q->modl, qtemp, qwksp))
 	{
 		/* compute u1 = h(m)*w mod q */
 		mpbmulmod_w(q, hm->size, hm->data, qsize, qtemp, qtemp+qsize, qwksp);
