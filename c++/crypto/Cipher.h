@@ -64,28 +64,29 @@ namespace beecrypt {
 			bool            _init;
 
 		protected:
-			Cipher(CipherSpi*, const String&, const Provider&);
+			Cipher(CipherSpi* cipherSpi, const Provider* provider, const String& transformation);
 
 		public:
-			~Cipher();
+			virtual ~Cipher();
 
 			bytearray* doFinal() throw (IllegalStateException, IllegalBlockSizeException, BadPaddingException);
 			bytearray* doFinal(const bytearray& input) throw (IllegalStateException, IllegalBlockSizeException, BadPaddingException);
 			size_t doFinal(bytearray& output, size_t outputOffset) throw (IllegalStateException, IllegalBlockSizeException, ShortBufferException, BadPaddingException);
 			bytearray* doFinal(const byte* input, size_t inputOffset, size_t inputLength) throw (IllegalStateException, IllegalBlockSizeException, BadPaddingException);
-			size_t doFinal(byte* input, size_t inputOffset, size_t inputLength, bytearray& output, size_t outputOffset = 0) throw (IllegalStateException, IllegalBlockSizeException, ShortBufferException, BadPaddingException);
-//			size_t doFinal(ByteBuffer& input, ByteBuffer& output) throw (IllegalStateException, ShortBufferException, BadPaddingException);
+			size_t doFinal(const byte* input, size_t inputOffset, size_t inputLength, bytearray& output, size_t outputOffset = 0) throw (IllegalStateException, IllegalBlockSizeException, ShortBufferException, BadPaddingException);
+//			virtual size_t doFinal(ByteBuffer& input, ByteBuffer& output) throw (IllegalStateException, ShortBufferException, BadPaddingException);
 
 			size_t getBlockSize() const throw ();
 			size_t getKeySize() const throw ();
 			size_t getOutputSize(size_t inputLength) throw ();
+			AlgorithmParameters* getParameters() throw ();
 
 			bytearray* getIV();
 
 			void init(int opmode, const Certificate& certificate, SecureRandom* random = 0) throw (InvalidKeyException);
 			void init(int opmode, const Key& key, SecureRandom* random = 0) throw (InvalidKeyException);
 			void init(int opmode, const Key& key, AlgorithmParameters* params, SecureRandom* random = 0) throw (InvalidKeyException, InvalidAlgorithmParameterException);
-			void init(int opmode, const Key& key, AlgorithmParameterSpec* params, SecureRandom* random = 0) throw (InvalidKeyException, InvalidAlgorithmParameterException);
+			void init(int opmode, const Key& key, const AlgorithmParameterSpec& params, SecureRandom* random = 0) throw (InvalidKeyException, InvalidAlgorithmParameterException);
 
 			bytearray* update(const bytearray& input) throw (IllegalStateException);
 			bytearray* update(const byte* input, size_t inputOffset, size_t inputLength) throw (IllegalStateException);

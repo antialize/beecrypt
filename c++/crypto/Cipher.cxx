@@ -22,6 +22,10 @@
 # include "config.h"
 #endif
 
+#if HAVE_ASSERT_H
+#include <assert.h>
+#endif
+
 #include "beecrypt/c++/crypto/Cipher.h"
 #include "beecrypt/c++/security/Security.h"
 using beecrypt::security::Security;
@@ -39,11 +43,11 @@ const int Cipher::DECRYPT_MODE = 2;
 const int Cipher::WRAP_MODE = 3;
 const int Cipher::UNWRAP_MODE = 4;
 
-Cipher::Cipher(CipherSpi* spi, const String& transformation, const Provider& provider)
+Cipher::Cipher(CipherSpi* spi, const Provider* provider, const String& transformation)
 {
 	_cspi = spi;
+	_prov = provider;
 	_algo = transformation;
-	_prov = &provider;
 	_init = false;
 }
 
@@ -78,7 +82,11 @@ Cipher* Cipher::getInstance(const String& transformation) throw (NoSuchAlgorithm
 		{
 			tmp = Security::getSpi(transformation, "Cipher");
 
-			result = new Cipher((CipherSpi*) tmp->cspi, tmp->name, tmp->prov);
+			#if HAVE_ASSERT_H
+			assert(dynamic_cast<CipherSpi*>((CipherSpi*) (CipherSpi*) tmp->cspi));
+			#endif
+
+			result = new Cipher((CipherSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 			delete tmp;
 
@@ -105,7 +113,11 @@ Cipher* Cipher::getInstance(const String& transformation) throw (NoSuchAlgorithm
 			{
 				tmp = Security::getSpi(algorithm + "/" + mode, "Cipher");
 
-				result = new Cipher((CipherSpi*) tmp->cspi, tmp->name, tmp->prov);
+				#if HAVE_ASSERT_H
+				assert(dynamic_cast<CipherSpi*>((CipherSpi*) (CipherSpi*) tmp->cspi));
+				#endif
+
+				result = new Cipher((CipherSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 				delete tmp;
 
@@ -137,7 +149,11 @@ Cipher* Cipher::getInstance(const String& transformation) throw (NoSuchAlgorithm
 			{
 				tmp = Security::getSpi(algorithm + "//" + padding, "Cipher");
 
-				result = new Cipher((CipherSpi*) tmp->cspi, tmp->name, tmp->prov);
+				#if HAVE_ASSERT_H
+				assert(dynamic_cast<CipherSpi*>((CipherSpi*) tmp->cspi));
+				#endif
+
+				result = new Cipher((CipherSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 				delete tmp;
 
@@ -165,7 +181,11 @@ Cipher* Cipher::getInstance(const String& transformation) throw (NoSuchAlgorithm
 		// Step 4: try to find algorithm
 		tmp = Security::getSpi(algorithm, "Cipher");
 
-		result = new Cipher((CipherSpi*) tmp->cspi, tmp->name, tmp->prov);
+		#if HAVE_ASSERT_H
+		assert(dynamic_cast<CipherSpi*>((CipherSpi*) tmp->cspi));
+		#endif
+
+		result = new Cipher((CipherSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 		delete tmp;
 
@@ -227,7 +247,11 @@ Cipher* Cipher::getInstance(const String& transformation, const String& provider
 		{
 			tmp = Security::getSpi(transformation, "Cipher", provider);
 
-			result = new Cipher((CipherSpi*) tmp->cspi, tmp->name, tmp->prov);
+			#if HAVE_ASSERT_H
+			assert(dynamic_cast<CipherSpi*>((CipherSpi*) tmp->cspi));
+			#endif
+
+			result = new Cipher((CipherSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 			delete tmp;
 
@@ -254,7 +278,11 @@ Cipher* Cipher::getInstance(const String& transformation, const String& provider
 			{
 				tmp = Security::getSpi(algorithm + "/" + mode, "Cipher", provider);
 
-				result = new Cipher((CipherSpi*) tmp->cspi, tmp->name, tmp->prov);
+				#if HAVE_ASSERT_H
+				assert(dynamic_cast<CipherSpi*>((CipherSpi*) tmp->cspi));
+				#endif
+
+				result = new Cipher((CipherSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 				delete tmp;
 
@@ -286,7 +314,11 @@ Cipher* Cipher::getInstance(const String& transformation, const String& provider
 			{
 				tmp = Security::getSpi(algorithm + "//" + padding, "Cipher", provider);
 
-				result = new Cipher((CipherSpi*) tmp->cspi, tmp->name, tmp->prov);
+				#if HAVE_ASSERT_H
+				assert(dynamic_cast<CipherSpi*>((CipherSpi*) tmp->cspi));
+				#endif
+
+				result = new Cipher((CipherSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 				delete tmp;
 
@@ -314,7 +346,11 @@ Cipher* Cipher::getInstance(const String& transformation, const String& provider
 		// Step 4: try to find algorithm
 		tmp = Security::getSpi(algorithm, "Cipher", provider);
 
-		result = new Cipher((CipherSpi*) tmp->cspi, tmp->name, tmp->prov);
+		#if HAVE_ASSERT_H
+		assert(dynamic_cast<CipherSpi*>((CipherSpi*) tmp->cspi));
+		#endif
+
+		result = new Cipher((CipherSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 		delete tmp;
 
@@ -376,7 +412,11 @@ Cipher* Cipher::getInstance(const String& transformation, const Provider& provid
 		{
 			tmp = Security::getSpi(transformation, "Cipher", provider);
 
-			result = new Cipher((CipherSpi*) tmp->cspi, tmp->name, tmp->prov);
+			#if HAVE_ASSERT_H
+			assert(dynamic_cast<CipherSpi*>((CipherSpi*) tmp->cspi));
+			#endif
+
+			result = new Cipher((CipherSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 			delete tmp;
 
@@ -403,7 +443,11 @@ Cipher* Cipher::getInstance(const String& transformation, const Provider& provid
 			{
 				tmp = Security::getSpi(algorithm + "/" + mode, "Cipher", provider);
 
-				result = new Cipher((CipherSpi*) tmp->cspi, tmp->name, tmp->prov);
+				#if HAVE_ASSERT_H
+				assert(dynamic_cast<CipherSpi*>((CipherSpi*) tmp->cspi));
+				#endif
+
+				result = new Cipher((CipherSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 				delete tmp;
 
@@ -435,7 +479,11 @@ Cipher* Cipher::getInstance(const String& transformation, const Provider& provid
 			{
 				tmp = Security::getSpi(algorithm + "//" + padding, "Cipher", provider);
 
-				result = new Cipher((CipherSpi*) tmp->cspi, tmp->name, tmp->prov);
+				#if HAVE_ASSERT_H
+				assert(dynamic_cast<CipherSpi*>((CipherSpi*) tmp->cspi));
+				#endif
+
+				result = new Cipher((CipherSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 				delete tmp;
 
@@ -463,7 +511,11 @@ Cipher* Cipher::getInstance(const String& transformation, const Provider& provid
 		// Step 4: try to find algorithm
 		tmp = Security::getSpi(algorithm, "Cipher", provider);
 
-		result = new Cipher((CipherSpi*) tmp->cspi, tmp->name, tmp->prov);
+		#if HAVE_ASSERT_H
+		assert(dynamic_cast<CipherSpi*>((CipherSpi*) tmp->cspi));
+		#endif
+
+		result = new Cipher((CipherSpi*) tmp->cspi, tmp->prov, tmp->name);
 
 		delete tmp;
 
@@ -531,7 +583,7 @@ bytearray* Cipher::doFinal(const byte* input, size_t inputOffset, size_t inputLe
 	return _cspi->engineDoFinal(input, inputOffset, inputLength);
 }
 
-size_t Cipher::doFinal(byte* input, size_t inputOffset, size_t inputLength, bytearray& output, size_t outputOffset) throw (IllegalStateException, IllegalBlockSizeException, ShortBufferException, BadPaddingException)
+size_t Cipher::doFinal(const byte* input, size_t inputOffset, size_t inputLength, bytearray& output, size_t outputOffset) throw (IllegalStateException, IllegalBlockSizeException, ShortBufferException, BadPaddingException)
 {
 	if (!_init)
 		throw IllegalStateException("Cipher not initialized");
@@ -552,6 +604,11 @@ bytearray* Cipher::getIV()
 size_t Cipher::getOutputSize(size_t inputLength) throw ()
 {
 	return _cspi->engineGetOutputSize(inputLength);
+}
+
+AlgorithmParameters* Cipher::getParameters() throw ()
+{
+	return _cspi->engineGetParameters();
 }
 
 const String& Cipher::getAlgorithm() const throw ()
@@ -585,7 +642,7 @@ void Cipher::init(int opmode, const Key& key, AlgorithmParameters* params, Secur
 	_init = true;
 }
 
-void Cipher::init(int opmode, const Key& key, AlgorithmParameterSpec* params, SecureRandom* random) throw (InvalidKeyException, InvalidAlgorithmParameterException)
+void Cipher::init(int opmode, const Key& key, const AlgorithmParameterSpec& params, SecureRandom* random) throw (InvalidKeyException, InvalidAlgorithmParameterException)
 {
 	_cspi->engineInit(opmode, key, params, random);
 

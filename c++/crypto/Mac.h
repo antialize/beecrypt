@@ -54,7 +54,7 @@ namespace beecrypt {
 			bool            _init;
 
 		protected:
-			Mac(MacSpi*, const String&, const Provider&);
+			Mac(MacSpi* macSpi, const Provider* provider, const String& algorithm);
 
 		public:
 			~Mac();
