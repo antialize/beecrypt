@@ -19,7 +19,7 @@
 
 /*!\file blockmode.h
  * \brief Blockcipher operation modes, headers.
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup BC_m
  */
 
@@ -33,9 +33,14 @@ extern "C" {
 #endif
 
 BEECRYPTAPI
-int blockEncrypt(const blockCipher*, blockCipherParam*, cipherMode, int, uint32*, const uint32*);
+int blockEncryptECB(const blockCipher*, blockCipherParam*, int, uint32_t*, const uint32_t*);
 BEECRYPTAPI
-int blockDecrypt(const blockCipher*, blockCipherParam*, cipherMode, int, uint32*, const uint32*);
+int blockDecryptECB(const blockCipher*, blockCipherParam*, int, uint32_t*, const uint32_t*);
+
+BEECRYPTAPI
+int blockEncryptCBC(const blockCipher*, blockCipherParam*, int, uint32_t*, const uint32_t*);
+BEECRYPTAPI
+int blockDecryptCBC(const blockCipher*, blockCipherParam*, int, uint32_t*, const uint32_t*);
 
 #ifdef __cplusplus
 }

@@ -23,20 +23,140 @@
  * \todo Add generic routines, instead of specific ones for each algorithm.
  *       The latter mode can stay for optimized functions, for instance if
  *       they're written in assembler.
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup BC_m
  */
 
 #define BEECRYPT_DLL_EXPORT
 
 #include "blockmode.h"
-#include "mp32.h"
 
 /*!\addtogroup BC_m
  * \{
  */
 
-int blockEncrypt(const blockCipher* bc, blockCipherParam* bp, cipherMode mode, int blocks, uint32* dst, const uint32* src)
+/*!\fn blockEncryptECB(const blockCipher* bc, blockCipherParam* bp, int count, uint32_t* dst, const uint32_t* src)
+ * \brief Encrypts multiple blocks in Electronic Code Book (ECB) mode.
+ * \param bc The blockcipher.
+ * \param bp The cipher's parameter block.
+ * \param nblocks The number of blocks to be encrypted.
+ * \param dst The destination (ciphertext data) address; the uint32_t pointer type
+ *            is only used for memory alignment purposes.
+ * \param src The source (cleartext data) address; the uint32_t pointer type
+ *            is only used for memory alignment purposes.
+ * \param fdback The feedback (unused by this function).
+ * \retval 0 on success.
+ * \retval -1 on failure.
+ */
+int blockEncryptECB(const blockCipher* bc, blockCipherParam* bp, int nblocks, uint32_t* dst, const uint32_t* src)
+{
+	/* assumes that every blockcipher's blocksize is a multiple of 32 bits */
+	register int blockwords = bc->blocksize >> 2;
+
+	while (nblocks > 0)
+	{
+		bc->encrypt(bp, dst, src);
+
+		dst += blockwords;
+		src += blockwords;
+
+		nblocks--;
+	}
+	return 0;
+}
+
+int blockDecryptECB(const blockCipher* bc, blockCipherParam* bp, int nblocks, uint32_t* dst, const uint32_t* src)
+{
+	/* assumes that every blockcipher's blocksize is a multiple of 32 bits */
+	register int blockwords = bc->blocksize >> 2;
+
+	while (nblocks > 0)
+	{
+		bc->decrypt(bp, dst, src);
+
+		dst += blockwords;
+		src += blockwords;
+
+		nblocks--;
+	}
+	return 0;
+}
+
+int blockEncryptCBC(const blockCipher* bc, blockCipherParam* bp, int nblocks, uint32_t* dst, const uint32_t* src)
+{
+	/* assumes that every blockcipher's blocksize is a multiple of 32 bits */
+	register int blockwords = bc->blocksize >> 2;
+	register uint32_t* fdback = bc->getfb(bp);
+
+	if (nblocks > 0)
+	{
+		register int i;
+
+		for (i = 0; i < blockwords; i++)
+			dst[i] = src[i] ^ fdback[i];
+
+		bc->encrypt(bp, dst, dst);
+
+		dst += blockwords;
+		src += blockwords;
+
+		nblocks--;
+
+		while (nblocks > 0)
+		{
+			for (i = 0; i < blockwords; i++)
+				dst[i] = src[i] ^ dst[i-blockwords];
+
+			bc->encrypt(bp, dst, dst);
+
+			dst += blockwords;
+			src += blockwords;
+
+			nblocks--;
+		}
+
+		for (i = 0; i < blockwords; i++)
+			fdback[i] = dst[i-blockwords];
+	}
+	return 0;
+}
+
+int blockDecryptCBC(const blockCipher* bc, blockCipherParam* bp, int nblocks, uint32_t* dst, const uint32_t* src)
+{
+	/* assumes that every blockcipher's blocksize is a multiple of 32 bits */
+	register int blockwords = bc->blocksize >> 2;
+	register uint32_t* fdback = bc->getfb(bp);
+	register uint32_t* buf = (uint32_t*) malloc(blockwords * sizeof(uint32_t));
+
+	if (buf)
+	{
+		while (nblocks > 0)
+		{
+			register uint32_t tmp;
+			register int i;
+
+			bc->decrypt(bp, buf, src);
+
+			for (i = 0; i < blockwords; i++)
+			{
+				tmp = src[i];
+				dst[i] = buf[i] ^ fdback[i];
+				fdback[i] = tmp;
+			}
+
+			dst += blockwords;
+			src += blockwords;
+
+			nblocks--;
+		}
+		free(buf);
+		return 0;
+	}
+	return -1;
+}
+
+/*
+int blockEncrypt(const blockCipher* bc, blockCipherParam* bp, cipherMode mode, int blocks, uint32_t* dst, const uint32_t* src)
 {
 	if (bc->mode)
 	{
@@ -54,7 +174,7 @@ int blockEncrypt(const blockCipher* bc, blockCipherParam* bp, cipherMode mode, i
 	return -1;
 }
 
-int blockDecrypt(const blockCipher* bc, blockCipherParam* bp, cipherMode mode, int blocks, uint32* dst, const uint32* src)
+int blockDecrypt(const blockCipher* bc, blockCipherParam* bp, cipherMode mode, int blocks, uint32_t* dst, const uint32_t* src)
 {
 	if (bc->mode)
 	{
@@ -71,6 +191,7 @@ int blockDecrypt(const blockCipher* bc, blockCipherParam* bp, cipherMode mode, i
 
 	return -1;
 }
+*/
 
 /*!\}
  */
