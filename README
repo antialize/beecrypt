@@ -1,6 +1,6 @@
 Welcome to the BeeCrypt crypto library!
 
-Copyright (c) 1997, 1998, 1999, 2000, 2001 Virtual Unlimited B.V.
+Copyright (c) 1997, 1998, 1999, 2000, 2001, 2002 Virtual Unlimited B.V.
 
 Author: Bob Deblier <bob@virtualunlimited.com>
 
@@ -23,14 +23,11 @@ this distribution.
 
 
 
-Welcome to version 2.1.0 of BeeCrypt:
+Welcome to version 2.2.0 of BeeCrypt:
 
-As you can see from the entries in the NEWS file, quite a lot has been
-added again, and compiling the library should now be even easier, since
-we've switched to automake & libtool.
-
-The configure script has a few new options, which will be described in
-detail below.
+AES support has been added, and the library has been thoroughly debugged,
+with the addition of unit tests. Once you've built the library, you can
+verify the correct functioning with 'make check'.
 
 As usual, your comments are welcome.
 
@@ -82,7 +79,7 @@ Included in the library are:
     - pseudo-random generators: FIPS-186, Mersenne Twister
     - block ciphers: AES, Blowfish
     - hash functions: MD5, SHA-1, SHA-256
-    - keyed hash functions: MD5/HMAC, SHA-1/HMAC, SHA-256/HMAC
+    - keyed hash functions: HMAC-MD5, HMAC-SHA-1, HMAC-SHA-256
     - multi-precision integer library, with assembler-optimized routines
 	  for several processors
     - probabilistic primality testing, with optimized small prime trial
@@ -126,11 +123,9 @@ The library has been tested on the following platforms:
         - includes assembler optimization (tuned for Pentium and higher)
 
 The library is currently in the process of being ported to:
-	- Darwin (the library builds as static on MacOS X 10.1; once the gnu
-	  libtool is up to speed it should also compile a dylib.
+	- Darwin (apparently Apple has decided to change the PPC assembler format;
+	  this will need a fix)
 	- Cygwin (the DLL builds now, but needs to be tested)
-	- QNX (I currently don't have a testing system anymore)
-
 
 For more information, refer to the HTML documentation in the docs directory.
 
@@ -144,4 +139,3 @@ or contact me at mailto:beecrypt@virtualunlimited.com
 Sincerely,
 
 Bob Deblier
-Virtual Unlimited
