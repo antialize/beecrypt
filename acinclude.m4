@@ -323,7 +323,7 @@ AC_DEFUN(BEECRYPT_COMPAQ_CC,[
       #endif
       ],bc_cv_prog_COMPAQ_CC=yes,bc_cv_prog_COMPAQ_CC=no)
     ])
-  if test "$bc_cv_COMPAQ_CC" = yes; then
+  if test "$bc_cv_prog_COMPAQ_CC" = yes; then
     if test "$ac_enable_threads" = yes; then
       CFLAGS="$CFLAGS -pthread"
       CPPFLAGS="$CPPFLAGS -pthread"
