@@ -767,4 +767,8 @@ EOF
 fi
 
 dnl Output
-AC_OUTPUT(Makefile docs/Makefile gas/Makefile masm/Makefile mwerks/Makefile tests/Makefile)
+AC_OUTPUT([Makefile docs/Makefile gas/Makefile masm/Makefile mwerks/Makefile tests/Makefile Doxyfile],
+  [
+    echo timestamp > stamp-h.in
+  ]
+)
