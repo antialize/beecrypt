@@ -48,15 +48,23 @@ int main()
 
 	mpnsethex(&q, dsa_q);
 	mpnsethex(&k, dsa_k);
-	mpnsethex(&k, dsa_inv_k);
+	mpnsethex(&inv_k, dsa_inv_k);
 
-	if (mpninv(&inv_k, &k, &q))
+	if (mpninv(&inv, &k, &q))
 	{
 		if (mpnex(inv.size, inv.data, inv_k.size, inv_k.data))
+		{
+			printf("mpninv return unexpected result\n");
+			mpprintln(inv_k.size, inv_k.data);
+			mpprintln(inv.size, inv.data);
 			failures++;
+		}
 	}
 	else
+	{
+		printf("mpninv failed\n");
 		failures++;
+	}
 
 	return failures;
 }
