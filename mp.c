@@ -1043,10 +1043,6 @@ size_t mprshiftlsz(size_t size, mpw* data)
 	if ((rbits == 0) && (zwords == 0))
 		return 0;
 
-	/* shouldn't happen, but let's test anyway */
-	if (size == 0)
-		return 0;
-
 	/* prepare right-shifting of data */
 	lbits = MP_WBITS - rbits;
 
