@@ -19,7 +19,7 @@
 
 /*!\file beecrypt.win.h
  * \brief BeeCrypt API, windows headers.
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  */
 
 #ifndef _BEECRYPT_WIN_H
@@ -98,15 +98,15 @@
 #define HAVE_64_BIT_INT			1
 #define HAVE_64_BIT_UINT		1
 
-typedef char		int8;
-typedef short		int16;
-typedef int			int32;
-typedef long long	int64;
+typedef char		int8_t;
+typedef short		int16_t;
+typedef long		int32_t;
+typedef long long	int64_t;
 
-typedef unsigned char		uint8;
-typedef unsigned short		uint16;
-typedef unsigned int		uint32;
-typedef unsigned long long	uint64;
+typedef unsigned char		uint8_t;
+typedef unsigned short		uint16_t;
+typedef unsigned long		uint32_t;
+typedef unsigned long long	uint64_t;
 
 #elif defined(_MSC_VER)
 #define HAVE_UNISTD_H			0
@@ -120,17 +120,19 @@ typedef unsigned long long	uint64;
 #define HAVE_64_BIT_INT			1
 #define HAVE_64_BIT_UINT		1
 
-typedef __int8	int8;
-typedef __int16	int16;
-typedef __int32	int32;
-typedef __int64	int64;
+typedef __int8	int8_t;
+typedef __int16	int16_t;
+typedef __int32	int32_t;
+typedef __int64	int64_t;
 
-typedef unsigned __int8		uint8;
-typedef unsigned __int16	uint16;
-typedef unsigned __int32	uint32;
-typedef unsigned __int64	uint64;
+typedef unsigned __int8		uint8_t;
+typedef unsigned __int16	uint16_t;
+typedef unsigned __int32 	uint32_t;
+typedef unsigned __int64	uint64_t;
 
 #endif
+
+#define MP_WBITS	32
 
 typedef float	float4;
 typedef double	double8;
