@@ -19,7 +19,7 @@
 
 /*!\file blowfish.h
  * \brief Blowfish block cipher, headers.
- * \author Bob Deblier <bob@virtualunlimited.com>
+ * \author Bob Deblier <bob.deblier@pandora.be>
  * \ingroup BC_m BC_blowfish_m
  */
 
@@ -40,15 +40,15 @@ typedef struct
 	/*!\var p
 	 * \brief Holds the key expansion.
 	 */
-	uint32 p[BLOWFISHPSIZE];
+	uint32_t p[BLOWFISHPSIZE];
 	/*!\var s
 	 * \brief Holds the s-boxes.
 	 */
-	uint32 s[1024];
+	uint32_t s[1024];
 	/*!\var fdback
 	 * \brief Buffer to be used by block chaining or feedback modes.
 	 */
-	uint32 fdback[2];
+	uint32_t fdback[2];
 } blowfishParam;
 
 #ifdef __cplusplus
@@ -58,23 +58,15 @@ extern "C" {
 extern const BEECRYPTAPI blockCipher blowfish;
 
 BEECRYPTAPI
-int blowfishSetup  (blowfishParam*, const uint32*, int, cipherOperation);
+int		blowfishSetup   (blowfishParam*, const byte*, size_t, cipherOperation);
 BEECRYPTAPI
-int blowfishSetIV  (blowfishParam*, const uint32*);
+int		blowfishSetIV   (blowfishParam*, const byte*);
 BEECRYPTAPI
-int blowfishEncrypt(blowfishParam*, uint32*, const uint32*);
+int		blowfishEncrypt (blowfishParam*, uint32_t*, const uint32_t*);
 BEECRYPTAPI
-int blowfishDecrypt(blowfishParam*, uint32*, const uint32*);
-
+int		blowfishDecrypt (blowfishParam*, uint32_t*, const uint32_t*);
 BEECRYPTAPI
-int blowfishECBEncrypt(blowfishParam*, int, uint32*, const uint32*);
-BEECRYPTAPI
-int blowfishECBDecrypt(blowfishParam*, int, uint32*, const uint32*);
-
-BEECRYPTAPI
-int blowfishCBCEncrypt(blowfishParam*, int, uint32*, const uint32*);
-BEECRYPTAPI
-int blowfishCBCDecrypt(blowfishParam*, int, uint32*, const uint32*);
+uint32_t*	blowfishFeedback(blowfishParam*);
 
 #ifdef __cplusplus
 }
