@@ -35,6 +35,7 @@
 
 #include "beecrypt.h"
 #include "mpprime.h"
+#include "mpnumber.h"
 #include "mpbarrett.h"
 
 #if HAVE_STDLIB_H
@@ -275,7 +276,7 @@ void mpbrndinv_w(const mpbarrett* b, randomGeneratorContext* rc, mpw* result, mp
 		else
 			mpbrnd_w(b, rc, result, wksp);
 
-	} while (mpbinv_w(b, size, result, inverse, wksp) == 0);
+	} while (mpninv_w((mpnumber*) b, size, result, inverse, wksp) == 0);
 }
 
 /*
@@ -686,103 +687,6 @@ void mpbtwopowmod_w(const mpbarrett* b, size_t psize, const mpw* pdata, mpw* res
 			}
 			count = MP_WBITS;
 			temp = *(pdata++);
-		}
-	}
-}
-
-/*
- * mpbinv_w
- *  computes the inverse (modulo b) of x, and returns 1 if x was invertible
- *  needs workspace of (6*size+6) words
- *  note: xdata and result cannot point to the same area
- */
-int mpbinv_w(const mpbarrett* b, size_t xsize, const mpw* xdata, mpw* result, mpw* wksp)
-{
-	/*
-	 * Fact: if a element of Zn, then a is invertible if and only if gcd(a,n) = 1
-	 * Hence: if b->modl is even, then x must be odd, otherwise the gcd(x,n) >= 2
-	 *
-	 * The calling routine must guarantee this condition.
-	 */
-
-	register size_t size = b->size;
-	register int full;
-
-	mpw* udata = wksp;
-	mpw* vdata = udata+size+1;
-	mpw* adata = vdata+size+1;
-	mpw* bdata = adata+size+1;
-	mpw* cdata = bdata+size+1;
-	mpw* ddata = cdata+size+1;
-
-	mpsetx(size+1, udata, size, b->modl);
-	mpsetx(size+1, vdata, xsize, xdata);
-	mpzero(size+1, bdata);
-	mpsetw(size+1, ddata, 1);
-
-	if ((full = mpeven(b->size, b->modl)))
-	{
-		mpsetw(size+1, adata, 1);
-		mpzero(size+1, cdata);
-	}
-
-	while (1)
-	{
-		while (mpeven(size+1, udata))
-		{
-			mpdivtwo(size+1, udata);
-
-			if ((full && mpodd(size+1, adata)) || mpodd(size+1, bdata))
-			{
-				if (full) mpaddx(size+1, adata, xsize, xdata);
-				mpsubx(size+1, bdata, size, b->modl);
-			}
-
-			if (full) mpsdivtwo(size+1, adata);
-			mpsdivtwo(size+1, bdata);
-		}
-		while (mpeven(size+1, vdata))
-		{
-			mpdivtwo(size+1, vdata);
-
-			if ((full && mpodd(size+1, cdata)) || mpodd(size+1, ddata))
-			{
-				if (full) mpaddx(size+1, cdata, xsize, xdata);
-				mpsubx(size+1, ddata, size, b->modl);
-			}
-
-			if (full) mpsdivtwo(size+1, cdata);
-			mpsdivtwo(size+1, ddata);
-		}
-		if (mpge(size+1, udata, vdata))
-		{
-			mpsub(size+1, udata, vdata);
-			if (full) mpsub(size+1, adata, cdata);
-			mpsub(size+1, bdata, ddata);
-		}
-		else
-		{
-			mpsub(size+1, vdata, udata);
-			if (full) mpsub(size+1, cdata, adata);
-			mpsub(size+1, ddata, bdata);
-		}
-
-		if (mpz(size+1, udata))
-		{
-			if (mpisone(size+1, vdata))
-			{
-				if (result)
-				{
-					mpsetx(size, result, size+1, ddata);
-					if (*ddata & MP_MSBMASK)
-					{
-						/* keep adding the modulus until we get a carry */
-						while (!mpadd(size, result, b->modl));
-					}
-				}
-				return 1;
-			}
-			return 0;
 		}
 	}
 }

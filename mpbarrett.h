@@ -87,10 +87,6 @@ void mpbpowmodsld_w(const mpbarrett*, const mpw*, size_t, const mpw*, mpw*, mpw*
 BEECRYPTAPI
 void mpbtwopowmod_w(const mpbarrett*, size_t, const mpw*, mpw*, mpw*);
 
-BEECRYPTAPI
-int  mpbinv_w(const mpbarrett*, size_t, const mpw*, mpw*, mpw*);
-
-
 /* To be added:
  * simultaneous multiple exponentiation, for use in dsa and elgamal signature verification
  */
