@@ -706,16 +706,47 @@ int mpptrials(size_t bits)
 	return 35;
 }
 
-static void mpprndbits(mpbarrett* p, size_t msbclr, size_t lsbset, randomGeneratorContext* rc)
+/*
+ * needs workspace of (size*2) words
+ */
+static void mpprndbits(mpbarrett* p, size_t bits, size_t lsbset, const mpnumber* min, const mpnumber* max, randomGeneratorContext* rc, mpw* wksp)
 {
 	register size_t size = p->size;
+	register size_t msbclr = MP_WORDS_TO_BITS(size) - bits;
+
+	/* assume that mpbits(max) == bits */
+	/* calculate k=max-min; generate q such that 0 <= q <= k; then set p = q + min */
+	/* for the second step, set the appropriate number of bits */
+
+	if (max)
+	{
+		mpsetx(size, wksp, max->size, max->data);
+	} 
+	else
+	{
+		mpfill(size, wksp, MP_ALLMASK);
+		wksp[0] &= (MP_ALLMASK >> msbclr);
+	}
+	if (min)
+	{
+		mpsetx(size, wksp+size, min->size, min->data);
+	}
+	else
+	{
+		mpzero(size, wksp+size);
+		wksp[size] |= (MP_MSBMASK >> msbclr);
+	}
+
+	mpsub(size, wksp, wksp+size);
 
     rc->rng->next(rc->param, (byte*) p->modl, MP_WORDS_TO_BYTES(size));
 
-	if (msbclr)
-		p->modl[0] &= (MP_ALLMASK >> msbclr);
+	p->modl[0] &= (MP_ALLMASK >> msbclr);
 
-	p->modl[0] |= (MP_MSBMASK >> msbclr);
+	while (mpgt(size, p->modl, wksp))
+		mpsub(size, p->modl, wksp);
+
+	mpadd(size, p->modl, wksp+size);
 
 	if (lsbset)
 		p->modl[size-1] |= (MP_ALLMASK >> (MP_WBITS - lsbset));
@@ -851,15 +882,48 @@ int mppmilrab_w(const mpbarrett* p, randomGeneratorContext* rc, int t, mpw* wksp
  */
 void mpprnd_w(mpbarrett* p, randomGeneratorContext* rc, size_t bits, int t, const mpnumber* f, mpw* wksp)
 {
+	mpprndr_w(p, rc, bits, t, (const mpnumber*) 0, (const mpnumber*) 0, f, wksp);
+}
+
+/*
+ * implements IEEE P1363 A.15.6
+ *
+ * f, min, max are optional
+ */
+int mpprndr_w(mpbarrett* p, randomGeneratorContext* rc, size_t bits, int t, const mpnumber* min, const mpnumber* max, const mpnumber* f, mpw* wksp)
+{
 	/*
 	 * Generate a prime into p with the requested number of bits
 	 *
 	 * Conditions: size(f) <= size(p)
 	 *
+	 * Optional input min: if min is not null, then search p so that min <= p
+	 * Optional input max: if max is not null, then search p so that p <= max
 	 * Optional input f: if f is not null, then search p so that GCD(p-1,f) = 1
 	 */
 
 	size_t size = MP_BITS_TO_WORDS(bits + MP_WBITS - 1);
+
+	/* if min has more bits than what was requested for p, bail out */
+	if (min && (mpbits(min->size, min->data) > bits))
+	{
+		printf("bail out 1\n");
+		return -1;
+	}
+
+	/* if max has a different number of bits than what was requested for p, bail out */
+	if (max && (mpbits(max->size, max->data) != bits))
+	{
+		printf("bail out 1\n");
+		return -2;
+	}
+
+	/* if min is not less than max, bail out */
+	if (min && max && mpgex(min->size, min->data, max->size, max->data))
+	{
+		printf("bail out 1\n");
+		return -2;
+	}
 
 	mpbinit(p, size);
 
@@ -871,7 +935,7 @@ void mpprnd_w(mpbarrett* p, randomGeneratorContext* rc, size_t bits, int t, cons
 			 * Generate a random appropriate candidate prime, and test
 			 * it with small prime divisor test BEFORE computing mu
 			 */
-			mpprndbits(p, MP_WORDS_TO_BITS(size) - bits, 1, rc);
+			mpprndbits(p, bits, 1, min, max, rc, wksp);
 
 			/* do a small prime product trial division test on p */
 			if (!mppsppdiv_w(p, wksp))
@@ -893,7 +957,7 @@ void mpprnd_w(mpbarrett* p, randomGeneratorContext* rc, size_t bits, int t, cons
 			mpbmu_w(p, wksp);
 
 			if (mppmilrab_w(p, rc, t, wksp))
-				return;
+				return 0;
 		}
 	}
 }
@@ -918,6 +982,8 @@ void mpprndconone_w(mpbarrett* p, randomGeneratorContext* rc, size_t bits, int t
 	 * Optional input f: if f is not null, then search p so that GCD(p-1,f) = 1
 	 */
 
+	printf("mpprndconone cofactor %d bits %d qbits %d\n", cofactor, bits, mpbits(q->size, q->modl));
+
 	mpbinit(p, MP_BITS_TO_WORDS(bits + MP_WBITS - 1));
 
 	if (p->modl != (mpw*) 0)
@@ -930,7 +996,7 @@ void mpprndconone_w(mpbarrett* p, randomGeneratorContext* rc, size_t bits, int t
 
 		while (1)
 		{
-			mpprndbits(&s, MP_WORDS_TO_BITS(s.size) - sbits, 0, rc);
+			mpprndbits(&s, sbits, 0, (mpnumber*) 0, (mpnumber*) 0, rc, wksp);
 
 			if (cofactor == 1)
 			{
@@ -1035,7 +1101,7 @@ void mpprndsafe_w(mpbarrett* p, randomGeneratorContext* rc, size_t bits, int t, 
 			 * it with small prime divisor test BEFORE computing mu
 			 */
 
-			mpprndbits(p, 0, 2, rc);
+			mpprndbits(p, bits, 2, (mpnumber*) 0, (mpnumber*) 0, rc, wksp);
 
 			mpcopy(size, q.modl, p->modl);
 			mpdivtwo(size, q.modl);
