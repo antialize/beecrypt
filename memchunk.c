@@ -48,6 +48,17 @@ memchunk* memchunkAlloc(size_t size)
 	return tmp;
 }
 
+void memchunkWipe(memchunk* m)
+{
+	if (m)
+	{
+		if (m->data)
+		{
+			memset(m->data, 0, m->size);
+		}
+	}
+}
+
 void memchunkFree(memchunk* m)
 {
 	if (m)

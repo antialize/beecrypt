@@ -38,6 +38,8 @@ extern "C" {
 BEECRYPTAPI
 memchunk*	memchunkAlloc(size_t);
 BEECRYPTAPI
+void		memchunkWipe(memchunk*);
+BEECRYPTAPI
 void		memchunkFree(memchunk*);
 BEECRYPTAPI
 memchunk*	memchunkResize(memchunk*, size_t);
