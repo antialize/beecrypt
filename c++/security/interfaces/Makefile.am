@@ -9,6 +9,9 @@ DSAKey.h \
 DSAParams.h \
 DSAPrivateKey.h \
 DSAPublicKey.h \
+ECKey.h \
+ECPrivateKey.h \
+ECPublicKey.h \
 RSAKey.h \
 RSAPrivateCrtKey.h \
 RSAPrivateKey.h \
