@@ -104,7 +104,7 @@ OBJFILES = \
 	timestamp.o
 
 DISTFILES = \
-	LICENSE README DOCUMENTATION CHANGELOG BUGS BENCHMARKS \
+	COPYING INSTALL NEWS README DOCUMENTATION BUGS BENCHMARKS ChangeLog \
 	config.guess config.sub install-sh \
 	configure.in configure Makefile.in Makefile.mak \
 	config.h \
@@ -211,6 +211,9 @@ install-headers:
 	$(INSTALL_DATA) ${srcdir}/mp32opt.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/mp32prime.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/mtprng.h ${includedir}/beecrypt
+	$(INSTALL_DATA) ${srcdir}/rsa.h ${includedir}/beecrypt
+	$(INSTALL_DATA) ${srcdir}/rsakp.h ${includedir}/beecrypt
+	$(INSTALL_DATA) ${srcdir}/rsapk.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/sha1hmac.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/sha256.h ${includedir}/beecrypt
 	$(INSTALL_DATA) ${srcdir}/sha256hmac.h ${includedir}/beecrypt

@@ -94,6 +94,7 @@ void mp32bcopy(mp32barrett* b, const mp32barrett* copy)
 
 		if (b->modl)
 		{
+			b->size = size;
 			b->mu = b->modl+copy->size;
 			mp32copy(2*size+1, b->modl, copy->modl);
 		}
@@ -106,8 +107,8 @@ void mp32bcopy(mp32barrett* b, const mp32barrett* copy)
 	else if (b->modl)
 	{
 		free(b->modl);
-		b->modl = b->mu = (uint32*) 0;
 		b->size = 0;
+		b->modl = b->mu = (uint32*) 0;
 	}
 }
 

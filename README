@@ -18,7 +18,7 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-For the specifics of this license, see file 'LICENSE', included in this
+For the specifics of this license, see file 'COPYING', included in this
 distribution.
 
 
@@ -104,6 +104,12 @@ The library is currently in the process of being ported to:
 	- Cygwin
 	- Darwin 1.0
 	- QNX
+
+The library contains optimizations for a variety of systems, some of which are not recognized by default by the configure script. You can trigger better optimizations on certain platforms, by adding the '--target=TYPE' option:
+
+By studying the configure.in file, you may be able to figure out the best optimization setting for you platform.
+
+By the next release, I'll try to compile a list of systems and more optimal settings.
 
 Consult file 'DOCUMENTATION' on how to use the library. There is also a program
 called 'beetest.c' included which gives an example of how to use the API. You
