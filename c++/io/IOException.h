@@ -26,13 +26,12 @@
 #ifdef __cplusplus
 
 #include "beecrypt/c++/lang/Exception.h"
-using beecrypt::lang::Exception;
 
 namespace beecrypt {
 	namespace io {
 		/*!\ingroup CXX_IO_m
 		 */
-		class BEECRYPTCXXAPI IOException : public Exception
+		class BEECRYPTCXXAPI IOException : public beecrypt::lang::Exception
 		{
 		public:
 			IOException();

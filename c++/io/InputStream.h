@@ -29,12 +29,13 @@
 using beecrypt::bytearray;
 #include "beecrypt/c++/io/IOException.h"
 using beecrypt::io::IOException;
+#include "beecrypt/c++/lang/Object.h"
 
 namespace beecrypt {
 	namespace io {
 		/*!\ingroup CXX_IO_m
 		 */
-		class BEECRYPTCXXAPI InputStream
+		class BEECRYPTCXXAPI InputStream : public beecrypt::lang::Object
 		{
 		public:
 			virtual ~InputStream() {};
