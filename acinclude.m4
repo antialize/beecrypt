@@ -425,8 +425,17 @@ AC_DEFUN([BEECRYPT_GNU_CC],[
     case $target_os in
     aix*)
       CC="$CC -maix64"
+      CXX="$CXX -maix64"
+      ;;
+    linux*)
+      CC="$CC -m64"
+      CXX="$CXX -m64"
       ;;
     esac
+    ;;
+  x86_64)
+    CC="$CC -m64"
+    CXX="$CXX -m64"
     ;;
   esac
   # Certain platforms needs special flags for multi-threaded code
@@ -449,28 +458,42 @@ AC_DEFUN([BEECRYPT_GNU_CC],[
   else
     # Generic optimizations, including cpu tuning
     BEECRYPT_CFLAGS_REM([-g])
-    BEECRYPT_CFLAGS_REM([-O2])
-    CFLAGS="$CFLAGS -DNDEBUG -O3 -fomit-frame-pointer"
+    CFLAGS="$CFLAGS -DNDEBUG -fomit-frame-pointer"
     if test "$bc_cv_c_aggressive_opt" = yes; then
       case $bc_target_cpu in
+      athlon64)
+		# -O3 degrades performance
+        # -mcpu=athlon64 degrades performance
+        ;;
+      alpha*)
+        BEECRYPT_CFLAGS_REM([-O2])
+        CFLAGS="$CFLAGS -O3"
+        ;;
       athlon*)
-        CFLAGS="$CFLAGS -mcpu=pentiumpro";
+        BEECRYPT_CFLAGS_REM([-O2])
+        CFLAGS="$CFLAGS -O3 -mcpu=pentiumpro"
         ;;
       i586)
-        CFLAGS="$CFLAGS -mcpu=pentium"
+        BEECRYPT_CFLAGS_REM([-O2])
+        CFLAGS="$CFLAGS -O3 -mcpu=pentium"
         ;;
       i686)
-        CFLAGS="$CFLAGS -mcpu=pentiumpro"
+        BEECRYPT_CFLAGS_REM([-O2])
+        CFLAGS="$CFLAGS -O3 -mcpu=pentiumpro"
         ;;
       ia64)
         # no -mcpu=... option on ia64
         ;;
       pentium*)
-        CFLAGS="$CFLAGS -mcpu=$bc_target_arch"
+        BEECRYPT_CFLAGS_REM([-O2])
+        CFLAGS="$CFLAGS -O3 -mcpu=$bc_target_arch"
         ;;
       esac
       # Architecture-specific optimizations
       case $bc_target_arch in
+      athlon64)
+        # -march=athlon64 degrades performance
+        ;;
       athlon*)
         CFLAGS="$CFLAGS -march=$bc_target_arch"
         ;;
