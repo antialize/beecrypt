@@ -566,6 +566,8 @@ AC_DEFUN(BEECRYPT_ASM_ALIGN,[
   AC_CACHE_CHECK([how to align symbols],
     bc_cv_asm_align,[
       case $target_cpu in
+      alpha*)
+        bc_cv_asm_align=".align 5" ;;
       i[[3456]]86 | athlon*)
         bc_cv_asm_align=".align 4" ;;
       ia64)
@@ -576,6 +578,8 @@ AC_DEFUN(BEECRYPT_ASM_ALIGN,[
         bc_cv_asm_align=".align 4" ;;
       sparc*)
         bc_cv_asm_align=".align 4" ;;
+      x86_64)
+        bc_cv_asm_align=".align 16" ;;
       esac
     ])
   AC_SUBST(ASM_ALIGN,$bc_cv_asm_align)
