@@ -62,6 +62,25 @@ DHPrivateKeyImpl::~DHPrivateKeyImpl()
 		delete _enc;
 }
 
+bool DHPrivateKeyImpl::operator==(const Key& compare) const throw ()
+{
+	const DHPrivateKey* pri = dynamic_cast<const DHPrivateKey*>(&compare);
+	if (pri)
+	{
+		if (pri->getParams().getP() != _params->getP())
+			return false;
+
+		if (pri->getParams().getG() != _params->getG())
+			return false;
+
+		if (pri->getX() != _x)
+			return false;
+
+		return true;
+	}
+	return false;
+}
+
 DHPrivateKey* DHPrivateKeyImpl::clone() const
 {
 	return new DHPrivateKeyImpl(*this);

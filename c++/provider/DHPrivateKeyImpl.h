@@ -17,7 +17,7 @@
  */
 
 /*!\file DHPrivateKeyImpl.h
- * \ingroup CXX_PROV_m
+ * \ingroup CXX_PROVIDER_m
  */
 
 #ifndef _CLASS_DHPRIVATEKEYIMPL_H
@@ -49,6 +49,8 @@ namespace beecrypt {
 			DHPrivateKeyImpl(const dhparam&, const mpnumber&);
 			DHPrivateKeyImpl(const mpbarrett&, const mpnumber&, const mpnumber&);
 			virtual ~DHPrivateKeyImpl();
+
+			virtual bool operator==(const Key& compare) const throw ();
 
 			virtual DHPrivateKey* clone() const;
 

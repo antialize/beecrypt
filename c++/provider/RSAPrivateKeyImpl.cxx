@@ -46,6 +46,22 @@ RSAPrivateKeyImpl::~RSAPrivateKeyImpl()
 		delete _enc;
 }
 
+bool RSAPrivateKeyImpl::operator==(const Key& compare) const throw ()
+{
+	const RSAPrivateKey* pri = dynamic_cast<const RSAPrivateKey*>(&compare);
+	if (pri)
+	{
+		if (pri->getModulus() != _n)
+			return false;
+
+		if (pri->getPrivateExponent() != _d)
+			return false;
+
+		return true;
+	}
+	return false;
+}
+
 RSAPrivateKey* RSAPrivateKeyImpl::clone() const
 {
 	return new RSAPrivateKeyImpl(*this);

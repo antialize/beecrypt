@@ -61,6 +61,28 @@ DSAPublicKeyImpl::~DSAPublicKeyImpl()
 		delete _enc;
 }
 
+bool DSAPublicKeyImpl::operator==(const Key& compare) const throw ()
+{
+	const DSAPublicKey* pub = dynamic_cast<const DSAPublicKey*>(&compare);
+	if (pub)
+	{
+		if (pub->getParams().getP() != _params->getP())
+			return false;
+
+		if (pub->getParams().getQ() != _params->getQ())
+			return false;
+
+		if (pub->getParams().getG() != _params->getG())
+			return false;
+
+		if (pub->getY() != _y)
+			return false;
+
+		return true;
+	}
+	return false;
+}
+
 DSAPublicKey* DSAPublicKeyImpl::clone() const
 {
 	return new DSAPublicKeyImpl(*this);

@@ -17,7 +17,7 @@
  */
 
 /*!\file DSAPrivateKeyImpl.h
- * \ingroup CXX_PROV_m
+ * \ingroup CXX_PROVIDER_m
  */
 
 #ifndef _CLASS_DSAPRIVATEKEYIMPL_H
@@ -46,6 +46,8 @@ namespace beecrypt {
 				DSAPrivateKeyImpl(const mpbarrett&, const mpbarrett&, const mpnumber&, const mpnumber&);
 
 				virtual ~DSAPrivateKeyImpl();
+
+				virtual bool operator==(const Key& compare) const throw ();
 
 				virtual DSAPrivateKey* clone() const;
 

@@ -17,7 +17,7 @@
  */
 
 /*!\file RSAPrivateKeyImpl.h
- * \ingroup CXX_PROV_m
+ * \ingroup CXX_PROVIDER_m
  */
 
 #ifndef _CLASS_RSAPRIVATEKEYIMPL_H
@@ -41,6 +41,8 @@ namespace beecrypt {
 				RSAPrivateKeyImpl(const RSAPrivateKey&);
 				RSAPrivateKeyImpl(const mpbarrett&, const mpnumber&);
 				virtual ~RSAPrivateKeyImpl();
+
+				virtual bool operator==(const Key& compare) const throw ();
 
 				virtual RSAPrivateKey* clone() const;
 

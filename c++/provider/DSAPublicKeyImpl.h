@@ -17,7 +17,7 @@
  */
 
 /*!\file DSAPublicKeyImpl.h
- * \ingroup CXX_PROV_m
+ * \ingroup CXX_PROVIDER_m
  */
 
 #ifndef _CLASS_DSAPUBLICKEYIMPL_H
@@ -34,26 +34,28 @@ namespace beecrypt {
 	namespace provider {
 		class DSAPublicKeyImpl : public DSAPublicKey
 		{
-			private:
-				DSAParameterSpec* _params;
-				mpnumber _y;
-				mutable bytearray* _enc;
+		private:
+			DSAParameterSpec* _params;
+			mpnumber _y;
+			mutable bytearray* _enc;
 
-			public:
-				DSAPublicKeyImpl(const DSAPublicKey&);
-				DSAPublicKeyImpl(const DSAParams&, const mpnumber&);
-				DSAPublicKeyImpl(const dsaparam&, const mpnumber&);
-				DSAPublicKeyImpl(const mpbarrett&, const mpbarrett&, const mpnumber&, const mpnumber&);
-				virtual ~DSAPublicKeyImpl();
+		public:
+			DSAPublicKeyImpl(const DSAPublicKey&);
+			DSAPublicKeyImpl(const DSAParams&, const mpnumber&);
+			DSAPublicKeyImpl(const dsaparam&, const mpnumber&);
+			DSAPublicKeyImpl(const mpbarrett&, const mpbarrett&, const mpnumber&, const mpnumber&);
+			virtual ~DSAPublicKeyImpl();
 
-				virtual DSAPublicKey* clone() const;
+			virtual bool operator==(const Key& compare) const throw ();
 
-				virtual const DSAParams& getParams() const throw ();
-				virtual const mpnumber& getY() const throw ();
+			virtual DSAPublicKey* clone() const;
 
-				virtual const bytearray* getEncoded() const;
-				virtual const String& getAlgorithm() const throw ();
-				virtual const String* getFormat() const throw ();
+			virtual const DSAParams& getParams() const throw ();
+			virtual const mpnumber& getY() const throw ();
+
+			virtual const bytearray* getEncoded() const;
+			virtual const String& getAlgorithm() const throw ();
+			virtual const String* getFormat() const throw ();
 		};
 	}
 }

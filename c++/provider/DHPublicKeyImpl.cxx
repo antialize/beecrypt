@@ -60,6 +60,25 @@ DHPublicKeyImpl::~DHPublicKeyImpl()
 		delete _enc;
 }
 
+bool DHPublicKeyImpl::operator==(const Key& compare) const throw ()
+{
+	const DHPublicKey* pub = dynamic_cast<const DHPublicKey*>(&compare);
+	if (pub)
+	{
+		if (pub->getParams().getP() != _params->getP())
+			return false;
+
+		if (pub->getParams().getG() != _params->getG())
+			return false;
+
+		if (pub->getY() != _y)
+			return false;
+
+		return true;
+	}
+	return false;
+}
+
 DHPublicKey* DHPublicKeyImpl::clone() const
 {
 	return new DHPublicKeyImpl(*this);

@@ -62,6 +62,28 @@ DSAPrivateKeyImpl::~DSAPrivateKeyImpl()
 		delete _enc;
 }
 
+bool DSAPrivateKeyImpl::operator==(const Key& compare) const throw ()
+{
+	const DSAPrivateKey* pri = dynamic_cast<const DSAPrivateKey*>(&compare);
+	if (pri)
+	{
+		if (pri->getParams().getP() != _params->getP())
+			return false;
+
+		if (pri->getParams().getQ() != _params->getQ())
+			return false;
+
+		if (pri->getParams().getG() != _params->getG())
+			return false;
+
+		if (pri->getX() != _x)
+			return false;
+
+		return true;
+	}
+	return false;
+}
+
 DSAPrivateKey* DSAPrivateKeyImpl::clone() const
 {
 	return new DSAPrivateKeyImpl(*this);

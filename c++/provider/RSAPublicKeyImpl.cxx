@@ -45,6 +45,22 @@ RSAPublicKeyImpl::~RSAPublicKeyImpl()
 		delete _enc;
 }
 
+bool RSAPublicKeyImpl::operator==(const Key& compare) const throw ()
+{
+	const RSAPublicKey* pub = dynamic_cast<const RSAPublicKey*>(&compare);
+	if (pub)
+	{
+		if (pub->getModulus() != _n)
+			return false;
+
+		if (pub->getPublicExponent() != _e)
+			return false;
+
+		return true;
+	}
+	return false;
+}
+
 RSAPublicKey* RSAPublicKeyImpl::clone() const
 {
 	return new RSAPublicKeyImpl(*this);
