@@ -35,25 +35,28 @@ int main()
 	dldp_p params;
 	randomGeneratorContext rngc;
 
-	memset(&params, 0, sizeof(dldp_p));
+	dldp_pInit(&params);
 
 	if (randomGeneratorContextInit(&rngc, randomGeneratorDefault()) == 0)
 	{                        
-		mp32number gq;
+		mpnumber gq;
 
-		mp32nzero(&gq);
+		mpnzero(&gq);
 
-		/* make parameters with p = 512 bits, q = 160 bits, g of order (q) */
-		dldp_pgoqMake(&params, &rngc, 512 >> 5, 160 >> 5, 1);
+		/* make parameters with p = 1024 bits, q = 160 bits, g of order (q) */
+		dldp_pgoqMake(&params, &rngc, 1024, 160, 1);
 
 		/* we have the parameters, now see if g^q == 1 */
-		mp32bnpowmod(&params.p, &params.g, (mp32number*) &params.q, &gq);
-		if (mp32isone(gq.size, gq.data))
-			printf("ok\n");
-		else
+		mpbnpowmod(&params.p, &params.g, (mpnumber*) &params.q, &gq);
+		if (!mpisone(gq.size, gq.data))
+		{
+			printf("failed test vector 1\n");
 			failures++;
+		}
+		else
+			printf("ok\n");
 
-		mp32nfree(&gq);
+		mpnfree(&gq);
 
 		dldp_pFree(&params);
 

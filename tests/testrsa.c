@@ -38,29 +38,30 @@ static const char* rsa_c  = "b06c4fdabb6301198d265bdbae9423b380f271f734538850930
 
 static const char* rsa_m  = "d436e99569fd32a7c8a05bbc90d32c49";
 
+#if 1
 int main()
 {
 	int failures = 0;
 
 	rsakp keypair;
-	mp32number m, cipher, decipher;
+	mpnumber m, cipher, decipher;
 
 	rsakpInit(&keypair);
 
-	mp32bsethex(&keypair.n, rsa_n);
-	mp32nsethex(&keypair.e, rsa_e);
+	mpbsethex(&keypair.n, rsa_n);
+	mpnsethex(&keypair.e, rsa_e);
 	/* we don't set n, as we're going to use CRT */
-	mp32bsethex(&keypair.p, rsa_p);
-	mp32bsethex(&keypair.q, rsa_q);
-	mp32nsethex(&keypair.d1, rsa_d1);
-	mp32nsethex(&keypair.d2, rsa_d2);
-	mp32nsethex(&keypair.c, rsa_c);
+	mpbsethex(&keypair.p, rsa_p);
+	mpbsethex(&keypair.q, rsa_q);
+	mpnsethex(&keypair.d1, rsa_d1);
+	mpnsethex(&keypair.d2, rsa_d2);
+	mpnsethex(&keypair.c, rsa_c);
 
-	mp32nzero(&m);
-	mp32nzero(&cipher);
-	mp32nzero(&decipher);
+	mpnzero(&m);
+	mpnzero(&cipher);
+	mpnzero(&decipher);
 
-	mp32nsethex(&m, rsa_m);
+	mpnsethex(&m, rsa_m);
 
 	/* it's safe to cast the keypair to a public key */
 	if (rsapub((rsapk*) &keypair, &m, &cipher))
@@ -69,16 +70,36 @@ int main()
 	if (rsapricrt(&keypair, &cipher, &decipher))
 		failures++;
 	
-	if (mp32eqx(m.size, m.data, decipher.size, decipher.data))
+	if (mpeqx(m.size, m.data, decipher.size, decipher.data))
 		printf("ok\n");
 	else
 		failures++;
 
-	mp32nfree(&decipher);
-	mp32nfree(&cipher);
-	mp32nfree(&m);
+	mpnfree(&decipher);
+	mpnfree(&cipher);
+	mpnfree(&m);
 
 	rsakpFree(&keypair);
 
 	return failures;
 }
+#else
+int main()
+{
+	int carry;
+	mpw x[4] = { 0, 0, 0, 0};
+	mpw y[4] = { 0, 0, 0, 1};
+	mpw r[8];
+
+	carry = mpadd(4, x, y);
+	printf("c %d ", carry); mpprintln(4, x);
+	carry = mpsubw(4, x, 1);
+	printf("c %d ", carry); mpprintln(4, x);
+	carry = mpsub(4, x, y);
+	printf("c %d ", carry); mpprintln(4, x);
+	mpmul(r, 4, x, 4, x);
+	mpprintln(8, r);
+	mpsqr(r, 4, x);
+	mpprintln(8, r);
+}
+#endif

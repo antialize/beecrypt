@@ -30,37 +30,41 @@
 
 #define SECONDS	10
 
-static const char* hp = "afe160d7ec48d97e7e47c70847a650835a8c33fd228f780bcff36b3753fa3e12d5517a4548f805a890d41c9dff493b0f195973b72269b63b977bb86f6187e5cb3588635d6ed49c15d40993c35c55732e5632099a1fe752b15ff6273ddbe8ce411d2b9ee1722e7ec8fc348a8446c56a2cb099130b6b1cfa97bb3494ebb32893fb";
-static const char* hq = "ee4e9b43898b5a48c23f25ff8d2db0c5c32f527b";
-static const char* hg = "2c63b6a74c065bf1cb23c37d890055a1a18569c0e55f1bcd0a438d115b6634370d34085866fc9f03fafadb417dc5356bf0f8ae3468aefe59356b118ab0b5a5528714ee649f7100a2aea3d9bdf8e40d7b97998a2e6e4e4ac98fbe0f16662a528318a9da36f52dca7d5008ff42eb304c174089ab691aabb43d3375bb276104d41a";
+static const char* hp = "d860d6c36ce3bd73c493e15113abd7ba6cc311d1365ddce4c194b65a96ac47ceab6a9ca7af9bfc871d341bf129e674b903533c7db1f8fad957d679ee14a3cbc5a73bf7f8173f33fb7b6a8a11c24652c2573276b214db3898f51cec3a6ff4263d0c5616502e91055bff6b9717d801c41f4b69eaed911fced89b601edfe73b1103";
+static const char* hq = "ea6f6724b9b9152766d01adfee421f48012e4a35";
+static const char* hg = "9b01e78dcaca5ae69656bb01c9a1f3b159f7cf8f77781146f916836dbca3a2ebc31cd73fbf7ea864ae5e8d0f24ead4332ce0f039ff5648a5f3514d84dd9632598def5b2da266f15391c031758855329ab15f87d3e612bee4f15ab3fd938a1da37992ea64ea90ceeeae654d9f3844e245951fd56a3c7919b3768c5719b43f3d3f";
 
 int main()
 {
 	dldp_p params;
-	mp32number gq;
+	mpnumber gq;
 	javalong start, now;
 	int iterations = 0;
 
 	dldp_pInit(&params);
 
-	mp32bsethex(&params.p, hp);
-	mp32bsethex(&params.q, hq);
-	mp32nsethex(&params.g, hg);
-
-	mp32nzero(&gq);
+	mpbsethex(&params.p, hp);
+	mpbsethex(&params.q, hq);
+	mpnsethex(&params.g, hg);
+	mpnzero(&gq);
 
 	/* get starting time */
 	start = timestamp();
 	do
 	{
-		mp32bnpowmod(&params.p, &params.g, (mp32number*) &params.q, &gq);
+		mpbnpowmod(&params.p, &params.g, (mpnumber*) &params.q, &gq);
 		now = timestamp();
 		iterations++;
 	} while (now < (start + (SECONDS * ONE_SECOND)));
 
-	mp32nfree(&gq);
+	mpnfree(&gq);
 
-	printf("(%d bits ^ %d bits) mod (%d bits): %d times in %d seconds\n", params.g.size << 5, params.q.size << 5, params.p.size << 5, iterations, SECONDS);
+	printf("(%d bits ^ %d bits) mod (%d bits): %d times in %d seconds\n",
+		(int) mpbits(params.g.size, params.g.data),
+		(int) mpbits(params.q.size, params.q.modl),
+		(int) mpbits(params.p.size, params.p.modl),
+		iterations,
+		SECONDS);
 
 	dldp_pFree(&params);
 

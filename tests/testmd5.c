@@ -28,48 +28,48 @@
 
 #include "md5.h"
 
-struct input_expect
+struct vector
 {
-	unsigned char* input;
-	uint32 expect[4];
+	int		input_size;
+	byte*	input;
+	byte*	expect;
 };
 
-
-struct input_expect table[7] = {
-	{ "",
-		{ 0xd41d8cd9U, 0x8f00b204U, 0xe9800998U, 0xecf8427eU } },
-	{ "a",
-		{ 0x0cc175b9U, 0xc0f1b6a8U, 0x31c399e2U, 0x69772661U } },
-	{ "abc",
-		{ 0x90015098U, 0x3cd24fb0U, 0xd6963f7dU, 0x28e17f72U } },
-	{ "message digest",
-		{ 0xf96b697dU, 0x7cb7938dU, 0x525a2f31U, 0xaaf161d0U } },
-	{ "abcdefghijklmnopqrstuvwxyz",
-		{ 0xc3fcd3d7U, 0x6192e400U, 0x7dfb496cU, 0xca67e13bU } },
-	{ "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
-		{ 0xd174ab98U, 0xd277d9f5U, 0xa5611c2cU, 0x9f419d9fU } },
-	{ "12345678901234567890123456789012345678901234567890123456789012345678901234567890",
-		{ 0x57edf4a2U, 0x2be3c955U, 0xac49da2eU, 0x2107b67aU } }
+struct vector table[7] = {
+	{  0, (byte*) "",
+	      (byte*) "\xd4\x1d\x8c\xd9\x8f\x00\xb2\x04\xe9\x80\x09\x98\xec\xf8\x42\x7e" },
+	{  1, (byte*) "a",
+	      (byte*) "\x0c\xc1\x75\xb9\xc0\xf1\xb6\xa8\x31\xc3\x99\xe2\x69\x77\x26\x61" },
+	{  3, (byte*) "abc",
+	      (byte*) "\x90\x01\x50\x98\x3c\xd2\x4f\xb0\xd6\x96\x3f\x7d\x28\xe1\x7f\x72" },
+	{ 14, (byte*) "message digest",
+	      (byte*) "\xf9\x6b\x69\x7d\x7c\xb7\x93\x8d\x52\x5a\x2f\x31\xaa\xf1\x61\xd0" },
+	{ 26, (byte*) "abcdefghijklmnopqrstuvwxyz",
+	      (byte*) "\xc3\xfc\xd3\xd7\x61\x92\xe4\x00\x7d\xfb\x49\x6c\xca\x67\xe1\x3b" },
+	{ 62, (byte*) "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+	      (byte*) "\xd1\x74\xab\x98\xd2\x77\xd9\xf5\xa5\x61\x1c\x2c\x9f\x41\x9d\x9f" },
+	{ 80, (byte*) "12345678901234567890123456789012345678901234567890123456789012345678901234567890",
+	      (byte*) "\x57\xed\xf4\xa2\x2b\xe3\xc9\x55\xac\x49\xda\x2e\x21\x07\xb6\x7a" }
 };
 
 int main()
 {
 	int i, failures = 0;
-        md5Param param;
-	uint32 digest[4];
+	byte digest[16];
+	md5Param param;
 
 	for (i = 0; i < 7; i++)
 	{
 		if (md5Reset(&param))
 			return -1;
-		if (md5Update(&param, table[i].input, strlen(table[i].input)))
+		if (md5Update(&param, table[i].input, table[i].input_size))
 			return -1;
 		if (md5Digest(&param, digest))
 			return -1;
 
-		if (mp32ne(4, digest, table[i].expect))
+		if (memcmp(digest, table[i].expect, 16))
 		{
-			printf("failed\n");
+			printf("failed test vector %d\n", i+1);
 			failures++;
 		}
 		else

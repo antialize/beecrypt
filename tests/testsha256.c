@@ -1,5 +1,9 @@
 /*
- * Copyright (c) 2002, 2003 Bob Deblier
+ * testsha256.c
+ *
+ * Unit test program for SHA-256; it implements the test vectors from the draft FIPS document.
+ *
+ * Copyright (c) 2002, 2003 Bob Deblier <bob.deblier@pandora.be>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,49 +21,43 @@
  *
  */
 
-/*!\file testsha256.c
- * \brief Unit test program for the SHA-256 algorithm; it implements the test
- *        vectors from the draft FIPS document.
- * \author Bob Deblier <bob.deblier@pandora.be>
- * \ingroup UNIT_m
- */
-
 #include <stdio.h>
 
 #include "sha256.h"
 
-struct input_expect
+struct vector
 {
-	unsigned char* input;
-	uint32 expect[8];
+	int		input_size;
+	byte*	input;
+	byte*	expect;
 };
 
 
-struct input_expect table[2] = {
-	{ "abc",
-		{ 0xba7816bfU, 0x8f01cfeaU, 0x414140deU, 0x5dae2223U, 0xb00361a3U, 0x96177a9cU, 0xb410ff61U, 0xf20015adU } },
-	{ "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq",
-		{ 0x248d6a61U, 0xd20638b8U, 0xe5c02693U, 0x0c3e6039U, 0xa33ce459U, 0x64ff2167U, 0xf6ecedd4U, 0x19db06c1U} }
+struct vector table[2] = {
+	{  3, (byte*) "abc",
+	      (byte*) "\xba\x78\x16\xbf\x8f\x01\xcf\xea\x41\x41\x40\xde\x5d\xae\x22\x23\xb0\x03\x61\xa3\x96\x17\x7a\x9c\xb4\x10\xff\x61\xf2\x00\x15\xad" },
+	{ 56, (byte*) "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq",
+	      (byte*) "\x24\x8d\x6a\x61\xd2\x06\x38\xb8\xe5\xc0\x26\x93\x0c\x3e\x60\x39\xa3\x3c\xe4\x59\x64\xff\x21\x67\xf6\xec\xed\xd4\x19\xdb\x06\xc1" }
 };
 
 int main()
 {
 	int i, failures = 0;
-        sha256Param param;
-	uint32 digest[8];
+	sha256Param param;
+	byte digest[32];
 
 	for (i = 0; i < 2; i++)
 	{
 		if (sha256Reset(&param))
 			return -1;
-		if (sha256Update(&param, table[i].input, strlen(table[i].input)))
+		if (sha256Update(&param, table[i].input, table[i].input_size))
 			return -1;
 		if (sha256Digest(&param, digest))
 			return -1;
 
-		if (mp32ne(8, digest, table[i].expect))
+		if (memcmp(digest, table[i].expect, 32))
 		{
-			printf("failed\n");
+			printf("failed test vector %d\n", i+1);
 			failures++;
 		}
 		else
