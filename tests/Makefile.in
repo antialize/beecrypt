@@ -107,9 +107,9 @@ AUTOMAKE_OPTIONS = gnu no-dependencies
 INCLUDES = -I$(top_srcdir)
 LDADD = $(top_builddir)/libbeecrypt.la
 
-TESTS = testmd5 testsha1 testsha256 testhmacmd5 testhmacsha1 testdsa
+TESTS = testmd5 testsha1 testsha256 testhmacmd5 testhmacsha1 testdldp testdsa 
 
-check_PROGRAMS = testmd5 testsha1 testsha256 testhmacmd5 testhmacsha1 testdsa
+check_PROGRAMS = testmd5 testsha1 testsha256 testhmacmd5 testhmacsha1 testdldp testdsa  
 
 testmd5_SOURCES = testmd5.c
 
@@ -120,6 +120,8 @@ testsha256_SOURCES = testsha256.c
 testhmacmd5_SOURCES = testhmacmd5.c
 
 testhmacsha1_SOURCES = testhmacsha1.c
+
+testdldp_SOURCES = testdldp.c
 
 testdsa_SOURCES = testdsa.c
 
@@ -158,6 +160,10 @@ testhmacsha1_OBJECTS =  testhmacsha1.o
 testhmacsha1_LDADD = $(LDADD)
 testhmacsha1_DEPENDENCIES =  $(top_builddir)/libbeecrypt.la
 testhmacsha1_LDFLAGS = 
+testdldp_OBJECTS =  testdldp.o
+testdldp_LDADD = $(LDADD)
+testdldp_DEPENDENCIES =  $(top_builddir)/libbeecrypt.la
+testdldp_LDFLAGS = 
 testdsa_OBJECTS =  testdsa.o
 testdsa_LDADD = $(LDADD)
 testdsa_DEPENDENCIES =  $(top_builddir)/libbeecrypt.la
@@ -174,8 +180,8 @@ DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
 TAR = tar
 GZIP_ENV = --best
-SOURCES = $(beetest_SOURCES) $(testmd5_SOURCES) $(testsha1_SOURCES) $(testsha256_SOURCES) $(testhmacmd5_SOURCES) $(testhmacsha1_SOURCES) $(testdsa_SOURCES)
-OBJECTS = $(beetest_OBJECTS) $(testmd5_OBJECTS) $(testsha1_OBJECTS) $(testsha256_OBJECTS) $(testhmacmd5_OBJECTS) $(testhmacsha1_OBJECTS) $(testdsa_OBJECTS)
+SOURCES = $(beetest_SOURCES) $(testmd5_SOURCES) $(testsha1_SOURCES) $(testsha256_SOURCES) $(testhmacmd5_SOURCES) $(testhmacsha1_SOURCES) $(testdldp_SOURCES) $(testdsa_SOURCES)
+OBJECTS = $(beetest_OBJECTS) $(testmd5_OBJECTS) $(testsha1_OBJECTS) $(testsha256_OBJECTS) $(testhmacmd5_OBJECTS) $(testhmacsha1_OBJECTS) $(testdldp_OBJECTS) $(testdsa_OBJECTS)
 
 all: all-redirect
 .SUFFIXES:
@@ -258,6 +264,10 @@ testhmacmd5: $(testhmacmd5_OBJECTS) $(testhmacmd5_DEPENDENCIES)
 testhmacsha1: $(testhmacsha1_OBJECTS) $(testhmacsha1_DEPENDENCIES)
 	@rm -f testhmacsha1
 	$(LINK) $(testhmacsha1_LDFLAGS) $(testhmacsha1_OBJECTS) $(testhmacsha1_LDADD) $(LIBS)
+
+testdldp: $(testdldp_OBJECTS) $(testdldp_DEPENDENCIES)
+	@rm -f testdldp
+	$(LINK) $(testdldp_LDFLAGS) $(testdldp_OBJECTS) $(testdldp_LDADD) $(LIBS)
 
 testdsa: $(testdsa_OBJECTS) $(testdsa_DEPENDENCIES)
 	@rm -f testdsa
