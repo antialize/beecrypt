@@ -51,6 +51,7 @@
 #  define ASM_MPSUB
 #  define ASM_MPSETMUL
 #  define ASM_MPADDMUL
+#  define ASM_MPADDSQRTRC
 # endif
 #endif
 
@@ -60,6 +61,7 @@
 #  define ASM_MPSUB
 #  define ASM_MPSETMUL
 #  define ASM_MPADDMUL
+#  define ASM_MPADDSQRTRC
 # elif defined(OPTIMIZE_ARM)
 #  define ASM_MPSETMUL
 #  define ASM_MPADDMUL

@@ -124,8 +124,6 @@ LOCAL(mpaddmul_loop):
 C_FUNCTION_END(mpaddmul)
 
 
-divert(-1)
-dnl doesn't work yet
 C_FUNCTION_BEGIN(mpaddsqrtrc)
 	subq `$'16,1,`$'16
 	s8addq `$'16,0,`$'1
@@ -137,26 +135,25 @@ C_FUNCTION_BEGIN(mpaddsqrtrc)
 	.align 4
 LOCAL(mpaddsqrtrc_loop):
 	ldq `$'1,0(`$'18)
-	ldq `$'2,8(`$'17)
-	ldq `$'3,0(`$'17)
-	mulq `$1',`$1',`$'4
+	mulq `$1',`$1',`$'2
 	umulh `$1',`$1',`$'1
-	addq `$'4,`$'0,`$'4
-	cmpult `$4',`$'0,`$'0
+	addq `$'2,`$'0,`$'3
+	cmpult `$3',`$'2,`$'0
+	ldq `$'2,8(`$'17)
 	addq `$'1,`$'0,`$'1
-	addq `$'4,`$'2,`$'4
-	cmpult `$'4,`$'2,`$'0
-	addq `$'1,`$'0,`$'1
-	cmpult `$1',`$'0,`$'2
-	stq `$'1,8(`$'17)
-	addq `$'1,`$'3,`$'1
-	cmpult `$'1,`$'3,`$0'
+	addq `$'3,`$'2,`$'4
+	cmpult `$'4,`$'3,`$'0
+	ldq `$'3,0(`$'17)
+	addq `$'1,`$'0,`$'2
+	cmpult `$2',`$'1,`$'0
+	stq `$'4,8(`$'17)
+	addq `$'2,`$'3,`$'1
+	cmpult `$'1,`$'2,`$2'
 	stq `$'1,0(`$'17)
-	or `$'2,`$'0,`$'0
+	addq `$'2,`$'0,`$'0
 	subq `$'16,1,`$'16
 	subq `$'17,16,`$'17
-	Subq `$'18,8,`$'18
+	subq `$'18,8,`$'18
 	bge `$'16,LOCAL(mpaddmul_loop)
 	ret `$'31,(`$'26),1
 C_FUNCTION_END(mpaddsqrtrc)
-divert(0)
