@@ -232,7 +232,7 @@ const vector<Certificate*>* BeeKeyStore::engineGetCertificateChain(const String&
 {
 	const vector<Certificate*>* result = 0;
 
-	_lock.unlock();
+	_lock.lock();
 	entry_map::iterator it = _entries.find(alias);
 	if (it != _entries.end())
 	{
