@@ -52,9 +52,9 @@ The library has been tested on the following platforms:
         - includes assembler optimization for Sparc v8
     - Linux glibc 2.x x86
         - includes assembler optimization (tuned for Pentium and higher)
-    - Solaris 2.6/2.7/2.8 sparc (with Forte or gnu compilers)
+    - Solaris 2.[6789] sparc (with Forte or gnu compilers)
         - includes assembler optimization for Sparc v8, v8plus and v9
-    - Solaris 2.7/2.8 x86 (with Forte or gnu compilers)
+    - Solaris 2.[78] x86 (with Forte or gnu compilers)
         - includes assembler optimization (tuned for Pentium and higher)
     - Tru64 Unix alpha
     - Win32 (Windows 95, 98, NT 4.0, 2000)
@@ -130,4 +130,7 @@ provider and the counterpart of this library.
  */
 /*! \defgroup	JAVA_m	Java API
  */
-
+/*! \defgroup	UNIT_m	Unit tests
+ */
+/*! \defgroup	BENCH_m	Benchmark tests
+ */
