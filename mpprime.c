@@ -906,24 +906,15 @@ int mpprndr_w(mpbarrett* p, randomGeneratorContext* rc, size_t bits, int t, cons
 
 	/* if min has more bits than what was requested for p, bail out */
 	if (min && (mpbits(min->size, min->data) > bits))
-	{
-		printf("bail out 1\n");
 		return -1;
-	}
 
 	/* if max has a different number of bits than what was requested for p, bail out */
 	if (max && (mpbits(max->size, max->data) != bits))
-	{
-		printf("bail out 1\n");
-		return -2;
-	}
+		return -1;
 
 	/* if min is not less than max, bail out */
 	if (min && max && mpgex(min->size, min->data, max->size, max->data))
-	{
-		printf("bail out 1\n");
-		return -2;
-	}
+		return -1;
 
 	mpbinit(p, size);
 
