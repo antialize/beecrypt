@@ -55,10 +55,10 @@ int fips186Setup(fips186Param* fp)
 		if (!(fp->lock = CreateMutex(NULL, FALSE, NULL)))
 			return -1;
 		# else
-		#  if defined(HAVE_SYNCH_H)
+		#  if HAVE_THREAD_H && HAVE_SYNCH_H
 		if (mutex_init(&fp->lock, USYNC_THREAD, (void *) 0))
 			return -1;
-		#  elif defined(HAVE_PTHREAD_H)
+		#  elif HAVE_PTHREAD_H
 		if (pthread_mutex_init(&fp->lock, (pthread_mutexattr_t *) 0))
 			return -1;
 		#  endif
@@ -81,10 +81,10 @@ int fips186Seed(fips186Param* fp, const uint32* data, int size)
 		if (WaitForSingleObject(fp->lock, INFINITE) != WAIT_OBJECT_0)
 			return -1;
 		# else
-		#  if defined(HAVE_SYNCH_H)
+		#  if HAVE_THREAD_H && HAVE_SYNCH_H
 		if (mutex_lock(&fp->lock))
 			return -1;
-		#  elif defined(HAVE_PTHREAD_H)
+		#  elif HAVE_PTHREAD_H
 		if (pthread_mutex_lock(&fp->lock))
 			return -1;
 		#  endif
@@ -97,10 +97,10 @@ int fips186Seed(fips186Param* fp, const uint32* data, int size)
 		if (!ReleaseMutex(fp->lock))
 			return -1;
 		# else
-		#  if defined(HAVE_SYNCH_H)
+		#  if HAVE_THREAD_H && HAVE_SYNCH_H
 		if (mutex_unlock(&fp->lock))
 			return -1;
-		#  elif defined(HAVE_PTHREAD_H)
+		#  elif HAVE_PTHREAD_H
 		if (pthread_mutex_unlock(&fp->lock))
 			return -1;
 		#  endif
@@ -120,10 +120,10 @@ int fips186Next(fips186Param* fp, uint32* data, int size)
 		if (WaitForSingleObject(fp->lock, INFINITE) != WAIT_OBJECT_0)
 			return -1;
 		# else
-		#  if defined(HAVE_SYNCH_H)
+		#  if HAVE_THREAD_H && HAVE_SYNCH_H
 		if (mutex_lock(&fp->lock))
 			return -1;
-		#  elif defined(HAVE_PTHREAD_H)
+		#  elif HAVE_PTHREAD_H
 		if (pthread_mutex_lock(&fp->lock))
 			return -1;
 		#  endif
@@ -158,10 +158,10 @@ int fips186Next(fips186Param* fp, uint32* data, int size)
 		if (!ReleaseMutex(fp->lock))
 			return -1;
 		# else
-		#  if defined(HAVE_SYNCH_H)
+		#  if HAVE_THREAD_H && HAVE_SYNCH_H
 		if (mutex_unlock(&fp->lock))
 			return -1;
-		#  elif defined(HAVE_PTHREAD_H)
+		#  elif HAVE_PTHREAD_H
 		if (pthread_mutex_unlock(&fp->lock))
 			return -1;
 		#  endif
@@ -181,10 +181,10 @@ int fips186Cleanup(fips186Param* fp)
 		if (!CloseHandle(fp->lock))
 			return -1;
 		# else
-		#  if defined(HAVE_SYNCH_H)
+		#  if HAVE_THREAD_H && HAVE_SYNCH_H
 		if (mutex_destroy(&fp->lock))
 			return -1;
-		#  elif defined(HAVE_PTHREAD_H)
+		#  elif HAVE_PTHREAD_H
 		if (pthread_mutex_destroy(&fp->lock))
 			return -1;
 		#  endif
