@@ -64,10 +64,14 @@ AC_DEFUN(BEECRYPT_WITH_CPU,[
     bc_target_cpu=$target_cpu
     ;;
   esac
-  ],[
+  ])
+
+dnl  BEECRYPT_WITHOUT_CPU
+AC_DEFUN(BEECRYPT_WITHOUT_CPU,[
   ac_with_cpu=no
   bc_target_cpu=$target_cpu
   ])
+
 
 dnl  BEECRYPT_WITH_ARCH
 AC_DEFUN(BEECRYPT_WITH_ARCH,[
@@ -99,7 +103,10 @@ AC_DEFUN(BEECRYPT_WITH_ARCH,[
     esac
     ;;
   esac
-  ],[
+  ])
+
+dnl  BEECRYPT_WITHOUT_ARCH
+AC_DEFUN(BEECRYPT_WITHOUT_ARCH,[
   ac_with_arch=no
    case $target_cpu in
   alpha*)
@@ -134,6 +141,7 @@ AC_DEFUN(BEECRYPT_WITH_ARCH,[
     ;;
   esac
   ])
+
 
 dnl  BEECRYPT_INT_TYPES
 AC_DEFUN(BEECRYPT_INT_TYPES,[
