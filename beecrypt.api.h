@@ -51,22 +51,44 @@
 
 #if defined(__GNUC__)
 # if defined(__i386__)
-static inline uint32_t ROTL32(uint32_t x, int n)
+static inline uint32_t ROTL32(uint32_t x, const unsigned char n)
 {
-	__asm__("roll %%cl,%0"
+	__asm__("roll %1,%0"
 		:	"=r" (x)
-		:	"0" (x), "c" (n));
+		:	"0" (x), "I" (n));
 
 	return x;
 }
 
-static inline uint32_t ROTR32(uint32_t x, int n)
+static inline uint32_t ROTR32(uint32_t x, const unsigned char n)
 {
-	__asm__("rorl %%cl,%0"
+	__asm__("rorl %1,%0"
 		:	"=r" (x)
-		:	"0" (x), "c" (n));
+		:	"0" (x), "I" (n));
 
 	return x;
+}
+# elif defined(__powerpc__)
+static inline uint32_t ROTL32(uint32_t x, const unsigned char n)
+{
+	register uint32_t r;
+
+	__asm__("rotlwi %0,%1,%2"
+		:	"=r" (r)
+		:	"r" (x), "i" (n));
+
+	return r;
+}
+
+static inline uint32_t ROTR32(uint32_t x, const unsigned char n)
+{
+	register uint32_t r;
+
+	__asm__("rotrwi %0,%1,%2"
+		:	"=r" (r)
+		:	"r" (x), "i" (n));
+
+	return r;
 }
 # endif
 #endif
