@@ -243,6 +243,18 @@ AC_DEFUN([BEECRYPT_INT_TYPES],[
     fi
     ])
   AC_SUBST(TYPEDEF_UINT64_T,$bc_typedef_uint64_t)
+  AH_TEMPLATE([HAVE_LONG_LONG])
+  AH_TEMPLATE([HAVE_UNSIGNED_LONG_LONG])
+  AC_CHECK_TYPE([long long],[
+    AC_DEFINE([HAVE_LONG_LONG],1)
+    ],[
+    AC_DEFINE([HAVE_LONG_LONG],0)
+    ])
+  AC_CHECK_TYPE([unsigned long long],[
+    AC_DEFINE([HAVE_UNSIGNED_LONG_LONG],1)
+    ],[
+    AC_DEFINE([HAVE_UNSIGNED_LONG_LONG],0)
+    ])
   ])
 
 

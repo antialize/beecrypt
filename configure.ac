@@ -301,7 +301,7 @@ EOF
   fi
 
   # gcj may have failed; in this case we want to try for a real java
-  if test "$ac_cf_have_gcj" != yes; then
+  if test "$ac_cv_have_gcj" != yes; then
     AC_CHECK_PROG(ac_cv_have_java, java, yes, no)
     if test "$ac_cv_have_java" = yes; then
       AC_CHECK_PROG(ac_cv_have_javac, javac, yes, no)
@@ -514,6 +514,7 @@ if test "$ac_enable_debug" != yes; then
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I586"
     ;;
   pentium-mmx)
+    CFLAGS="$CFLAGS -mmmx"
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I586 -DOPTIMIZE_MMX"
     ;;
   pentiumpro)
@@ -521,12 +522,15 @@ if test "$ac_enable_debug" != yes; then
     ;;
   pentium2)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I686 -DOPTIMIZE_MMX"
+    CFLAGS="$CFLAGS -mmmx"
     ;;
   pentium3)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I686 -DOPTIMIZE_MMX -DOPTIMIZE_SSE"
+    CFLAGS="$CFLAGS -msse"
     ;;
   pentium4)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I686 -DOPTIMIZE_MMX -DOPTIMIZE_SSE -DOPTIMIZE_SSE2"
+    CFLAGS="$CFLAGS -msse2"
     ;;
   powerpc)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_POWERPC"
@@ -573,16 +577,16 @@ BEECRYPT_INT_TYPES
 BEECRYPT_CPU_BITS
 
 MAYBE_SUB=
-MAYBE_LTLIB=
+# MAYBE_LTLIB=
 
 if test "$ac_with_cplusplus" = yes; then
   MAYBE_SUB="$MAYBE_SUB c++"
-  MAYBE_LTLIB="$MAYBE_LTLIB libbeecrypt_cxx.la"
+# MAYBE_LTLIB="$MAYBE_LTLIB libbeecrypt_cxx.la"
 fi
 
 if test "$ac_with_java" = yes; then
   MAYBE_SUB="$MAYBE_SUB java"
-  MAYBE_LTLIB="$MAYBE_LTLIB libbeecrypt_java.la"
+# MAYBE_LTLIB="$MAYBE_LTLIB libbeecrypt_java.la"
 fi
 
 if test "$ac_with_python" = yes; then
@@ -590,7 +594,7 @@ if test "$ac_with_python" = yes; then
 fi
 
 AC_SUBST([MAYBE_SUB])
-AC_SUBST([MAYBE_LTLIB])
+# AC_SUBST([MAYBE_LTLIB])
 
 # Check where to install the libraries
 bc_libalt=
