@@ -1,11 +1,5 @@
 /*
- * fips186.c
- *
- * NIST FIPS 186 pseudo-random generator, code
- *
- * Copyright (c) 1998, 1999, 2000 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
+ * Copyright (c) 1998, 1999, 2000, 2002 Virtual Unlimited B.V.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,6 +17,12 @@
  *
  */
 
+/*!\file fips186.c
+ * \brief FIPS 186 pseudo-random number generator.
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup PRNG_m PRNG_fips186_m
+ */
+
 #define BEECRYPT_DLL_EXPORT
 
 #include "fips186.h"
@@ -35,6 +35,10 @@
 #if HAVE_MALLOC_H
 # include <malloc.h>
 #endif
+
+/*!\addtogroup PRNG_fips186_m
+ * \{
+ */
 
 static uint32 fips186hinit[5] = { 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0, 0x67452301 };
 
@@ -194,3 +198,6 @@ int fips186Cleanup(fips186Param* fp)
 	}
 	return -1;
 }
+
+/*!\}
+ */

@@ -1,11 +1,5 @@
 /*
- * fips186.h
- *
- * FIPS186 pseudo-random generator, with SHA-1 as H function, header
- *
- * Copyright (c) 1998, 1999, 2000, 2001 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
+ * Copyright (c) 1998, 1999, 2000, 2001, 2002 Virtual Unlimited B.V.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,6 +15,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ */
+
+/*!\file fips186.h
+ * \brief FIPS-186 pseudo-random number generator, headers.
+ * \author Bob Deblier <bob@virtualunlimited.com>
+ * \ingroup PRNG_m PRNG_fips186_m
  */
 
 #ifndef _FIPS186_H
@@ -48,6 +48,8 @@
 
 #define FIPS186_STATE_SIZE	16
 
+/*!\ingroup PRNG_fips186_m
+ */
 typedef struct
 {
 	#ifdef _REENTRANT
