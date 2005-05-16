@@ -39,14 +39,14 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI Throwable
 		{
 		private:
-			const String* _msg;
+			String* _msg;
 
 		public:
-			Throwable() throw ();
-			Throwable(const String* message) throw ();
-			Throwable(const String& message) throw ();
-			Throwable(const Throwable& cause) throw ();
-			virtual ~Throwable() throw () {}
+			Throwable();
+			Throwable(const String* message);
+			Throwable(const String& message);
+			Throwable(const Throwable& cause);
+			~Throwable();
 
 			const String* getMessage() const throw ();
 		};
