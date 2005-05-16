@@ -96,8 +96,8 @@ namespace beecrypt {
 			virtual CharSequence* subSequence(jint beginIndex, jint endIndex) const throw (IndexOutOfBoundsException);
 			String substring(jint beginIndex) const throw (IndexOutOfBoundsException);
 			String substring(jint beginIndex, jint endIndex) const throw (IndexOutOfBoundsException);
-		//	String toLowerCase() const throw ();
-		//	String toUpperCase() const throw ();
+			String toLowerCase() const throw ();
+			String toUpperCase() const throw ();
 			const array<jchar>& toCharArray() const throw ();
 			virtual String toString() const throw ();
 			UnicodeString toUnicodeString() const throw ();

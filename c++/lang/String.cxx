@@ -369,15 +369,15 @@ const array<jchar>& String::toCharArray() const throw ()
 	return _value;
 }
 
-#if 0
 String String::toLowerCase() const throw ()
 {
+	return String(toUnicodeString().toLower());
 }
 
 String String::toUpperCase() const throw ()
 {
+	return String(toUnicodeString().toUpper());
 }
-#endif
 
 String String::toString() const throw ()
 {
