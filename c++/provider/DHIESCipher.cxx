@@ -20,7 +20,7 @@
 # include "config.h"
 #endif
 
-#include "beecrypt/c++/provider/DHAESCipher.h"
+#include "beecrypt/c++/provider/DHIESCipher.h"
 #include "beecrypt/c++/provider/DHPublicKeyImpl.h"
 #include "beecrypt/c++/crypto/SecretKeyFactory.h"
 using beecrypt::crypto::SecretKeyFactory;
@@ -34,7 +34,7 @@ using std::auto_ptr;
 
 using namespace beecrypt::provider;
 
-DHAESCipher::DHAESCipher()
+DHIESCipher::DHIESCipher()
 {
 	_dspec = 0;
 	_spec = 0;
@@ -61,7 +61,7 @@ DHAESCipher::DHAESCipher()
 	}
 }
 
-DHAESCipher::~DHAESCipher()
+DHIESCipher::~DHIESCipher()
 {
 	delete _dspec;
 	delete _spec;
@@ -73,7 +73,7 @@ DHAESCipher::~DHAESCipher()
 	delete _msg;
 }
 
-bytearray* DHAESCipher::engineDoFinal(const byte* input, int inputOffset, int inputLength) throw (IllegalBlockSizeException, BadPaddingException)
+bytearray* DHIESCipher::engineDoFinal(const byte* input, int inputOffset, int inputLength) throw (IllegalBlockSizeException, BadPaddingException)
 {
 	bytearray* tmp;
 
@@ -98,7 +98,7 @@ bytearray* DHAESCipher::engineDoFinal(const byte* input, int inputOffset, int in
 
 		_m->update(*tmp);
 
-		_dspec = new DHAESDecryptParameterSpec(*_spec, _msg->getY(), _m->doFinal());
+		_dspec = new DHIESDecryptParameterSpec(*_spec, _msg->getY(), _m->doFinal());
 	}
 
 	reset();
@@ -106,7 +106,7 @@ bytearray* DHAESCipher::engineDoFinal(const byte* input, int inputOffset, int in
 	return tmp;
 }
 
-int DHAESCipher::engineDoFinal(const byte* input, int inputOffset, int inputLength, bytearray& output, int outputOffset) throw (ShortBufferException, IllegalBlockSizeException, BadPaddingException)
+int DHIESCipher::engineDoFinal(const byte* input, int inputOffset, int inputLength, bytearray& output, int outputOffset) throw (ShortBufferException, IllegalBlockSizeException, BadPaddingException)
 {
 	int tmp;
 
@@ -131,7 +131,7 @@ int DHAESCipher::engineDoFinal(const byte* input, int inputOffset, int inputLeng
 
 		_m->update(output.data(), outputOffset, tmp);
 
-		_dspec = new DHAESDecryptParameterSpec(*_spec, _msg->getY(), _m->doFinal());
+		_dspec = new DHIESDecryptParameterSpec(*_spec, _msg->getY(), _m->doFinal());
 	}
 
 	reset();
@@ -139,26 +139,26 @@ int DHAESCipher::engineDoFinal(const byte* input, int inputOffset, int inputLeng
 	return tmp;
 }
 
-int DHAESCipher::engineGetBlockSize() const throw ()
+int DHIESCipher::engineGetBlockSize() const throw ()
 {
 	return _c->getBlockSize();
 }
 
-bytearray* DHAESCipher::engineGetIV()
+bytearray* DHIESCipher::engineGetIV()
 {
 	return _c->getIV();
 }
 
-int DHAESCipher::engineGetOutputSize(int inputLength) throw ()
+int DHIESCipher::engineGetOutputSize(int inputLength) throw ()
 {
 	return _c->getOutputSize(inputLength + (_buf ? _buf->size() : 0));
 }
 
-AlgorithmParameters* DHAESCipher::engineGetParameters() throw ()
+AlgorithmParameters* DHIESCipher::engineGetParameters() throw ()
 {
 	try
 	{
-		auto_ptr<AlgorithmParameters> tmp(AlgorithmParameters::getInstance("DHAES"));
+		auto_ptr<AlgorithmParameters> tmp(AlgorithmParameters::getInstance("DHIES"));
 
 		tmp->init(*_dspec);
 
@@ -170,18 +170,18 @@ AlgorithmParameters* DHAESCipher::engineGetParameters() throw ()
 	}
 }
 
-void DHAESCipher::engineInit(int opmode, const Key& key, SecureRandom* random) throw (InvalidKeyException)
+void DHIESCipher::engineInit(int opmode, const Key& key, SecureRandom* random) throw (InvalidKeyException)
 {
-	throw InvalidKeyException("DHAESCipher must be initialized with a key and parameters");
+	throw InvalidKeyException("DHIESCipher must be initialized with a key and parameters");
 }
 
-void DHAESCipher::engineInit(int opmode, const Key& key, AlgorithmParameters* params, SecureRandom* random) throw (InvalidKeyException, InvalidAlgorithmParameterException)
+void DHIESCipher::engineInit(int opmode, const Key& key, AlgorithmParameters* params, SecureRandom* random) throw (InvalidKeyException, InvalidAlgorithmParameterException)
 {
 	if (params)
 	{
 		try
 		{
-			auto_ptr<AlgorithmParameterSpec> tmp(params->getParameterSpec((opmode == Cipher::DECRYPT_MODE) ? typeid(DHAESDecryptParameterSpec) : typeid(DHAESParameterSpec)));
+			auto_ptr<AlgorithmParameterSpec> tmp(params->getParameterSpec((opmode == Cipher::DECRYPT_MODE) ? typeid(DHIESDecryptParameterSpec) : typeid(DHIESParameterSpec)));
 
 			engineInit(opmode, key, *tmp.get(), random);
 		}
@@ -194,20 +194,20 @@ void DHAESCipher::engineInit(int opmode, const Key& key, AlgorithmParameters* pa
 		engineInit(opmode, key, random);
 }
 
-void DHAESCipher::engineInit(int opmode, const Key& key, const AlgorithmParameterSpec& params, SecureRandom *random) throw (InvalidKeyException, InvalidAlgorithmParameterException)
+void DHIESCipher::engineInit(int opmode, const Key& key, const AlgorithmParameterSpec& params, SecureRandom *random) throw (InvalidKeyException, InvalidAlgorithmParameterException)
 {
-	const DHAESParameterSpec* spec;
-	const DHAESDecryptParameterSpec* dspec;
+	const DHIESParameterSpec* spec;
+	const DHIESDecryptParameterSpec* dspec;
 
-	spec = dynamic_cast<const DHAESParameterSpec*>(&params);
+	spec = dynamic_cast<const DHIESParameterSpec*>(&params);
 	if (!spec)
-		throw InvalidAlgorithmParameterException("not a DHAESParameterSpec");
+		throw InvalidAlgorithmParameterException("not a DHIESParameterSpec");
 
 	if (opmode == Cipher::DECRYPT_MODE)
 	{
-		dspec = dynamic_cast<const DHAESDecryptParameterSpec*>(spec);
+		dspec = dynamic_cast<const DHIESDecryptParameterSpec*>(spec);
 		if (!dspec)
-			throw InvalidAlgorithmParameterException("not a DHAESParameterSpec");
+			throw InvalidAlgorithmParameterException("not a DHIESParameterSpec");
 	}
 
 	delete _spec;
@@ -238,13 +238,13 @@ void DHAESCipher::engineInit(int opmode, const Key& key, const AlgorithmParamete
 		int keybits = _d->getDigestLength() << 3;
 
 		if (spec->getCipherKeyLength() >= keybits)
-			throw new InvalidAlgorithmParameterException("DHAESParameterSpec invalid: cipher key length must be less than digest size");
+			throw new InvalidAlgorithmParameterException("DHIESParameterSpec invalid: cipher key length must be less than digest size");
 
 		if (spec->getMacKeyLength() >= keybits)
-			throw new InvalidAlgorithmParameterException("DHAESParameterSpec invalid: mac key length must be less than digest size");
+			throw new InvalidAlgorithmParameterException("DHIESParameterSpec invalid: mac key length must be less than digest size");
 
 		if (spec->getCipherKeyLength() + spec->getMacKeyLength() > keybits)
-			throw new InvalidAlgorithmParameterException("DHAESParameterSpec invalid: sum of cipher and mac key lengths exceeds digest size");
+			throw new InvalidAlgorithmParameterException("DHIESParameterSpec invalid: sum of cipher and mac key lengths exceeds digest size");
 	}
 
 	if (opmode == Cipher::ENCRYPT_MODE)
@@ -257,9 +257,13 @@ void DHAESCipher::engineInit(int opmode, const Key& key, const AlgorithmParamete
 			_buf = 0;
 		}
 		else
-			throw InvalidKeyException("not a DHPublicKey");
+		{
+			std::cout << "Not a DHPublicKey; algorithm = " << key.getAlgorithm() << std::endl;
 
-		_spec = new DHAESParameterSpec(*spec);
+			throw InvalidKeyException("not a DHPublicKey");
+		}
+
+		_spec = new DHIESParameterSpec(*spec);
 		_dspec = 0;
 	}
 	else if (opmode == Cipher::DECRYPT_MODE)
@@ -274,8 +278,8 @@ void DHAESCipher::engineInit(int opmode, const Key& key, const AlgorithmParamete
 		else
 			throw InvalidKeyException("DHPrivateKey expected when decrypting");
 
-		_spec = new DHAESParameterSpec(*spec);
-		_dspec = new DHAESDecryptParameterSpec(*dspec);
+		_spec = new DHIESParameterSpec(*spec);
+		_dspec = new DHIESDecryptParameterSpec(*dspec);
 	}
 	else
 		throw ProviderException("unsupported opmode");
@@ -286,7 +290,7 @@ void DHAESCipher::engineInit(int opmode, const Key& key, const AlgorithmParamete
 	reset();
 }
 
-bytearray* DHAESCipher::engineUpdate(const byte* input, int inputOffset, int inputLength)
+bytearray* DHIESCipher::engineUpdate(const byte* input, int inputOffset, int inputLength)
 {
 	if (_buf)
 	{
@@ -304,7 +308,7 @@ bytearray* DHAESCipher::engineUpdate(const byte* input, int inputOffset, int inp
 	}
 }
 
-int DHAESCipher::engineUpdate(const byte* input, int inputOffset, int inputLength, bytearray& output, int outputOffset) throw (ShortBufferException)
+int DHIESCipher::engineUpdate(const byte* input, int inputOffset, int inputLength, bytearray& output, int outputOffset) throw (ShortBufferException)
 {
 	if (_buf)
 	{
@@ -322,17 +326,17 @@ int DHAESCipher::engineUpdate(const byte* input, int inputOffset, int inputLengt
 	}
 }
 
-void DHAESCipher::engineSetMode(const String& mode) throw (NoSuchAlgorithmException)
+void DHIESCipher::engineSetMode(const String& mode) throw (NoSuchAlgorithmException)
 {
 	throw NoSuchAlgorithmException();
 }
 
-void DHAESCipher::engineSetPadding(const String& padding) throw (NoSuchPaddingException)
+void DHIESCipher::engineSetPadding(const String& padding) throw (NoSuchPaddingException)
 {
 	throw NoSuchPaddingException();
 }
 
-void DHAESCipher::reset()
+void DHIESCipher::reset()
 {
 	delete _msg;
 

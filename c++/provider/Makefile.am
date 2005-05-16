@@ -18,8 +18,8 @@ BeeKeyStore.cxx \
 BeeSecureRandom.cxx \
 BlockCipher.cxx \
 BlowfishCipher.cxx \
-DHAESCipher.cxx \
-DHAESParameters.cxx \
+DHIESCipher.cxx \
+DHIESParameters.cxx \
 DHKeyAgreement.cxx \
 DHKeyFactory.cxx \
 DHKeyPairGenerator.cxx \
@@ -71,8 +71,8 @@ BeeKeyStore.h \
 BeeSecureRandom.h \
 BlockCipher.h \
 BlowfishCipher.h \
-DHAESCipher.h \
-DHAESParameters.h \
+DHIESCipher.h \
+DHIESParameters.h \
 DHKeyAgreement.h \
 DHKeyFactory.h \
 DHKeyPairGenerator.h \

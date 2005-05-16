@@ -20,45 +20,45 @@
 # include "config.h"
 #endif
 
-#include "beecrypt/c++/provider/DHAESParameters.h"
+#include "beecrypt/c++/provider/DHIESParameters.h"
 #include "beecrypt/c++/security/ProviderException.h"
 using beecrypt::security::ProviderException;
 
 using namespace beecrypt::provider;
 
-DHAESParameters::DHAESParameters()
+DHIESParameters::DHIESParameters()
 {
 	_spec = 0;
 	_dspec = 0;
 }
 
-DHAESParameters::~DHAESParameters()
+DHIESParameters::~DHIESParameters()
 {
 	delete _spec;
 	delete _dspec;
 }
 
-const bytearray& DHAESParameters::engineGetEncoded(const String* format) throw (IOException)
+const bytearray& DHIESParameters::engineGetEncoded(const String* format) throw (IOException)
 {
 	throw IOException("not implemented");
 }
 
-AlgorithmParameterSpec* DHAESParameters::engineGetParameterSpec(const type_info& info) throw (InvalidParameterSpecException)
+AlgorithmParameterSpec* DHIESParameters::engineGetParameterSpec(const type_info& info) throw (InvalidParameterSpecException)
 {
-	if (info == typeid(DHAESDecryptParameterSpec))
+	if (info == typeid(DHIESDecryptParameterSpec))
 	{
 		if (_dspec)
-			return new DHAESDecryptParameterSpec(*_dspec);
+			return new DHIESDecryptParameterSpec(*_dspec);
 	}
-	else if (info == typeid(DHAESParameterSpec) || info == typeid(AlgorithmParameterSpec))
+	else if (info == typeid(DHIESParameterSpec) || info == typeid(AlgorithmParameterSpec))
 	{
 		if (_spec)
-			return new DHAESParameterSpec(*_spec);
+			return new DHIESParameterSpec(*_spec);
 	}
 	throw InvalidParameterSpecException();
 }
 
-void DHAESParameters::engineInit(const AlgorithmParameterSpec& param) throw (InvalidParameterSpecException)
+void DHIESParameters::engineInit(const AlgorithmParameterSpec& param) throw (InvalidParameterSpecException)
 {
 	delete _spec;
 	delete _dspec;
@@ -66,25 +66,25 @@ void DHAESParameters::engineInit(const AlgorithmParameterSpec& param) throw (Inv
 	_spec = 0;
 	_dspec = 0;
 
-	const DHAESParameterSpec* spec = dynamic_cast<const DHAESParameterSpec*>(&param);
+	const DHIESParameterSpec* spec = dynamic_cast<const DHIESParameterSpec*>(&param);
 	if (spec)
 	{
-		_spec = new DHAESParameterSpec(*spec);
+		_spec = new DHIESParameterSpec(*spec);
 
-		const DHAESDecryptParameterSpec* dspec = dynamic_cast<const DHAESDecryptParameterSpec*>(spec);
+		const DHIESDecryptParameterSpec* dspec = dynamic_cast<const DHIESDecryptParameterSpec*>(spec);
 		if (dspec)
-			_dspec = new DHAESDecryptParameterSpec(*dspec);
+			_dspec = new DHIESDecryptParameterSpec(*dspec);
 	}
 	else
-		throw InvalidParameterSpecException("Expected a DHAESParameterSpec");
+		throw InvalidParameterSpecException("Expected a DHIESParameterSpec");
 }
 
-void DHAESParameters::engineInit(const byte*, int, const String* format)
+void DHIESParameters::engineInit(const byte*, int, const String* format)
 {
 	throw ProviderException("Not implemented");
 }
 
-String DHAESParameters::engineToString() throw ()
+String DHIESParameters::engineToString() throw ()
 {
 	if (_dspec)
 		return _dspec->toString();

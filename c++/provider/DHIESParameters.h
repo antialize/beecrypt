@@ -16,27 +16,27 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-/*!\file DHAESParameters.h
+/*!\file DHIESParameters.h
  * \ingroup CXX_PROVIDER_m
  */
 
-#ifndef _CLASS_DHAESPARAMETERS_H
-#define _CLASS_DHAESPARAMETERS_H
+#ifndef _CLASS_DHIESPARAMETERS_H
+#define _CLASS_DHIESPARAMETERS_H
 
 #ifdef __cplusplus
 
 #include "beecrypt/c++/security/AlgorithmParametersSpi.h"
 using beecrypt::security::AlgorithmParametersSpi;
-#include "beecrypt/c++/beeyond/DHAESDecryptParameterSpec.h"
-using beecrypt::beeyond::DHAESDecryptParameterSpec;
+#include "beecrypt/c++/beeyond/DHIESDecryptParameterSpec.h"
+using beecrypt::beeyond::DHIESDecryptParameterSpec;
 
 namespace beecrypt {
 	namespace provider {
-		class DHAESParameters : public beecrypt::security::AlgorithmParametersSpi
+		class DHIESParameters : public beecrypt::security::AlgorithmParametersSpi
 		{
 		private:
-			DHAESParameterSpec* _spec;
-			DHAESDecryptParameterSpec* _dspec;
+			DHIESParameterSpec* _spec;
+			DHIESDecryptParameterSpec* _dspec;
 
 		protected:
 			virtual const bytearray& engineGetEncoded(const String* format = 0) throw (IOException);
@@ -48,8 +48,8 @@ namespace beecrypt {
 			virtual String engineToString() throw ();
 
 		public:
-			DHAESParameters();
-			virtual ~DHAESParameters();
+			DHIESParameters();
+			virtual ~DHIESParameters();
 		};
 	}
 }

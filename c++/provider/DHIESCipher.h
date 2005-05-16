@@ -16,12 +16,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-/*!\file DHAESCipher.h
+/*!\file DHIESCipher.h
  * \ingroup CXX_PROVIDER_m
  */
 
-#ifndef _CLASS_DHAESCIPHER_H
-#define _CLASS_DHAESCIPHER_H
+#ifndef _CLASS_DHIESCIPHER_H
+#define _CLASS_DHIESCIPHER_H
 
 #ifdef __cplusplus
 
@@ -43,16 +43,16 @@ using beecrypt::io::ByteArrayOutputStream;
 using beecrypt::security::KeyPairGenerator;
 #include "beecrypt/c++/security/MessageDigest.h"
 using beecrypt::security::MessageDigest;
-#include "beecrypt/c++/beeyond/DHAESDecryptParameterSpec.h"
-using beecrypt::beeyond::DHAESDecryptParameterSpec;
+#include "beecrypt/c++/beeyond/DHIESDecryptParameterSpec.h"
+using beecrypt::beeyond::DHIESDecryptParameterSpec;
 
 namespace beecrypt {
 	namespace provider {
-		class DHAESCipher : public beecrypt::crypto::CipherSpi
+		class DHIESCipher : public beecrypt::crypto::CipherSpi
 		{
 		private:
-			DHAESDecryptParameterSpec* _dspec;
-			DHAESParameterSpec*        _spec;
+			DHIESDecryptParameterSpec* _dspec;
+			DHIESParameterSpec*        _spec;
 
 			SecureRandom*     _srng;
 			KeyPairGenerator* _kpg;
@@ -92,8 +92,8 @@ namespace beecrypt {
             virtual void engineSetPadding(const String& padding) throw (NoSuchPaddingException);
 
 		public:
-			DHAESCipher();
-			virtual ~DHAESCipher();
+			DHIESCipher();
+			virtual ~DHIESCipher();
 		};
 	}
 }
