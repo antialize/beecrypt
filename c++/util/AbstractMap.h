@@ -180,11 +180,12 @@ namespace beecrypt {
 			virtual bool containsKey(const K* key) const
 			{
 				bool result = false;
+				jint pos = size();
 				Iterator<class Map<K,V>::Entry>* it = entrySet().iterator();
 				assert(it != 0);
 				if (key)
 				{
-					while (it->hasNext())
+					while (--pos >= 0)
 					{
 						class Map<K,V>::Entry* e = it->next();
 						if (e->getKey->equals(key))
@@ -196,7 +197,7 @@ namespace beecrypt {
 				}
 				else
 				{
-					while (it->hasNext())
+					while (--pos >= 0)
 						if (!it->next())
 						{
 							result = true;
@@ -209,11 +210,12 @@ namespace beecrypt {
 			virtual bool containsValue(const V* value) const
 			{
 				bool result = false;
+				jint pos = size();
 				Iterator<class Map<K,V>::Entry>* it = entrySet().iterator();
 				assert(it != 0);
 				if (value)
 				{
-					while (it->hasNext())
+					while (--pos >= 0)
 					{
 						V* tmp = it->next()->getValue();
 						if (tmp && tmp->equals(value))
@@ -225,7 +227,7 @@ namespace beecrypt {
 				}
 				else
 				{
-					while (it->hasNext())
+					while (--pos >= 0)
 						if (!it->next())
 						{
 							result = true;
@@ -251,9 +253,10 @@ namespace beecrypt {
 							return false;
 
 						bool result = true;
+						jint pos = size();
 						Iterator<class Map<K,V>::Entry>* it = entrySet().iterator();
 						assert(it != 0);
-						while (it->hasNext())
+						while (--pos >= 0)
 						{
 							class Map<K,V>::Entry* e = it.next();
 							K* k = e->getKey();
@@ -284,11 +287,12 @@ namespace beecrypt {
 			virtual V* get(const Object* key) const
 			{
 				V* result = 0;
+				jint pos = size();
 				Iterator<class Map<K,V>::Entry>* it = entrySet().iterator();
 				assert(it != 0);
 				if (key)
 				{
-					while (it->hasNext())
+					while (--pos >= 0)
 					{
 						class Map<K,V>::Entry* e = it->next();
 						if (key->equals(e->getKey()))
@@ -300,7 +304,7 @@ namespace beecrypt {
 				}
 				else
 				{
-					while (it->hasNext())
+					while (--pos >= 0)
 					{
 						class Map<K,V>::Entry* e = it->next();
 						if (!e->getKey())
@@ -315,10 +319,10 @@ namespace beecrypt {
 			}
 			virtual jint hashCode() const throw ()
 			{
-				jint result = 0;
+				jint pos = size(), result = 0;
 				Iterator<class Map<K,V>::Entry>* it = entrySet().iterator();
 				assert(it != 0);
-				while (it->hasNext())
+				while (--pos >= 0)
 					result += it->next()->hashCode();
 				delete it;
 				return result;
@@ -347,9 +351,10 @@ namespace beecrypt {
 			}
 			virtual void putAll(const Map<K,V>& m)
 			{
+				jint pos = m.size();
 				Iterator<class Map<K,V>::Entry>* mit = m.entrySet().iterator();
 				assert(mit != 0);
-				while (mit->hasNext())
+				while (--pos >= 0)
 				{
 					class Map<K,V>::Entry* e = mit->next();
 					V* tmp = put(e->getKey(), e->getValue());
@@ -360,11 +365,12 @@ namespace beecrypt {
 			virtual V* remove(const K* key)
 			{
 				V* result = 0;
+				jint pos = size();
 				Iterator<class Map<K,V>::Entry>* it = entrySet().iterator();
 				assert(it != 0);
 				if (key)
 				{
-					while (it->hasNext())
+					while (--pos >= 0)
 					{
 						class Map<K,V>::Entry* e = it->next();
 						if (key->equals(e->getKey()))
@@ -376,7 +382,7 @@ namespace beecrypt {
 				}
 				else
 				{
-					while (it->hasNext())
+					while (--pos >= 0)
 					{
 						class Map<K,V>::Entry* e = it->next();
 						if (!e->getKey())
@@ -400,13 +406,11 @@ namespace beecrypt {
 			}
 			virtual String toString() const throw ()
 			{
-				StringBuilder buf("{");
-
 				Iterator<class Map<K,V>::Entry>& it = entrySet.iterator();
 
-				bool hasNext = it.hasNext();
+				StringBuilder buf("{");
 
-				while (hasNext)
+				for (jint pos = size(); pos > 0; pos--)
 				{
 					class Map<K,V>::Entry* e = it.next();
 					K* k = e->getKey();
@@ -424,7 +428,7 @@ namespace beecrypt {
 					else
 						buf.append(v);
 
-					if ((hasNext = it.hasNext()))
+					if (pos > 1)
 						buf.append(", ");
 				}
 

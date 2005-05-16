@@ -29,6 +29,8 @@
 using beecrypt::util::AbstractList;
 #include "beecrypt/c++/lang/Cloneable.h"
 using beecrypt::lang::Cloneable;
+#include "beecrypt/c++/lang/IllegalArgumentException.h"
+using beecrypt::lang::IllegalArgumentException;
 #include "beecrypt/c++/util/RandomAccess.h"
 using beecrypt::util::RandomAccess;
 
@@ -62,7 +64,14 @@ namespace beecrypt {
 		public:
 			ArrayList(jint initialCapacity = 10) :_table(initialCapacity)
 			{
+				if (initialCapacity < 0)
+					throw IllegalArgumentException();
+
 				_count = 0;
+			}
+			ArrayList(Collection<E>& c) : _table(c.size())
+			{
+				addAll(c);
 			}
 			ArrayList(const ArrayList& copy) : _table(copy._table), _count(copy._count)
 			{
@@ -175,27 +184,16 @@ namespace beecrypt {
 			}
 			virtual bool remove(const E* e)
 			{
-				if (e)
+				for (jint i = 0; i < _count; i++)
 				{
-					for (jint i = 0; i < _count; i++)
+					E* tmp = _table[i];
+					if (AbstractCollection<E>::equals(e, tmp))
 					{
-						E* tmp = _table[i];
-						if (tmp && tmp->equals(e))
-						{
-							fastRemove(i);
+						fastRemove(i);
+						if (tmp)
 							collection_remove(tmp);
-							return true;
-						}
+						return true;
 					}
-				}
-				else
-				{
-					for (jint i = 0; i < _count; i++)
-						if (!_table[i])
-						{
-							fastRemove(i);
-							return true;
-						}
 				}
 				return false;
 			}
@@ -218,6 +216,10 @@ namespace beecrypt {
 			virtual array<E*> toArray() const
 			{
 				return array<E*>(_table.data(), _count);
+			}
+			virtual void trimToSize()
+			{
+				_table.resize(_count);
 			}
 		};
 	}

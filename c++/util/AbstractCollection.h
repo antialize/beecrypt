@@ -47,6 +47,14 @@ namespace beecrypt {
 		protected:
 			AbstractCollection() {}
 
+			static inline bool equals(const E* e1, const E* e2)
+			{
+				if (e1 && e2)
+					return e1->equals(e2);
+				else
+					return e1 == e2;
+			}
+
 		public:
 			virtual ~AbstractCollection() {}
 
@@ -57,21 +65,20 @@ namespace beecrypt {
 			virtual bool addAll(const Collection<E>& c)
 			{
 				bool result = false;
+				jint pos = c.size();
 				Iterator<E>* it = iterator();
 				assert(it != 0);
-				while (it->hasNext())
-				{
-					if (add(it->next()))
-						result = true;
-				}
+				while (--pos >= 0)
+					result |= add(it->next());
 				delete it;
 				return result;
 			}
 			virtual void clear()
 			{
+				jint pos = size();
 				Iterator<E>* it = iterator();
 				assert(it != 0);
-				while (it->hasNext())
+				while (--pos >= 0)
 				{
 					it->next();
 					it->remove();
@@ -81,44 +88,34 @@ namespace beecrypt {
 			virtual bool contains(const E* e) const
 			{
 				bool result = false;
+				jint pos = size();
 				Iterator<E>* it = iterator();
 				assert(it != 0);
-				if (e)
+				while (--pos >= 0)
 				{
-					while (it->hasNext())
+					if (equals(e, it->next()))
 					{
-						E* tmp = it->next();
-						if (tmp && tmp->equals(e))
-						{
-							result = true;
-							break;
-						}
+						result = true;
+						break;
 					}
-				}
-				else
-				{
-					while (it->hasNext())
-						if (!it->next())
-						{
-							result = true;
-							break;
-						}
 				}
 				delete it;
 				return result;
 			}
 			virtual bool containsAll(const Collection<E>& c) const
 			{
+				bool result = true;
+				jint pos = c.size();
 				Iterator<E>* cit = c.iterator();
 				assert(cit != 0);
-				while (cit->hasNext())
+				while (--pos >= 0)
 					if (!contains(cit->next()))
 					{
-						delete cit;
-						return false;
+						result = false;
+						break;
 					}
 				delete cit;
-				return true;
+				return result;
 			}
 			virtual bool equals(const Object* obj) const throw ()
 			{
@@ -137,30 +134,17 @@ namespace beecrypt {
 			virtual bool remove(const E* e)
 			{
 				bool result = false;
+				jint pos = size();
 				Iterator<E>* it = iterator();
 				assert(it != 0);
-				if (e)
+				while (--pos >= 0)
 				{
-					while (it->hasNext())
+					if (equals(e, it->next()))
 					{
-						E* tmp = it->next();
-						if (tmp && tmp->equals(e))
-						{
-							it->remove();
-							result = true;
-							break;
-						}
+						it->remove();
+						result = true;
+						break;
 					}
-				}
-				else
-				{
-					while (it->hasNext())
-						if (!it->next())
-						{
-							it->remove();
-							result = true;
-							break;
-						}
 				}
 				delete it;
 				return result;
@@ -168,9 +152,10 @@ namespace beecrypt {
 			virtual bool removeAll(const Collection<E>& c)
 			{
 				bool result = false;
+				jint pos = size();
 				Iterator<E>* it = iterator();
 				assert(it != 0);
-				while (it->hasNext())
+				while (--pos >= 0)
 					if (c.contains(it->next()))
 					{
 						it->remove();
@@ -183,9 +168,10 @@ namespace beecrypt {
 			virtual bool retainAll(const Collection<E>& c)
 			{
 				bool result = false;
+				jint pos = c.size();
 				Iterator<E>* it = c.iterator();
 				assert(it != 0);
-				while (it->hasNext())
+				while (--pos >= 0)
 					if (!c.contains(it->next()))
 					{
 						it->remove();
@@ -198,30 +184,31 @@ namespace beecrypt {
 			virtual jint size() const throw () = 0;
 			virtual array<E*> toArray() const
 			{
-				array<E*> result(size());
+				jint pos = size();
+				array<E*> result(pos);
 				Iterator<E>* it = iterator();
 				assert(it != 0);
-				for (jint i = 0; it->hasNext(); i++)
+				for (jint i = 0; --pos >= 0; i++)
 					result[i] = it->next();
 				delete it;
 				return result;
 			}
 			virtual String toString() const throw ()
 			{
-				StringBuilder buf("[");
-
 				Iterator<E>* it = iterator();
 				assert(it != 0);
 
-				bool hasNext = it->hasNext();
-				while (hasNext)
+				StringBuilder buf("[");
+
+				for (jint pos = size(); pos > 0; pos--)
 				{
 					E* e = it->next();
 					if (reinterpret_cast<const void*>(e) == reinterpret_cast<const void*>(this))
 						buf.append("(this Collection)");
 					else
 						buf.append(e);
-					if ((hasNext = it->hasNext()))
+
+					if (pos > 1)
 						buf.append(", ");
 				}
 				delete it;

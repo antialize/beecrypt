@@ -62,10 +62,10 @@ namespace beecrypt {
 			}
 			virtual jint hashCode() const throw ()
 			{
-				jint result = 0;
+				jint pos = size(), result = 0;
 				Iterator<E>* it = iterator();
 				assert(it != 0);
-				while (it->hasNext())
+				while (--pos >= 0)
 				{
 					E* e = it->next();
 					result += e->hashCode();
@@ -78,11 +78,12 @@ namespace beecrypt {
 			virtual bool removeAll(const Collection<E>& c)
 			{
 				bool result = false;
-				if (size() > c.size())
+				jint pos = size(), cpos = c.size();
+				if (pos > cpos)
 				{
 					Iterator<E>* it = c.iterator();
 					assert(it != 0);
-					while (it->hasNext())
+					while (--cpos >= 0)
 						result |= remove(it->next());
 					delete it;
 				}
@@ -90,7 +91,7 @@ namespace beecrypt {
 				{
 					Iterator<E>* it = iterator();
 					assert(it != 0);
-					while (it->hasNext())
+					while (--pos >= 0)
 						if (c.contains(it->next()))
 						{
 							it->remove();

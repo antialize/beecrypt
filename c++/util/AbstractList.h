@@ -293,9 +293,10 @@ namespace beecrypt {
 			virtual bool addAll(jint index, const Collection<E>& c)
 			{
 				bool result = false;
+				jint pos = c.size();
 				Iterator<E>* cit = c.iterator();
 				assert(cit != 0);
-				while (cit->hasNext())
+				while (--pos >= 0)
 				{
 					add(index++, cit->next());
 					result = true;
@@ -324,37 +325,26 @@ namespace beecrypt {
 					{
 						bool result = true;
 
+						jint pos1 = size(), pos2 = abs->size();
+
 						ListIterator<E>* lit1 = listIterator();
 						assert(lit1 != 0);
 						ListIterator<E>* lit2 = abs->listIterator();
 						assert(lit2 != 0);
 
-						while (lit1->hasNext() && lit2->hasNext())
+						while (--pos1 >= 0 && --pos2 >= 0)
 						{
-							E* e1 = lit1->next();
-							if (e1)
+							if (!AbstractCollection<E>::equals(lit1->next(), lit2->next()))
 							{
-								E* e2 = lit2->next();
-								if (!(e2 && e2->equals(e1)))
-								{
-									result = false;
-									break;
-								}
-							}
-							else
-							{
-								if (lit2->next())
-								{
-									result = false;
-									break;
-								}
+								result = false;
+								break;
 							}
 						}
 
 						if (result)
 						{
 							// if either of the iterators has any elements left, the lists differ
-							result = !(lit1->hasNext() || lit2->hasNext());
+							result = (pos1 < 0) && (pos2 < 0);
 						}
 
 						delete lit1;
@@ -368,10 +358,10 @@ namespace beecrypt {
 			virtual E* get(jint index) const throw (IndexOutOfBoundsException) = 0;
 			virtual jint hashCode() const throw ()
 			{
-				register jint result = 1;
+				register jint pos = size(), result = 1;
 				Iterator<E>* it = iterator();
 				assert(it != 0);
-				while (it->hasNext())
+				while (--pos >= 0)
 				{
 					E* e = it->next();
 					result *= 31;
@@ -383,29 +373,16 @@ namespace beecrypt {
 			}
 			virtual jint indexOf(const E* e) const
 			{
-				jint result = -1;
+				jint pos = size(), result = -1;
 				ListIterator<E>* lit = listIterator();
 				assert(lit != 0);
-				if (e)
+				while (--pos >= 0)
 				{
-					while (lit->hasNext())
+					if (AbstractCollection<E>::equals(e, lit->next()))
 					{
-						E* tmp = lit->next();
-						if (tmp && tmp->equals(e))
-						{
-							result = lit->previousIndex();
-							break;
-						}
+						result = lit->previousIndex();
+						break;
 					}
-				}
-				else
-				{
-					while (lit->hasNext())
-						if (!lit->next())
-						{
-							result = lit->previousIndex();
-							break;
-						}
 				}
 				delete lit;
 				return result;
@@ -423,26 +400,13 @@ namespace beecrypt {
 				jint result = -1;
 				ListIterator<E>* lit = listIterator(size());
 				assert(lit != 0);
-				if (e)
+				while (lit->hasPrevious())
 				{
-					while (lit->hasPrevious())
+					if (AbstractCollection<E>::equals(e, lit->previous()))
 					{
-						E* tmp = lit->previous();
-						if (tmp && tmp->equals(e))
-						{
-							result = lit->nextIndex();
-							break;
-						}
+						result = lit->nextIndex();
+						break;
 					}
-				}
-				else
-				{
-					while (lit->hasPrevious())
-						if (!lit->previous())
-						{
-							result = lit->nextIndex();
-							break;
-						}
 				}
 				delete lit;
 				return result;
