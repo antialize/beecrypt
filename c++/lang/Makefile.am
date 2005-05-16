@@ -35,6 +35,7 @@ Throwable.cxx \
 UnsupportedOperationException.cxx
 
 cxxlang_HEADERS = \
+Appendable.h \
 ArithmeticException.h \
 Character.h \
 CharSequence.h \
