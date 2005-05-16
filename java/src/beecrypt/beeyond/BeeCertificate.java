@@ -7,7 +7,7 @@ import java.security.cert.Certificate;
 import java.security.spec.*;
 import java.util.*;
 
-class BeeCertificate extends Certificate
+public class BeeCertificate extends Certificate
 {
 	public static final Date FOREVER = new Date(Long.MAX_VALUE);
 
@@ -74,7 +74,9 @@ class BeeCertificate extends Certificate
 
 		public void decode(DataInputStream in) throws IOException
 		{
+			String algorithm = in.readUTF();
 			String format = in.readUTF();
+
 			int encsize = in.readInt();
 
 			if (encsize <= 0)
@@ -88,7 +90,7 @@ class BeeCertificate extends Certificate
 
 			try
 			{
-				KeyFactory kf = KeyFactory.getInstance(format);
+				KeyFactory kf = KeyFactory.getInstance(algorithm);
 
 				pub = kf.generatePublic(spec);
 			}
@@ -104,6 +106,7 @@ class BeeCertificate extends Certificate
 
 		public void encode(DataOutputStream out) throws IOException
 		{
+			out.writeUTF(pub.getAlgorithm());
 			out.writeUTF(pub.getFormat());
 
 			byte[] enc = pub.getEncoded();
@@ -196,13 +199,13 @@ class BeeCertificate extends Certificate
 
 	private byte[] _enc;
 
-	protected String issuer;
-	protected String subject;
-	protected Date created;
-	protected Date expires;
-	protected ArrayList fields;
-	protected String signatureAlgorithm;
-	protected byte[] signature;
+	protected String issuer = null;
+	protected String subject = null;
+	protected Date created = null;
+	protected Date expires = null;
+	protected ArrayList fields = new ArrayList();
+	protected String signatureAlgorithm = null;
+	protected byte[] signature = null;
 
 	protected void encodeTBS(DataOutputStream out) throws IOException
 	{
@@ -212,7 +215,7 @@ class BeeCertificate extends Certificate
 		out.writeLong(expires.getTime());
 		out.writeInt(fields.size());
 
-		for (int i= 0; i < fields.size(); i++)
+		for (int i = 0; i < fields.size(); i++)
 		{
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			DataOutputStream dos = new DataOutputStream(bos);
@@ -261,7 +264,14 @@ class BeeCertificate extends Certificate
 	{
 		super("BEE");
 
-		/** todo */
+		issuer = copy.issuer;
+		subject = copy.subject;
+		created = new Date(copy.created.getTime());
+		expires = new Date(copy.expires.getTime());
+		fields.addAll(copy.fields);
+		signatureAlgorithm = copy.signatureAlgorithm;
+		if (copy.signature != null)
+			signature = (byte[]) copy.signature.clone();
 	}
 
 	public BeeCertificate(InputStream in) throws IOException
@@ -273,14 +283,14 @@ class BeeCertificate extends Certificate
 		issuer = din.readUTF();
 		subject = din.readUTF();
 
-		created = new Date();
-		created.setTime(din.readLong());
-		expires = new Date();
-		expires.setTime(din.readLong());
+		created = new Date(din.readLong());
+		expires = new Date(din.readLong());
 
 		int fieldCount = din.readInt();
 		if (fieldCount < 0)
 			throw new IOException("field count < 0");
+
+		fields.ensureCapacity(fieldCount);
 
 		for (int i = 0; i < fieldCount; i++)
 		{
@@ -389,7 +399,12 @@ class BeeCertificate extends Certificate
 	{
 		StringBuffer tmp = new StringBuffer();
 
-		tmp.append(issuer).append(" subject ").append(subject).append(" valid from ").append(created.toString()).append(" until ").append(expires.equals(FOREVER) ? "-" : expires.toString());
+		tmp.append("BEE ").append(subject);
+
+		if (issuer.length() > 0)
+			tmp.append(" issued by ").append(issuer);
+
+		tmp.append(" valid from ").append(created.toString()).append(" until ").append(expires.equals(FOREVER) ? "-" : expires.toString());
 
 		/** todo add fields */
 

@@ -29,39 +29,40 @@ void JNICALL Java_beecrypt_provider_RSAKeyPairGenerator_generate(JNIEnv* env, jo
 		rsakp pair;
 		jint keybits = (*env)->GetIntField(env, obj, sid);
 
-		if (keybits < 768)
-			keybits = 768;
-
 		randomGeneratorContextInit(&rngc, randomGeneratorDefault());
 
 		rsakpInit(&pair);
 
-		/*!\todo transform field _e to pair.e */
+		fid = (*env)->GetFieldID(env, cls, "_e", "[B");
+		if (fid)
+		{
+			mpnsetbigint(&pair.e, env, (*env)->GetObjectField(env, obj, fid));
+		}
 
 		rsakpMake(&pair, &rngc, (size_t) keybits);
 
-		if ((fid = (*env)->GetFieldID(env, cls, "_n", "Ljava/math/BigInteger;")))
+		if ((fid = (*env)->GetFieldID(env, cls, "_n", "[B")))
 			(*env)->SetObjectField(env, obj, fid, mp_to_bigint(env, pair.n.size, pair.n.modl));
 
-		if ((fid = (*env)->GetFieldID(env, cls, "_e", "Ljava/math/BigInteger;")))
+		if ((fid = (*env)->GetFieldID(env, cls, "_e", "[B")))
 			(*env)->SetObjectField(env, obj, fid, mp_to_bigint(env, pair.e.size, pair.e.data));
 
-		if ((fid = (*env)->GetFieldID(env, cls, "_d", "Ljava/math/BigInteger;")))
+		if ((fid = (*env)->GetFieldID(env, cls, "_d", "[B")))
 			(*env)->SetObjectField(env, obj, fid, mp_to_bigint(env, pair.d.size, pair.d.data));
 
-		if ((fid = (*env)->GetFieldID(env, cls, "_p", "Ljava/math/BigInteger;")))
+		if ((fid = (*env)->GetFieldID(env, cls, "_p", "[B")))
 			(*env)->SetObjectField(env, obj, fid, mp_to_bigint(env, pair.p.size, pair.p.modl));
 
-		if ((fid = (*env)->GetFieldID(env, cls, "_q", "Ljava/math/BigInteger;")))
+		if ((fid = (*env)->GetFieldID(env, cls, "_q", "[B")))
 			(*env)->SetObjectField(env, obj, fid, mp_to_bigint(env, pair.q.size, pair.q.modl));
 
-		if ((fid = (*env)->GetFieldID(env, cls, "_dp", "Ljava/math/BigInteger;")))
+		if ((fid = (*env)->GetFieldID(env, cls, "_dp", "[B")))
 			(*env)->SetObjectField(env, obj, fid, mp_to_bigint(env, pair.dp.size, pair.dp.data));
 
-		if ((fid = (*env)->GetFieldID(env, cls, "_dq", "Ljava/math/BigInteger;")))
+		if ((fid = (*env)->GetFieldID(env, cls, "_dq", "[B")))
 			(*env)->SetObjectField(env, obj, fid, mp_to_bigint(env, pair.dq.size, pair.dq.data));
 
-		if ((fid = (*env)->GetFieldID(env, cls, "_qi", "Ljava/math/BigInteger;")))
+		if ((fid = (*env)->GetFieldID(env, cls, "_qi", "[B")))
 			(*env)->SetObjectField(env, obj, fid, mp_to_bigint(env, pair.qi.size, pair.qi.data));
 
 		rsakpFree(&pair);

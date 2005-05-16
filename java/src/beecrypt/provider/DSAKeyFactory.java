@@ -12,6 +12,50 @@ import beecrypt.security.*;
 
 public final class DSAKeyFactory extends KeyFactorySpi
 {
+	private static DSAPrivateKey generatePrivate(byte[] enc) throws InvalidKeySpecException
+	{
+		try
+		{
+			ByteArrayInputStream bis = new ByteArrayInputStream(enc);
+			BeeInputStream bee = new BeeInputStream(bis);
+
+			BigInteger p, q, g, x;
+
+			p = bee.readBigInteger();
+			q = bee.readBigInteger();
+			g = bee.readBigInteger();
+			x = bee.readBigInteger();
+
+			return new DSAPrivateKeyImpl(p, q, g, x);
+		}
+		catch (IOException e)
+		{
+			throw new InvalidKeySpecException("Invalid KeySpec encoding");
+		}
+	}
+
+	private static DSAPublicKey generatePublic(byte[] enc) throws InvalidKeySpecException
+	{
+		try
+		{
+			ByteArrayInputStream bis = new ByteArrayInputStream(enc);
+			BeeInputStream bee = new BeeInputStream(bis);
+
+			BigInteger p, q, g, y;
+
+			p = bee.readBigInteger();
+			q = bee.readBigInteger();
+			g = bee.readBigInteger();
+			y = bee.readBigInteger();
+
+			return new DSAPublicKeyImpl(p, q, g, y);
+		}
+		catch (IOException e)
+		{
+			throw new InvalidKeySpecException("Invalid KeySpec encoding");
+		}
+	}
+
 	protected PrivateKey engineGeneratePrivate(KeySpec spec) throws InvalidKeySpecException
 	{
 		if (spec instanceof DSAPrivateKeySpec)
@@ -23,19 +67,11 @@ public final class DSAKeyFactory extends KeyFactorySpi
 		{
 			EncodedKeySpec enc = (EncodedKeySpec) spec;
 
-			try
+			if (enc.getFormat().equals("BEE"))
 			{
-				KeyFactory kf = KeyFactory.getInstance(enc.getFormat());
-				PrivateKey pri = kf.generatePrivate(enc);
-				if (pri instanceof DSAPrivateKey)
-					return pri;
-
-				throw new InvalidKeySpecException("Invalid KeySpec encoding format");
+				return generatePrivate(enc.getEncoded());
 			}
-			catch (NoSuchAlgorithmException e)
-			{
-				throw new InvalidKeySpecException("Unsupported KeySpec encoding format");
-			}
+			throw new InvalidKeySpecException("Unsupported KeySpec format");
 		}
 
 		throw new InvalidKeySpecException("Unsupported KeySpec type");
@@ -52,19 +88,11 @@ public final class DSAKeyFactory extends KeyFactorySpi
 		{
 			EncodedKeySpec enc = (EncodedKeySpec) spec;
 
-			try
+			if (enc.getFormat().equals("BEE"))
 			{
-				KeyFactory kf = KeyFactory.getInstance(enc.getFormat());
-				PublicKey pub = kf.generatePublic(enc);
-				if (pub instanceof DSAPublicKey)
-					return pub;
-
-				throw new InvalidKeySpecException("Invalid KeySpec encoding format");
+				return generatePublic(enc.getEncoded());
 			}
-			catch (NoSuchAlgorithmException e)
-			{
-				throw new InvalidKeySpecException("Unsupported KeySpec encoding format");
-			}
+			throw new InvalidKeySpecException("Unsupported KeySpec format");
 		}
 
 		throw new InvalidKeySpecException("Unsupported KeySpec type");

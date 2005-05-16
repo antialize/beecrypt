@@ -14,6 +14,60 @@ import beecrypt.security.*;
 
 public final class RSAKeyFactory extends KeyFactorySpi
 {
+	private static RSAPrivateKey generatePrivate(byte[] enc) throws InvalidKeySpecException
+	{
+		try
+		{
+			ByteArrayInputStream bis = new ByteArrayInputStream(enc);
+			BeeInputStream bee = new BeeInputStream(bis);
+
+			BigInteger n, d;
+
+			n = bee.readBigInteger();
+			d = bee.readBigInteger();
+
+			if (bee.available() > 0)
+			{
+				BigInteger e, p, q, dp, dq, qi;
+
+				e = bee.readBigInteger();
+				p = bee.readBigInteger();
+				q = bee.readBigInteger();
+				dp = bee.readBigInteger();
+				dq = bee.readBigInteger();
+				qi = bee.readBigInteger();
+
+				return new RSAPrivateCrtKeyImpl(n, e, d, p, q, dp, dq, qi);
+			}
+
+			return new RSAPrivateKeyImpl(n, d);
+		}
+		catch (IOException e)
+		{
+			throw new InvalidKeySpecException("Invalid KeySpec encoding");
+		}
+	}
+
+	private static RSAPublicKey generatePublic(byte[] enc) throws InvalidKeySpecException
+	{
+		try
+		{
+			ByteArrayInputStream bis = new ByteArrayInputStream(enc);
+			BeeInputStream bee = new BeeInputStream(bis);
+
+			BigInteger n, e;
+
+			n = bee.readBigInteger();
+			e = bee.readBigInteger();
+
+			return new RSAPublicKeyImpl(n, e);
+		}
+		catch (IOException e)
+		{
+			throw new InvalidKeySpecException("Invalid KeySpec encoding");
+		}
+	}
+
 	protected PrivateKey engineGeneratePrivate(KeySpec spec) throws InvalidKeySpecException
 	{
 		if (spec instanceof RSAPrivateKeySpec)
@@ -28,19 +82,11 @@ public final class RSAKeyFactory extends KeyFactorySpi
 		{
 			EncodedKeySpec enc = (EncodedKeySpec) spec;
 
-			try
+			if (enc.getFormat().equals("BEE"))
 			{
-				KeyFactory kf = KeyFactory.getInstance(enc.getFormat());
-				PrivateKey pri = kf.generatePrivate(enc);
-				if (pri instanceof RSAPrivateKey)
-					return pri;
-
-				throw new InvalidKeySpecException("Invalid KeySpec encoding format");
+				return generatePrivate(enc.getEncoded());
 			}
-			catch (NoSuchAlgorithmException e)
-			{
-				throw new InvalidKeySpecException("Unsupported KeySpec encoding format");
-			}
+			throw new InvalidKeySpecException("Unsupported KeySpec format");
 		}
 
 		throw new InvalidKeySpecException("Unsupported KeySpec type");
@@ -57,19 +103,12 @@ public final class RSAKeyFactory extends KeyFactorySpi
 		{
 			EncodedKeySpec enc = (EncodedKeySpec) spec;
 
-			try
-			{
-				KeyFactory kf = KeyFactory.getInstance(enc.getFormat());
-				PublicKey pub = kf.generatePublic(enc);
-				if (pub instanceof RSAPublicKey)
-					return pub;
 
-				throw new InvalidKeySpecException("Invalid KeySpec encoding format");
-			}
-			catch (NoSuchAlgorithmException e)
+			if (enc.getFormat().equals("BEE"))
 			{
-				throw new InvalidKeySpecException("Unsupported KeySpec encoding format");
+				return generatePublic(enc.getEncoded());
 			}
+			throw new InvalidKeySpecException("Unsupported KeySpec format");
 		}
 
 		throw new InvalidKeySpecException("Unsupported KeySpec type");
@@ -77,64 +116,49 @@ public final class RSAKeyFactory extends KeyFactorySpi
 
 	protected KeySpec engineGetKeySpec(Key key, Class keySpec) throws InvalidKeySpecException
 	{
-		if (key instanceof RSAPublicKey)
-		{
-			RSAPublicKey pub = (RSAPublicKey) key;
-
-			if (keySpec.equals(KeySpec.class) || keySpec.equals(RSAPublicKeySpec.class))
-			{
-				return new RSAPublicKeySpec(pub.getModulus(), pub.getPublicExponent());
-			}
-			if (keySpec.equals(EncodedKeySpec.class))
-			{
-				String format = pub.getFormat();
-				if (format != null)
-				{
-					byte[] enc = pub.getEncoded();
-					if (enc != null)
-						return new AnyEncodedKeySpec(format, enc);
-				}
-			}
-		}
-		else if (key instanceof RSAPrivateCrtKey)
+		if (keySpec.isAssignableFrom(RSAPrivateCrtKeySpec.class) && (key instanceof RSAPrivateCrtKey))
 		{
 			RSAPrivateCrtKey pri = (RSAPrivateCrtKey) key;
 
-			if (keySpec.equals(KeySpec.class) || keySpec.equals(RSAPrivateKeySpec.class) || keySpec.equals(RSAPrivateCrtKeySpec.class))
-			{
-				return new RSAPrivateCrtKeySpec(pri.getModulus(), pri.getPublicExponent(), pri.getPrivateExponent(), pri.getPrimeP(), pri.getPrimeQ(), pri.getPrimeExponentP(), pri.getPrimeExponentQ(), pri.getCrtCoefficient());
-			}
-			if (keySpec.equals(EncodedKeySpec.class))
-			{
-				String format = pri.getFormat();
-				if (format != null)
-				{
-					byte[] enc = pri.getEncoded();
-					if (enc != null)
-						return new AnyEncodedKeySpec(format, enc);
-				}
-			}
+			return new RSAPrivateCrtKeySpec(pri.getModulus(), pri.getPublicExponent(), pri.getPrivateExponent(), pri.getPrimeP(), pri.getPrimeQ(), pri.getPrimeExponentP(), pri.getPrimeExponentQ(), pri.getCrtCoefficient());
 		}
-		else if (key instanceof RSAPrivateKey)
+
+		if (keySpec.isAssignableFrom(RSAPrivateKeySpec.class) && (key instanceof RSAPrivateKey))
 		{
 			RSAPrivateKey pri = (RSAPrivateKey) key;
 
-			if (keySpec.equals(KeySpec.class) || keySpec.equals(RSAPublicKeySpec.class))
+			return new RSAPrivateKeySpec(pri.getModulus(), pri.getPrivateExponent());
+		}
+
+		if (keySpec.isAssignableFrom(RSAPublicKeySpec.class) && (key instanceof RSAPublicKey))
+		{
+			RSAPublicKey pub = (RSAPublicKey) key;
+
+			return new RSAPublicKeySpec(pub.getModulus(), pub.getPublicExponent());
+		}
+
+		if (keySpec.isAssignableFrom(PKCS8EncodedKeySpec.class) && key.getFormat().equalsIgnoreCase("PKCS#8"))
+		{
+			return new PKCS8EncodedKeySpec(key.getEncoded());
+		}
+
+		if (keySpec.isAssignableFrom(X509EncodedKeySpec.class) && key.getFormat().equalsIgnoreCase("X.509"))
+		{
+			return new X509EncodedKeySpec(key.getEncoded());
+		}
+
+		if (keySpec.equals(EncodedKeySpec.class))
+		{
+			String format = key.getFormat();
+			if (format != null)
 			{
-				return new RSAPrivateKeySpec(pri.getModulus(), pri.getPrivateExponent());
-			}
-			if (keySpec.equals(EncodedKeySpec.class))
-			{
-				String format = pri.getFormat();
-				if (format != null)
-				{
-					byte[] enc = pri.getEncoded();
-					if (enc != null)
-						return new AnyEncodedKeySpec(format, enc);
-				}
+				byte[] enc = key.getEncoded();
+				if (enc != null)
+					return new AnyEncodedKeySpec(format, enc);
 			}
 		}
-		throw new InvalidKeySpecException("Unsupported Key type");
+
+		throw new InvalidKeySpecException("Unsupported KeySpec class for this key");
 	}
 
 	protected Key engineTranslateKey(Key key) throws InvalidKeyException

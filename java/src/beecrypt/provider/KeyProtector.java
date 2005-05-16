@@ -11,66 +11,6 @@ import beecrypt.beeyond.*;
 
 public class KeyProtector
 {
-	static final byte PKCS12_ID_CIPHER = 0x1;
-	static final byte PKCS12_ID_IV     = 0x2;
-	static final byte PKCS12_ID_MAC    = 0x3;
-
-	static byte[] pkcs12DeriveKey(MessageDigest md, int blockSize, int keyLength, byte id, byte[] password, byte[] salt, int iterations)
-	{
-		int remain;
-
-		md.reset();
-		md.update(id);
-
-		// hash a whole number of blocks filled with salt data
-		if (salt.length > 0)
-		{
-			remain = ((salt.length / blockSize) + (salt.length % blockSize)) * blockSize;
-			while (remain > 0)
-			{
-				int tmp = (remain > salt.length) ? salt.length : remain;
-				md.update(salt, 0, tmp);
-				remain -= tmp;
-			}
-		}
-		// hash a whole number of blocks filled with password data
-		if (password.length > 0)
-		{
-			remain = ((password.length / blockSize) + (password.length % blockSize)) * blockSize;
-			while (remain > 0)
-			{
-				int tmp = (remain > password.length) ? password.length : remain;
-				md.update(password, 0, tmp);
-				remain -= tmp;
-			}
-		}
-
-		while (iterations-- > 0)
-			md.update(md.digest());
-
-		// compute the final digest
-		byte[] digest = md.digest();
-
-		// allocate a key of the requested size
-		byte[] key = new byte[keyLength];
-
-		if (keyLength > 0)
-		{
-			// fill the key with the result
-			int offset = 0;
-			remain = keyLength;
-			while (remain > 0)
-			{
-				int tmp = (remain > digest.length) ? digest.length : remain;
-				System.arraycopy(digest, 0, key, offset, tmp);
-				offset += tmp;
-				remain -= tmp;
-			}
-		}
-
-		return key;
-	}
-
 	private SecretKeySpec _cipher_key;
 	private SecretKeySpec _mac_key;
 	private IvParameterSpec _iv;
@@ -87,9 +27,9 @@ public class KeyProtector
 
 		MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
 
-		_cipher_key = new SecretKeySpec(pkcs12DeriveKey(sha256, 64, 32, PKCS12_ID_CIPHER, rawKey, salt, iter), "RAW");
-		_mac_key = new SecretKeySpec(pkcs12DeriveKey(sha256, 64, 32, PKCS12_ID_MAC, rawKey, salt, iter), "RAW");
-		_iv = new IvParameterSpec(pkcs12DeriveKey(sha256, 64, 16, PKCS12_ID_IV, rawKey, salt, iter));
+		_cipher_key = new SecretKeySpec(PKCS12.deriveKey(sha256, 64, 32, PKCS12.ID_CIPHER, rawKey, salt, iter), "RAW");
+		_mac_key = new SecretKeySpec(PKCS12.deriveKey(sha256, 64, 32, PKCS12.ID_MAC, rawKey, salt, iter), "RAW");
+		_iv = new IvParameterSpec(PKCS12.deriveKey(sha256, 64, 16, PKCS12.ID_IV, rawKey, salt, iter));
 	}
 
 	byte[] protect(PrivateKey key)
@@ -114,7 +54,7 @@ public class KeyProtector
 
 			byte[] clearText = bos.toByteArray();
 
-			Mac m = Mac.getInstance("HMAC-SHA-256");
+			Mac m = Mac.getInstance("HmacSHA256");
 
 			m.init(_mac_key);
 
@@ -135,7 +75,7 @@ public class KeyProtector
 	PrivateKey recover(byte[] encryptedKey) throws NoSuchAlgorithmException, NoSuchPaddingException, UnrecoverableKeyException
 	{
 		Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
-		Mac m = Mac.getInstance("HMAC-SHA-256");
+		Mac m = Mac.getInstance("HmacSHA256");
 
 		final int macLength = m.getMacLength();
 

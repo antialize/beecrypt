@@ -6,10 +6,10 @@ import java.security.spec.*;
 
 import beecrypt.crypto.spec.*;
 
-public class DHAESParameters extends AlgorithmParametersSpi
+public class DHIESParameters extends AlgorithmParametersSpi
 {
-	private DHAESParameterSpec spec = null;
-	private DHAESDecryptParameterSpec dspec = null;
+	private DHIESParameterSpec spec = null;
+	private DHIESDecryptParameterSpec dspec = null;
 
 	protected byte[] engineGetEncoded() throws IOException
 	{
@@ -23,12 +23,12 @@ public class DHAESParameters extends AlgorithmParametersSpi
 
 	protected AlgorithmParameterSpec engineGetParameterSpec(Class paramSpec) throws InvalidParameterSpecException
 	{
-		if (paramSpec.isAssignableFrom(DHAESDecryptParameterSpec.class))
+		if (paramSpec.isAssignableFrom(DHIESDecryptParameterSpec.class))
 		{
 			if (dspec != null)
 				return dspec;
 		}
-		else if (paramSpec.isAssignableFrom(DHAESDecryptParameterSpec.class) || paramSpec.isAssignableFrom(AlgorithmParameterSpec.class))
+		if (paramSpec.isAssignableFrom(DHIESParameterSpec.class))
 		{
 			if (spec != null)
 				return spec;
@@ -41,14 +41,14 @@ public class DHAESParameters extends AlgorithmParametersSpi
 		spec = null;
 		dspec = null;
 
-		if (param instanceof DHAESParameterSpec)
+		if (param instanceof DHIESParameterSpec)
 		{
-			spec = (DHAESParameterSpec) spec;
-			if (spec instanceof DHAESDecryptParameterSpec)
-				dspec = (DHAESDecryptParameterSpec) spec;
+			spec = (DHIESParameterSpec) param;
+			if (spec instanceof DHIESDecryptParameterSpec)
+				dspec = (DHIESDecryptParameterSpec) spec;
 		}
 		else
-			throw new InvalidParameterSpecException("Expected a DHAESParameterSpec");
+			throw new InvalidParameterSpecException("Expected a DHIESParameterSpec");
 	}
 
 	protected void engineInit(byte[] params)

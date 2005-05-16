@@ -205,7 +205,7 @@ public class BeeKeyStore extends KeyStoreSpi
 		}
 		else
 		{
-			Mac m = Mac.getInstance("HMAC-SHA-256");
+			Mac m = Mac.getInstance("HmacSHA256");
 			MacInputStream mis = new MacInputStream(in, m);
 			DataInputStream dis = new DataInputStream(mis);
 
@@ -256,6 +256,7 @@ public class BeeKeyStore extends KeyStoreSpi
 				case BKS_PRIVATEKEY_ENTRY:
 					{
 						alias = dis.readUTF();
+
 						KeyEntry e = new KeyEntry();
 						e.date.setTime(dis.readLong());
 
@@ -270,9 +271,12 @@ public class BeeKeyStore extends KeyStoreSpi
 						if (certCount <= 0)
 							throw new IOException("Invalid BeeKeyStore certificate count");
 
-						for (int j = 0; i < certCount; j++)
+						e.chain = new Certificate[certCount];
+
+						for (int j = 0; j < certCount; j++)
 						{
 							String type = dis.readUTF();
+
 							CertificateFactory cf = CertificateFactory.getInstance(type);
 
 							int certSize = dis.readInt();
@@ -283,7 +287,6 @@ public class BeeKeyStore extends KeyStoreSpi
 							dis.readFully(cert);
 
 							ByteArrayInputStream bis = new ByteArrayInputStream(cert);
-
 							e.chain[j] = cf.generateCertificate(bis);
 						}
 
@@ -340,11 +343,12 @@ public class BeeKeyStore extends KeyStoreSpi
 			if (!Arrays.equals(computedMac, originalMac))
 				throw new IOException("BeeKeyStore has been tampered with, or password was incorrect (incorrect mac)");
 		}
+
 	}
 
 	public void engineStore(OutputStream out, char[] password) throws IOException, CertificateException, NoSuchAlgorithmException
 	{
-		Mac m = Mac.getInstance("HMAC-SHA-256");
+		Mac m = Mac.getInstance("HmacSHA256");
 		PKCS12PBEKey pbekey = new PKCS12PBEKey(password == null ? EMPTY_PASSWORD : password, _salt, _iter);
 
 		try

@@ -8,13 +8,15 @@ import java.security.spec.*;
 import javax.crypto.interfaces.*;
 import javax.crypto.spec.*;
 
+import beecrypt.asn1.*;
+import beecrypt.asn1.x509.SubjectPublicKeyInfo;
 import beecrypt.beeyond.*;
 import beecrypt.crypto.*;
 import beecrypt.io.*;
 
 public final class DHKeyFactory extends KeyFactorySpi
 {
-	private DHPrivateKey generatePrivate(byte[] enc) throws InvalidKeySpecException
+	private static DHPrivateKey generatePrivate(byte[] enc) throws InvalidKeySpecException
 	{
 		try
 		{
@@ -35,7 +37,7 @@ public final class DHKeyFactory extends KeyFactorySpi
 		}
 	}
 
-	private DHPublicKey generatePublic(byte[] enc) throws InvalidKeySpecException
+	private static DHPublicKey generatePublic(byte[] enc) throws InvalidKeySpecException
 	{
 		try
 		{
@@ -55,6 +57,35 @@ public final class DHKeyFactory extends KeyFactorySpi
 			throw new InvalidKeySpecException("Invalid KeySpec encoding");
 		}
 	}
+
+	/*
+	private static DHPublicKey generatePublicX509(byte[] enc) throws InvalidKeySpecException
+	{
+		try
+		{
+			DERDecoder d = new DERDecoder();
+
+			Any tmp = d.decode(enc, SubjectPublicKeyInfo.NAME);
+
+			if (tmp instanceof SubjectPublicKeyInfo)
+			{
+				SubjectPublicKeyInfo spki = (SubjectPublicKeyInfo) tmp;
+
+				AlgorithmIdentifier aid = spki.getAlgorithmIdentifier();
+
+				ObjectIdentifier oid = aid.getAlgorithm();
+			}
+		}
+		catch (IOException e)
+		{
+			throw new InvalidKeySpecException("invalid X.509 SubjectPublicKeyInfo");
+		}
+		catch (NoSuchTypeException e)
+		{
+			throw new RuntimeException("ASN.1 X.509 module required");
+		}
+	}
+	*/
 
 	protected PrivateKey engineGeneratePrivate(KeySpec spec) throws InvalidKeySpecException
 	{
@@ -84,6 +115,15 @@ public final class DHKeyFactory extends KeyFactorySpi
 			return new DHPublicKeyImpl((DHPublicKeySpec) spec);
 		}
 
+		/*
+		if (spec instanceof X509EncodedKeySpec)
+		{
+			X509EncodedKeySpec xspec = (X509EncodedKeySpec) spec;
+
+			return generatePublicX509(xspec.getEncoded());
+		}
+		*/
+
 		if (spec instanceof EncodedKeySpec)
 		{
 			EncodedKeySpec enc = (EncodedKeySpec) spec;
@@ -100,45 +140,42 @@ public final class DHKeyFactory extends KeyFactorySpi
 
 	protected KeySpec engineGetKeySpec(Key key, Class keySpec) throws InvalidKeySpecException
 	{
-		if (key instanceof DHPublicKey)
-		{
-			DHPublicKey pub = (DHPublicKey) key;
-
-			if (keySpec.equals(KeySpec.class) || keySpec.equals(DHPublicKeySpec.class))
-			{
-				return new DHPublicKeySpec(pub.getY(), pub.getParams().getP(), pub.getParams().getG());
-			}
-			if (keySpec.equals(EncodedKeySpec.class))
-			{
-				String format = pub.getFormat();
-				if (format != null)
-				{
-					byte[] enc = pub.getEncoded();
-					if (enc != null)
-						return new AnyEncodedKeySpec(format, enc);
-				}
-			}
-		}
-		else if (key instanceof DHPrivateKey)
+		if (keySpec.isAssignableFrom(DHPrivateKeySpec.class) && (key instanceof DHPrivateKey))
 		{
 			DHPrivateKey pri = (DHPrivateKey) key;
 
-			if (keySpec.equals(KeySpec.class) || keySpec.equals(DHPrivateKeySpec.class))
+			return new DHPrivateKeySpec(pri.getX(), pri.getParams().getP(), pri.getParams().getG());
+		}
+
+		if (keySpec.isAssignableFrom(DHPublicKeySpec.class) && (key instanceof DHPublicKey))
+		{
+			DHPublicKey pub = (DHPublicKey) key;
+
+			return new DHPublicKeySpec(pub.getY(), pub.getParams().getP(), pub.getParams().getG());
+		}
+
+		if (keySpec.isAssignableFrom(PKCS8EncodedKeySpec.class) && key.getFormat().equalsIgnoreCase("PKCS#8"))
+		{
+			return new PKCS8EncodedKeySpec(key.getEncoded());
+		}
+
+		if (keySpec.isAssignableFrom(X509EncodedKeySpec.class) && key.getFormat().equalsIgnoreCase("X.509"))
+		{
+			return new PKCS8EncodedKeySpec(key.getEncoded());
+		}
+
+		if (keySpec.equals(EncodedKeySpec.class))
+		{
+			String format = key.getFormat();
+			if (format != null)
 			{
-				return new DHPrivateKeySpec(pri.getX(), pri.getParams().getP(), pri.getParams().getG());
-			}
-			if (keySpec.equals(EncodedKeySpec.class))
-			{
-				String format = pri.getFormat();
-				if (format != null)
-				{
-					byte[] enc = pri.getEncoded();
-					if (enc != null)
-						return new AnyEncodedKeySpec(format, enc);
-				}
+				byte[] enc = key.getEncoded();
+				if (enc != null)
+					return new AnyEncodedKeySpec(format, enc);
 			}
 		}
-		throw new InvalidKeySpecException("Unsupported Key type");
+
+		throw new InvalidKeySpecException("Unsupported KeySpec class for this key");
 	}
 
 	protected Key engineTranslateKey(Key key) throws InvalidKeyException
