@@ -25,14 +25,14 @@
 #include "beecrypt/c++/lang/ClassCastException.h"
 using namespace beecrypt::lang;
 
-ClassCastException::ClassCastException() throw ()
+ClassCastException::ClassCastException()
 {
 }
 
-ClassCastException::ClassCastException(const String* message) throw () : RuntimeException(message)
+ClassCastException::ClassCastException(const String* message) : RuntimeException(message)
 {
 }
 
-ClassCastException::ClassCastException(const String& message) throw () : RuntimeException(message)
+ClassCastException::ClassCastException(const String& message) : RuntimeException(message)
 {
 }

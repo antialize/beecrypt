@@ -37,9 +37,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI Error : public Throwable
 		{
 		public:
-			Error() throw ();
-			Error(const String* message) throw ();
-			Error(const String& message) throw ();
+			Error();
+			Error(const String* message);
+			Error(const String& message);
 		};
 	}
 }

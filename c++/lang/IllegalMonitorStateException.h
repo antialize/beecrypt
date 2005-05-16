@@ -35,9 +35,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI IllegalMonitorStateException : public RuntimeException
 		{
 		public:
-			IllegalMonitorStateException() throw ();
-			IllegalMonitorStateException(const String* message) throw ();
-			IllegalMonitorStateException(const String& message) throw ();
+			IllegalMonitorStateException();
+			IllegalMonitorStateException(const String* message);
+			IllegalMonitorStateException(const String& message);
 		};
 	}
 }

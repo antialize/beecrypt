@@ -35,9 +35,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI CloneNotSupportedException : public Exception
 		{
 		public:
-			CloneNotSupportedException() throw ();
-			CloneNotSupportedException(const String* message) throw ();
-			CloneNotSupportedException(const String& message) throw ();
+			CloneNotSupportedException();
+			CloneNotSupportedException(const String* message);
+			CloneNotSupportedException(const String& message);
 		};
 	}
 }

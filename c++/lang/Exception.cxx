@@ -25,14 +25,14 @@
 #include "beecrypt/c++/lang/Exception.h"
 using namespace beecrypt::lang;
 
-Exception::Exception() throw ()
+Exception::Exception()
 {
 }
 
-Exception::Exception(const String* message) throw () : Throwable(message)
+Exception::Exception(const String* message) : Throwable(message)
 {
 }
 
-Exception::Exception(const String& message) throw () : Throwable(message)
+Exception::Exception(const String& message) : Throwable(message)
 {
 }

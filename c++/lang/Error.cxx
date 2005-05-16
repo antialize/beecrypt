@@ -25,14 +25,14 @@
 #include "beecrypt/c++/lang/Error.h"
 using namespace beecrypt::lang;
 
-Error::Error() throw ()
+Error::Error()
 {
 }
 
-Error::Error(const String* message) throw () : Throwable(message)
+Error::Error(const String* message) : Throwable(message)
 {
 }
 
-Error::Error(const String& message) throw () : Throwable(message)
+Error::Error(const String& message) : Throwable(message)
 {
 }

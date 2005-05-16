@@ -35,9 +35,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI ArithmeticException : public RuntimeException
 		{
 		public:
-			ArithmeticException() throw ();
-			ArithmeticException(const String* message) throw ();
-			ArithmeticException(const String& message) throw ();
+			ArithmeticException();
+			ArithmeticException(const String* message);
+			ArithmeticException(const String& message);
 		};
 	}
 }

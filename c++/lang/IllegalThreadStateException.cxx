@@ -25,14 +25,14 @@
 #include "beecrypt/c++/lang/IllegalThreadStateException.h"
 using namespace beecrypt::lang;
 
-IllegalThreadStateException::IllegalThreadStateException() throw ()
+IllegalThreadStateException::IllegalThreadStateException()
 {
 }
 
-IllegalThreadStateException::IllegalThreadStateException(const String* message) throw () : IllegalArgumentException(message)
+IllegalThreadStateException::IllegalThreadStateException(const String* message) : IllegalArgumentException(message)
 {
 }
 
-IllegalThreadStateException::IllegalThreadStateException(const String& message) throw () : IllegalArgumentException(message)
+IllegalThreadStateException::IllegalThreadStateException(const String& message) : IllegalArgumentException(message)
 {
 }

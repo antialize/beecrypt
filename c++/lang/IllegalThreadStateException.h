@@ -35,9 +35,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI IllegalThreadStateException : public IllegalArgumentException
 		{
 		public:
-			IllegalThreadStateException() throw ();
-			IllegalThreadStateException(const String* message) throw ();
-			IllegalThreadStateException(const String& message) throw ();
+			IllegalThreadStateException();
+			IllegalThreadStateException(const String* message);
+			IllegalThreadStateException(const String& message);
 		};
 	}
 }

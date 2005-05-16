@@ -35,9 +35,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI IndexOutOfBoundsException : public RuntimeException
 		{
 		public:
-			IndexOutOfBoundsException() throw ();
-			IndexOutOfBoundsException(const String* message) throw ();
-			IndexOutOfBoundsException(const String& message) throw ();
+			IndexOutOfBoundsException();
+			IndexOutOfBoundsException(const String* message);
+			IndexOutOfBoundsException(const String& message);
 		};
 	}
 }

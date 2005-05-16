@@ -25,14 +25,14 @@
 #include "beecrypt/c++/lang/OutOfMemoryError.h"
 using namespace beecrypt::lang;
 
-OutOfMemoryError::OutOfMemoryError() throw ()
+OutOfMemoryError::OutOfMemoryError()
 {
 }
 
-OutOfMemoryError::OutOfMemoryError(const String* message) throw () : Error(message)
+OutOfMemoryError::OutOfMemoryError(const String* message) : Error(message)
 {
 }
 
-OutOfMemoryError::OutOfMemoryError(const String& message) throw () : Error(message)
+OutOfMemoryError::OutOfMemoryError(const String& message) : Error(message)
 {
 }

@@ -25,14 +25,14 @@
 #include "beecrypt/c++/lang/CloneNotSupportedException.h"
 using namespace beecrypt::lang;
 
-CloneNotSupportedException::CloneNotSupportedException() throw ()
+CloneNotSupportedException::CloneNotSupportedException()
 {
 }
 
-CloneNotSupportedException::CloneNotSupportedException(const String* message) throw () : Exception(message)
+CloneNotSupportedException::CloneNotSupportedException(const String* message) : Exception(message)
 {
 }
 
-CloneNotSupportedException::CloneNotSupportedException(const String& message) throw () : Exception(message)
+CloneNotSupportedException::CloneNotSupportedException(const String& message) : Exception(message)
 {
 }

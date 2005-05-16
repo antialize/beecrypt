@@ -25,14 +25,14 @@
 #include "beecrypt/c++/lang/IndexOutOfBoundsException.h"
 using namespace beecrypt::lang;
 
-IndexOutOfBoundsException::IndexOutOfBoundsException() throw ()
+IndexOutOfBoundsException::IndexOutOfBoundsException()
 {
 }
 
-IndexOutOfBoundsException::IndexOutOfBoundsException(const String* message) throw () : RuntimeException(message)
+IndexOutOfBoundsException::IndexOutOfBoundsException(const String* message) : RuntimeException(message)
 {
 }
 
-IndexOutOfBoundsException::IndexOutOfBoundsException(const String& message) throw () : RuntimeException(message)
+IndexOutOfBoundsException::IndexOutOfBoundsException(const String& message) : RuntimeException(message)
 {
 }

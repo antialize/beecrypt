@@ -25,14 +25,14 @@
 #include "beecrypt/c++/lang/IllegalMonitorStateException.h"
 using namespace beecrypt::lang;
 
-IllegalMonitorStateException::IllegalMonitorStateException() throw ()
+IllegalMonitorStateException::IllegalMonitorStateException()
 {
 }
 
-IllegalMonitorStateException::IllegalMonitorStateException(const String* message) throw () : RuntimeException(message)
+IllegalMonitorStateException::IllegalMonitorStateException(const String* message) : RuntimeException(message)
 {
 }
 
-IllegalMonitorStateException::IllegalMonitorStateException(const String& message) throw () : RuntimeException(message)
+IllegalMonitorStateException::IllegalMonitorStateException(const String& message) : RuntimeException(message)
 {
 }

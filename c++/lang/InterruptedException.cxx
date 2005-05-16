@@ -25,14 +25,14 @@
 #include "beecrypt/c++/lang/InterruptedException.h"
 using namespace beecrypt::lang;
 
-InterruptedException::InterruptedException() throw ()
+InterruptedException::InterruptedException()
 {
 }
 
-InterruptedException::InterruptedException(const String* message) throw () : Exception(message)
+InterruptedException::InterruptedException(const String* message) : Exception(message)
 {
 }
 
-InterruptedException::InterruptedException(const String& message) throw () : Exception(message)
+InterruptedException::InterruptedException(const String& message) : Exception(message)
 {
 }

@@ -25,14 +25,14 @@
 #include "beecrypt/c++/lang/ArithmeticException.h"
 using namespace beecrypt::lang;
 
-ArithmeticException::ArithmeticException() throw ()
+ArithmeticException::ArithmeticException()
 {
 }
 
-ArithmeticException::ArithmeticException(const String* message) throw () : RuntimeException(message)
+ArithmeticException::ArithmeticException(const String* message) : RuntimeException(message)
 {
 }
 
-ArithmeticException::ArithmeticException(const String& message) throw () : RuntimeException(message)
+ArithmeticException::ArithmeticException(const String& message) : RuntimeException(message)
 {
 }

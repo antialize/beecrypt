@@ -25,14 +25,14 @@
 #include "beecrypt/c++/lang/IllegalStateException.h"
 using namespace beecrypt::lang;
 
-IllegalStateException::IllegalStateException() throw ()
+IllegalStateException::IllegalStateException()
 {
 }
 
-IllegalStateException::IllegalStateException(const String* message) throw () : RuntimeException(message)
+IllegalStateException::IllegalStateException(const String* message) : RuntimeException(message)
 {
 }
 
-IllegalStateException::IllegalStateException(const String& message) throw () : RuntimeException(message)
+IllegalStateException::IllegalStateException(const String& message) : RuntimeException(message)
 {
 }

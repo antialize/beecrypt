@@ -38,9 +38,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI IllegalStateException : public RuntimeException
 		{
 		public:
-			IllegalStateException() throw ();
-			IllegalStateException(const String* message) throw ();
-			IllegalStateException(const String& message) throw ();
+			IllegalStateException();
+			IllegalStateException(const String* message);
+			IllegalStateException(const String& message);
 		};
 	}
 }

@@ -25,14 +25,14 @@
 #include "beecrypt/c++/lang/NumberFormatException.h"
 using namespace beecrypt::lang;
 
-NumberFormatException::NumberFormatException() throw ()
+NumberFormatException::NumberFormatException()
 {
 }
 
-NumberFormatException::NumberFormatException(const String* message) throw () : IllegalArgumentException(message)
+NumberFormatException::NumberFormatException(const String* message) : IllegalArgumentException(message)
 {
 }
 
-NumberFormatException::NumberFormatException(const String& message) throw () : IllegalArgumentException(message)
+NumberFormatException::NumberFormatException(const String& message) : IllegalArgumentException(message)
 {
 }

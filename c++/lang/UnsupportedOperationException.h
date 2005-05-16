@@ -35,9 +35,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI UnsupportedOperationException : public RuntimeException
 		{
 		public:
-			UnsupportedOperationException() throw ();
-			UnsupportedOperationException(const String* message) throw ();
-			UnsupportedOperationException(const String& message) throw ();
+			UnsupportedOperationException();
+			UnsupportedOperationException(const String* message);
+			UnsupportedOperationException(const String& message);
 		};
 	}
 }

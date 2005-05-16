@@ -37,9 +37,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI NullPointerException : public RuntimeException
 		{
 		public:
-			NullPointerException() throw ();
-			NullPointerException(const String* message) throw ();
-			NullPointerException(const String& message) throw ();
+			NullPointerException();
+			NullPointerException(const String* message);
+			NullPointerException(const String& message);
 		};
 	}
 }

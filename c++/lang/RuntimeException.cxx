@@ -25,14 +25,14 @@
 #include "beecrypt/c++/lang/RuntimeException.h"
 using namespace beecrypt::lang;
 
-RuntimeException::RuntimeException() throw ()
+RuntimeException::RuntimeException()
 {
 }
 
-RuntimeException::RuntimeException(const String* message) throw () : Exception(message)
+RuntimeException::RuntimeException(const String* message) : Exception(message)
 {
 }
 
-RuntimeException::RuntimeException(const String& message) throw () : Exception(message)
+RuntimeException::RuntimeException(const String& message) : Exception(message)
 {
 }

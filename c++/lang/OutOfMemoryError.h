@@ -37,9 +37,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI OutOfMemoryError : public Error
 		{
 		public:
-			OutOfMemoryError() throw ();
-			OutOfMemoryError(const String* message) throw ();
-			OutOfMemoryError(const String& message) throw ();
+			OutOfMemoryError();
+			OutOfMemoryError(const String* message);
+			OutOfMemoryError(const String& message);
 		};
 	}
 }

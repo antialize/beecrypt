@@ -25,14 +25,14 @@
 #include "beecrypt/c++/lang/IllegalArgumentException.h"
 using namespace beecrypt::lang;
 
-IllegalArgumentException::IllegalArgumentException() throw ()
+IllegalArgumentException::IllegalArgumentException()
 {
 }
 
-IllegalArgumentException::IllegalArgumentException(const String* message) throw () : RuntimeException(message)
+IllegalArgumentException::IllegalArgumentException(const String* message) : RuntimeException(message)
 {
 }
 
-IllegalArgumentException::IllegalArgumentException(const String& message) throw () : RuntimeException(message)
+IllegalArgumentException::IllegalArgumentException(const String& message) : RuntimeException(message)
 {
 }

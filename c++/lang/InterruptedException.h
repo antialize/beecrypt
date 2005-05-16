@@ -35,9 +35,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI InterruptedException : public Exception
 		{
 		public:
-			InterruptedException() throw ();
-			InterruptedException(const String* message) throw ();
-			InterruptedException(const String& message) throw ();
+			InterruptedException();
+			InterruptedException(const String* message);
+			InterruptedException(const String& message);
 		};
 	}
 }

@@ -37,9 +37,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI NumberFormatException : public IllegalArgumentException
 		{
 		public:
-			NumberFormatException() throw ();
-			NumberFormatException(const String* message) throw ();
-			NumberFormatException(const String& message) throw ();
+			NumberFormatException();
+			NumberFormatException(const String* message);
+			NumberFormatException(const String& message);
 		};
 	}
 }

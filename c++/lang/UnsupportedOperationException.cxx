@@ -25,14 +25,14 @@
 #include "beecrypt/c++/lang/UnsupportedOperationException.h"
 using namespace beecrypt::lang;
 
-UnsupportedOperationException::UnsupportedOperationException() throw ()
+UnsupportedOperationException::UnsupportedOperationException()
 {
 }
 
-UnsupportedOperationException::UnsupportedOperationException(const String* message) throw () : RuntimeException(message)
+UnsupportedOperationException::UnsupportedOperationException(const String* message) : RuntimeException(message)
 {
 }
 
-UnsupportedOperationException::UnsupportedOperationException(const String& message) throw () : RuntimeException(message)
+UnsupportedOperationException::UnsupportedOperationException(const String& message) : RuntimeException(message)
 {
 }

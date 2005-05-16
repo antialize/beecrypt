@@ -35,9 +35,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI ClassCastException : public RuntimeException
 		{
 		public:
-			ClassCastException() throw ();
-			ClassCastException(const String* message) throw ();
-			ClassCastException(const String& message) throw ();
+			ClassCastException();
+			ClassCastException(const String* message);
+			ClassCastException(const String& message);
 		};
 	}
 }
