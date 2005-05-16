@@ -45,7 +45,7 @@ namespace {
     const String FORMAT_BEE("BEE");
     const String ALGORITHM_RSA("RSA");
 
-	RSAPrivateKey* generatePrivate(const bytearray& enc)
+	RSAPrivateKey* generatePrivate(const bytearray& enc) throw (InvalidKeySpecException)
 	{
 		try
 		{
@@ -75,11 +75,11 @@ namespace {
 		}
 		catch (IOException&)
 		{
+			throw InvalidKeySpecException("Invalid KeySpec encoding");
 		}
-		return 0;
 	}
 
-	RSAPublicKey* generatePublic(const bytearray& enc)
+	RSAPublicKey* generatePublic(const bytearray& enc) throw (InvalidKeySpecException)
 	{
 		try
 		{
@@ -95,8 +95,8 @@ namespace {
 		}
 		catch (IOException&)
 		{
+			throw InvalidKeySpecException("Invalid KeySpec encoding");
 		}
-		return 0;
 	}
 }
 
@@ -121,11 +121,7 @@ PrivateKey* RSAKeyFactory::engineGeneratePrivate(const KeySpec& spec) throw (Inv
 	{
 		if (enc->getFormat().equals(FORMAT_BEE))
 		{
-			RSAPrivateKey* pri = generatePrivate(enc->getEncoded());
-			if (pri)
-				return pri;
-
-			throw InvalidKeySpecException("Invalid KeySpec encoding");
+			return generatePrivate(enc->getEncoded());
         }
         throw InvalidKeySpecException("Unsupported KeySpec format");
 	}
@@ -145,11 +141,7 @@ PublicKey* RSAKeyFactory::engineGeneratePublic(const KeySpec& spec) throw (Inval
 	{
 		if (enc->getFormat().equals(FORMAT_BEE))
 		{
-			RSAPublicKey* pub = generatePublic(enc->getEncoded());
-			if (pub)
-				return pub;
-
-			throw InvalidKeySpecException("Invalid KeySpec encoding");
+			return generatePublic(enc->getEncoded());
         }
         throw InvalidKeySpecException("Unsupported KeySpec format");
 	}

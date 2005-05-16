@@ -37,6 +37,7 @@ namespace beecrypt {
 		private:
 			static const int MODE_ECB;
 			static const int MODE_CBC;
+			static const int MODE_CTR;
 
 			static const int PADDING_NONE;
 			static const int PADDING_PKCS5;
@@ -54,7 +55,7 @@ namespace beecrypt {
 			bytearray _iv;
 
 			int process(const byte* input, int inputLength, byte* output, int outputLength) throw (ShortBufferException);
-			void reset();
+			void engineReset();
 
 		protected:
 			virtual bytearray* engineDoFinal(const byte* input, int inputOffset, int inputLength) throw (IllegalBlockSizeException, BadPaddingException);

@@ -39,7 +39,7 @@ namespace beecrypt {
 
 		public:
 			PKCS12KeyFactory();
-			virtual ~PKCS12KeyFactory();
+			virtual ~PKCS12KeyFactory() {}
 		};
 	}
 }

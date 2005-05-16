@@ -81,6 +81,7 @@ void HMAC::engineInit(const Key& key, const AlgorithmParameterSpec* spec) throw 
 	if (spec)
 		throw InvalidAlgorithmParameterException("No AlgorithmParameterSpec supported");
 
+#if 0 // key derivation should be done by caller; we can't know whether it's PKCS#5 or PKCS#12
 	const PBEKey* pbe = dynamic_cast<const PBEKey*>(&key);
 	if (pbe)
 	{
@@ -104,6 +105,7 @@ void HMAC::engineInit(const Key& key, const AlgorithmParameterSpec* spec) throw 
 
 		return;
 	}
+#endif
 
 	const SecretKey* sec = dynamic_cast<const SecretKey*>(&key);
 	if (sec)

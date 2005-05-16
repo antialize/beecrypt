@@ -55,7 +55,7 @@ namespace beecrypt {
 
 		public:
 			RSAKeyPairGenerator();
-			virtual ~RSAKeyPairGenerator();
+			virtual ~RSAKeyPairGenerator() {}
 		};
 	}
 }

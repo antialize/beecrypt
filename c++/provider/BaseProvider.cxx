@@ -27,8 +27,8 @@
 #include "beecrypt/c++/provider/BeeKeyStore.h"
 #include "beecrypt/c++/provider/BeeSecureRandom.h"
 #include "beecrypt/c++/provider/BlowfishCipher.h"
-#include "beecrypt/c++/provider/DHAESCipher.h"
-#include "beecrypt/c++/provider/DHAESParameters.h"
+#include "beecrypt/c++/provider/DHIESCipher.h"
+#include "beecrypt/c++/provider/DHIESParameters.h"
 #include "beecrypt/c++/provider/DHKeyAgreement.h"
 #include "beecrypt/c++/provider/DHKeyFactory.h"
 #include "beecrypt/c++/provider/DHKeyPairGenerator.h"
@@ -109,15 +109,15 @@ void* beecrypt_BlowfishCipher_create()
 }
 
 PROVAPI
-void* beecrypt_DHAESCipher_create()
+void* beecrypt_DHIESCipher_create()
 {
-	return new beecrypt::provider::DHAESCipher();
+	return new beecrypt::provider::DHIESCipher();
 }
 
 PROVAPI
-void* beecrypt_DHAESParameters_create()
+void* beecrypt_DHIESParameters_create()
 {
-	return new beecrypt::provider::DHAESParameters();
+	return new beecrypt::provider::DHIESParameters();
 }
 
 PROVAPI
@@ -311,15 +311,15 @@ void BaseProvider::init()
 	setProperty("AlgorithmParameterGenerator.DH"           , "beecrypt_DHParameterGenerator_create");
 	setProperty("AlgorithmParameterGenerator.DSA"          , "beecrypt_DSAParameterGenerator_create");
 	setProperty("AlgorithmParameters.DH"                   , "beecrypt_DHParameters_create");
-	setProperty("AlgorithmParameters.DHAES"                , "beecrypt_DHAESParameters_create");
+	setProperty("AlgorithmParameters.DHIES"                , "beecrypt_DHIESParameters_create");
 	setProperty("AlgorithmParameters.DSA"                  , "beecrypt_DSAParameters_create");
 	setProperty("CertificateFactory.BEE"                   , "beecrypt_BeeCertificateFactory_create");
 	setProperty("CertPathValidator.BEE"                    , "beecrypt_BeeCertPathValidator_create");
 	setProperty("Cipher.AES"                               , "beecrypt_AESCipher_create");
 	setProperty("Cipher.AES SupportedPaddings"             , "NOPADDING,PKCS5Padding");
 	setProperty("Cipher.Blowfish"                          , "beecrypt_BlowfishCipher_create");
-	setProperty("Cipher.Blowfish SupportedPaddings"        , "NOPADDING,PKCS5PAdding");
-	setProperty("Cipher.DHAES"                             , "beecrypt_DHAESCipher_create");
+	setProperty("Cipher.Blowfish SupportedPaddings"        , "NOPADDING,PKCS5Padding");
+	setProperty("Cipher.DHIES"                             , "beecrypt_DHIESCipher_create");
 	setProperty("KeyAgreement.DH"                          , "beecrypt_DHKeyAgreement_create");
 	setProperty("KeyFactory.DH"                            , "beecrypt_DHKeyFactory_create");
 	setProperty("KeyFactory.DSA"                           , "beecrypt_DSAKeyFactory_create");
@@ -328,11 +328,11 @@ void BaseProvider::init()
 	setProperty("KeyPairGenerator.DH"                      , "beecrypt_DHKeyPairGenerator_create");
 	setProperty("KeyPairGenerator.DSA"                     , "beecrypt_DSAKeyPairGenerator_create");
 	setProperty("KeyPairGenerator.RSA"                     , "beecrypt_RSAKeyPairGenerator_create");
-	setProperty("Mac.HMAC-MD5"                             , "beecrypt_HMACMD5_create");
-	setProperty("Mac.HMAC-SHA-1"                           , "beecrypt_HMACSHA1_create");
-	setProperty("Mac.HMAC-SHA-256"                         , "beecrypt_HMACSHA256_create");
-	setProperty("Mac.HMAC-SHA-384"                         , "beecrypt_HMACSHA384_create");
-	setProperty("Mac.HMAC-SHA-512"                         , "beecrypt_HMACSHA512_create");
+	setProperty("Mac.HmacMD5"                              , "beecrypt_HMACMD5_create");
+	setProperty("Mac.HmacSHA1"                             , "beecrypt_HMACSHA1_create");
+	setProperty("Mac.HmacSHA256"                           , "beecrypt_HMACSHA256_create");
+	setProperty("Mac.HmacSHA384"                           , "beecrypt_HMACSHA384_create");
+	setProperty("Mac.HmacSHA512"                           , "beecrypt_HMACSHA512_create");
 	setProperty("MessageDigest.MD5"                        , "beecrypt_MD5Digest_create");
 	setProperty("MessageDigest.SHA-1"                      , "beecrypt_SHA1Digest_create");
 	setProperty("MessageDigest.SHA-256"                    , "beecrypt_SHA256Digest_create");
@@ -346,9 +346,16 @@ void BaseProvider::init()
 	setProperty("Signature.SHA256withRSA"                  , "beecrypt_SHA256withRSASignature_create");
 	setProperty("Signature.SHA384withRSA"                  , "beecrypt_SHA384withRSASignature_create");
 	setProperty("Signature.SHA512withRSA"                  , "beecrypt_SHA512withRSASignature_create");
+	setProperty("Alg.Alias.Cipher.DHAES"                   , "Cipher.DHIES");
+	setProperty("Alg.Alias.Cipher.DHES"                    , "Cipher.DHIES");
 	setProperty("Alg.Alias.KeyAgreement.DiffieHellman"     , "KeyAgreement.DH");
 	setProperty("Alg.Alias.KeyFactory.DiffieHellman"       , "KeyFactory.DH");
 	setProperty("Alg.Alias.KeyPairGenerator.DiffieHellman" , "KeyPairGenerator.DH");
+	setProperty("Alg.Alias.Mac.HMAC-MD5"                   , "Mac.HmacMD5");
+	setProperty("Alg.Alias.Mac.HMAC-SHA-1"                 , "Mac.HmacSHA1");
+	setProperty("Alg.Alias.Mac.HMAC-SHA-256"               , "Mac.HmacSHA256");
+	setProperty("Alg.Alias.Mac.HMAC-SHA-384"               , "Mac.HmacSHA384");
+	setProperty("Alg.Alias.Mac.HMAC-SHA-512"               , "Mac.HmacSHA512");
 	setProperty("Alg.Alias.Signature.DSS"                  , "Signature.SHA1withDSA");
 	setProperty("Alg.Alias.Signature.SHAwithDSA"           , "Signature.SHA1withDSA");
 	setProperty("Alg.Alias.Signature.SHA/DSA"              , "Signature.SHA1withDSA");

@@ -47,12 +47,26 @@ using namespace beecrypt::provider;
 
 const int BlockCipher::MODE_ECB = 0;
 const int BlockCipher::MODE_CBC = 1;
+const int BlockCipher::MODE_CTR = 2;
 
 const int BlockCipher::PADDING_NONE = 0;
 const int BlockCipher::PADDING_PKCS5 = 1;
 
 namespace {
 	String FORMAT_RAW("RAW");
+
+	void hexdump(const byte* data, size_t size)
+	{
+		size_t i;
+		for (i = 0; i < size; i++)
+		{
+			printf("%02x ", data[i]);
+			if ((i & 0x1f) == 0x1f)
+				printf("\n");
+		}
+		if (i & 0x1f)
+			printf("\n");
+	}
 }
 
 /*!\todo investigate getting buffer size from beecrypt.conf
@@ -124,7 +138,7 @@ bytearray* BlockCipher::engineDoFinal(const byte* input, int inputOffset, int in
 		}
 	} 
 
-	reset();
+	engineReset();
 
 	return tmp;
 }
@@ -137,6 +151,8 @@ int BlockCipher::engineDoFinal(const byte* input, int inputOffset, int inputLeng
 
 	int total = process(input+inputOffset, inputLength, output.data() + outputOffset, output.size() - outputOffset);
 
+	outputOffset += total;
+
 	if ((_padding == PADDING_PKCS5) && (_opmode == Cipher::ENCRYPT_MODE))
 	{
 		int padvalue = blocksize - (_bufcnt % blocksize);
@@ -145,33 +161,38 @@ int BlockCipher::engineDoFinal(const byte* input, int inputOffset, int inputLeng
 
 		_bufcnt += padvalue;
 
-		outputOffset += total;
-
 		total += process(0, 0, output.data() + outputOffset, output.size() - outputOffset);
 	}
 
 	if (_bufcnt)
 		throw BadPaddingException("input is not a whole number of blocks");
 
-	if ((_padding = PADDING_PKCS5) && (_opmode == Cipher::DECRYPT_MODE))
+	if ((_padding == PADDING_PKCS5) && (_opmode == Cipher::DECRYPT_MODE))
 	{
+		if (total < blocksize)
+			throw BadPaddingException("must have at least one whole block to unpad");
+
 		// sanity check: total must be a non-zero whole number of blocks
-		const byte* unpad_check = output.data() + outputOffset + total;
+		const byte* unpad_check = output.data() + outputOffset;
 
 		byte unpadvalue = *(--unpad_check);
 
 		if (unpadvalue > blocksize)
-			throw BadPaddingException("last padding byte value is greater than blocksize");
+		{
+			printf("bad unpadvalue\n");
+			hexdump(output.data() + outputOffset, total);
+			throw BadPaddingException("padding byte value is greater than blocksize");
+		}
 
 		// check all values
 		for (byte b = unpadvalue; b > 1; b--)
 			if (unpadvalue != *(--unpad_check))
-				throw BadPaddingException("not all padding bytes have same value");
+				throw BadPaddingException("not all padding bytes have the same value");
 
 		total -= unpadvalue;
 	}
 
-	reset();
+	engineReset();
 
 	return total;
 }
@@ -241,7 +262,7 @@ void BlockCipher::engineInit(int opmode, const Key& key, SecureRandom* random) t
 
 	_key = *(dynamic_cast<const SecretKey&>(key).getEncoded());
 
-	reset();
+	engineReset();
 }
 
 void BlockCipher::engineInit(int opmode, const Key& key, AlgorithmParameters* params, SecureRandom* random) throw (InvalidKeyException, InvalidAlgorithmParameterException)
@@ -310,6 +331,8 @@ void BlockCipher::engineSetMode(const String& mode) throw (NoSuchAlgorithmExcept
 		_blmode = MODE_ECB;
 	else if (mode.equalsIgnoreCase("CBC"))
 		_blmode = MODE_CBC;
+	else if (mode.equalsIgnoreCase("CTR"))
+		_blmode = MODE_CTR;
 	else
 		throw NoSuchAlgorithmException();
 }
@@ -402,6 +425,9 @@ int BlockCipher::process(const byte* input, int inputLength, byte* output, int o
 			case MODE_CBC:
 				blockCipherContextCBC(&_ctxt, out, in, blocks);
 				break;
+			case MODE_CTR:
+				blockCipherContextCTR(&_ctxt, out, in, blocks);
+				break;
 			}
 
 			if (copyOut)
@@ -445,7 +471,7 @@ int BlockCipher::process(const byte* input, int inputLength, byte* output, int o
 	return total;
 }
 
-void BlockCipher::reset()
+void BlockCipher::engineReset()
 {
 	if (_opmode == Cipher::ENCRYPT_MODE || _opmode == Cipher::DECRYPT_MODE)
 	{

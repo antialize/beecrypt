@@ -333,20 +333,20 @@ void BeeKeyStore::engineLoad(InputStream* in, const array<jchar>* password) thro
 		jint version = dis.readInt();
 
 		if (magic != BKS_MAGIC || version != BKS_VERSION_1)
-			throw IOException("Invalid BeeKeyStore format");
+			throw IOException("invalid BeeKeyStore format");
 
 		_entries.clear();
 
 		jint saltsize = dis.readInt();
 		if (saltsize <= 0)
-			throw IOException("Invalid BeeKeyStore salt size");
+			throw IOException("invalid BeeKeyStore salt size");
 
 		_salt.resize(saltsize);
 		dis.readFully(_salt);
 
 		_iter = dis.readInt();
 		if (_iter <= 0)
-			throw IOException("Invalid BeeKeyStore iteration count");
+			throw IOException("invalid BeeKeyStore iteration count");
 
 		PKCS12PBEKey pbekey(password ? *password : EMPTY_PASSWORD, &_salt, _iter);
 
@@ -357,7 +357,7 @@ void BeeKeyStore::engineLoad(InputStream* in, const array<jchar>* password) thro
 		jint entrycount = dis.readInt();
 
 		if (entrycount <= 0)
-			throw IOException("Invalid BeeKeyStore entry count");
+			throw IOException("invalid BeeKeyStore entry count");
 
 		for (jint i = 0; i < entrycount; i++)
 		{
@@ -376,7 +376,7 @@ void BeeKeyStore::engineLoad(InputStream* in, const array<jchar>* password) thro
 					jint keysize = dis.readInt();
 
 					if (keysize <= 0)
-						throw IOException("Invalid BeeKeyStore key length");
+						throw IOException("invalid BeeKeyStore key length");
 
 					e->encryptedkey.resize((int) keysize);
 
@@ -385,7 +385,7 @@ void BeeKeyStore::engineLoad(InputStream* in, const array<jchar>* password) thro
 					jint certcount = dis.readInt();
 
 					if (certcount <= 0)
-						throw IOException("Invalid BeeKeyStore certificate count");
+						throw IOException("invalid BeeKeyStore certificate count");
 
 					e->chain.resize(certcount);
 
@@ -398,7 +398,7 @@ void BeeKeyStore::engineLoad(InputStream* in, const array<jchar>* password) thro
 						jint certsize = dis.readInt();
 
 						if (certsize <= 0)
-							throw IOException("Invalid BeeKeyStore certificate size");
+							throw IOException("invalid BeeKeyStore certificate size");
 					
 						bytearray cert(certsize);
 
@@ -428,7 +428,7 @@ void BeeKeyStore::engineLoad(InputStream* in, const array<jchar>* password) thro
 					jint certsize = dis.readInt();
 
 					if (certsize <= 0)
-						throw IOException("Invalid BeeKeyStore certificate size");
+						throw IOException("invalid BeeKeyStore certificate size");
 
 					bytearray cert(certsize);
 
@@ -443,7 +443,7 @@ void BeeKeyStore::engineLoad(InputStream* in, const array<jchar>* password) thro
 				break;
 
 			default:
-				throw IOException("Invalid BeeKeyStore entry tag");
+				throw IOException("invalid BeeKeyStore entry tag");
 			}
 		}
 
@@ -453,7 +453,7 @@ void BeeKeyStore::engineLoad(InputStream* in, const array<jchar>* password) thro
 
 		jint macsize = dis.available();
 		if (macsize <= 0)
-			throw IOException("Invalid BeeKeyStore MAC size");
+			throw IOException("invalid BeeKeyStore MAC size");
 
 		computed_mac = m->doFinal();
 		// we can safely cast, since we've excluded negative numbers
