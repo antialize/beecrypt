@@ -37,6 +37,7 @@ UnsupportedOperationException.cxx
 cxxlang_HEADERS = \
 ArithmeticException.h \
 Character.h \
+CharSequence.h \
 ClassCastException.h \
 Cloneable.h \
 CloneNotSupportedException.h \
