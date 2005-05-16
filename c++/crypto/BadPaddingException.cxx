@@ -26,14 +26,14 @@
 
 using namespace beecrypt::crypto;
 
-BadPaddingException::BadPaddingException() throw ()
+BadPaddingException::BadPaddingException()
 {
 }
 
-BadPaddingException::BadPaddingException(const String* message) throw () : GeneralSecurityException(message)
+BadPaddingException::BadPaddingException(const String* message) : GeneralSecurityException(message)
 {
 }
 
-BadPaddingException::BadPaddingException(const String& message) throw () : GeneralSecurityException(message)
+BadPaddingException::BadPaddingException(const String& message) : GeneralSecurityException(message)
 {
 }

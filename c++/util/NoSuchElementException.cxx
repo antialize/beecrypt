@@ -26,14 +26,14 @@
 
 using namespace beecrypt::util;
 
-NoSuchElementException::NoSuchElementException() throw ()
+NoSuchElementException::NoSuchElementException()
 {
 }
 
-NoSuchElementException::NoSuchElementException(const String* message) throw () : RuntimeException(message)
+NoSuchElementException::NoSuchElementException(const String* message) : RuntimeException(message)
 {
 }
 
-NoSuchElementException::NoSuchElementException(const String& message) throw () : RuntimeException(message)
+NoSuchElementException::NoSuchElementException(const String& message) : RuntimeException(message)
 {
 }

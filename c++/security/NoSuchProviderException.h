@@ -35,9 +35,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI NoSuchProviderException : public GeneralSecurityException
 		{
 		public:
-			NoSuchProviderException() throw ();
-			NoSuchProviderException(const String* message) throw ();
-			NoSuchProviderException(const String& message) throw ();
+			NoSuchProviderException();
+			NoSuchProviderException(const String* message);
+			NoSuchProviderException(const String& message);
 		};
 	}
 }

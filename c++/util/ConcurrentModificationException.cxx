@@ -26,14 +26,14 @@
 
 using namespace beecrypt::util;
 
-ConcurrentModificationException::ConcurrentModificationException() throw ()
+ConcurrentModificationException::ConcurrentModificationException()
 {
 }
 
-ConcurrentModificationException::ConcurrentModificationException(const String* message) throw () : RuntimeException(message)
+ConcurrentModificationException::ConcurrentModificationException(const String* message) : RuntimeException(message)
 {
 }
 
-ConcurrentModificationException::ConcurrentModificationException(const String& message) throw () : RuntimeException(message)
+ConcurrentModificationException::ConcurrentModificationException(const String& message) : RuntimeException(message)
 {
 }

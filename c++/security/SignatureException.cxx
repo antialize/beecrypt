@@ -26,14 +26,14 @@
 
 using namespace beecrypt::security;
 
-SignatureException::SignatureException() throw ()
+SignatureException::SignatureException()
 {
 }
 
-SignatureException::SignatureException(const String* message) throw () : GeneralSecurityException(message)
+SignatureException::SignatureException(const String* message) : GeneralSecurityException(message)
 {
 }
 
-SignatureException::SignatureException(const String& message) throw () : GeneralSecurityException(message)
+SignatureException::SignatureException(const String& message) : GeneralSecurityException(message)
 {
 }

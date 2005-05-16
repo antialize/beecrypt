@@ -35,9 +35,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI KeyException : public GeneralSecurityException
 		{
 		public:
-			KeyException() throw ();
-			KeyException(const String* message) throw ();
-			KeyException(const String& message) throw ();
+			KeyException();
+			KeyException(const String* message);
+			KeyException(const String& message);
 		};
 	}
 }

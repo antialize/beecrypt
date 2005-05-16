@@ -35,9 +35,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI NoSuchAlgorithmException : public GeneralSecurityException
 		{
 		public:
-			NoSuchAlgorithmException() throw ();
-			NoSuchAlgorithmException(const String* message) throw ();
-			NoSuchAlgorithmException(const String& message) throw ();
+			NoSuchAlgorithmException();
+			NoSuchAlgorithmException(const String* message);
+			NoSuchAlgorithmException(const String& message);
 		};
 	}
 }

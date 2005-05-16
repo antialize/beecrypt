@@ -26,14 +26,14 @@
 
 using namespace beecrypt::security;
 
-ProviderException::ProviderException() throw ()
+ProviderException::ProviderException()
 {
 }
 
-ProviderException::ProviderException(const String* message) throw () : RuntimeException(message)
+ProviderException::ProviderException(const String* message) : RuntimeException(message)
 {
 }
 
-ProviderException::ProviderException(const String& message) throw () : RuntimeException(message)
+ProviderException::ProviderException(const String& message) : RuntimeException(message)
 {
 }

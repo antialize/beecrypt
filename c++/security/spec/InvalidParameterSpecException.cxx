@@ -26,14 +26,14 @@
 
 using namespace beecrypt::security::spec;
 
-InvalidParameterSpecException::InvalidParameterSpecException() throw ()
+InvalidParameterSpecException::InvalidParameterSpecException()
 {
 }
 
-InvalidParameterSpecException::InvalidParameterSpecException(const String* message) throw () : GeneralSecurityException(message)
+InvalidParameterSpecException::InvalidParameterSpecException(const String* message) : GeneralSecurityException(message)
 {
 }
 
-InvalidParameterSpecException::InvalidParameterSpecException(const String& message) throw () : GeneralSecurityException(message)
+InvalidParameterSpecException::InvalidParameterSpecException(const String& message) : GeneralSecurityException(message)
 {
 }

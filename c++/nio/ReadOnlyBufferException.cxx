@@ -26,14 +26,14 @@
 
 using namespace beecrypt::nio;
 
-ReadOnlyBufferException::ReadOnlyBufferException() throw ()
+ReadOnlyBufferException::ReadOnlyBufferException()
 {
 }
 
-ReadOnlyBufferException::ReadOnlyBufferException(const String* message) throw () : UnsupportedOperationException(message)
+ReadOnlyBufferException::ReadOnlyBufferException(const String* message) : UnsupportedOperationException(message)
 {
 }
 
-ReadOnlyBufferException::ReadOnlyBufferException(const String& message) throw () : UnsupportedOperationException(message)
+ReadOnlyBufferException::ReadOnlyBufferException(const String& message) : UnsupportedOperationException(message)
 {
 }

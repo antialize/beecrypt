@@ -36,9 +36,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI NoSuchElementException : public beecrypt::lang::RuntimeException
 		{
 		public:
-			NoSuchElementException() throw ();
-			NoSuchElementException(const String*) throw ();
-			NoSuchElementException(const String&) throw ();
+			NoSuchElementException();
+			NoSuchElementException(const String*);
+			NoSuchElementException(const String&);
 		};
 	}
 }

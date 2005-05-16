@@ -36,9 +36,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI InvalidParameterException : public beecrypt::lang::IllegalArgumentException
 		{
 		public:
-			InvalidParameterException() throw ();
-			InvalidParameterException(const String* message) throw ();
-			InvalidParameterException(const String& message) throw ();
+			InvalidParameterException();
+			InvalidParameterException(const String* message);
+			InvalidParameterException(const String& message);
 		};
 	}
 }

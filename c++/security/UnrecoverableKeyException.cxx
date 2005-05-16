@@ -26,14 +26,14 @@
 
 using namespace beecrypt::security;
 
-UnrecoverableKeyException::UnrecoverableKeyException() throw ()
+UnrecoverableKeyException::UnrecoverableKeyException()
 {
 }
 
-UnrecoverableKeyException::UnrecoverableKeyException(const String* message) throw () : GeneralSecurityException(message)
+UnrecoverableKeyException::UnrecoverableKeyException(const String* message) : GeneralSecurityException(message)
 {
 }
 
-UnrecoverableKeyException::UnrecoverableKeyException(const String& message) throw () : GeneralSecurityException(message)
+UnrecoverableKeyException::UnrecoverableKeyException(const String& message) : GeneralSecurityException(message)
 {
 }

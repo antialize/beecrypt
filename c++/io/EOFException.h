@@ -35,9 +35,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI EOFException : public IOException
 		{
 		public:
-			EOFException() throw ();
-			EOFException(const String* message) throw ();
-			EOFException(const String& message) throw ();
+			EOFException();
+			EOFException(const String* message);
+			EOFException(const String& message);
 		};
 	}
 }

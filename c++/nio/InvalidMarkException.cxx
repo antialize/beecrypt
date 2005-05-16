@@ -25,14 +25,14 @@
 #include "beecrypt/c++/nio/InvalidMarkException.h"
 using namespace beecrypt::nio;
 
-InvalidMarkException::InvalidMarkException() throw ()
+InvalidMarkException::InvalidMarkException()
 {
 }
 
-InvalidMarkException::InvalidMarkException(const String* message) throw () : IllegalStateException(message)
+InvalidMarkException::InvalidMarkException(const String* message) : IllegalStateException(message)
 {
 }
 
-InvalidMarkException::InvalidMarkException(const String& message) throw () : IllegalStateException(message)
+InvalidMarkException::InvalidMarkException(const String& message) : IllegalStateException(message)
 {
 }

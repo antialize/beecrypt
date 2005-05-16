@@ -36,9 +36,9 @@ namespace beecrypt {
 			class BEECRYPTCXXAPI CertificateExpiredException : public CertificateException
 			{
 			public:
-				CertificateExpiredException() throw ();
-				CertificateExpiredException(const String* message) throw ();
-				CertificateExpiredException(const String& message) throw ();
+				CertificateExpiredException();
+				CertificateExpiredException(const String* message);
+				CertificateExpiredException(const String& message);
 			};
 		}
 	}

@@ -35,9 +35,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI IllegalBlockSizeException : public beecrypt::security::GeneralSecurityException
 		{
 		public:
-			IllegalBlockSizeException() throw ();
-			IllegalBlockSizeException(const String* message) throw ();
-			IllegalBlockSizeException(const String& message) throw ();
+			IllegalBlockSizeException();
+			IllegalBlockSizeException(const String* message);
+			IllegalBlockSizeException(const String& message);
 		};
 	}
 }

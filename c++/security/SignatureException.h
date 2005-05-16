@@ -35,9 +35,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI SignatureException : public GeneralSecurityException
 		{
 		public:
-			SignatureException() throw ();
-			SignatureException(const String* message) throw ();
-			SignatureException(const String& message) throw ();
+			SignatureException();
+			SignatureException(const String* message);
+			SignatureException(const String& message);
 		};
 	}
 }

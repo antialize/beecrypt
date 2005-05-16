@@ -35,9 +35,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI ReadOnlyBufferException : public beecrypt::lang::UnsupportedOperationException
 		{
 		public:
-			ReadOnlyBufferException() throw ();
-			ReadOnlyBufferException(const String* message) throw ();
-			ReadOnlyBufferException(const String& message) throw ();
+			ReadOnlyBufferException();
+			ReadOnlyBufferException(const String* message);
+			ReadOnlyBufferException(const String& message);
 		};
 	}
 }

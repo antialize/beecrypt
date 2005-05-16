@@ -26,14 +26,14 @@
 
 using namespace beecrypt::io;
 
-EOFException::EOFException() throw ()
+EOFException::EOFException()
 {
 }
 
-EOFException::EOFException(const String* message) throw () : IOException(message)
+EOFException::EOFException(const String* message) : IOException(message)
 {
 }
 
-EOFException::EOFException(const String& message) throw () : IOException(message)
+EOFException::EOFException(const String& message) : IOException(message)
 {
 }

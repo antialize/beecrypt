@@ -26,14 +26,14 @@
 
 using namespace beecrypt::security::cert;
 
-CertPathValidatorException::CertPathValidatorException() throw ()
+CertPathValidatorException::CertPathValidatorException()
 {
 }
 
-CertPathValidatorException::CertPathValidatorException(const String* message) throw () : GeneralSecurityException(message)
+CertPathValidatorException::CertPathValidatorException(const String* message) : GeneralSecurityException(message)
 {
 }
 
-CertPathValidatorException::CertPathValidatorException(const String& message) throw () : GeneralSecurityException(message)
+CertPathValidatorException::CertPathValidatorException(const String& message) : GeneralSecurityException(message)
 {
 }

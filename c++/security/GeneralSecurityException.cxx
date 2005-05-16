@@ -26,14 +26,14 @@
 
 using namespace beecrypt::security;
 
-GeneralSecurityException::GeneralSecurityException() throw ()
+GeneralSecurityException::GeneralSecurityException()
 {
 }
 
-GeneralSecurityException::GeneralSecurityException(const String* message) throw () : Exception(message)
+GeneralSecurityException::GeneralSecurityException(const String* message) : Exception(message)
 {
 }
 
-GeneralSecurityException::GeneralSecurityException(const String& message) throw () : Exception(message)
+GeneralSecurityException::GeneralSecurityException(const String& message) : Exception(message)
 {
 }

@@ -26,14 +26,14 @@
 
 using namespace beecrypt::security;
 
-InvalidKeyException::InvalidKeyException() throw ()
+InvalidKeyException::InvalidKeyException()
 {
 }
 
-InvalidKeyException::InvalidKeyException(const String* message) throw () : KeyException(message)
+InvalidKeyException::InvalidKeyException(const String* message) : KeyException(message)
 {
 }
 
-InvalidKeyException::InvalidKeyException(const String& message) throw () : KeyException(message)
+InvalidKeyException::InvalidKeyException(const String& message) : KeyException(message)
 {
 }

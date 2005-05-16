@@ -26,14 +26,14 @@
 
 using namespace beecrypt::security::cert;
 
-CertificateExpiredException::CertificateExpiredException() throw ()
+CertificateExpiredException::CertificateExpiredException()
 {
 }
 
-CertificateExpiredException::CertificateExpiredException(const String* message) throw () : CertificateException(message)
+CertificateExpiredException::CertificateExpiredException(const String* message) : CertificateException(message)
 {
 }
 
-CertificateExpiredException::CertificateExpiredException(const String& message) throw () : CertificateException(message)
+CertificateExpiredException::CertificateExpiredException(const String& message) : CertificateException(message)
 {
 }

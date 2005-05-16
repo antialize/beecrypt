@@ -35,9 +35,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI ShortBufferException : public GeneralSecurityException
 		{
 		public:
-			ShortBufferException() throw ();
-			ShortBufferException(const String* message) throw ();
-			ShortBufferException(const String& message) throw ();
+			ShortBufferException();
+			ShortBufferException(const String* message);
+			ShortBufferException(const String& message);
 		};
 	}
 }

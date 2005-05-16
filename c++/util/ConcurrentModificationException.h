@@ -36,9 +36,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI ConcurrentModificationException : public beecrypt::lang::RuntimeException
 		{
 		public:
-			ConcurrentModificationException() throw ();
-			ConcurrentModificationException(const String*) throw ();
-			ConcurrentModificationException(const String&) throw ();
+			ConcurrentModificationException();
+			ConcurrentModificationException(const String*);
+			ConcurrentModificationException(const String&);
 		};
 	}
 }

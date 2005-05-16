@@ -26,14 +26,14 @@
 
 using namespace beecrypt::security::auth;
 
-DestroyFailedException::DestroyFailedException() throw ()
+DestroyFailedException::DestroyFailedException()
 {
 }
 
-DestroyFailedException::DestroyFailedException(const String* message) throw () : Exception(message)
+DestroyFailedException::DestroyFailedException(const String* message) : Exception(message)
 {
 }
 
-DestroyFailedException::DestroyFailedException(const String& message) throw () : Exception(message)
+DestroyFailedException::DestroyFailedException(const String& message) : Exception(message)
 {
 }

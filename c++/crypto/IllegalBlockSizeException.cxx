@@ -26,14 +26,14 @@
 
 using namespace beecrypt::crypto;
 
-IllegalBlockSizeException::IllegalBlockSizeException() throw ()
+IllegalBlockSizeException::IllegalBlockSizeException()
 {
 }
 
-IllegalBlockSizeException::IllegalBlockSizeException(const String* message) throw () : GeneralSecurityException(message)
+IllegalBlockSizeException::IllegalBlockSizeException(const String* message) : GeneralSecurityException(message)
 {
 }
 
-IllegalBlockSizeException::IllegalBlockSizeException(const String& message) throw () : GeneralSecurityException(message)
+IllegalBlockSizeException::IllegalBlockSizeException(const String& message) : GeneralSecurityException(message)
 {
 }

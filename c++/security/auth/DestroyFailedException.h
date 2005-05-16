@@ -37,9 +37,9 @@ namespace beecrypt {
 			class BEECRYPTCXXAPI DestroyFailedException : public beecrypt::lang::Exception
 			{
 			public:
-				DestroyFailedException() throw ();
-				DestroyFailedException(const String* message) throw ();
-				DestroyFailedException(const String& message) throw ();
+				DestroyFailedException();
+				DestroyFailedException(const String* message);
+				DestroyFailedException(const String& message);
 			};
 		}
 	}

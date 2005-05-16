@@ -35,9 +35,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI InvalidMarkException : public beecrypt::lang::IllegalStateException
 		{
 		public:
-			InvalidMarkException() throw ();
-			InvalidMarkException(const String* message) throw ();
-			InvalidMarkException(const String& message) throw ();
+			InvalidMarkException();
+			InvalidMarkException(const String* message);
+			InvalidMarkException(const String& message);
 		};
 	}
 }

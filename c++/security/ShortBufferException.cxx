@@ -26,14 +26,14 @@
 
 using namespace beecrypt::security;
 
-ShortBufferException::ShortBufferException() throw ()
+ShortBufferException::ShortBufferException()
 {
 }
 
-ShortBufferException::ShortBufferException(const String* message) throw () : GeneralSecurityException(message)
+ShortBufferException::ShortBufferException(const String* message) : GeneralSecurityException(message)
 {
 }
 
-ShortBufferException::ShortBufferException(const String& message) throw () : GeneralSecurityException(message)
+ShortBufferException::ShortBufferException(const String& message) : GeneralSecurityException(message)
 {
 }

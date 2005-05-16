@@ -26,14 +26,14 @@
 
 using namespace beecrypt::security;
 
-NoSuchAlgorithmException::NoSuchAlgorithmException() throw ()
+NoSuchAlgorithmException::NoSuchAlgorithmException()
 {
 }
 
-NoSuchAlgorithmException::NoSuchAlgorithmException(const String* message) throw () : GeneralSecurityException(message)
+NoSuchAlgorithmException::NoSuchAlgorithmException(const String* message) : GeneralSecurityException(message)
 {
 }
 
-NoSuchAlgorithmException::NoSuchAlgorithmException(const String& message) throw () : GeneralSecurityException(message)
+NoSuchAlgorithmException::NoSuchAlgorithmException(const String& message) : GeneralSecurityException(message)
 {
 }

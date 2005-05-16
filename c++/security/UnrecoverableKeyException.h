@@ -35,9 +35,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI UnrecoverableKeyException : public GeneralSecurityException
 		{
 		public:
-			UnrecoverableKeyException() throw ();
-			UnrecoverableKeyException(const String* message) throw ();
-			UnrecoverableKeyException(const String& message) throw ();
+			UnrecoverableKeyException();
+			UnrecoverableKeyException(const String* message);
+			UnrecoverableKeyException(const String& message);
 		};
 	}
 }

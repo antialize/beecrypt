@@ -35,9 +35,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI InvalidKeyException : public KeyException
 		{
 		public:
-			InvalidKeyException() throw ();
-			InvalidKeyException(const String* message) throw ();
-			InvalidKeyException(const String& message) throw ();
+			InvalidKeyException();
+			InvalidKeyException(const String* message);
+			InvalidKeyException(const String& message);
 		};
 	}
 }

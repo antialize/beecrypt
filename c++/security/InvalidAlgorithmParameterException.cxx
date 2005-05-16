@@ -26,14 +26,14 @@
 
 using namespace beecrypt::security;
 
-InvalidAlgorithmParameterException::InvalidAlgorithmParameterException() throw ()
+InvalidAlgorithmParameterException::InvalidAlgorithmParameterException()
 {
 }
 
-InvalidAlgorithmParameterException::InvalidAlgorithmParameterException(const String* message) throw () : GeneralSecurityException(message)
+InvalidAlgorithmParameterException::InvalidAlgorithmParameterException(const String* message) : GeneralSecurityException(message)
 {
 }
 
-InvalidAlgorithmParameterException::InvalidAlgorithmParameterException(const String& message) throw () : GeneralSecurityException(message)
+InvalidAlgorithmParameterException::InvalidAlgorithmParameterException(const String& message) : GeneralSecurityException(message)
 {
 }

@@ -35,9 +35,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI InvalidAlgorithmParameterException : public GeneralSecurityException
 		{
 		public:
-			InvalidAlgorithmParameterException() throw ();
-			InvalidAlgorithmParameterException(const String* message) throw ();
-			InvalidAlgorithmParameterException(const String& message) throw ();
+			InvalidAlgorithmParameterException();
+			InvalidAlgorithmParameterException(const String* message);
+			InvalidAlgorithmParameterException(const String& message);
 		};
 	}
 }

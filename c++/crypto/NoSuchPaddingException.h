@@ -35,9 +35,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI NoSuchPaddingException : public beecrypt::security::GeneralSecurityException
 		{
 		public:
-			NoSuchPaddingException() throw ();
-			NoSuchPaddingException(const String* message) throw ();
-			NoSuchPaddingException(const String& message) throw ();
+			NoSuchPaddingException();
+			NoSuchPaddingException(const String* message);
+			NoSuchPaddingException(const String& message);
 		};
 	}
 }

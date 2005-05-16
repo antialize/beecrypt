@@ -37,9 +37,9 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI ProviderException : public beecrypt::lang::RuntimeException
 		{
 		public:
-			ProviderException() throw ();
-			ProviderException(const String* message) throw ();
-			ProviderException(const String& message) throw ();
+			ProviderException();
+			ProviderException(const String* message);
+			ProviderException(const String& message);
 		};
 	}
 }

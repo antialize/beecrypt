@@ -26,14 +26,14 @@
 
 using namespace beecrypt::security::cert;
 
-CertificateNotYetValidException::CertificateNotYetValidException() throw ()
+CertificateNotYetValidException::CertificateNotYetValidException()
 {
 }
 
-CertificateNotYetValidException::CertificateNotYetValidException(const String* message) throw () : CertificateException(message)
+CertificateNotYetValidException::CertificateNotYetValidException(const String* message) : CertificateException(message)
 {
 }
 
-CertificateNotYetValidException::CertificateNotYetValidException(const String& message) throw () : CertificateException(message)
+CertificateNotYetValidException::CertificateNotYetValidException(const String& message) : CertificateException(message)
 {
 }

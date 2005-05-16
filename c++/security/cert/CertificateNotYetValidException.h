@@ -36,9 +36,9 @@ namespace beecrypt {
 			class BEECRYPTCXXAPI CertificateNotYetValidException : public CertificateException
 			{
 			public:
-				CertificateNotYetValidException() throw ();
-				CertificateNotYetValidException(const String* message) throw ();
-				CertificateNotYetValidException(const String& message) throw ();
+				CertificateNotYetValidException();
+				CertificateNotYetValidException(const String* message);
+				CertificateNotYetValidException(const String& message);
 			};
 		}
 	}

@@ -26,14 +26,14 @@
 
 using namespace beecrypt::security;
 
-NoSuchProviderException::NoSuchProviderException() throw ()
+NoSuchProviderException::NoSuchProviderException()
 {
 }
 
-NoSuchProviderException::NoSuchProviderException(const String* message) throw () : GeneralSecurityException(message)
+NoSuchProviderException::NoSuchProviderException(const String* message) : GeneralSecurityException(message)
 {
 }
 
-NoSuchProviderException::NoSuchProviderException(const String& message) throw () : GeneralSecurityException(message)
+NoSuchProviderException::NoSuchProviderException(const String& message) : GeneralSecurityException(message)
 {
 }

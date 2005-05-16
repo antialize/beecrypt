@@ -36,9 +36,9 @@ namespace beecrypt {
 			class BEECRYPTCXXAPI CertPathValidatorException : public beecrypt::security::GeneralSecurityException
 			{
 			public:
-				CertPathValidatorException() throw ();
-				CertPathValidatorException(const String* message) throw ();
-				CertPathValidatorException(const String& message) throw ();
+				CertPathValidatorException();
+				CertPathValidatorException(const String* message);
+				CertPathValidatorException(const String& message);
 			};
 		}
 	}

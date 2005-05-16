@@ -36,9 +36,9 @@ namespace beecrypt {
 			class BEECRYPTCXXAPI CertificateEncodingException : public CertificateException
 			{
 			public:
-				CertificateEncodingException() throw ();
-				CertificateEncodingException(const String* message) throw ();
-				CertificateEncodingException(const String& message) throw ();
+				CertificateEncodingException();
+				CertificateEncodingException(const String* message);
+				CertificateEncodingException(const String& message);
 			};
 		}
 	}
