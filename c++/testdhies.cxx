@@ -30,8 +30,8 @@ using beecrypt::crypto::Cipher;
 using beecrypt::crypto::interfaces::DHPublicKey;
 #include "beecrypt/c++/crypto/interfaces/DHPrivateKey.h"
 using beecrypt::crypto::interfaces::DHPrivateKey;
-#include "beecrypt/c++/beeyond/DHAESParameterSpec.h"
-using beecrypt::beeyond::DHAESParameterSpec;
+#include "beecrypt/c++/beeyond/DHIESParameterSpec.h"
+using beecrypt::beeyond::DHIESParameterSpec;
 
 #include <typeinfo>
 using std::type_info;
@@ -55,9 +55,9 @@ int main(int argc, char* argv[])
 
 		KeyPair* pair = kpg->generateKeyPair();
 
-		Cipher* c = Cipher::getInstance("DHAES");
+		Cipher* c = Cipher::getInstance("DHIES");
 
-		c->init(Cipher::ENCRYPT_MODE, pair->getPublic(), DHAESParameterSpec("SHA-512", "AES", "HMAC-SHA-512"));
+		c->init(Cipher::ENCRYPT_MODE, pair->getPublic(), DHIESParameterSpec("SHA-512", "AES", "HMAC-SHA-512"));
 
 		size_t ciphertextsize = c->getOutputSize(original.size());
 
@@ -89,7 +89,7 @@ int main(int argc, char* argv[])
 	}
 	catch (Exception& ex)
 	{
-		cerr << "exception: " << *ex.getMessage() << endl;
+		cerr << "Exception: " << *ex.getMessage() << endl;
 		failures++;
 	}
 	catch (...)
