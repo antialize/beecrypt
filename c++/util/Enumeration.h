@@ -35,6 +35,8 @@ namespace beecrypt {
 		template<class E> class Enumeration
 		{
 		public:
+			virtual ~Enumeration() {}
+
 			virtual bool hasMoreElements() throw () = 0;
 			virtual E* nextElement() throw (NoSuchElementException) = 0;
 		};
