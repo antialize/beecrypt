@@ -623,14 +623,12 @@ bytearray* BeeCertificate::encodeTBS() const throw (CertificateEncodingException
 	try
 	{
 		encodeTBS(dos);
+		dos.close();
 	}
 	catch (IOException& e)
 	{
 		throw CertificateEncodingException(e.getMessage());
 	}
-
-	dos.close();
-	bos.close();
 
 	return bos.toByteArray();
 }
