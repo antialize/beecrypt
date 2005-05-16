@@ -97,7 +97,7 @@ bool KeyStore::PasswordProtection::isDestroyed() const throw ()
 KeyStore::PrivateKeyEntry::PrivateKeyEntry(PrivateKey* privateKey, const array<Certificate*>& chain) : _pri(privateKey), _chain(chain)
 {
 	if (_pri == 0)
-		throw NullPointerException();
+		throw NullPointerException("private key is null");
 
 	if (_chain.size() == 0)
 		throw IllegalArgumentException("chain must contain at least one certificate");
@@ -139,7 +139,7 @@ const PrivateKey& KeyStore::PrivateKeyEntry::getPrivateKey() const
 
 String KeyStore::PrivateKeyEntry::toString() const throw ()
 {
-	StringBuilder tmp("Private Key entry and certificate chain with ");
+	StringBuilder tmp("private key entry and certificate chain with ");
 
 	tmp.append(_chain.size()).append(" elements:\r\n");
 
@@ -152,7 +152,7 @@ String KeyStore::PrivateKeyEntry::toString() const throw ()
 KeyStore::SecretKeyEntry::SecretKeyEntry(SecretKey* secretKey) : _sec(secretKey)
 {
 	if (_sec == 0)
-		throw NullPointerException();
+		throw NullPointerException("secret key is null");
 }
 
 KeyStore::SecretKeyEntry::~SecretKeyEntry()
@@ -167,13 +167,13 @@ const SecretKey& KeyStore::SecretKeyEntry::getSecretKey() const
 
 String KeyStore::SecretKeyEntry::toString() const throw ()
 {
-	return String("Secret key entry with algorithm ") + _sec->getAlgorithm();
+	return String("secret key entry with algorithm ") + _sec->getAlgorithm();
 }
 
 KeyStore::TrustedCertificateEntry::TrustedCertificateEntry(Certificate* cert) : _cert(cert)
 {
 	if (_cert == 0)
-		throw NullPointerException();
+		throw NullPointerException("certificate is null");
 }
 
 KeyStore::TrustedCertificateEntry::~TrustedCertificateEntry()
@@ -188,7 +188,7 @@ const Certificate& KeyStore::TrustedCertificateEntry::getTrustedCertificate() co
 
 String KeyStore::TrustedCertificateEntry::toString() const throw ()
 {
-	return String("Trusted certificate entry:\r\n") + _cert->toString();
+	return String("trusted certificate entry:\r\n") + _cert->toString();
 }
 
 KeyStore::KeyStore(KeyStoreSpi* spi, const Provider* provider, const String& type)
@@ -272,7 +272,7 @@ const String& KeyStore::getDefaultType()
 Key* KeyStore::getKey(const String& alias, const array<jchar>& password) throw (KeyStoreException, NoSuchAlgorithmException, UnrecoverableKeyException)
 {
 	if (!_init)
-		throw KeyStoreException("Uninitialized keystore");
+		throw KeyStoreException("uninitialized keystore");
 
 	return _kspi->engineGetKey(alias, password);
 }
@@ -280,7 +280,7 @@ Key* KeyStore::getKey(const String& alias, const array<jchar>& password) throw (
 void KeyStore::setKeyEntry(const String& alias, const bytearray& key, const array<Certificate*>& chain) throw (KeyStoreException)
 {
 	if (!_init)
-		throw KeyStoreException("Uninitialized keystore");
+		throw KeyStoreException("uninitialized keystore");
 
 	if (chain.size() == 0)
 		throw IllegalArgumentException();
@@ -291,10 +291,10 @@ void KeyStore::setKeyEntry(const String& alias, const bytearray& key, const arra
 void KeyStore::setKeyEntry(const String& alias, const Key& key, const array<jchar>& password, const array<Certificate*>& chain) throw (KeyStoreException)
 {
 	if (!_init)
-		throw KeyStoreException("Uninitialized keystore");
+		throw KeyStoreException("uninitialized keystore");
 
 	if (chain.size() == 0)
-		throw IllegalArgumentException();
+		throw IllegalArgumentException("chain should contain at least one certificate");
 
 	_kspi->engineSetKeyEntry(alias, key, password, chain);
 }
@@ -302,7 +302,7 @@ void KeyStore::setKeyEntry(const String& alias, const Key& key, const array<jcha
 Enumeration<const String>* KeyStore::aliases()
 {
 	if (!_init)
-		throw KeyStoreException("Uninitialized keystore");
+		throw KeyStoreException("uninitialized keystore");
 
 	return _kspi->engineAliases();
 }
@@ -310,7 +310,7 @@ Enumeration<const String>* KeyStore::aliases()
 bool KeyStore::containsAlias(const String& alias) throw (KeyStoreException)
 {
 	if (!_init)
-		throw KeyStoreException("Uninitialized keystore");
+		throw KeyStoreException("uninitialized keystore");
 
 	return _kspi->engineContainsAlias(alias);
 }
@@ -318,7 +318,7 @@ bool KeyStore::containsAlias(const String& alias) throw (KeyStoreException)
 const Certificate* KeyStore::getCertificate(const String& alias) throw (KeyStoreException)
 {
 	if (!_init)
-		throw KeyStoreException("Uninitialized keystore");
+		throw KeyStoreException("uninitialized keystore");
 
 	return _kspi->engineGetCertificate(alias);
 }
@@ -326,7 +326,7 @@ const Certificate* KeyStore::getCertificate(const String& alias) throw (KeyStore
 const String* KeyStore::getCertificateAlias(const Certificate& cert) throw (KeyStoreException)
 {
 	if (!_init)
-		throw KeyStoreException("Uninitialized keystore");
+		throw KeyStoreException("uninitialized keystore");
 
 	return _kspi->engineGetCertificateAlias(cert);
 }
@@ -334,7 +334,7 @@ const String* KeyStore::getCertificateAlias(const Certificate& cert) throw (KeyS
 const array<Certificate*>* KeyStore::getCertificateChain(const String& alias) throw (KeyStoreException)
 {
 	if (!_init)
-		throw KeyStoreException("Uninitialized keystore");
+		throw KeyStoreException("uninitialized keystore");
 
 	return _kspi->engineGetCertificateChain(alias);
 }
@@ -342,7 +342,7 @@ const array<Certificate*>* KeyStore::getCertificateChain(const String& alias) th
 void KeyStore::setCertificateEntry(const String& alias, const Certificate& cert) throw (KeyStoreException)
 {
 	if (!_init)
-		throw KeyStoreException("Uninitialized keystore");
+		throw KeyStoreException("uninitialized keystore");
 
 	_kspi->engineSetCertificateEntry(alias, cert);
 }
@@ -350,7 +350,7 @@ void KeyStore::setCertificateEntry(const String& alias, const Certificate& cert)
 bool KeyStore::isCertificateEntry(const String& alias) throw (KeyStoreException)
 {
 	if (!_init)
-		throw KeyStoreException("Uninitialized keystore");
+		throw KeyStoreException("uninitialized keystore");
 
 	return _kspi->engineIsCertificateEntry(alias);
 }
@@ -358,7 +358,7 @@ bool KeyStore::isCertificateEntry(const String& alias) throw (KeyStoreException)
 bool KeyStore::isKeyEntry(const String& alias) throw (KeyStoreException)
 {
 	if (!_init)
-		throw KeyStoreException("Uninitialized keystore");
+		throw KeyStoreException("uninitialized keystore");
 
 	return _kspi->engineIsKeyEntry(alias);
 }
@@ -373,7 +373,7 @@ void KeyStore::load(InputStream* in, const array<jchar>* password) throw (IOExce
 jint KeyStore::size() const throw (KeyStoreException)
 {
 	if (!_init)
-		throw KeyStoreException("Uninitialized keystore");
+		throw KeyStoreException("uninitialized keystore");
 
 	return _kspi->engineSize();
 }
@@ -381,7 +381,7 @@ jint KeyStore::size() const throw (KeyStoreException)
 void KeyStore::store(OutputStream& out, const array<jchar>* password) throw (KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException)
 {
 	if (!_init)
-		throw KeyStoreException("Uninitialized keystore");
+		throw KeyStoreException("uninitialized keystore");
 
 	_kspi->engineStore(out, password);
 }

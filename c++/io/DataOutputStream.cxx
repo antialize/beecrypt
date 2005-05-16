@@ -23,8 +23,6 @@
 #endif
 
 #include "beecrypt/c++/io/DataOutputStream.h"
-#include "beecrypt/c++/lang/RuntimeException.h"
-using beecrypt::lang::RuntimeException;
 
 #include <iostream>
 #include <unicode/ustream.h>
@@ -177,7 +175,7 @@ void DataOutputStream::writeUTF(const String& str) throw (IOException)
 		// UTF-8 converter lazy initialization
 		_utf = ucnv_open("UTF-8", &status);
 		if (U_FAILURE(status))
-			throw RuntimeException("ucnv_open failed");
+			throw IOException("unable to open ICU UTF-8 converter");
 	}
 
 	const array<jchar>& src = str.toCharArray();
@@ -186,7 +184,7 @@ void DataOutputStream::writeUTF(const String& str) throw (IOException)
 	jint need = ucnv_fromUChars(_utf, 0, 0, src.data(), src.size(), &status);
 	if (U_FAILURE(status))
 		if (status != U_BUFFER_OVERFLOW_ERROR)
-			throw RuntimeException("ucnv_fromUChars failed");
+			throw IOException("ucnv_fromUChars failed");
 
 	if (need > 0xffff)
 		throw IOException("String length >= 64K");
@@ -200,7 +198,7 @@ void DataOutputStream::writeUTF(const String& str) throw (IOException)
 	if (status != U_STRING_NOT_TERMINATED_WARNING)
 	{
 		delete[] buffer;
-		throw RuntimeException("ucnv_fromUChars failed");
+		throw IOException("ucnv_fromUChars failed");
 	}
 
 	// everything ready for the critical section

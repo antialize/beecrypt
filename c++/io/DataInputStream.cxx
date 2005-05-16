@@ -179,7 +179,7 @@ String DataInputStream::readUTF() throw (IOException)
 		// UTF-8 converter lazy initialization
 		_utf = ucnv_open("UTF-8", &status);
 		if (U_FAILURE(status))
-			throw RuntimeException("ucnv_open failed");
+			throw IOException("unable to open ICU UTF-8 converter");
 	}
 
 	jint utflen = readUnsignedShort();
@@ -195,7 +195,7 @@ String DataInputStream::readUTF() throw (IOException)
 		if (status != U_BUFFER_OVERFLOW_ERROR)
 		{
 			delete[] data;
-			throw RuntimeException("ucnv_toUChars failed");
+			throw IOException("ucnv_toUChars failed");
 		}
 
 		jchar* buffer = new jchar[ulen+1];
@@ -206,7 +206,7 @@ String DataInputStream::readUTF() throw (IOException)
 		delete[] data;
 
 		if (status != U_ZERO_ERROR)
-			throw RuntimeException("error in ucnv_toUChars");
+			throw IOException("error in ucnv_toUChars");
 
 		String result(buffer, 0, ulen);
 
