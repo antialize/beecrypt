@@ -16,12 +16,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-/*!\file DHAESParameterSpec.h
+/*!\file DHIESParameterSpec.h
  * \ingroup CXX_BEEYOND_m
  */
 
-#ifndef _CLASS_DHAESPARAMETERSPEC_H
-#define _CLASS_DHAESPARAMETERSPEC_H
+#ifndef _CLASS_DHIESPARAMETERSPEC_H
+#define _CLASS_DHIESPARAMETERSPEC_H
 
 #ifdef __cplusplus
 
@@ -35,12 +35,14 @@ using beecrypt::lang::Object;
 using beecrypt::lang::String;
 #include "beecrypt/c++/security/spec/AlgorithmParameterSpec.h"
 using beecrypt::security::spec::AlgorithmParameterSpec;
+#include "beecrypt/c++/security/spec/InvalidParameterSpecException.h"
+using beecrypt::security::spec::InvalidParameterSpecException;
 
 namespace beecrypt {
 	namespace beeyond {
 		/*!\ingroup CXX_BEEYOND_m
 		 */
-		class BEECRYPTCXXAPI DHAESParameterSpec : public beecrypt::lang::Object, public beecrypt::security::spec::AlgorithmParameterSpec
+		class BEECRYPTCXXAPI DHIESParameterSpec : public beecrypt::lang::Object, public beecrypt::security::spec::AlgorithmParameterSpec
 		{
 		private:
 			String _messageDigestAlgorithm;
@@ -51,9 +53,10 @@ namespace beecrypt {
 			int _macKeyLength;
 
 		public:
-			DHAESParameterSpec(const DHAESParameterSpec& copy);
-			DHAESParameterSpec(const String& messageDigestAlgorithm, const String& cipherAlgorithm, const String& macAlgorithm, int cipherKeyLength = 0, int macKeyLength = 0);
-			virtual ~DHAESParameterSpec() {}
+			DHIESParameterSpec(const DHIESParameterSpec& copy);
+			DHIESParameterSpec(const String& messageDigestAlgorithm, const String& cipherAlgorithm, const String& macAlgorithm, int cipherKeyLength = 0, int macKeyLength = 0);
+			DHIESParameterSpec(const String& descriptor) throw (IllegalArgumentException);
+			virtual ~DHIESParameterSpec() {}
 
 			virtual String toString() const throw ();
 

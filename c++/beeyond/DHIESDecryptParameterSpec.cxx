@@ -18,24 +18,24 @@
 
 #define BEECRYPT_CXX_DLL_EXPORT
 
-#include "beecrypt/c++/beeyond/DHAESDecryptParameterSpec.h"
+#include "beecrypt/c++/beeyond/DHIESDecryptParameterSpec.h"
 
 using namespace beecrypt::beeyond;
 
-DHAESDecryptParameterSpec::DHAESDecryptParameterSpec(const DHAESParameterSpec& copy, const BigInteger& key, const bytearray& mac) : DHAESParameterSpec(copy), _pub(key), _mac(mac)
+DHIESDecryptParameterSpec::DHIESDecryptParameterSpec(const DHIESParameterSpec& copy, const BigInteger& key, const bytearray& mac) : DHIESParameterSpec(copy), _pub(key), _mac(mac)
 {
 }
 
-DHAESDecryptParameterSpec::DHAESDecryptParameterSpec(const DHAESDecryptParameterSpec& copy) : DHAESParameterSpec(copy), _pub(copy._pub), _mac(copy._mac)
+DHIESDecryptParameterSpec::DHIESDecryptParameterSpec(const DHIESDecryptParameterSpec& copy) : DHIESParameterSpec(copy), _pub(copy._pub), _mac(copy._mac)
 {
 }
 
-const BigInteger& DHAESDecryptParameterSpec::getEphemeralPublicKey() const throw ()
+const BigInteger& DHIESDecryptParameterSpec::getEphemeralPublicKey() const throw ()
 {
 	return _pub;
 }
 
-const bytearray& DHAESDecryptParameterSpec::getMac() const throw ()
+const bytearray& DHIESDecryptParameterSpec::getMac() const throw ()
 {
 	return _mac;
 }

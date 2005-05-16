@@ -18,16 +18,22 @@
 
 #define BEECRYPT_CXX_DLL_EXPORT
 
-#include "beecrypt/c++/beeyond/DHAESParameterSpec.h"
+#include "beecrypt/c++/beeyond/DHIESParameterSpec.h"
 
 #include "beecrypt/c++/lang/Integer.h"
 using beecrypt::lang::Integer;
 #include "beecrypt/c++/lang/StringBuilder.h"
 using beecrypt::lang::StringBuilder;
 
+#include <memory>
+using std::auto_ptr;
+
+#include <unicode/regex.h>
+#include <unicode/numfmt.h>
+
 using namespace beecrypt::beeyond;
 
-DHAESParameterSpec::DHAESParameterSpec(const DHAESParameterSpec& copy)
+DHIESParameterSpec::DHIESParameterSpec(const DHIESParameterSpec& copy)
 {
 	_messageDigestAlgorithm = copy._messageDigestAlgorithm;
 	_cipherAlgorithm = copy._cipherAlgorithm;
@@ -37,7 +43,7 @@ DHAESParameterSpec::DHAESParameterSpec(const DHAESParameterSpec& copy)
 	_macKeyLength = copy._macKeyLength;
 }
 
-DHAESParameterSpec::DHAESParameterSpec(const String& messageDigestAlgorithm, const String& cipherAlgorithm, const String& macAlgorithm, int cipherKeyLength, int macKeyLength)
+DHIESParameterSpec::DHIESParameterSpec(const String& messageDigestAlgorithm, const String& cipherAlgorithm, const String& macAlgorithm, int cipherKeyLength, int macKeyLength)
 {
 	if (cipherKeyLength < 0 || macKeyLength < 0)
 		throw IllegalArgumentException("key lengths must be >= 0");
@@ -56,34 +62,66 @@ DHAESParameterSpec::DHAESParameterSpec(const String& messageDigestAlgorithm, con
 	_macKeyLength = macKeyLength;
 }
 
-const String& DHAESParameterSpec::getCipherAlgorithm() const throw ()
+DHIESParameterSpec::DHIESParameterSpec(const String& descriptor) throw (IllegalArgumentException)
+{
+	UnicodeString match(descriptor.toUnicodeString());
+
+	UErrorCode status = U_ZERO_ERROR;
+	UParseError error;
+
+	auto_ptr<RegexPattern> p(RegexPattern::compile("DHIES\\((\\w(?:\\w|\\d)*(?:-(?:\\w|\\d)*)*),(\\w(?:\\w|\\d)*(?:-(?:\\w|\\d)*)*),(\\w(?:\\w|\\d)*(?:-(?:\\w|\\d)*)*)(?:,(\\d+))?(?:,(\\d+))?\\)", error, status));
+	if (U_FAILURE(status))
+		throw RuntimeException("RegexPattern doesn't compile");
+
+	auto_ptr<RegexMatcher> m(p->matcher(match, status));
+	if (!m->matches(status))
+		throw IllegalArgumentException("couldn't parse descriptor into DHIES(<digest>,<cipher>,<mac>[,<cipherkeylen>[,<mackeylen>]])");
+
+	_messageDigestAlgorithm = m->group(1, status);
+	_cipherAlgorithm = m->group(2, status);
+	_macAlgorithm = m->group(3, status);
+
+	if (m->group(4, status).length())
+	{
+		std::cout << "group(4) exists: [" << String(m->group(4, status)) << "]" << std::endl;
+		_cipherKeyLength = Integer::parseInteger(m->group(4, status));
+		if (m->group(5, status).length())
+			_macKeyLength = Integer::parseInteger(m->group(5, status));
+		else
+			_macKeyLength = 0;
+	}
+	else
+		_cipherKeyLength = 0;
+}
+
+const String& DHIESParameterSpec::getCipherAlgorithm() const throw ()
 {
 	return _cipherAlgorithm;
 }
 
-int DHAESParameterSpec::getCipherKeyLength() const throw ()
+int DHIESParameterSpec::getCipherKeyLength() const throw ()
 {
 	return _cipherKeyLength;
 }
 
-const String& DHAESParameterSpec::getMacAlgorithm() const throw ()
+const String& DHIESParameterSpec::getMacAlgorithm() const throw ()
 {
 	return _macAlgorithm;
 }
 
-int DHAESParameterSpec::getMacKeyLength() const throw ()
+int DHIESParameterSpec::getMacKeyLength() const throw ()
 {
 	return _macKeyLength;
 }
 
-const String& DHAESParameterSpec::getMessageDigestAlgorithm() const throw ()
+const String& DHIESParameterSpec::getMessageDigestAlgorithm() const throw ()
 {
 	return _messageDigestAlgorithm;
 }
 
-String DHAESParameterSpec::toString() const throw ()
+String DHIESParameterSpec::toString() const throw ()
 {
-	StringBuilder tmp("DHAES(");
+	StringBuilder tmp("DHIES(");
 
 	tmp.append(_messageDigestAlgorithm).append(',').append(_cipherAlgorithm).append(',').append(_macAlgorithm);
 

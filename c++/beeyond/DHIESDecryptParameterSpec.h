@@ -16,32 +16,32 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-/*!\file DHAESDecryptParameterSpec.h
+/*!\file DHIESDecryptParameterSpec.h
  * \ingroup CXX_BEEYOND_m
  */
 
-#ifndef _CLASS_DHAESDECRYPTPARAMETERSPEC_H
-#define _CLASS_DHAESDECRYPTPARAMETERSPEC_H
+#ifndef _CLASS_DHIESDECRYPTPARAMETERSPEC_H
+#define _CLASS_DHIESDECRYPTPARAMETERSPEC_H
 
 #ifdef __cplusplus
 
-#include "beecrypt/c++/beeyond/DHAESParameterSpec.h"
-using beecrypt::beeyond::DHAESParameterSpec;
+#include "beecrypt/c++/beeyond/DHIESParameterSpec.h"
+using beecrypt::beeyond::DHIESParameterSpec;
 
 namespace beecrypt {
 	namespace beeyond {
 		/*!\ingroup CXX_BEEYOND_m
 		 */
-		class BEECRYPTCXXAPI DHAESDecryptParameterSpec : public beecrypt::beeyond::DHAESParameterSpec
+		class BEECRYPTCXXAPI DHIESDecryptParameterSpec : public beecrypt::beeyond::DHIESParameterSpec
 		{
 		private:
 			BigInteger _pub;
 			bytearray _mac;
 
 		public:
-			DHAESDecryptParameterSpec(const DHAESParameterSpec& copy, const BigInteger& key, const bytearray& mac);
-			DHAESDecryptParameterSpec(const DHAESDecryptParameterSpec& copy);
-			virtual ~DHAESDecryptParameterSpec() {}
+			DHIESDecryptParameterSpec(const DHIESParameterSpec& copy, const BigInteger& key, const bytearray& mac);
+			DHIESDecryptParameterSpec(const DHIESDecryptParameterSpec& copy);
+			virtual ~DHIESDecryptParameterSpec() {}
 
 			const BigInteger& getEphemeralPublicKey() const throw ();
 			const bytearray& getMac() const throw ();
