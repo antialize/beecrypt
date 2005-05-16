@@ -1,5 +1,5 @@
-LIBBEECRYPT_CXX_LT_CURRENT = 11
-LIBBEECRYPT_CXX_LT_AGE = 5
+LIBBEECRYPT_CXX_LT_CURRENT = 7
+LIBBEECRYPT_CXX_LT_AGE = 0
 LIBBEECRYPT_CXX_LT_REVISION = 0
 
 INCLUDES = -I$(top_srcdir)/..
@@ -29,9 +29,9 @@ resource.h
 
 EXTRA_DIST = Doxyheader
 
-TESTS = testks testdsa testrsa testdhaes 
+TESTS = testks testdsa testrsa testdhies 
 
-check_PROGRAMS = testks testdsa testrsa testdhaes 
+check_PROGRAMS = testks testdsa testrsa testdhies 
 
 testks_SOURCES = testks.cxx
 testks_LDADD = libbeecrypt_cxx.la
@@ -42,5 +42,5 @@ testdsa_LDADD = libbeecrypt_cxx.la
 testrsa_SOURCES = testrsa.cxx
 testrsa_LDADD = libbeecrypt_cxx.la
 
-testdhaes_SOURCES = testdhaes.cxx
-testdhaes_LDADD = libbeecrypt_cxx.la
+testdhies_SOURCES = testdhies.cxx
+testdhies_LDADD = libbeecrypt_cxx.la
