@@ -7,32 +7,16 @@ noinst_LTLIBRARIES = libcxxlang.la
 cxxlangdir=$(pkgincludedir)/c++/lang
 
 libcxxlang_la_SOURCES = \
-ArithmeticException.cxx \
 Character.cxx \
-ClassCastException.cxx \
-CloneNotSupportedException.cxx \
-Error.cxx \
-Exception.cxx \
-IllegalArgumentException.cxx \
-IllegalMonitorStateException.cxx \
-IllegalStateException.cxx \
-IllegalThreadStateException.cxx \
-IndexOutOfBoundsException.cxx \
 Integer.cxx \
-InterruptedException.cxx \
 Long.cxx \
-NullPointerException.cxx \
-NumberFormatException.cxx \
 Object.cxx \
-OutOfMemoryError.cxx \
-RuntimeException.cxx \
 String.cxx \
 StringBuffer.cxx \
 StringBuilder.cxx \
 System.cxx \
 Thread.cxx \
-Throwable.cxx \
-UnsupportedOperationException.cxx
+Throwable.cxx
 
 cxxlang_HEADERS = \
 Appendable.h \
