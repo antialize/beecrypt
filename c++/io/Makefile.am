@@ -10,13 +10,11 @@ ByteArrayInputStream.cxx \
 ByteArrayOutputStream.cxx \
 DataInputStream.cxx \
 DataOutputStream.cxx \
-EOFException.cxx \
 FileInputStream.cxx \
 FileOutputStream.cxx \
 FilterInputStream.cxx \
 FilterOutputStream.cxx \
 InputStream.cxx \
-IOException.cxx \
 OutputStream.cxx \
 PrintStream.cxx \
 PushbackInputStream.cxx \
