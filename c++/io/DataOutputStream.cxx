@@ -116,6 +116,9 @@ void DataOutputStream::writeInt(jint i) throw (IOException)
 	}
 }
 
+#if defined(_MSC_VER)
+# pragma optimize("",off)
+#endif
 void DataOutputStream::writeLong(jlong l) throw (IOException)
 {
 	synchronized (this)
@@ -138,6 +141,9 @@ void DataOutputStream::writeLong(jlong l) throw (IOException)
 		written++;
 	}
 }
+#if defined(_MSC_VER)
+# pragma optimize("",on)
+#endif
 
 void DataOutputStream::writeChar(jint v) throw (IOException)
 {
