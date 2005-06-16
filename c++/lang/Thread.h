@@ -39,9 +39,10 @@ namespace beecrypt {
 	namespace lang {
 		/*!\ingroup CXX_LANG_m
 		 */
-		class BEECRYPTCXXAPI Thread : public beecrypt::lang::Object, public virtual beecrypt::lang::Runnable
+		class BEECRYPTCXXAPI Thread : public Object, public virtual Runnable
 		{
 			friend class Object;
+			friend class beecrypt::util::concurrent::locks::ReentrantLock;
 
 			friend void MonitorEnter(const Object*);
 			friend void MonitorExit(const Object*) throw (IllegalMonitorStateException);

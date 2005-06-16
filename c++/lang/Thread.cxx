@@ -378,10 +378,12 @@ Thread::State Thread::getState() const throw ()
 void Thread::interrupt()
 {
 	monitor->lock();
+
 	if (_state == Thread::WAITING || _state == Thread::TIMED_WAITING)
 		_monitoring->interrupt(_tid);
 	else
 		_interrupted = true;
+
 	monitor->unlock();
 }
 

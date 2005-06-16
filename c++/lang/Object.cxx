@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004 Beeyond Software Holding BV
+ * Copyright (c) 2004, 2005 Beeyond Software Holding BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -34,7 +34,6 @@
 #include "beecrypt/c++/lang/CloneNotSupportedException.h"
 #include "beecrypt/c++/lang/IllegalMonitorStateException.h"
 #include "beecrypt/c++/lang/InterruptedException.h"
-#include "beecrypt/c++/lang/RuntimeException.h"
 using namespace beecrypt::lang;
 
 #include <typeinfo>
@@ -46,19 +45,28 @@ Object::Monitor::Monitor() : _owner(0), _interruptee(0)
 bool Object::Monitor::interrupted(bc_threadid_t target)
 {
 	bool result;
-	lock();
+	internal_state_lock();
 	if (result = (_interruptee == target))
 		_interruptee = false;
-	unlock();
+	internal_state_unlock();
 	return result;
 }
 
 bool Object::Monitor::isInterrupted(bc_threadid_t target)
 {
 	bool result;
-	lock();
+	internal_state_lock();
 	result = (_interruptee == target);
-	unlock();
+	internal_state_unlock();
+	return result;
+}
+
+bool Object::Monitor::isLocked()
+{
+	bool result;
+	internal_state_lock();
+	result = (_lock_count != 0);
+	internal_state_unlock();
 	return result;
 }
 
@@ -141,18 +149,7 @@ Object::NonfairMonitor::~NonfairMonitor()
 
 void Object::NonfairMonitor::interrupt(bc_threadid_t target)
 {
-	#if WIN32
-	if (WaitForSingleObject(_lock, INFINITE) != WAIT_OBJECT_0)
-		throw RuntimeException("WaitForSingleObject failed");
-	#elif HAVE_SYNC_H
-	if (mutex_lock(&_lock))
-		throw RuntimeException("mutex_lock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_lock(&_lock))
-		throw RuntimeException("pthread_mutex_lock failed");
-	#else
-	# error
-	#endif
+	internal_state_lock();
 
 	_interruptee = target;
 
@@ -172,18 +169,8 @@ void Object::NonfairMonitor::interrupt(bc_threadid_t target)
 		# error
 		#endif
 	}
-	#if WIN32
-	if (!ReleaseMutex(_lock))
-		throw RuntimeException("ReleaseMutex failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_unlock(&_lock))
-		throw RuntimeException("mutex_unlock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_unlock(&_lock))
-		throw RuntimeException("pthread_mutex_unlock failed");
-	#else
-	# error
-	#endif
+
+	internal_state_unlock();
 }
 
 void Object::NonfairMonitor::lock()
@@ -198,36 +185,14 @@ void Object::NonfairMonitor::lock()
 	# error
 	#endif
 
-	#if WIN32
-	if (WaitForSingleObject(_lock, INFINITE) != WAIT_OBJECT_0)
-		throw RuntimeException("WaitForSingleObject failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_lock(&_lock))
-		throw RuntimeException("mutex_lock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_lock(&_lock))
-		throw RuntimeException("pthread_mutex_lock failed");
-	#else
-	# error
-	#endif
+	internal_state_lock();
 
 	if (_lock_count)
 	{
 		if (_owner == self)
 		{
 			_lock_count++;
-			#if WIN32
-			if (!ReleaseMutex(_lock))
-				throw RuntimeException("ReleaseMutex failed");
-			#elif HAVE_SYNCH_H
-			if (mutex_unlock(&_lock))
-				throw RuntimeException("mutex_unlock failed");
-			#elif HAVE_PTHREAD_H
-			if (pthread_mutex_unlock(&_lock))
-				throw RuntimeException("pthread_mutex_unlock failed");
-			#else
-			# error
-			#endif
+			internal_state_unlock();
 			return;
 		}
 		else
@@ -288,21 +253,9 @@ void Object::NonfairMonitor::lock()
 	_owner = self;
 	_lock_count = 1;
 
-	#if WIN32
-	if (!ReleaseMutex(_lock))
-		throw RuntimeException("ReleaseMutex failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_unlock(&_lock))
-		throw RuntimeException("mutex_unlock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_unlock(&_lock))
-		throw RuntimeException("pthread_mutex_unlock failed");
-	#else
-	# error
-	#endif
+	internal_state_unlock();
 }
 
-#if 0
 void Object::NonfairMonitor::lockInterruptibly() throw (InterruptedException)
 {
 	bool interrupted = false;
@@ -317,18 +270,7 @@ void Object::NonfairMonitor::lockInterruptibly() throw (InterruptedException)
 	# error
 	#endif
 
-	#if WIN32
-	if (WaitForSingleObject(_lock, INFINITE) != WAIT_OBJECT_0)
-		throw RuntimeException("WaitForSingleObject failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_lock(&_lock))
-		throw RuntimeException("mutex_lock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_lock(&_lock))
-		throw RuntimeException("pthread_mutex_lock failed");
-	#else
-	# error
-	#endif
+	internal_state_lock();
 
 	if (_interruptee == self)
 	{
@@ -343,18 +285,7 @@ void Object::NonfairMonitor::lockInterruptibly() throw (InterruptedException)
 			if (_owner == self)
 			{
 				_lock_count++;
-				#if WIN32
-				if (!ReleaseMutex(_lock))
-					throw RuntimeException("ReleaseMutex failed");
-				#elif HAVE_SYNCH_H
-				if (mutex_unlock(&_lock))
-					throw RuntimeException("mutex_unlock failed");
-				#elif HAVE_PTHREAD_H
-				if (pthread_mutex_unlock(&_lock))
-					throw RuntimeException("pthread_mutex_unlock failed");
-				#else
-				# error
-				#endif
+				internal_state_unlock();
 				return;
 			}
 			else
@@ -420,23 +351,11 @@ void Object::NonfairMonitor::lockInterruptibly() throw (InterruptedException)
 		}
 	}
 
-	#if WIN32
-	if (!ReleaseMutex(_lock))
-		throw RuntimeException("ReleaseMutex failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_unlock(&_lock))
-		throw RuntimeException("mutex_unlock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_unlock(&_lock))
-		throw RuntimeException("pthread_mutex_unlock failed");
-	#else
-	# error
-	#endif
+	internal_state_unlock();
 
 	if (interrupted)
 		throw InterruptedException();
 }
-#endif
 
 bool Object::NonfairMonitor::tryLock()
 {
@@ -452,18 +371,7 @@ bool Object::NonfairMonitor::tryLock()
 	# error
 	#endif
 
-	#if WIN32
-	if (WaitForSingleObject(_lock, INFINITE) != WAIT_OBJECT_0)
-		throw RuntimeException("WaitForSingleObject failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_lock(&_lock))
-		throw RuntimeException("mutex_lock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_lock(&_lock))
-		throw RuntimeException("pthread_mutex_lock failed");
-	#else
-	# error
-	#endif
+	internal_state_lock();
 
 	if (_lock_count)
 	{
@@ -476,18 +384,7 @@ bool Object::NonfairMonitor::tryLock()
 		_owner = self;
 	}
 
-	#if WIN32
-	if (!ReleaseMutex(_lock))
-		throw RuntimeException("ReleaseMutex failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_unlock(&_lock))
-		throw RuntimeException("mutex_unlock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_unlock(&_lock))
-		throw RuntimeException("pthread_mutex_unlock failed");
-	#else
-	# error
-	#endif
+	internal_state_unlock();
 
 	return result;
 }
@@ -506,18 +403,7 @@ void Object::NonfairMonitor::unlock()
 	# error
 	#endif
 
-	#if WIN32
-	if (WaitForSingleObject(_lock, INFINITE) != WAIT_OBJECT_0)
-		throw RuntimeException("WaitForSingleObject failed");
-	#elif HAVE_SYNC_H
-	if (mutex_lock(&_lock))
-		throw RuntimeException("mutex_lock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_lock(&_lock))
-		throw RuntimeException("pthread_mutex_lock failed");
-	#else
-	# error
-	#endif
+	internal_state_lock();
 
 	if ((owned = (_owner == self)))
 	{
@@ -542,18 +428,7 @@ void Object::NonfairMonitor::unlock()
 		}
 	}
 
-	#if WIN32
-	if (!ReleaseMutex(_lock))
-		throw RuntimeException("ReleaseMutex failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_unlock(&_lock))
-		throw RuntimeException("mutex_unlock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_unlock(&_lock))
-		throw RuntimeException("pthread_mutex_unlock failed");
-	#else
-	# error
-	#endif
+	internal_state_unlock();
 
 	if (!owned)
 		throw IllegalMonitorStateException();
@@ -572,19 +447,8 @@ void Object::NonfairMonitor::notify()
 	#else
 	# error
 	#endif
-	
-	#if WIN32
-	if (WaitForSingleObject(_lock, INFINITE) != WAIT_OBJECT_0)
-		throw RuntimeException("WaitForSingleObject failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_lock(&_lock))
-		throw RuntimeException("mutex_lock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_lock(&_lock))
-		throw RuntimeException("pthread_mutex_lock failed");
-	#else
-	# error
-	#endif
+
+	internal_state_lock();
 
 	if (owned = (_owner == self))
 	{
@@ -605,18 +469,7 @@ void Object::NonfairMonitor::notify()
 		}
 	}
 
-	#if WIN32
-	if (!ReleaseMutex(_lock))
-		throw RuntimeException("ReleaseMutex failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_unlock(&_lock))
-		throw RuntimeException("mutex_unlock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_unlock(&_lock))
-		throw RuntimeException("pthread_mutex_unlock failed");
-	#else
-	# error
-	#endif
+	internal_state_unlock();
 
 	if (!owned)
 		throw IllegalMonitorStateException();
@@ -635,19 +488,8 @@ void Object::NonfairMonitor::notifyAll()
 	#else
 	# error
 	#endif
-	
-	#if WIN32
-	if (WaitForSingleObject(_lock, INFINITE) != WAIT_OBJECT_0)
-		throw RuntimeException("WaitForSingleObject failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_lock(&_lock))
-		throw RuntimeException("mutex_lock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_lock(&_lock))
-		throw RuntimeException("pthread_mutex_lock failed");
-	#else
-	# error
-	#endif
+
+	internal_state_lock();
 
 	if (owned = (_owner == self))
 	{
@@ -669,18 +511,7 @@ void Object::NonfairMonitor::notifyAll()
 		}
 	}
 
-	#if WIN32
-	if (!ReleaseMutex(_lock))
-		throw RuntimeException("ReleaseMutex failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_unlock(&_lock))
-		throw RuntimeException("mutex_unlock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_unlock(&_lock))
-		throw RuntimeException("pthread_mutex_unlock failed");
-	#else
-	# error
-	#endif
+	internal_state_unlock();
 
 	if (!owned)
 		throw IllegalMonitorStateException();
@@ -700,18 +531,7 @@ void Object::NonfairMonitor::wait(jlong timeout) throw (InterruptedException)
 	# error
 	#endif
 
-	#if WIN32
-	if (WaitForSingleObject(_lock, INFINITE) != WAIT_OBJECT_0)
-		throw RuntimeException("WaitForSingleObject failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_lock(&_lock))
-		throw RuntimeException("mutex_lock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_lock(&_lock))
-		throw RuntimeException("pthread_mutex_lock failed");
-	#else
-	# error
-	#endif
+	internal_state_lock();
 
 	if (_interruptee == self)
 	{
@@ -866,18 +686,7 @@ void Object::NonfairMonitor::wait(jlong timeout) throw (InterruptedException)
 		#endif
 	}
 
-	#if WIN32
-	if (!ReleaseMutex(_lock))
-		throw RuntimeException("ReleaseMutex failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_unlock(&_lock))
-		throw RuntimeException("mutex_unlock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_unlock(&_lock))
-		throw RuntimeException("pthread_mutex_unlock failed");
-	#else
-	# error
-	#endif
+	internal_state_unlock();
 
 	if (interrupted)
 		throw InterruptedException();
@@ -926,18 +735,7 @@ Object::FairMonitor::FairMonitor()
 
 Object::FairMonitor::~FairMonitor()
 {
-	#if WIN32
-	if (WaitForSingleObject(_lock, INFINITE) != WAIT_OBJECT_0)
-		throw RuntimeException("WaitForSingleObject failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_lock(&_lock))
-		throw RuntimeException("mutex_lock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_lock(&_lock))
-		throw RuntimeException("pthread_mutex_lock failed");
-	#else
-	# error
-	#endif
+	internal_state_lock();
 
 	/*!\todo should a warning be given when there are still has pending locks?
 	 */
@@ -956,18 +754,7 @@ Object::FairMonitor::~FairMonitor()
 		delete tmp;
 	}
 
-	#if WIN32
-	if (!ReleaseMutex(_lock))
-			throw RuntimeException("ReleaseMutex failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_unlock(&_lock))
-			throw RuntimeException("mutex_unlock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_unlock(&_lock))
-			throw RuntimeException("pthread_mutex_unlock failed");
-	#else
-	# error
-	#endif
+	internal_state_unlock();
 
 	#if WIN32
 	if (!CloseHandle(_lock))
@@ -985,18 +772,7 @@ Object::FairMonitor::~FairMonitor()
 
 void Object::FairMonitor::interrupt(bc_threadid_t target)
 {
-	#if WIN32
-	if (WaitForSingleObject(_lock, INFINITE) != WAIT_OBJECT_0)
-		throw RuntimeException("WaitForSingleObject failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_lock(&_lock))
-		throw RuntimeException("mutex_lock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_lock(&_lock))
-		throw RuntimeException("pthread_mutex_lock failed");
-	#else
-	# error
-	#endif
+	internal_state_lock();
 
 	_interruptee = target;
 
@@ -1040,18 +816,7 @@ void Object::FairMonitor::interrupt(bc_threadid_t target)
 		} while (tmp);
 	}
 
-	#if WIN32
-	if (!ReleaseMutex(_lock))
-			throw RuntimeException("ReleaseMutex failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_unlock(&_lock))
-			throw RuntimeException("mutex_unlock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_unlock(&_lock))
-			throw RuntimeException("pthread_mutex_unlock failed");
-	#else
-	# error
-	#endif
+	internal_state_unlock();
 }
 
 void Object::FairMonitor::lock()
@@ -1066,36 +831,14 @@ void Object::FairMonitor::lock()
 	# error
 	#endif
 
-	#if WIN32
-	if (WaitForSingleObject(_lock, INFINITE) != WAIT_OBJECT_0)
-		throw RuntimeException("WaitForSingleObject failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_lock(&_lock))
-		throw RuntimeException("mutex_lock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_lock(&_lock))
-		throw RuntimeException("pthread_mutex_lock failed");
-	#else
-	# error
-	#endif
+	internal_state_lock();
 
 	if (_lock_count)
 	{
 		if (_owner == self)
 		{
 			_lock_count++;
-			#if WIN32
-			if (!ReleaseMutex(_lock))
-					throw RuntimeException("ReleaseMutex failed");
-			#elif HAVE_SYNCH_H
-			if (mutex_unlock(&_lock))
-					throw RuntimeException("mutex_unlock failed");
-			#elif HAVE_PTHREAD_H
-			if (pthread_mutex_unlock(&_lock))
-					throw RuntimeException("pthread_mutex_unlock failed");
-			#else
-			# error
-			#endif
+			internal_state_unlock();
 			return;
 		}
 		else
@@ -1154,26 +897,106 @@ void Object::FairMonitor::lock()
 		_lock_count = 1;
 	}
 
+	internal_state_unlock();
+}
+
+void Object::FairMonitor::lockInterruptibly() throw (InterruptedException)
+{
+	bool interrupted = false;
+
 	#if WIN32
-	if (!ReleaseMutex(_lock))
-			throw RuntimeException("ReleaseMutex failed");
+	bc_threadid_t self = GetCurrentThreadId();
 	#elif HAVE_SYNCH_H
-	if (mutex_unlock(&_lock))
-			throw RuntimeException("mutex_unlock failed");
+	bc_threadid_t self = thr_self();
 	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_unlock(&_lock))
-			throw RuntimeException("pthread_mutex_unlock failed");
+	bc_threadid_t self = pthread_self();
 	#else
 	# error
 	#endif
-}
 
-#if 0
-void Object::FairMonitor::lockInterruptibly() throw (InterruptedException)
-{
-	throw RuntimeException("not implemented");
+	internal_state_lock();
+
+	if (_interruptee == self)
+	{
+		interrupted = true;
+		_interruptee = 0;
+	}
+
+	if (!interrupted)
+	{
+		if (_lock_count)
+		{
+			if (_owner == self)
+			{
+				_lock_count++;
+				internal_state_unlock();
+				return;
+			}
+			else
+			{
+				waiter* me = new waiter(self, 1);
+
+				if (_lock_head)
+				{
+					me->prev = _lock_tail;
+					_lock_tail = _lock_tail->next = me;
+				}
+				else
+					_lock_head = _lock_tail = me;
+
+				while (_owner != self)
+				{
+					#if WIN32
+					switch (SignalObjectAndWait(_lock, me->event, INFINITE, FALSE))
+					{
+					case WAIT_OBJECT_0:
+						break;
+					default:
+						throw RuntimeException("SignalObjectAndWait failed");
+					}
+					if (WaitForSingleObject(_lock, INFINITE) != WAIT_OBJECT_0)
+						throw RuntimeException("WaitForSingleObject failed");
+					#elif HAVE_SYNCH_H
+					switch (cond_wait(&me->event, &lock))
+					{
+					case EINTR:
+						interrupted = true;
+					case 0:
+						break;
+					default:
+						throw RuntimeException("cond_wait failed");
+					}
+					#elif HAVE_PTHREAD_H
+					switch (pthread_cond_wait(&me->event, &_lock))
+					{
+					case EINTR:
+						interrupted = true;
+					case 0:
+						break;
+					default:
+						throw RuntimeException("pthread_cond_wait failed");
+					}
+					#else
+					# error
+					#endif
+				}
+
+				delete me;
+			}
+		}
+
+		if (!interrupted)
+		{
+			_owner = self;
+			_lock_count = 1;
+		}
+	}
+
+	internal_state_unlock();
+
+	if (interrupted)
+		throw InterruptedException();
 }
-#endif
 
 bool Object::FairMonitor::tryLock()
 {
@@ -1189,18 +1012,7 @@ bool Object::FairMonitor::tryLock()
 	# error
 	#endif
 
-	#if WIN32
-	if (WaitForSingleObject(_lock, INFINITE) != WAIT_OBJECT_0)
-		throw RuntimeException("WaitForSingleObject failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_lock(&_lock))
-		throw RuntimeException("mutex_lock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_lock(&_lock))
-		throw RuntimeException("pthread_mutex_lock failed");
-	#else
-	# error
-	#endif
+	internal_state_lock();
 
 	if (_lock_count)
 	{
@@ -1213,18 +1025,7 @@ bool Object::FairMonitor::tryLock()
 		_owner = self;
 	}
 
-	#if WIN32
-	if (!ReleaseMutex(_lock))
-		throw RuntimeException("ReleaseMutex failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_unlock(&_lock))
-		throw RuntimeException("mutex_unlock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_unlock(&_lock))
-		throw RuntimeException("pthread_mutex_unlock failed");
-	#else
-	# error
-	#endif
+	internal_state_unlock();
 
 	return result;
 }
@@ -1243,18 +1044,7 @@ void Object::FairMonitor::unlock()
 	# error
 	#endif
 
-	#if WIN32
-	if (WaitForSingleObject(_lock, INFINITE) != WAIT_OBJECT_0)
-		throw RuntimeException("WaitForSingleObject failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_lock(&_lock))
-		throw RuntimeException("mutex_lock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_lock(&_lock))
-		throw RuntimeException("pthread_mutex_lock failed");
-	#else
-	# error
-	#endif
+	internal_state_lock();
 
 	if (owned = (_owner == self))
 	{
@@ -1291,18 +1081,7 @@ void Object::FairMonitor::unlock()
 		}
 	}
 
-	#if WIN32
-	if (!ReleaseMutex(_lock))
-		throw RuntimeException("ReleaseMutex failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_unlock(&_lock))
-		throw RuntimeException("mutex_unlock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_unlock(&_lock))
-		throw RuntimeException("pthread_mutex_unlock failed");
-	#else
-	# error
-	#endif
+	internal_state_unlock();
 
 	if (!owned)
 		throw IllegalMonitorStateException();
@@ -1322,18 +1101,7 @@ void Object::FairMonitor::notify()
 	# error
 	#endif
 
-	#if WIN32
-	if (WaitForSingleObject(_lock, INFINITE) != WAIT_OBJECT_0)
-		throw RuntimeException("WaitForSingleObject failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_lock(&_lock))
-		throw RuntimeException("mutex_lock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_lock(&_lock))
-		throw RuntimeException("pthread_mutex_lock failed");
-	#else
-	# error
-	#endif
+	internal_state_lock();
 
 	if (owned = (_owner == self))
 	{
@@ -1370,18 +1138,7 @@ void Object::FairMonitor::notify()
 		}
 	}
 
-	#if WIN32
-	if (!ReleaseMutex(_lock))
-			throw RuntimeException("ReleaseMutex failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_unlock(&_lock))
-			throw RuntimeException("mutex_unlock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_unlock(&_lock))
-			throw RuntimeException("pthread_mutex_unlock failed");
-	#else
-	# error
-	#endif
+	internal_state_unlock();
 
 	if (!owned)
 		throw IllegalMonitorStateException();
@@ -1401,18 +1158,7 @@ void Object::FairMonitor::notifyAll()
 	# error
 	#endif
 
-	#if WIN32
-	if (WaitForSingleObject(_lock, INFINITE) != WAIT_OBJECT_0)
-		throw RuntimeException("WaitForSingleObject failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_lock(&_lock))
-		throw RuntimeException("mutex_lock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_lock(&_lock))
-		throw RuntimeException("pthread_mutex_lock failed");
-	#else
-	# error
-	#endif
+	internal_state_lock();
 
 	if (owned = (_owner == self))
 	{
@@ -1451,18 +1197,7 @@ void Object::FairMonitor::notifyAll()
 		}
 	}
 
-	#if WIN32
-	if (!ReleaseMutex(_lock))
-			throw RuntimeException("ReleaseMutex failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_unlock(&_lock))
-			throw RuntimeException("mutex_unlock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_unlock(&_lock))
-			throw RuntimeException("pthread_mutex_unlock failed");
-	#else
-	# error
-	#endif
+	internal_state_unlock();
 
 	if (!owned)
 		throw IllegalMonitorStateException();
@@ -1482,18 +1217,7 @@ void Object::FairMonitor::wait(jlong timeout) throw (InterruptedException)
 	# error
 	#endif
 
-	#if WIN32
-	if (WaitForSingleObject(_lock, INFINITE) != WAIT_OBJECT_0)
-		throw RuntimeException("WaitForSingleObject failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_lock(&_lock))
-		throw RuntimeException("mutex_lock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_lock(&_lock))
-		throw RuntimeException("pthread_mutex_lock failed");
-	#else
-	# error
-	#endif
+	internal_state_lock();
 
 	if (_interruptee == self)
 	{
@@ -1632,18 +1356,7 @@ void Object::FairMonitor::wait(jlong timeout) throw (InterruptedException)
 		delete me;
 	}
 
-	#if WIN32
-	if (!ReleaseMutex(_lock))
-			throw RuntimeException("ReleaseMutex failed");
-	#elif HAVE_SYNCH_H
-	if (mutex_unlock(&_lock))
-			throw RuntimeException("mutex_unlock failed");
-	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_unlock(&_lock))
-			throw RuntimeException("pthread_mutex_unlock failed");
-	#else
-	# error
-	#endif
+	internal_state_unlock();
 
 	if (interrupted)
 		throw InterruptedException();
@@ -1651,17 +1364,17 @@ void Object::FairMonitor::wait(jlong timeout) throw (InterruptedException)
 
 Object::Synchronizer::Synchronizer(const Object* obj) : _ref(obj), _once(true)
 {
-	MonitorEnter(_ref);
+	_ref->lock();
 }
 
 Object::Synchronizer::Synchronizer(const Object& obj) : _ref(&obj), _once(true)
 {
-	MonitorEnter(_ref);
+	_ref->lock();
 }
 
 Object::Synchronizer::~Synchronizer()
 {
-	MonitorExit(_ref);
+	_ref->unlock();
 }
 
 bool Object::Synchronizer::checkonce()
@@ -1725,6 +1438,66 @@ jint Object::hashCode() const throw ()
 	{
 		return (jint) ((unsigned long) this ^ ((unsigned long) this) >> 32);
 	}
+}
+
+void Object::lock() const
+{
+	while (!monitor)
+	{
+		// lazy initialization of the notifier
+		#if WIN32
+		if (WaitForSingleObject(_init_lock, INFINITE) != WAIT_OBJECT_0)
+			throw RuntimeException("WaitForSingleObject failed");
+		#elif HAVE_SYNCH_H
+		if (mutex_lock(&_init_lock))
+			throw RuntimeException("mutex_lock failed");
+		#elif HAVE_PTHREAD_H
+		if (pthread_mutex_lock(&_init_lock))
+			throw RuntimeException("pthread_mutex_lock failed");
+		#else
+		# error
+		#endif
+
+		if (!monitor)
+			monitor = Monitor::getInstance();
+
+		#if WIN32
+		if (!ReleaseMutex(_init_lock))
+			throw RuntimeException("ReleaseMutex failed");
+		#elif HAVE_SYNCH_H
+		if (mutex_unlock(&_init_lock))
+			throw RuntimeException("mutex_unlock failed");
+		#elif HAVE_PTHREAD_H
+		if (pthread_mutex_unlock(&_init_lock))
+			throw RuntimeException("pthread_mutex_unlock failed");
+		#else
+		# error
+		#endif
+	}
+
+	Thread* t = Thread::currentThread();
+
+	if (t)
+	{
+		t->_state = Thread::BLOCKED;
+		t->_monitoring = monitor;
+	}
+
+	monitor->lock();
+
+	if (t)
+	{
+		t->_state = Thread::RUNNABLE;
+		t->_monitoring = t->monitor;
+	}
+}
+
+void Object::unlock() const
+{
+	if (!monitor)
+		throw IllegalMonitorStateException("Object has no monitor");
+
+	monitor->unlock();
 }
 
 void Object::notify() const
@@ -1828,66 +1601,4 @@ void beecrypt::lang::collection_rcheck(Object* obj) throw ()
 	assert(obj != 0);
     if (obj->_ref_count == 0)
         delete obj;
-}
-
-void beecrypt::lang::MonitorEnter(const Object* obj)
-{
-	assert(obj != 0);
-	while (!obj->monitor)
-	{
-		// lazy initialization of the notifier
-		#if WIN32
-		if (WaitForSingleObject(Object::_init_lock, INFINITE) != WAIT_OBJECT_0)
-			throw RuntimeException("WaitForSingleObject failed");
-		#elif HAVE_SYNCH_H
-		if (mutex_lock(&Object::_init_lock))
-			throw RuntimeException("mutex_lock failed");
-		#elif HAVE_PTHREAD_H
-		if (pthread_mutex_lock(&Object::_init_lock))
-			throw RuntimeException("pthread_mutex_lock failed");
-		#else
-		# error
-		#endif
-
-		if (!obj->monitor)
-			obj->monitor = Object::Monitor::getInstance();
-
-		#if WIN32
-		if (!ReleaseMutex(Object::_init_lock))
-			throw RuntimeException("ReleaseMutex failed");
-		#elif HAVE_SYNCH_H
-		if (mutex_unlock(&Object::_init_lock))
-			throw RuntimeException("mutex_unlock failed");
-		#elif HAVE_PTHREAD_H
-		if (pthread_mutex_unlock(&Object::_init_lock))
-			throw RuntimeException("pthread_mutex_unlock failed");
-		#else
-		# error
-		#endif
-	}
-
-	Thread* t = Thread::currentThread();
-
-	if (t)
-	{
-		t->_state = Thread::BLOCKED;
-		t->_monitoring = obj->monitor;
-	}
-
-	obj->monitor->lock();
-
-	if (t)
-	{
-		t->_state = Thread::RUNNABLE;
-		t->_monitoring = t->monitor;
-	}
-}
-
-void beecrypt::lang::MonitorExit(const Object* obj) throw (IllegalMonitorStateException)
-{
-	assert(obj != 0);
-	if (!obj->monitor)
-		throw IllegalMonitorStateException("Object has no monitor");
-
-	obj->monitor->unlock();
 }

@@ -34,56 +34,95 @@ using beecrypt::lang::CloneNotSupportedException;
 using beecrypt::lang::InterruptedException;
 #include "beecrypt/c++/lang/IllegalMonitorStateException.h"
 using beecrypt::lang::IllegalMonitorStateException;
+#include "beecrypt/c++/lang/RuntimeException.h"
+using beecrypt::lang::RuntimeException;
 
 #ifdef __cplusplus
 
 namespace beecrypt {
+	namespace util {
+		namespace concurrent {
+			namespace locks {
+				class BEECRYPTCXXAPI ReentrantLock;
+			}
+		}
+	}
 	namespace lang {
 		/*!\ingroup CXX_LANG_m
 		 */
 		class BEECRYPTCXXAPI Object
 		{
 			friend class Thread;
+			friend class beecrypt::util::concurrent::locks::ReentrantLock;
 
 			friend BEECRYPTCXXAPI void collection_attach(Object*) throw ();
 			friend BEECRYPTCXXAPI void collection_detach(Object*) throw ();
 			friend BEECRYPTCXXAPI void collection_remove(Object*) throw ();
 			friend BEECRYPTCXXAPI void collection_rcheck(Object*) throw ();
 
-			friend BEECRYPTCXXAPI void MonitorEnter(const Object*);
-			friend BEECRYPTCXXAPI void MonitorExit(const Object*) throw (IllegalMonitorStateException);
-
 		protected:
 			/*!\brief This class is used to emulate Java's lock/wait/notify
 			 *  methods.
-			 * \todo Refactor out the lock and condition, so that they can
-			 *  be used in ReentrantLock. Implement lock in such a way that
-			 *  multiple conditions can be attached to it. No initial
-			 *  condition is required; lazy initialization can be done when
-			 *  the lock has been established.
 			 */
 			class Monitor
 			{
-			public:
-				bc_threadid_t _owner;
-				bc_threadid_t _interruptee;
+				friend class Object;
+
+			protected:
+				bc_threadid_t         _owner;
+				bc_threadid_t         _interruptee;
+				bc_mutex_t            _lock;
+				volatile unsigned int _lock_count;
+
+				inline void internal_state_lock()
+				{
+					#if WIN32
+					if (WaitForSingleObject(_lock, INFINITE) != WAIT_OBJECT_0)
+						throw RuntimeException("WaitForSingleObject failed");
+					#elif HAVE_SYNC_H
+					if (mutex_lock(&_lock))
+						throw RuntimeException("mutex_lock failed");
+					#elif HAVE_PTHREAD_H
+					if (pthread_mutex_lock(&_lock))
+						throw RuntimeException("pthread_mutex_lock failed");
+					#else
+					# error
+					#endif
+				}
+
+				inline void internal_state_unlock()
+				{
+					#if WIN32
+					if (!ReleaseMutex(_lock))
+						throw RuntimeException("ReleaseMutex failed");
+					#elif HAVE_SYNCH_H
+					if (mutex_unlock(&_lock))
+						throw RuntimeException("mutex_unlock failed");
+					#elif HAVE_PTHREAD_H
+					if (pthread_mutex_unlock(&_lock))
+						throw RuntimeException("pthread_mutex_unlock failed");
+					#else
+					# error
+					#endif
+				}
+
+				Monitor();
 
 			public:
-				Monitor();
 				virtual ~Monitor() {}
 
 				virtual void interrupt(bc_threadid_t) = 0;
 				virtual bool interrupted(bc_threadid_t);
 				virtual bool isInterrupted(bc_threadid_t);
+				virtual bool isLocked();
 				virtual void lock() = 0;
-			//	virtual void lockInterruptibly() throw (InterruptedException) = 0;
+				virtual void lockInterruptibly() throw (InterruptedException) = 0;
 				virtual bool tryLock() = 0;
 				virtual void notify() = 0;
 				virtual void notifyAll() = 0;
 				virtual void unlock() = 0;
 				virtual void wait(jlong timeout) throw (InterruptedException) = 0;
 
-			public:
 				static Monitor* getInstance(bool fair = false);
 			};
 
@@ -94,8 +133,6 @@ namespace beecrypt {
 			{
 			private:
 				#if WIN32
-				HANDLE        _lock; // mutex
-				unsigned int  _lock_count;
 				HANDLE        _lock_sig; // semaphore
 				bool          _lock_sig_all;
 				HANDLE        _lock_sig_all_done; // event
@@ -105,8 +142,6 @@ namespace beecrypt {
 				HANDLE        _notify_sig_all_done; // event
 				unsigned int  _notify_wthreads;
 				#else
-				bc_mutex_t    _lock;
-				unsigned int  _lock_count;
 				bc_cond_t     _lock_sig;
 				unsigned int  _lock_wthreads;
 				bc_cond_t     _notify_sig;
@@ -119,7 +154,7 @@ namespace beecrypt {
 
 				virtual void interrupt(bc_threadid_t);
 				virtual void lock();
-			//	virtual void lockInterruptibly() throw (InterruptedException);
+				virtual void lockInterruptibly() throw (InterruptedException);
 				virtual bool tryLock();
 				virtual void unlock();
 				virtual void notify();
@@ -133,25 +168,15 @@ namespace beecrypt {
 				struct waiter
 				{
 					bc_threadid_t owner;
-					unsigned int lock_count;
-					#if WIN32
-					HANDLE event;
-					#else
-					bc_cond_t event;
-					#endif
-					waiter* next;
-					waiter* prev;
+					unsigned int  lock_count;
+					bc_cond_t     event;
+					waiter*       next;
+					waiter*       prev;
 
 					waiter(bc_threadid_t owner, unsigned int lock_count);
 					~waiter();
 				};
 
-				#if WIN32
-				HANDLE _lock; // mutex
-				#else
-				bc_mutex_t _lock;
-				#endif
-				unsigned int _lock_count;
 				waiter* _lock_head;
 				waiter* _lock_tail;
 				waiter* _notify_head;
@@ -163,7 +188,7 @@ namespace beecrypt {
 
 				virtual void interrupt(bc_threadid_t);
 				virtual void lock();
-			//	virtual void lockInterruptibly() throw (InterruptedException);
+				virtual void lockInterruptibly() throw (InterruptedException);
 				virtual bool tryLock();
 				virtual void unlock();
 				virtual void notify();
@@ -175,7 +200,7 @@ namespace beecrypt {
 			/*!\brief The object's reference count (for use with Collections).
 			 *  When this value is zero, it's safe to delete it.
 			 */
-			unsigned int _ref_count;
+			volatile unsigned int _ref_count;
 
 		private:
 			/*!\brief The object's monitor.
@@ -215,6 +240,10 @@ namespace beecrypt {
 			static bc_mutex_t _init_lock;
 			static bc_mutex_t init();
 
+		private:
+			void lock() const;
+			void unlock() const;
+
 		protected:
 			virtual Object* clone() const throw (CloneNotSupportedException);
 
@@ -229,11 +258,6 @@ namespace beecrypt {
 			virtual String toString() const throw ();
 			void wait(jlong millis = 0) const throw (InterruptedException);
 		};
-
-		BEECRYPTCXXAPI
-		void MonitorEnter(Object*);
-		BEECRYPTCXXAPI
-		void MonitorExit(Object*) throw (IllegalMonitorStateException);
 
 		/*!\brief This function is used inside a collection to indicate that
 		 *  the object is now attached to it.
