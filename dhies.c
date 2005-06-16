@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2001, 2002 Virtual Unlimited, B.V.
+ * Copyright (c) 2000, 2001, 2002, 2005 Beeyond Technology BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,9 +17,9 @@
  *
  */
 
-/*!\file dhaes.c
- * \brief DHAES encryption scheme.
- * \author Bob Deblier <bob.deblier@pandora.be>
+/*!\file dhies.c
+ * \brief DHIES encryption scheme.
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup DL_m DL_dh_m
  */
 
@@ -29,7 +29,7 @@
 # include "config.h"
 #endif
 
-#include "beecrypt/dhaes.h"
+#include "beecrypt/dhies.h"
 #include "beecrypt/dlsvdp-dh.h"
 #include "beecrypt/blockmode.h"
 #include "beecrypt/blockpad.h"
@@ -37,23 +37,21 @@
 /*
  * Good combinations will be:
  *
- * For 64-bit encryption:
- *	DHAES(MD5, Blowfish, HMAC-MD5) <- best candidate
- *	DHAES(MD5, Blowfish, HMAC-SHA-1)
- *  DHAES(MD5, Blowfish, HMAC-SHA-256)
- *
- * For 96-bit encryption with 64-bit mac:
- *  DHAES(SHA-1, Blowfish, HMAC-MD5, 96)
- *  DHAES(SHA-1, Blowfish, HMAC-SHA-1, 96) <- best candidate
- *  DHAES(SHA-1, Blowfish, HMAC-SHA-256, 96) <- best candidate
- *
  * For 128-bit encryption:
- *	DHAES(SHA-256, Blowfish, HMAC-MD5)
- *	DHAES(SHA-256, Blowfish, HMAC-SHA-1)
- *  DHAES(SHA-256, Blowfish, HMAC-SHA-256)
+ *  DHIES(SHA-256,AES,HMAC-SHA-256)
+ *  DHIES(SHA-256,Blowfish,HMAC-SHA-256)
+ *
+ * For 192-bit encryption:
+ *  DHIES(SHA-384,AES,HMAC-SHA-384)
+ *  DHIES(SHA-384,Blowfish,HMAC-SHA-384)
+ *
+ * For 256-bit encryption:
+ *  DHIES(SHA-512,AES,HMAC-SHA-512)
+ *  DHIES(SHA-512,Blowfish,HMAC-SHA-512)
+ *
  */
 
-int dhaes_pUsable(const dhaes_pParameters* params)
+int dhies_pUsable(const dhies_pParameters* params)
 {
 	size_t keybits = (params->hash->digestsize << 3); /* digestsize in bytes times 8 bits */
 	size_t cipherkeybits = params->cipherkeybits;
@@ -94,12 +92,12 @@ int dhaes_pUsable(const dhaes_pParameters* params)
 	return 1;
 }
 
-int dhaes_pContextInit(dhaes_pContext* ctxt, const dhaes_pParameters* params)
+int dhies_pContextInit(dhies_pContext* ctxt, const dhies_pParameters* params)
 {
-	if (ctxt == (dhaes_pContext*) 0)
+	if (ctxt == (dhies_pContext*) 0)
 		return -1;
 
-	if (params == (dhaes_pParameters*) 0)
+	if (params == (dhies_pParameters*) 0)
 		return -1;
 
 	if (params->param == (dldp_p*) 0)
@@ -114,7 +112,7 @@ int dhaes_pContextInit(dhaes_pContext* ctxt, const dhaes_pParameters* params)
 	if (params->mac == (keyedHashFunction*) 0)
 		return -1;
 
-	if (!dhaes_pUsable(params))
+	if (!dhies_pUsable(params))
 		return -1;
 
 	dldp_pInit(&ctxt->param);
@@ -138,9 +136,9 @@ int dhaes_pContextInit(dhaes_pContext* ctxt, const dhaes_pParameters* params)
 	return 0;
 }
 
-int dhaes_pContextInitDecrypt(dhaes_pContext* ctxt, const dhaes_pParameters* params, const mpnumber* pri)
+int dhies_pContextInitDecrypt(dhies_pContext* ctxt, const dhies_pParameters* params, const mpnumber* pri)
 {
-	if (dhaes_pContextInit(ctxt, params))
+	if (dhies_pContextInit(ctxt, params))
 		return -1;
 
 	mpncopy(&ctxt->pri, pri);
@@ -148,9 +146,9 @@ int dhaes_pContextInitDecrypt(dhaes_pContext* ctxt, const dhaes_pParameters* par
 	return 0;
 }
 
-int dhaes_pContextInitEncrypt(dhaes_pContext* ctxt, const dhaes_pParameters* params, const mpnumber* pub)
+int dhies_pContextInitEncrypt(dhies_pContext* ctxt, const dhies_pParameters* params, const mpnumber* pub)
 {
-	if (dhaes_pContextInit(ctxt, params))
+	if (dhies_pContextInit(ctxt, params))
 		return -1;
 
 	mpncopy(&ctxt->pub, pub);
@@ -158,7 +156,7 @@ int dhaes_pContextInitEncrypt(dhaes_pContext* ctxt, const dhaes_pParameters* par
 	return 0;
 }
 
-int dhaes_pContextFree(dhaes_pContext* ctxt)
+int dhies_pContextFree(dhies_pContext* ctxt)
 {
 	dldp_pFree(&ctxt->param);
 
@@ -177,7 +175,7 @@ int dhaes_pContextFree(dhaes_pContext* ctxt)
 	return 0;
 }
 
-static int dhaes_pContextSetup(dhaes_pContext* ctxt, const mpnumber* private, const mpnumber* public, const mpnumber* message, cipherOperation op)
+static int dhies_pContextSetup(dhies_pContext* ctxt, const mpnumber* private, const mpnumber* public, const mpnumber* message, cipherOperation op)
 {
 	register int rc;
 
@@ -243,7 +241,7 @@ setup_end:
 	return rc;
 }
 
-memchunk* dhaes_pContextEncrypt(dhaes_pContext* ctxt, mpnumber* ephemeralPublicKey, mpnumber* mac, const memchunk* cleartext, randomGeneratorContext* rng)
+memchunk* dhies_pContextEncrypt(dhies_pContext* ctxt, mpnumber* ephemeralPublicKey, mpnumber* mac, const memchunk* cleartext, randomGeneratorContext* rng)
 {
 	memchunk* ciphertext = (memchunk*) 0;
 	memchunk* paddedtext;
@@ -255,7 +253,7 @@ memchunk* dhaes_pContextEncrypt(dhaes_pContext* ctxt, mpnumber* ephemeralPublicK
 	dldp_pPair(&ctxt->param, rng, &ephemeralPrivateKey, ephemeralPublicKey);
 
 	/* Setup the key and initialize the mac and the blockcipher */
-	if (dhaes_pContextSetup(ctxt, &ephemeralPrivateKey, &ctxt->pub, ephemeralPublicKey, ENCRYPT))
+	if (dhies_pContextSetup(ctxt, &ephemeralPrivateKey, &ctxt->pub, ephemeralPublicKey, ENCRYPT))
 		goto encrypt_end;
 
 	/* add pkcs-5 padding */
@@ -293,13 +291,13 @@ encrypt_end:
 	return ciphertext;
 }
 
-memchunk* dhaes_pContextDecrypt(dhaes_pContext* ctxt, const mpnumber* ephemeralPublicKey, const mpnumber* mac, const memchunk* ciphertext)
+memchunk* dhies_pContextDecrypt(dhies_pContext* ctxt, const mpnumber* ephemeralPublicKey, const mpnumber* mac, const memchunk* ciphertext)
 {
 	memchunk* cleartext = (memchunk*) 0;
 	memchunk* paddedtext;
 
 	/* Setup the key and initialize the mac and the blockcipher */
-	if (dhaes_pContextSetup(ctxt, &ctxt->pri, ephemeralPublicKey, ephemeralPublicKey, DECRYPT))
+	if (dhies_pContextSetup(ctxt, &ctxt->pri, ephemeralPublicKey, ephemeralPublicKey, DECRYPT))
 		goto decrypt_end;
 
 	/* Verify the mac */

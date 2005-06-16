@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2001, 2002 Virtual Unlimited, B.V.
+ * Copyright (c) 2000, 2001, 2002, 2005 Beeyond Software Holding BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,29 +17,29 @@
  *
  */
 
-/*!\file dhaes.h
- * \brief DHAES encryption scheme.
+/*!\file dhies.h
+ * \brief DHIES (formerly known as DHAES or DHES) encryption scheme.
  *
  * This code implements the encryption scheme from the paper:
  *
- * "DHAES: An Encryption Scheme Based on the Diffie-Hellman Problem"
+ * "DHIES: An Encryption Scheme Based on the Diffie-Hellman Problem"
  * Michel Abdalla, Mihir Bellare, Phillip Rogaway
- * September 1998
+ * September 18, 2001
  *
- * \author Bob Deblier <bob.deblier@pandora.be>
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup DL_m DL_dh_m
  */
 
-#ifndef _DHAES_H
-#define _DHAES_H
+#ifndef _DHIES_H
+#define _DHIES_H
  
 #include "beecrypt/beecrypt.h"
 #include "beecrypt/dldp.h"
 
 #ifdef __cplusplus
-struct BEECRYPTAPI dhaes_pParameters
+struct BEECRYPTAPI dhies_pParameters
 #else
-struct _dhaes_pParameters
+struct _dhies_pParameters
 #endif
 {
 	const dldp_p*				param;
@@ -51,13 +51,13 @@ struct _dhaes_pParameters
 };
 
 #ifndef __cplusplus
-typedef struct _dhaes_pParameters dhaes_pParameters;
+typedef struct _dhies_pParameters dhies_pParameters;
 #endif
 
 #ifdef __cplusplus
-struct BEECRYPTAPI dhaes_pContext
+struct BEECRYPTAPI dhies_pContext
 #else
-struct _dhaes_pContext
+struct _dhies_pContext
 #endif
 {
 	dldp_p						param;
@@ -71,7 +71,7 @@ struct _dhaes_pContext
 };
 
 #ifndef __cplusplus
-typedef struct _dhaes_pContext dhaes_pContext;
+typedef struct _dhies_pContext dhies_pContext;
 #endif
 
 #ifdef __cplusplus
@@ -79,21 +79,21 @@ extern "C" {
 #endif
 
 BEECRYPTAPI
-int dhaes_pUsable(const dhaes_pParameters*);
+int dhies_pUsable(const dhies_pParameters*);
 
 BEECRYPTAPI
-int dhaes_pContextInit       (dhaes_pContext*, const dhaes_pParameters*);
+int dhies_pContextInit       (dhies_pContext*, const dhies_pParameters*);
 BEECRYPTAPI
-int dhaes_pContextInitDecrypt(dhaes_pContext*, const dhaes_pParameters*, const mpnumber*);
+int dhies_pContextInitDecrypt(dhies_pContext*, const dhies_pParameters*, const mpnumber*);
 BEECRYPTAPI
-int dhaes_pContextInitEncrypt(dhaes_pContext*, const dhaes_pParameters*, const mpnumber*);
+int dhies_pContextInitEncrypt(dhies_pContext*, const dhies_pParameters*, const mpnumber*);
 BEECRYPTAPI
-int dhaes_pContextFree       (dhaes_pContext*);
+int dhies_pContextFree       (dhies_pContext*);
 
 BEECRYPTAPI
-memchunk* dhaes_pContextEncrypt(dhaes_pContext*,       mpnumber*,       mpnumber*, const memchunk*, randomGeneratorContext*);
+memchunk* dhies_pContextEncrypt(dhies_pContext*,       mpnumber*,       mpnumber*, const memchunk*, randomGeneratorContext*);
 BEECRYPTAPI
-memchunk* dhaes_pContextDecrypt(dhaes_pContext*, const mpnumber*, const mpnumber*, const memchunk*);
+memchunk* dhies_pContextDecrypt(dhies_pContext*, const mpnumber*, const mpnumber*, const memchunk*);
 
 #ifdef __cplusplus
 }
