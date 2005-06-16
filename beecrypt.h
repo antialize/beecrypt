@@ -666,6 +666,10 @@ struct _blockCipher
 	 * \brief Pointer to the cipher's initialization vector setup function.
 	 */
 	const blockCipherSetIV		setiv;
+	/*!\var getfb
+	 * \brief Pointer to the cipher's feedback-returning function.
+	 */
+	const blockCipherFeedback	getfb;
 	/*!\var raw
 	 * \brief The cipher's raw functions.
 	 */
@@ -674,11 +678,14 @@ struct _blockCipher
 	 * \brief The cipher's ECB functions.
 	 */
 	const blockCipherMode		ecb;
-	const blockCipherMode		cbc;
-	/*!\var getfb
-	 * \brief Pointer to the cipher's feedback-returning function.
+	/*!\var cbc
+	 * \brief The cipher's CBC functions.
 	 */
-	const blockCipherFeedback	getfb;
+	const blockCipherMode		cbc;
+	/*!\var ctr
+	 * \brief The cipher's CTR functions.
+	 */
+	const blockCipherMode		ctr;
 };
 
 #ifndef __cplusplus
@@ -781,6 +788,9 @@ BEECRYPTAPI
 int blockCipherContextSetIV(blockCipherContext*, const byte*);
 
 BEECRYPTAPI
+int blockCipherContextSetCTR(blockCipherContext*, size_t);
+
+BEECRYPTAPI
 int blockCipherContextFree(blockCipherContext*);
 
 BEECRYPTAPI
@@ -788,6 +798,9 @@ int blockCipherContextECB(blockCipherContext*, uint32_t*, const uint32_t*, int);
 
 BEECRYPTAPI
 int blockCipherContextCBC(blockCipherContext*, uint32_t*, const uint32_t*, int);
+
+BEECRYPTAPI
+int blockCipherContextCTR(blockCipherContext*, uint32_t*, const uint32_t*, int);
 
 BEECRYPTAPI
 int blockCipherContextValidKeylen(blockCipherContext*, size_t);

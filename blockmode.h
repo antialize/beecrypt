@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2002 Virtual Unlimited B.V.
+ * Copyright (c) 2000, 2002, 2005 Beeyond Software Holding B.V.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,7 +20,7 @@
 /*!\file blockmode.h
  * \brief Blockcipher operation modes.
  * \todo Additional modes, such as CFB and OFB.
- * \author Bob Deblier <bob.deblier@pandora.be>
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup BC_m
  */
 
@@ -84,6 +84,12 @@ int blockEncryptCBC(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, 
  */
 BEECRYPTAPI
 int blockDecryptCBC(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, unsigned int nblocks);
+
+BEECRYPTAPI
+int blockEncryptCTR(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, unsigned int nblocks);
+
+BEECRYPTAPI
+int blockDecryptCTR(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, unsigned int nblocks);
 
 #ifdef __cplusplus
 }

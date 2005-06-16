@@ -827,6 +827,35 @@ int blockCipherContextSetIV(blockCipherContext* ctxt, const byte* iv)
 	return ctxt->algo->setiv(ctxt->param, iv);
 }
 
+int blockCipherContextSetCTR(blockCipherContext* ctxt, size_t counter)
+{
+	register unsigned int blockwords;
+	register uint32_t* fdback;
+	register int i;
+
+	if (ctxt == (blockCipherContext*) 0)
+		return -1;
+
+	if (ctxt->algo == (blockCipher*) 0)
+		return -1;
+
+	if (ctxt->param == (blockCipherParam*) 0)
+		return -1;
+
+	blockwords = ctxt->algo->blocksize >> 2;
+	fdback = ctxt->algo->getfb(ctxt->param);
+
+	i = blockwords;
+
+	while (--i > 0)
+	{
+		fdback[i] = (uint32_t) counter;
+		counter >>= 32;
+	}
+
+	return 0;
+}
+
 int blockCipherContextFree(blockCipherContext* ctxt)
 {
 	if (ctxt == (blockCipherContext*) 0)
@@ -890,6 +919,22 @@ int blockCipherContextCBC(blockCipherContext* ctxt, uint32_t* dst, const uint32_
 		return (ctxt->algo->cbc.decrypt) ?
 			ctxt->algo->cbc.decrypt(ctxt->param, dst, src, nblocks) :
 			blockDecryptCBC(ctxt->algo, ctxt->param, dst, src, nblocks);
+	}
+	return -1;
+}
+
+int blockCipherContextCTR(blockCipherContext* ctxt, uint32_t* dst, const uint32_t* src, int nblocks)
+{
+	switch (ctxt->op)
+	{
+	case NOCRYPT:
+		memcpy(dst, src, nblocks * ctxt->algo->blocksize);
+		return 0;
+	case ENCRYPT:
+	case DECRYPT: /* encrypt and decrypt are the same operation in ctr mode */
+		return (ctxt->algo->ctr.encrypt) ? 
+			ctxt->algo->ctr.encrypt(ctxt->param, dst, src, nblocks) :
+			blockEncryptCTR(ctxt->algo, ctxt->param, dst, src, nblocks);
 	}
 	return -1;
 }

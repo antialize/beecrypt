@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2000, 2002 Virtual Unlimited B.V.
+ * Copyright (c) 1999, 2000, 2002, 2005 Beeyond Software Holding B.V.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,7 +19,7 @@
 
 /*!\file blowfish.c
  * \brief Blowfish block cipher.
- * \author Bob Deblier <bob.deblier@pandora.be>
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup BC_m BC_blowfish_m
  */
 
@@ -43,6 +43,22 @@ extern int blowfishEncryptECB(blowfishparam*, uint32_t*, const uint32_t*, unsign
 
 #ifdef ASM_BLOWFISHDECRYPTECB
 extern int blowfishDecryptECB(blowfishparam*, uint32_t*, const uint32_t*, unsigned int);
+#endif
+
+#ifdef ASM_BLOWFISHENCRYPTCBC
+extern int blowfishEncryptCBC(blowfishparam*, uint32_t*, const uint32_t*, unsigned int);
+#endif
+
+#ifdef ASM_BLOWFISHDECRYPTCBC
+extern int blowfishDecryptCBC(blowfishparam*, uint32_t*, const uint32_t*, unsigned int);
+#endif
+
+#ifdef ASM_BLOWFISHENCRYPTCTR
+extern int blowfishEncryptCTR(blowfishparam*, uint32_t*, const uint32_t*, unsigned int);
+#endif
+
+#ifdef ASM_BLOWFISHDECRYPTCTR
+extern int blowfishDecryptCTR(blowfishparam*, uint32_t*, const uint32_t*, unsigned int);
 #endif
 
 static uint32_t _bf_p[BLOWFISHPSIZE] = {
@@ -324,6 +340,7 @@ const blockCipher blowfish = {
 	32,
 	(blockCipherSetup) blowfishSetup,
 	(blockCipherSetIV) blowfishSetIV,
+	(blockCipherFeedback) blowfishFeedback,
 	/* raw */
 	{
 		(blockCipherRawcrypt) blowfishEncrypt,
@@ -344,10 +361,30 @@ const blockCipher blowfish = {
 	},
 	/* cbc */
 	{
+		#ifdef AES_BLOWFISHENCRYPTCBC
+		(blockCipherModcrypt) blowfishEncryptCBC,
+		#else
 		(blockCipherModcrypt) 0,
+		#endif
+		#ifdef AES_BLOWFISHENCRYPTCBC
+		(blockCipherModcrypt) blowfishDecryptCBC,
+		#else
 		(blockCipherModcrypt) 0
+		#endif
 	},
-	(blockCipherFeedback) blowfishFeedback
+	/* ctr */
+	{
+		#ifdef AES_BLOWFISHENCRYPTCTR
+		(blockCipherModcrypt) blowfishEncryptCTR,
+		#else
+		(blockCipherModcrypt) 0,
+		#endif
+		#ifdef AES_BLOWFISHENCRYPTCTR
+		(blockCipherModcrypt) blowfishDecryptCTR,
+		#else
+		(blockCipherModcrypt) 0
+		#endif
+	},
 };
 
 int blowfishSetup(blowfishParam* bp, const byte* key, size_t keybits, cipherOperation op)

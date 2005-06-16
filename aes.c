@@ -55,6 +55,22 @@ extern int aesEncryptECB(aesParam*, uint32_t*, const uint32_t*, unsigned int);
 extern int aesDecryptECB(aesParam*, uint32_t*, const uint32_t*, unsigned int);
 #endif
 
+#ifdef ASM_AESENCRYPTCBC
+extern int aesEncryptCBC(aesParam*, uint32_t*, const uint32_t*, unsigned int);
+#endif
+
+#ifdef ASM_AESDECRYPTCBC
+extern int aesDecryptCBC(aesParam*, uint32_t*, const uint32_t*, unsigned int);
+#endif
+
+#ifdef ASM_AESENCRYPTCTR
+extern int aesEncryptCTR(aesParam*, uint32_t*, const uint32_t*, unsigned int);
+#endif
+
+#ifdef ASM_AESDECRYPTCTR
+extern int aesDecryptCTR(aesParam*, uint32_t*, const uint32_t*, unsigned int);
+#endif
+
 const blockCipher aes = {
 	"AES",
 	sizeof(aesParam),
@@ -64,6 +80,7 @@ const blockCipher aes = {
 	64,
 	(blockCipherSetup) aesSetup,
 	(blockCipherSetIV) aesSetIV,
+	(blockCipherFeedback) aesFeedback,
 	/* raw */
 	{
 		(blockCipherRawcrypt) aesEncrypt,
@@ -84,10 +101,30 @@ const blockCipher aes = {
 	},
 	/* cbc */
 	{
+		#ifdef ASM_AESENCRYPTCBC
+		(blockCipherModcrypt) aesEncryptCBC,
+		#else
 		(blockCipherModcrypt) 0,
+		#endif
+		#ifdef ASM_AESDECRYPTCBC
+		(blockCipherModcrypt) aesDecryptCBC,
+		#else
 		(blockCipherModcrypt) 0
+		#endif
 	},
-	(blockCipherFeedback) aesFeedback
+	/* ctr */
+	{
+		#ifdef ASM_AESENCRYPTCTR
+		(blockCipherModcrypt) aesEncryptCTR,
+		#else
+		(blockCipherModcrypt) 0,
+		#endif
+		#ifdef ASM_AESDECRYPTCTR
+		(blockCipherModcrypt) aesDecryptCTR,
+		#else
+		(blockCipherModcrypt) 0
+		#endif
+	}
 };
 
 int aesSetup(aesParam* ap, const byte* key, size_t keybits, cipherOperation op)
