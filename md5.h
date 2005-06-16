@@ -19,7 +19,7 @@
 
 /*!\file md5.h
  * \brief MD5 hash function.
- * \author Bob Deblier <bob.deblier@pandora.be>
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup HASH_m HASH_md5_m 
  */
 

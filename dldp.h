@@ -121,9 +121,9 @@ int dldp_pPrivate_s(const dldp_p*, randomGeneratorContext*, mpnumber*, size_t);
 BEECRYPTAPI
 int dldp_pPublic   (const dldp_p*, const mpnumber*, mpnumber*);
 BEECRYPTAPI
-int dldp_pPair     (const dldp_p*, randomGeneratorContext*, mpnumber*, mpnumber*);
+int dldp_pPair     (const dldp_p*, randomGeneratorContext*, mpnumber* x, mpnumber* y);
 BEECRYPTAPI
-int dldp_pPair_s   (const dldp_p*, randomGeneratorContext*, mpnumber*, mpnumber*, size_t);
+int dldp_pPair_s   (const dldp_p*, randomGeneratorContext*, mpnumber* x, mpnumber* y, size_t);
 
 /*
  * Function for comparing domain parameters
