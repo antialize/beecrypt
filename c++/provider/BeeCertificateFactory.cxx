@@ -40,7 +40,6 @@ Certificate* BeeCertificateFactory::engineGenerateCertificate(InputStream& in) t
 	}
 	catch (Exception& e)
 	{
-		std::cout << "Exception: " << e.getMessage() << std::endl << std::flush;
 		throw CertificateException(e.getMessage());
 	}
 }
