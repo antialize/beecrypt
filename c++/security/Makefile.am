@@ -13,27 +13,16 @@ AlgorithmParameterGenerator.cxx \
 AlgorithmParameters.cxx \
 DigestInputStream.cxx \
 DigestOutputStream.cxx \
-GeneralSecurityException.cxx \
-InvalidAlgorithmParameterException.cxx \
-InvalidKeyException.cxx \
-InvalidParameterException.cxx \
-KeyException.cxx \
 KeyFactory.cxx \
 KeyPair.cxx \
 KeyPairGenerator.cxx \
 KeyStore.cxx \
-KeyStoreException.cxx \
 MessageDigest.cxx \
-NoSuchAlgorithmException.cxx \
-NoSuchProviderException.cxx \
 Provider.cxx \
-ProviderException.cxx \
 SecureRandom.cxx \
 Security.cxx \
-ShortBufferException.cxx \
-Signature.cxx \
-SignatureException.cxx \
-UnrecoverableKeyException.cxx
+Signature.cxx
+
 libcxxsecurity_la_LIBADD = auth/libcxxsecurityauth.la cert/libcxxsecuritycert.la spec/libcxxsecurityspec.la
 
 cxxsecurity_HEADERS =\

@@ -8,14 +8,9 @@ cxxsecuritycertdir=$(pkgincludedir)/c++/security/cert
 
 libcxxsecuritycert_la_SOURCES =\
 Certificate.cxx \
-CertificateEncodingException.cxx \
-CertificateException.cxx \
-CertificateExpiredException.cxx \
 CertificateFactory.cxx \
-CertificateNotYetValidException.cxx \
 CertPath.cxx \
-CertPathValidator.cxx \
-CertPathValidatorException.cxx
+CertPathValidator.cxx
 
 cxxsecuritycert_HEADERS =\
 Certificate.h \

@@ -9,17 +9,15 @@ noinst_LTLIBRARIES = libcxxcrypto.la
 cxxcryptodir=$(pkgincludedir)/c++/crypto
 
 libcxxcrypto_la_SOURCES = \
-BadPaddingException.cxx \
 Cipher.cxx \
 CipherSpi.cxx \
-IllegalBlockSizeException.cxx \
 KeyAgreement.cxx \
 Mac.cxx \
 MacInputStream.cxx \
 MacOutputStream.cxx \
-NoSuchPaddingException.cxx \
 NullCipher.cxx \
 SecretKeyFactory.cxx
+
 libcxxcrypto_la_LIBADD = spec/libcxxcryptospec.la
 
 cxxcrypto_HEADERS = \
