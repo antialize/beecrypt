@@ -18,6 +18,10 @@
 
 #define BEECRYPT_CXX_DLL_EXPORT
 
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include "beecrypt/c++/crypto/spec/DHPrivateKeySpec.h"
 
 using namespace beecrypt::crypto::spec;

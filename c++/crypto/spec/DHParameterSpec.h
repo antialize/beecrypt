@@ -27,8 +27,6 @@
 
 #include "beecrypt/c++/crypto/interfaces/DHParams.h"
 using beecrypt::crypto::interfaces::DHParams;
-#include "beecrypt/c++/lang/Object.h"
-using beecrypt::lang::Object;
 #include "beecrypt/c++/security/spec/AlgorithmParameterSpec.h"
 using beecrypt::security::spec::AlgorithmParameterSpec;
 
