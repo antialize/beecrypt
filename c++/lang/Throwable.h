@@ -43,9 +43,8 @@ namespace beecrypt {
 
 		public:
 			Throwable();
+			Throwable(const char* message);
 			Throwable(const String* message);
-			Throwable(const String& message);
-			Throwable(const Throwable& cause);
 			~Throwable();
 
 			const String* getMessage() const throw ();

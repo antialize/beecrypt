@@ -26,25 +26,21 @@
 #include "beecrypt/c++/lang/String.h"
 using namespace beecrypt::lang;
 
-Throwable::Throwable()
+Throwable::Throwable() : _msg(0)
 {
 }
 
-Throwable::~Throwable()
+Throwable::Throwable(const char* message) : _msg(message ? new String(message) : 0)
 {
-	delete _msg;
 }
 
 Throwable::Throwable(const String* message) : _msg(message ? new String(*message) : 0)
 {
 }
 
-Throwable::Throwable(const String& message) : _msg(new String(message))
+Throwable::~Throwable()
 {
-}
-
-Throwable::Throwable(const Throwable& copy) : _msg(copy._msg ? new String(*copy._msg) : 0)
-{
+	delete _msg;
 }
 
 const String* Throwable::getMessage() const throw ()
