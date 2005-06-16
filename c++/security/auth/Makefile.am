@@ -6,8 +6,7 @@ noinst_LTLIBRARIES = libcxxsecurityauth.la
 
 cxxsecurityauthdir=$(pkgincludedir)/c++/security/auth
 
-libcxxsecurityauth_la_SOURCES =\
-DestroyFailedException.cxx
+libcxxsecurityauth_la_SOURCES =
 
 cxxsecurityauth_HEADERS =\
 Destroyable.h \

@@ -11,8 +11,6 @@ DSAParameterSpec.cxx \
 DSAPrivateKeySpec.cxx \
 DSAPublicKeySpec.cxx \
 EncodedKeySpec.cxx \
-InvalidKeySpecException.cxx \
-InvalidParameterSpecException.cxx \
 RSAKeyGenParameterSpec.cxx \
 RSAPrivateCrtKeySpec.cxx \
 RSAPrivateKeySpec.cxx \
