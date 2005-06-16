@@ -32,12 +32,21 @@ namespace beecrypt {
 	namespace lang {
 		/* \ingroup CXX_LANG_m
 		 */
-		class BEECRYPTCXXAPI IndexOutOfBoundsException : public RuntimeException
+		class IndexOutOfBoundsException : public RuntimeException
 		{
 		public:
-			IndexOutOfBoundsException();
-			IndexOutOfBoundsException(const String* message);
-			IndexOutOfBoundsException(const String& message);
+			inline IndexOutOfBoundsException()
+			{
+			}
+			inline IndexOutOfBoundsException(const char* message) : RuntimeException(message)
+			{
+			}
+			inline IndexOutOfBoundsException(const String* message) : RuntimeException(message)
+			{
+			}
+			inline ~IndexOutOfBoundsException()
+			{
+			}
 		};
 	}
 }

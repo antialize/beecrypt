@@ -32,12 +32,21 @@ namespace beecrypt {
 	namespace lang {
 		/* \ingroup CXX_LANG_m
 		 */
-		class BEECRYPTCXXAPI ClassCastException : public RuntimeException
+		class ClassCastException : public RuntimeException
 		{
 		public:
-			ClassCastException();
-			ClassCastException(const String* message);
-			ClassCastException(const String& message);
+			inline ClassCastException()
+			{
+			}
+			inline ClassCastException(const char* message) : RuntimeException(message)
+			{
+			}
+			inline ClassCastException(const String* message) : RuntimeException(message)
+			{
+			}
+			inline ~ClassCastException()
+			{
+			}
 		};
 	}
 }

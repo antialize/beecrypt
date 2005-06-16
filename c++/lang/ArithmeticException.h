@@ -32,12 +32,21 @@ namespace beecrypt {
 	namespace lang {
 		/* \ingroup CXX_LANG_m
 		 */
-		class BEECRYPTCXXAPI ArithmeticException : public RuntimeException
+		class ArithmeticException : public RuntimeException
 		{
 		public:
-			ArithmeticException();
-			ArithmeticException(const String* message);
-			ArithmeticException(const String& message);
+			inline ArithmeticException()
+			{
+			}
+			inline ArithmeticException(const char* message) : RuntimeException(message)
+			{
+			}
+			inline ArithmeticException(const String* message) : RuntimeException(message)
+			{
+			}
+			inline ~ArithmeticException()
+			{
+			}
 		};
 	}
 }

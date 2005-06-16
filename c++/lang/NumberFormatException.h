@@ -34,12 +34,21 @@ namespace beecrypt {
 		 *        numeric value due to an inappropriate format.
 		 * \ingroup CXX_LANG_m
 		 */
-		class BEECRYPTCXXAPI NumberFormatException : public IllegalArgumentException
+		class NumberFormatException : public IllegalArgumentException
 		{
 		public:
-			NumberFormatException();
-			NumberFormatException(const String* message);
-			NumberFormatException(const String& message);
+			inline NumberFormatException()
+			{
+			}
+			inline NumberFormatException(const char* message) : IllegalArgumentException(message)
+			{
+			}
+			inline NumberFormatException(const String* message) : IllegalArgumentException(message)
+			{
+			}
+			inline ~NumberFormatException()
+			{
+			}
 		};
 	}
 }

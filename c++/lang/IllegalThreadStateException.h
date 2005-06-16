@@ -32,12 +32,21 @@ namespace beecrypt {
 	namespace lang {
 		/* \ingroup CXX_LANG_m
 		 */
-		class BEECRYPTCXXAPI IllegalThreadStateException : public IllegalArgumentException
+		class IllegalThreadStateException : public IllegalArgumentException
 		{
 		public:
-			IllegalThreadStateException();
-			IllegalThreadStateException(const String* message);
-			IllegalThreadStateException(const String& message);
+			inline IllegalThreadStateException()
+			{
+			}
+			inline IllegalThreadStateException(const char* message) : IllegalArgumentException(message)
+			{
+			}
+			inline IllegalThreadStateException(const String* message) : IllegalArgumentException(message)
+			{
+			}
+			inline ~IllegalThreadStateException()
+			{
+			}
 		};
 	}
 }

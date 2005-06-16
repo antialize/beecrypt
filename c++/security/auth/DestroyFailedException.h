@@ -34,12 +34,21 @@ namespace beecrypt {
 		namespace auth {
 			/*!\ingroup CXX_SECURITY_AUTH_m
 			 */
-			class BEECRYPTCXXAPI DestroyFailedException : public beecrypt::lang::Exception
+			class DestroyFailedException : public beecrypt::lang::Exception
 			{
 			public:
-				DestroyFailedException();
-				DestroyFailedException(const String* message);
-				DestroyFailedException(const String& message);
+				inline DestroyFailedException()
+				{
+				}
+				inline DestroyFailedException(const char* message) : Exception(message)
+				{
+				}
+				inline DestroyFailedException(const String* message) : Exception(message)
+				{
+				}
+				inline ~DestroyFailedException()
+				{
+				}
 			};
 		}
 	}

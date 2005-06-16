@@ -34,12 +34,21 @@ namespace beecrypt {
 		 *        illegal or inappropriate argument.
 		 * \ingroup CXX_LANG_m
 		 */
-		class BEECRYPTCXXAPI IllegalArgumentException : public RuntimeException
+		class IllegalArgumentException : public RuntimeException
 		{
 		public:
-			IllegalArgumentException();
-			IllegalArgumentException(const String* message);
-			IllegalArgumentException(const String& message);
+			inline IllegalArgumentException()
+			{
+			}
+			inline IllegalArgumentException(const char* message)
+			{
+			}
+			inline IllegalArgumentException(const String* message)
+			{
+			}
+			inline ~IllegalArgumentException()
+			{
+			}
 		};
 	}
 }

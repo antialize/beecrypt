@@ -33,12 +33,21 @@ namespace beecrypt {
 	namespace util {
 		/*!\ingroup CXX_UTIL_m
 		 */
-		class BEECRYPTCXXAPI ConcurrentModificationException : public beecrypt::lang::RuntimeException
+		class ConcurrentModificationException : public beecrypt::lang::RuntimeException
 		{
 		public:
-			ConcurrentModificationException();
-			ConcurrentModificationException(const String*);
-			ConcurrentModificationException(const String&);
+			inline ConcurrentModificationException()
+			{
+			}
+			inline ConcurrentModificationException(const char* message) : RuntimeException(message)
+			{
+			}
+			inline ConcurrentModificationException(const String* message) : RuntimeException(message)
+			{
+			}
+			inline ~ConcurrentModificationException()
+			{
+			}
 		};
 	}
 }

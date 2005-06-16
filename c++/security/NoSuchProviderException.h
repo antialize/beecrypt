@@ -32,12 +32,24 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI NoSuchProviderException : public GeneralSecurityException
+		class NoSuchProviderException : public GeneralSecurityException
 		{
 		public:
-			NoSuchProviderException();
-			NoSuchProviderException(const String* message);
-			NoSuchProviderException(const String& message);
+			inline NoSuchProviderException()
+			{
+			}
+			inline NoSuchProviderException(const char* message) : GeneralSecurityException(message)
+			{
+			}
+			inline NoSuchProviderException(const String* message) : GeneralSecurityException(message)
+			{
+			}
+			inline NoSuchProviderException(const String& message) : GeneralSecurityException(&message)
+			{
+			}
+			inline ~NoSuchProviderException()
+			{
+			}
 		};
 	}
 }

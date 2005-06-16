@@ -32,12 +32,21 @@ namespace beecrypt {
 	namespace lang {
 		/* \ingroup CXX_LANG_m
 		 */
-		class BEECRYPTCXXAPI UnsupportedOperationException : public RuntimeException
+		class UnsupportedOperationException : public RuntimeException
 		{
 		public:
-			UnsupportedOperationException();
-			UnsupportedOperationException(const String* message);
-			UnsupportedOperationException(const String& message);
+			inline UnsupportedOperationException()
+			{
+			}
+			inline UnsupportedOperationException(const char* message) : RuntimeException(message)
+			{
+			}
+			inline UnsupportedOperationException(const String* message) : RuntimeException(message)
+			{
+			}
+			inline ~UnsupportedOperationException()
+			{
+			}
 		};
 	}
 }

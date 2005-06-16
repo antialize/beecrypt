@@ -33,12 +33,21 @@ namespace beecrypt {
 	namespace util {
 		/*!\ingroup CXX_UTIL_m
 		 */
-		class BEECRYPTCXXAPI NoSuchElementException : public beecrypt::lang::RuntimeException
+		class NoSuchElementException : public beecrypt::lang::RuntimeException
 		{
 		public:
-			NoSuchElementException();
-			NoSuchElementException(const String*);
-			NoSuchElementException(const String&);
+			inline NoSuchElementException()
+			{
+			}
+			inline NoSuchElementException(const char* message) : RuntimeException(message)
+			{
+			}
+			inline NoSuchElementException(const String* message) : RuntimeException(message)
+			{
+			}
+			inline ~NoSuchElementException()
+			{
+			}
 		};
 	}
 }

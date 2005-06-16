@@ -32,12 +32,21 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI SignatureException : public GeneralSecurityException
+		class SignatureException : public GeneralSecurityException
 		{
 		public:
-			SignatureException();
-			SignatureException(const String* message);
-			SignatureException(const String& message);
+			inline SignatureException()
+			{
+			}
+			inline SignatureException(const char* message) : GeneralSecurityException(message)
+			{
+			}
+			inline SignatureException(const String* message) : GeneralSecurityException(message)
+			{
+			}
+			inline ~SignatureException()
+			{
+			}
 		};
 	}
 }

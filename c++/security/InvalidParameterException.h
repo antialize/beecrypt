@@ -27,18 +27,28 @@
 
 #include "beecrypt/c++/lang/IllegalArgumentException.h"
 using beecrypt::lang::IllegalArgumentException;
+#include "beecrypt/c++/lang/String.h"
 using beecrypt::lang::String;
 
 namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI InvalidParameterException : public beecrypt::lang::IllegalArgumentException
+		class InvalidParameterException : public beecrypt::lang::IllegalArgumentException
 		{
 		public:
-			InvalidParameterException();
-			InvalidParameterException(const String* message);
-			InvalidParameterException(const String& message);
+			inline InvalidParameterException()
+			{
+			}
+			inline InvalidParameterException(const char* message) : IllegalArgumentException(message)
+			{
+			}
+			inline InvalidParameterException(const String* message) : IllegalArgumentException(message)
+			{
+			}
+			inline ~InvalidParameterException()
+			{
+			}
 		};
 	}
 }

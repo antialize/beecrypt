@@ -35,12 +35,21 @@ namespace beecrypt {
 		 *        was initialized.
 		 * \ingroup CXX_LANG_m
 		 */
-		class BEECRYPTCXXAPI IllegalStateException : public RuntimeException
+		class IllegalStateException : public RuntimeException
 		{
 		public:
-			IllegalStateException();
-			IllegalStateException(const String* message);
-			IllegalStateException(const String& message);
+			inline IllegalStateException()
+			{
+			}
+			inline IllegalStateException(const char* message) : RuntimeException(message)
+			{
+			}
+			inline IllegalStateException(const String* message) : RuntimeException(message)
+			{
+			}
+			inline ~IllegalStateException()
+			{
+			}
 		};
 	}
 }

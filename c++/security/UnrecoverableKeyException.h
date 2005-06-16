@@ -32,12 +32,21 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI UnrecoverableKeyException : public GeneralSecurityException
+		class UnrecoverableKeyException : public GeneralSecurityException
 		{
 		public:
-			UnrecoverableKeyException();
-			UnrecoverableKeyException(const String* message);
-			UnrecoverableKeyException(const String& message);
+			inline UnrecoverableKeyException()
+			{
+			}
+			inline UnrecoverableKeyException(const char* message) : GeneralSecurityException(message)
+			{
+			}
+			inline UnrecoverableKeyException(const String* message) : GeneralSecurityException(message)
+			{
+			}
+			inline ~UnrecoverableKeyException()
+			{
+			}
 		};
 	}
 }

@@ -32,12 +32,21 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI ShortBufferException : public GeneralSecurityException
+		class ShortBufferException : public GeneralSecurityException
 		{
 		public:
-			ShortBufferException();
-			ShortBufferException(const String* message);
-			ShortBufferException(const String& message);
+			inline ShortBufferException()
+			{
+			}
+			inline ShortBufferException(const char* message) : GeneralSecurityException(message)
+			{
+			}
+			inline ShortBufferException(const String* message) : GeneralSecurityException(message)
+			{
+			}
+			inline ~ShortBufferException()
+			{
+			}
 		};
 	}
 }

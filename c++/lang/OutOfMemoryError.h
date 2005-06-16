@@ -34,12 +34,21 @@ namespace beecrypt {
 		 *        out of memory.
 		 * \ingroup CXX_LANG_m
 		 */
-		class BEECRYPTCXXAPI OutOfMemoryError : public Error
+		class OutOfMemoryError : public Error
 		{
 		public:
-			OutOfMemoryError();
-			OutOfMemoryError(const String* message);
-			OutOfMemoryError(const String& message);
+			inline OutOfMemoryError()
+			{
+			}
+			inline OutOfMemoryError(const char* message) : Error(message)
+			{
+			}
+			inline OutOfMemoryError(const String* message) : Error(message)
+			{
+			}
+			inline ~OutOfMemoryError()
+			{
+			}
 		};
 	}
 }

@@ -33,12 +33,21 @@ namespace beecrypt {
 		namespace spec {
 			/*!\ingroup CXX_SECURITY_SPEC_m
 			 */
-			class BEECRYPTCXXAPI InvalidKeySpecException : public beecrypt::security::GeneralSecurityException
+			class InvalidKeySpecException : public beecrypt::security::GeneralSecurityException
 			{
 			public:
-				InvalidKeySpecException();
-				InvalidKeySpecException(const String* message);
-				InvalidKeySpecException(const String& message);
+				inline InvalidKeySpecException()
+				{
+				}
+				inline InvalidKeySpecException(const char* message) : GeneralSecurityException(message)
+				{
+				}
+				inline InvalidKeySpecException(const String* message) : GeneralSecurityException(message)
+				{
+				}
+				inline ~InvalidKeySpecException()
+				{
+				}
 			};
 		}
 	}

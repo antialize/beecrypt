@@ -32,12 +32,21 @@ namespace beecrypt {
 	namespace lang {
 		/* \ingroup CXX_LANG_m
 		 */
-		class BEECRYPTCXXAPI InterruptedException : public Exception
+		class InterruptedException : public Exception
 		{
 		public:
-			InterruptedException();
-			InterruptedException(const String* message);
-			InterruptedException(const String& message);
+			inline InterruptedException()
+			{
+			}
+			inline InterruptedException(const char* message) : Exception(message)
+			{
+			}
+			inline InterruptedException(const String* message) : Exception(message)
+			{
+			}
+			inline ~InterruptedException()
+			{
+			}
 		};
 	}
 }

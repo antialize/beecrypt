@@ -32,12 +32,21 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI InvalidAlgorithmParameterException : public GeneralSecurityException
+		class InvalidAlgorithmParameterException : public GeneralSecurityException
 		{
 		public:
-			InvalidAlgorithmParameterException();
-			InvalidAlgorithmParameterException(const String* message);
-			InvalidAlgorithmParameterException(const String& message);
+			inline InvalidAlgorithmParameterException()
+			{
+			}
+			inline InvalidAlgorithmParameterException(const char* message) : GeneralSecurityException(message)
+			{
+			}
+			inline InvalidAlgorithmParameterException(const String* message) : GeneralSecurityException(message)
+			{
+			}
+			inline ~InvalidAlgorithmParameterException()
+			{
+			}
 		};
 	}
 }

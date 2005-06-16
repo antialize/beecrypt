@@ -32,12 +32,21 @@ namespace beecrypt {
 	namespace lang {
 		/* \ingroup CXX_LANG_m
 		 */
-		class BEECRYPTCXXAPI IllegalMonitorStateException : public RuntimeException
+		class IllegalMonitorStateException : public RuntimeException
 		{
 		public:
-			IllegalMonitorStateException();
-			IllegalMonitorStateException(const String* message);
-			IllegalMonitorStateException(const String& message);
+			inline IllegalMonitorStateException()
+			{
+			}
+			inline IllegalMonitorStateException(const char* message) : RuntimeException(message)
+			{
+			}
+			inline IllegalMonitorStateException(const String* message) : RuntimeException(message)
+			{
+			}
+			inline ~IllegalMonitorStateException()
+			{
+			}
 		};
 	}
 }

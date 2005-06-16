@@ -32,12 +32,21 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI InvalidKeyException : public KeyException
+		class InvalidKeyException : public KeyException
 		{
 		public:
-			InvalidKeyException();
-			InvalidKeyException(const String* message);
-			InvalidKeyException(const String& message);
+			inline InvalidKeyException()
+			{
+			}
+			inline InvalidKeyException(const char* message) : KeyException(message)
+			{
+			}
+			inline InvalidKeyException(const String* message) : KeyException(message)
+			{
+			}
+			inline ~InvalidKeyException()
+			{
+			}
 		};
 	}
 }

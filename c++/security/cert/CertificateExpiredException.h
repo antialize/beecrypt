@@ -33,12 +33,21 @@ namespace beecrypt {
 		namespace cert {
 			/*!\ingroup CXX_SECURITY_CERT_m
 			 */
-			class BEECRYPTCXXAPI CertificateExpiredException : public CertificateException
+			class CertificateExpiredException : public CertificateException
 			{
 			public:
-				CertificateExpiredException();
-				CertificateExpiredException(const String* message);
-				CertificateExpiredException(const String& message);
+				inline CertificateExpiredException()
+				{
+				}
+				inline CertificateExpiredException(const char* message) : CertificateException(message)
+				{
+				}
+				inline CertificateExpiredException(const String* message) : CertificateException(message)
+				{
+				}
+				inline ~CertificateExpiredException()
+				{
+				}
 			};
 		}
 	}

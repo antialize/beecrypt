@@ -34,12 +34,21 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI ProviderException : public beecrypt::lang::RuntimeException
+		class ProviderException : public beecrypt::lang::RuntimeException
 		{
 		public:
-			ProviderException();
-			ProviderException(const String* message);
-			ProviderException(const String& message);
+			inline ProviderException()
+			{
+			}
+			inline ProviderException(const char* message) : RuntimeException(message)
+			{
+			}
+			inline ProviderException(const String* message) : RuntimeException(message)
+			{
+			}
+			inline ~ProviderException()
+			{
+			}
 		};
 	}
 }

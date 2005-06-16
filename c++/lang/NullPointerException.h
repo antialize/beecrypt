@@ -34,12 +34,21 @@ namespace beecrypt {
 		 *        found a null pointer where an object was required.
 		 * \ingroup CXX_LANG_m
 		 */
-		class BEECRYPTCXXAPI NullPointerException : public RuntimeException
+		class NullPointerException : public RuntimeException
 		{
 		public:
-			NullPointerException();
-			NullPointerException(const String* message);
-			NullPointerException(const String& message);
+			inline NullPointerException()
+			{
+			}
+			inline NullPointerException(const char* message) : RuntimeException(message)
+			{
+			}
+			inline NullPointerException(const String* message) : RuntimeException(message)
+			{
+			}
+			inline ~NullPointerException()
+			{
+			}
 		};
 	}
 }

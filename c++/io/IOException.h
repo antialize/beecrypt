@@ -33,12 +33,21 @@ namespace beecrypt {
 	namespace io {
 		/*!\ingroup CXX_IO_m
 		 */
-		class BEECRYPTCXXAPI IOException : public beecrypt::lang::Exception
+		class IOException : public beecrypt::lang::Exception
 		{
 		public:
-			IOException();
-			IOException(const String* message);
-			IOException(const String& message);
+			inline IOException()
+			{
+			}
+			inline IOException(const char* message) : Exception(message)
+			{
+			}
+			inline IOException(const String* message) : Exception(message)
+			{
+			}
+			inline ~IOException()
+			{
+			}
 		};
 	}
 }

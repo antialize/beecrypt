@@ -34,12 +34,21 @@ namespace beecrypt {
 		 *        problem, which should not be caught by the application.
 		 * \ingroup CXX_LANG_m
 		 */
-		class BEECRYPTCXXAPI Error : public Throwable
+		class Error : public Throwable
 		{
 		public:
-			Error();
-			Error(const String* message);
-			Error(const String& message);
+			inline Error()
+			{
+			}
+			inline Error(const char* message) : Throwable(message)
+			{
+			}
+			inline Error(const String* message) : Throwable(message)
+			{
+			}
+			inline ~Error()
+			{
+			}
 		};
 	}
 }

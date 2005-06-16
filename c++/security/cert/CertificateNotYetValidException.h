@@ -33,12 +33,21 @@ namespace beecrypt {
 		namespace cert {
 			/*!\ingroup CXX_SECURITY_CERT_m
 			 */
-			class BEECRYPTCXXAPI CertificateNotYetValidException : public CertificateException
+			class CertificateNotYetValidException : public CertificateException
 			{
 			public:
-				CertificateNotYetValidException();
-				CertificateNotYetValidException(const String* message);
-				CertificateNotYetValidException(const String& message);
+				inline CertificateNotYetValidException()
+				{
+				}
+				inline CertificateNotYetValidException(const char* message) : CertificateException(message)
+				{
+				}
+				inline CertificateNotYetValidException(const String* message) : CertificateException(message)
+				{
+				}
+				inline ~CertificateNotYetValidException()
+				{
+				}
 			};
 		}
 	}

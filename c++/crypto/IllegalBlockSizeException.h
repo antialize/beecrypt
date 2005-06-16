@@ -32,12 +32,21 @@ namespace beecrypt {
 	namespace crypto {
 		/*!\ingroup CXX_CRYPTO_m
 		 */
-		class BEECRYPTCXXAPI IllegalBlockSizeException : public beecrypt::security::GeneralSecurityException
+		class IllegalBlockSizeException : public beecrypt::security::GeneralSecurityException
 		{
 		public:
-			IllegalBlockSizeException();
-			IllegalBlockSizeException(const String* message);
-			IllegalBlockSizeException(const String& message);
+			inline IllegalBlockSizeException()
+			{
+			}
+			inline IllegalBlockSizeException(const char* message) : GeneralSecurityException(message)
+			{
+			}
+			inline IllegalBlockSizeException(const String* message) : GeneralSecurityException(message)
+			{
+			}
+			inline ~IllegalBlockSizeException()
+			{
+			}
 		};
 	}
 }

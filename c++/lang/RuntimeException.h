@@ -34,12 +34,21 @@ namespace beecrypt {
 		 *        during normal operation.
 		 * \ingroup CXX_LANG_m
 		 */
-		class BEECRYPTCXXAPI RuntimeException : public Exception
+		class RuntimeException : public Exception
 		{
 		public:
-			RuntimeException();
-			RuntimeException(const String* message);
-			RuntimeException(const String& message);
+			inline RuntimeException()
+			{
+			}
+			inline RuntimeException(const char* message) : Exception(message)
+			{
+			}
+			inline RuntimeException(const String* message) : Exception(message)
+			{
+			}
+			inline ~RuntimeException()
+			{
+			}
 		};
 	}
 }

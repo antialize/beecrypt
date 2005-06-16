@@ -27,18 +27,28 @@
 
 #include "beecrypt/c++/lang/Exception.h"
 using beecrypt::lang::Exception;
+#include "beecrypt/c++/lang/String.h"
 using beecrypt::lang::String;
 
 namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI GeneralSecurityException : public beecrypt::lang::Exception
+		class GeneralSecurityException : public beecrypt::lang::Exception
 		{
 		public:
-			GeneralSecurityException();
-			GeneralSecurityException(const String* message);
-			GeneralSecurityException(const String& message);
+			inline GeneralSecurityException()
+			{
+			}
+			inline GeneralSecurityException(const char* message) : Exception(message)
+			{
+			}
+			inline GeneralSecurityException(const String* message) : Exception(message)
+			{
+			}
+			inline ~GeneralSecurityException()
+			{
+			}
 		};
 	}
 }

@@ -32,12 +32,24 @@ namespace beecrypt {
 	namespace lang {
 		/* \ingroup CXX_LANG_m
 		 */
-		class BEECRYPTCXXAPI CloneNotSupportedException : public Exception
+		class CloneNotSupportedException : public Exception
 		{
 		public:
-			CloneNotSupportedException();
-			CloneNotSupportedException(const String* message);
-			CloneNotSupportedException(const String& message);
+			inline CloneNotSupportedException()
+			{
+			}
+			inline CloneNotSupportedException(const char* message) : Exception(message)
+			{
+			}
+			inline CloneNotSupportedException(const String* message) : Exception(message)
+			{
+			}
+			inline CloneNotSupportedException(const String& message) : Exception(&message)
+			{
+			}
+			inline ~CloneNotSupportedException()
+			{
+			}
 		};
 	}
 }
