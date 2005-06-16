@@ -49,7 +49,7 @@ FileInputStream::~FileInputStream()
 int FileInputStream::available() throw (IOException)
 {
 	if (!_f)
-		throw IOException(String("not a valid file handle"));
+		throw IOException("not a valid file handle");
 
 	long _curr, _size;
 
