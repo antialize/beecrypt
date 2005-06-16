@@ -286,7 +286,9 @@ AH_TEMPLATE([JAVAGLUE],[Define to 1 if you want to include the Java code])
 
 if test "$ac_with_java" = yes ; then
   AC_CHECK_PROG(ac_cv_have_gcj, gcj, yes, no)
+  AC_CHECK_PROG(ac_cv_have_gcjh, gcjh, yes, no)
   if test "$ac_cv_have_gcj" = yes; then
+    AC_SUBST(javac,gcj)
     AC_CACHE_CHECK([for java native interface headers], ac_cv_java_include, [
       cat > conftest.java << EOF
 public class conftest
@@ -321,7 +323,9 @@ EOF
     AC_CHECK_PROG(ac_cv_have_java, java, yes, no)
     if test "$ac_cv_have_java" = yes; then
       AC_CHECK_PROG(ac_cv_have_javac, javac, yes, no)
+      AC_CHECK_PROG(ac_cv_have_javah, javah, yes, no)
       if test "$ac_cv_have_javac" = yes; then
+        AC_SUBST(javac,javac)
         AC_CACHE_CHECK([for java native interface headers],ac_cv_java_include,[
           cat > conftest.java << EOF
 public class conftest
@@ -643,6 +647,8 @@ AC_CONFIG_FILES([
     c++/security/interfaces/Makefile
     c++/security/spec/Makefile
     c++/util/Makefile
+    c++/util/concurrent/Makefile
+    c++/util/concurrent/locks/Makefile
     docs/Makefile
     gas/Makefile
     java/Makefile
@@ -652,6 +658,7 @@ AC_CONFIG_FILES([
     python/test/Makefile
     tests/Makefile
   ])
+
 AC_CONFIG_FILES([gnu.h],[
     if test $srcdir != "."; then
       cp gnu.h $ac_top_srcdir/gnu.h
