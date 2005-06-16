@@ -116,6 +116,10 @@
  */
 /*!\defgroup	CXX_UTIL_m	C++ classes mimicking java.util
  */
+/*!\defgroup	CXX_UTIL_CONCURRENT_m	C++ classes mimicking java.util.concurrent
+ */
+/*!\defgroup	CXX_UTIL_CONCURRENT_LOCKS_m	C++ classes mimicking java.util.concurrent.locks
+ */
 /*!\defgroup	CXX_CRYPTO_m	C++ classes mimicking javax.crypto
  */
 /*!\defgroup	CXX_CRYPTO_INTERFACES_m	C++ classes mimicking javax.crypto.interfaces
@@ -131,10 +135,10 @@
 /*!\namespace beecrypt::lang
  * \brief Namespace emulating java.lang
  */
-/*!\namespace beecrypt::security
+/*!\namespace beecrypt::nio
  * \brief Namespace emulating java.nio
  */
-/*!\namespace beecrypt::nio
+/*!\namespace beecrypt::security
  * \brief Namespace emulating java.security
  */
 /*!\namespace beecrypt::security::cert
@@ -148,6 +152,12 @@
  */
 /*!\namespace beecrypt::util
  * \brief Namespace emulating java.util
+ */
+/*!\namespace beecrypt::util::concurrent
+ * \brief Namespace emulating java.util.concurrent
+ */
+/*!\namespace beecrypt::util::concurrent::locks
+ * \brief Namespace emulating java.util.concurrent.locks
  */
 /*!\namespace beecrypt::crypto
  * \brief Namespace emulating javax.crypto

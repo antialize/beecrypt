@@ -435,7 +435,8 @@ INPUT                  = @top_srcdir@/c++/Doxyheader \
                          @top_srcdir@/c++/security/cert \
                          @top_srcdir@/c++/security/interfaces \
                          @top_srcdir@/c++/security/spec \
-                         @top_srcdir@/c++/util
+                         @top_srcdir@/c++/util \
+                         @top_srcdir@/c++/util/concurrent/locks
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 
