@@ -40,12 +40,12 @@ int main(int argc, char* argv[])
 {
 	try
 	{
-		array<javachar> password(4);
+		array<jchar> password(4);
 
-		password[0] = (javachar) 't';
-		password[1] = (javachar) 'e';
-		password[2] = (javachar) 's';
-		password[3] = (javachar) 't';
+		password[0] = (jchar) 't';
+		password[1] = (jchar) 'e';
+		password[2] = (jchar) 's';
+		password[3] = (jchar) 't';
 
 		KeyStore* ks = KeyStore::getInstance(KeyStore::getDefaultType());
 
