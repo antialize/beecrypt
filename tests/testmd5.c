@@ -20,7 +20,7 @@
 /*!\file testmd5.c
  * \brief Unit test program for the MD5 algorithm; it tests all vectors
  *        specified by RFC 1321.
- * \author Bob Deblier <bob.deblier@pandora.be>
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup UNIT_m
  */
 

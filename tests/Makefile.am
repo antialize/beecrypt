@@ -1,9 +1,9 @@
 #
 # Makefile.am's purpose is to build the beetest_ test_ program.
 #
-# Copyright (c) 2001, 2002, 2003 Virtual Unlimited B.V.
+# Copyright (c) 2001, 2002, 2003 Beeyond Software Holding BV
 #
-# Author: Bob Deblier <bob.deblier@pandora.be>
+# Author: Bob Deblier <bob.deblier@telenet.be>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -59,18 +59,22 @@ testrsacrt_SOURCES = testrsacrt.c
 
 testdldp_SOURCES = testdldp.c
 
-EXTRA_PROGRAMS = benchme benchhf benchbc
+EXTRA_PROGRAMS = benchme benchrsa benchhf benchbc
 
 benchme_SOURCES = benchme.c
+
+benchrsa_SOURCES = benchrsa.c
 
 benchhf_SOURCES = benchhf.c
 
 benchbc_SOURCES = benchbc.c
 
 # Run every benchmark test twice
-bench: benchme benchhf benchbc
+bench: benchme benchrsa benchhf benchbc
 	./benchme
 	./benchme
+	./benchrsa
+	./benchrsa
 	./benchhf MD5
 	./benchhf MD5
 	./benchhf SHA-1

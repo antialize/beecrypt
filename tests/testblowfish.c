@@ -19,7 +19,7 @@
 
 /*!\file testblowfish.c
  * \brief Unit test program for the Blowfish cipher.
- * \author Bob Deblier <bob.deblier@pandora.be>
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup UNIT_m
  */
 

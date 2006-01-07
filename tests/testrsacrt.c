@@ -19,7 +19,7 @@
 
 /*!\file testrsa.c
  * \brief Unit test program for the RSA algorithm.
- * \author Bob Deblier <bob.deblier@pandora.be>
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup UNIT_m
  */
 
