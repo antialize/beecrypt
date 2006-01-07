@@ -24,7 +24,7 @@ LIBBEECRYPT_JAVA_LT_CURRENT = 7
 LIBBEECRYPT_JAVA_LT_AGE = 0
 LIBBEECRYPT_JAVA_LT_REVISION = 0
 
-INCLUDES = -I$(top_srcdir)/.. @JAVAINC@
+INCLUDES = -I$(top_srcdir)/..
 
 libaltdir=$(prefix)/lib@LIBALT@
 
@@ -32,6 +32,7 @@ libalt_LTLIBRARIES = libbeecrypt_java.la
 
 libbeecrypt_java_la_SOURCES = \
 beecrypt_tools.c \
+beecrypt_provider_AES.c \
 beecrypt_provider_MD5.c \
 beecrypt_provider_SHA1.c \
 beecrypt_provider_SHA256.c \
@@ -46,6 +47,8 @@ beecrypt_provider_DHKeyPairGenerator.c \
 beecrypt_provider_RSAKeyPairGenerator.c
 
 noinst_HEADERS = \
+beecrypt_tools.h \
+beecrypt_provider_AES.h \
 beecrypt_provider_MD5.h \
 beecrypt_provider_SHA1.h \
 beecrypt_provider_SHA256.h \
