@@ -216,7 +216,7 @@ define(`elr',`
 define(`eblock',`
 	sxrk
 
-	movl `$'SYMNAME(_ae0),%esi
+	movl `$'SYMNAME(_aes_enc),%esi
 
 	etfs(16)
 	esft(32)
@@ -493,7 +493,7 @@ define(`dlr',`
 define(`dblock',`
 	sxrk
 
-	movl `$'SYMNAME(_ad0),%esi
+	movl `$'SYMNAME(_aes_dec),%esi
 
 	dtfs(16)
 	dsft(32)
