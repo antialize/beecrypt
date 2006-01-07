@@ -394,7 +394,7 @@ fi
 
 if test "$ac_with_java" = yes ; then
   AC_DEFINE([JAVAGLUE],1)
-  AC_SUBST(JAVAINC,$ac_cv_java_include)
+  CPPFLAGS="$CPPFLAGS $ac_cv_java_include"
 fi
 
 
@@ -535,6 +535,9 @@ if test "$ac_enable_debug" != yes; then
     ;;
   pentium)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I586"
+    ;;
+  pentium-m)
+    CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I686 -DOPTIMIZE_MMX -DOPTIMIZE_SSE -DOPTIMIZE_SSE2"
     ;;
   pentium-mmx)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I586 -DOPTIMIZE_MMX"

@@ -30,6 +30,8 @@
 #ifdef __cplusplus
 
 #include <new>
+#include <cstring>
+#include <cstdlib>
 
 namespace beecrypt {
 	template<typename T> class array;
@@ -125,7 +127,7 @@ namespace beecrypt {
 			if (_size == 0 && cmp._size == 0)
 				return true;
 
-			return !memcmp(_data, cmp._data, _size * sizeof(T));
+			return !::memcmp(_data, cmp._data, _size * sizeof(T));
 		}
 		bool operator!=(const array& cmp) const throw ()
 		{

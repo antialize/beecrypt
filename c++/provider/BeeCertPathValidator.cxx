@@ -85,7 +85,7 @@ CertPathValidatorResult* BeeCertPathValidator::engineValidate(const CertPath& pa
 					catch (Exception& e)
 					{
 						// on any exception, the certificate path failed to validate
-						throw CertPathValidatorException(e.getMessage());
+						throw CertPathValidatorException().initCause(e);
 					}
 				}
 

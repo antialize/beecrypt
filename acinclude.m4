@@ -1,6 +1,6 @@
 dnl  BeeCrypt specific autoconf macros
 
-dnl  Copyright 2003 Bob Deblier <bob.deblier@pandora.be>
+dnl  Copyright (c) 2003, 2004, 2005  Bob Deblier <bob.deblier@telenet.be>
 dnl
 dnl  This file is part of the BeeCrypt crypto library
 dnl  
@@ -16,7 +16,7 @@ AC_DEFUN([BEECRYPT_WITH_CPU],[
   i[[3456]]86)
     case $withval in
     i[[3456]]86 | \
-    pentium | pentium-mmx | pentiumpro | pentium[[234]] | \
+    pentium | pentium-m | pentium-mmx | pentiumpro | pentium[[234]] | \
     athlon | athlon-tbird | athlon-4 | athlon-xp | athlon-mp)
       ;;
     *)
@@ -82,7 +82,7 @@ AC_DEFUN([BEECRYPT_WITH_ARCH],[
   i[[3456]]86)
     case $withval in
     i[[3456]]86 | \
-    pentium | pentium-mmx | pentiumpro | pentium[[234]] | \
+    pentium | pentium-m | pentium-mmx | pentiumpro | pentium[[234]] | \
     athlon | athlon-tbird | athlon-4 | athlon-xp | athlon-mp)
       if test "$ac_with_cpu" != yes; then
         bc_target_cpu=$withval
@@ -420,14 +420,57 @@ AC_DEFUN([BEECRYPT_CXXFLAGS_REM],[
   ])
 
 
+dnl  BEECRYPT_GNU_CC_MTUNE
+AC_DEFUN([BEECRYPT_GNU_CC_MTUNE],[
+  AC_REQUIRE([AC_PROG_CC])
+  case $bc_target_arch in
+  i[[3456]]86 | \
+  pentium | pentium-m | pentium-mmx | pentiumpro | pentium[[234]] | \
+  athlon | athlon-tbird | athlon-4 | athlon-xp | athlon-mp)
+    AC_MSG_CHECKING([if gcc supports -mtune option])
+    AC_LANG_PUSH(C)
+    AC_COMPILE_IFELSE([AC_LANG_SOURCE([[][int x;]])],[
+      bc_cv_gcc_mtune=yes
+      ],[
+      bc_cv_gcc_mtune=no
+      ])
+    AC_LANG_POP(C)
+    AC_MSG_RESULT([$bc_cv_gcc_mtune])
+    ;;
+  esac
+  ])
+
+
+dnl  BEECRYPT_GNU_CXX_MTUNE
+AC_DEFUN([BEECRYPT_GNU_CXX_MTUNE],[
+  AC_REQUIRE([AC_PROG_CXX])
+  case $bc_target_arch in
+  i[[3456]]86 | \
+  pentium | pentium-m | pentium-mmx | pentiumpro | pentium[[234]] | \
+  athlon | athlon-tbird | athlon-4 | athlon-xp | athlon-mp)
+    AC_MSG_CHECKING([if g++ supports -mtune option])
+    AC_LANG_PUSH(C++)
+    AC_COMPILE_IFELSE([AC_LANG_SOURCE([[][int x;]])],[
+      bc_cv_gxx_mtune=yes
+      ],[
+      bc_cv_gxx_mtune=no
+      ])
+    AC_LANG_POP(C++)
+    AC_MSG_RESULT([$bc_cv_gxx_mtune])
+    ;;
+  esac
+  ])
+
+
 dnl  BEECRYPT_GNU_CC
 AC_DEFUN([BEECRYPT_GNU_CC],[
   AC_REQUIRE([AC_PROG_CC])
   case $bc_target_arch in
   i[[3456]]86 | \
-  pentium | pentium-mmx | pentiumpro | pentium[[234]] | \
+  pentium | pentium-m | pentium-mmx | pentiumpro | pentium[[234]] | \
   athlon | athlon-tbird | athlon-4 | athlon-xp | athlon-mp)
     CC="$CC -m32"
+    CCAS="$CCAS -m32"
     CXX="$CXX -m32"
     ;;
   ia64)
@@ -486,6 +529,7 @@ AC_DEFUN([BEECRYPT_GNU_CC],[
     BEECRYPT_CFLAGS_REM([-O2])
     CFLAGS="$CFLAGS -Wall -pedantic"
   else
+	BEECRYPT_GNU_CC_MTUNE
     # Generic optimizations, including cpu tuning
     BEECRYPT_CFLAGS_REM([-g])
     CFLAGS="$CFLAGS -DNDEBUG -fomit-frame-pointer"
@@ -501,25 +545,41 @@ AC_DEFUN([BEECRYPT_GNU_CC],[
         ;;
       athlon*)
         BEECRYPT_CFLAGS_REM([-O2])
-        CFLAGS="$CFLAGS -O3 -mcpu=pentiumpro"
+        if test "$bc_cv_gcc_mtune" = yes; then
+          CFLAGS="$CFLAGS -O3 -mtune=pentiumpro"
+        else
+          CFLAGS="$CFLAGS -O3 -mcpu=pentiumpro"
+        fi
         ;;
       i586)
         BEECRYPT_CFLAGS_REM([-O2])
-        CFLAGS="$CFLAGS -O3 -mcpu=pentium"
+        if test "$bc_cv_gcc_mtune" = yes; then
+          CFLAGS="$CFLAGS -O3 -mtune=pentium"
+        else
+          CFLAGS="$CFLAGS -O3 -mcpu=pentium"
+        fi
         ;;
       i686)
         BEECRYPT_CFLAGS_REM([-O2])
-        CFLAGS="$CFLAGS -O3 -mcpu=pentiumpro"
+        if test "$bc_cv_gcc_mtune" = yes; then
+          CFLAGS="$CFLAGS -O3 -mtune=pentiumpro"
+        else
+          CFLAGS="$CFLAGS -O3 -mcpu=pentiumpro"
+        fi
         ;;
       ia64)
         # no -mcpu=... option on ia64
         ;;
       pentium*)
         BEECRYPT_CFLAGS_REM([-O2])
-        CFLAGS="$CFLAGS -O3 -mcpu=$bc_target_arch"
+        if test "$bc_cv_gcc_mtune" = yes; then
+          CFLAGS="$CFLAGS -O3 -mtune=$bc_target_arch"
+        else
+          CFLAGS="$CFLAGS -O3 -mcpu=$bc_target_arch"
+        fi
         ;;
       powerpc*)
-        BEECRYPT_CFLAGS_REM([-O3])
+        BEECRYPT_CFLAGS_REM([-O2])
         CFLAGS="$CFLAGS -O3"
         ;;
       esac
@@ -537,6 +597,9 @@ AC_DEFUN([BEECRYPT_GNU_CC],[
         ;;
       i686 | pentiumpro)
         CFLAGS="$CFLAGS -march=pentiumpro"
+        ;;
+      pentium-m)
+        CFLAGS="$CFLAGS -march=pentium-m -msse2"
         ;;
       pentium-mmx)
         CFLAGS="$CFLAGS -march=pentium-mmx -mmmx"
@@ -610,6 +673,7 @@ AC_DEFUN([BEECRYPT_GNU_CXX],[
     CXXFLAGS="$CXXFLAGS -Wall -pedantic"
   else
     # Generic optimizations, including cpu tuning
+	BEECRYPT_GNU_CXX_MTUNE
     BEECRYPT_CXXFLAGS_REM([-g])
 	CXXFLAGS="$CXXFLAGS -DNDEBUG"
     if test "$bc_cv_c_aggressive_opt" = yes; then
@@ -769,7 +833,7 @@ AC_DEFUN([BEECRYPT_INTEL_CC],[
         i686 | pentiumpro | pentium[[23]])
           CFLAGS="$CFLAGS -mcpu=pentiumpro"
           ;;
-        pentium4)
+        pentium4 | pentium-m)
           CFLAGS="$CFLAGS -mcpu=pentium4"
           ;;
         esac
@@ -786,7 +850,7 @@ AC_DEFUN([BEECRYPT_INTEL_CC],[
         pentium3)
           CFLAGS="$CFLAGS -tpp6 -march=pentiumiii"
           ;;
-        pentium4)
+        pentium4 | pentium-m)
           CFLAGS="$CFLAGS -tpp7 -march=pentium4"
           ;;
         esac
@@ -820,7 +884,7 @@ AC_DEFUN([BEECRYPT_INTEL_CXX],[
         i686 | pentiumpro | pentium[[23]])
           CXXFLAGS="$CXXFLAGS -mcpu=pentiumpro"
           ;;
-        pentium4)
+        pentium4 | pentium-m)
           CXXFLAGS="$CXXFLAGS -mcpu=pentium4"
           ;;
         esac

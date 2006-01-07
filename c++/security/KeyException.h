@@ -44,6 +44,9 @@ namespace beecrypt {
 			inline KeyException(const String* message) : GeneralSecurityException(message)
 			{
 			}
+			inline KeyException(const Throwable* cause) : GeneralSecurityException(cause)
+			{
+			}
 			inline ~KeyException()
 			{
 			}

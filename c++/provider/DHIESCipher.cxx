@@ -57,7 +57,7 @@ DHIESCipher::DHIESCipher()
 	}
 	catch (NoSuchAlgorithmException& e)
 	{
-		throw ProviderException(e.getMessage());
+		throw ProviderException().initCause(e);
 	}
 }
 
@@ -166,7 +166,7 @@ AlgorithmParameters* DHIESCipher::engineGetParameters() throw ()
 	}
 	catch (Exception& e)
 	{
-		throw ProviderException(e.getMessage());
+		throw ProviderException().initCause(e);
 	}
 }
 
@@ -187,7 +187,7 @@ void DHIESCipher::engineInit(int opmode, const Key& key, AlgorithmParameters* pa
 		}
 		catch (InvalidParameterSpecException& e)
 		{
-			throw InvalidAlgorithmParameterException(e.getMessage());
+			throw InvalidAlgorithmParameterException().initCause(e);
 		}
 	}
 	else
@@ -230,7 +230,7 @@ void DHIESCipher::engineInit(int opmode, const Key& key, const AlgorithmParamete
 	}
 	catch (NoSuchAlgorithmException& e)
 	{
-		throw InvalidAlgorithmParameterException(e.getMessage());
+		throw InvalidAlgorithmParameterException().initCause(e);
 	}
 
 	if (spec->getCipherKeyLength())
@@ -430,7 +430,7 @@ void DHIESCipher::reset()
 			}
 			catch (Exception& e)
 			{
-				throw InvalidKeyException(e.getMessage());
+				throw InvalidKeyException().initCause(e);
 			}
 		}
 
@@ -451,12 +451,12 @@ void DHIESCipher::reset()
 			}
 			catch (Exception& e)
 			{
-				throw InvalidKeyException(e.getMessage());
+				throw InvalidKeyException().initCause(e);
 			}
 		}
 	}
 	catch (InvalidAlgorithmParameterException& e)
 	{
-		throw ProviderException(e.getMessage());
+		throw ProviderException().initCause(e);
 	}
 }

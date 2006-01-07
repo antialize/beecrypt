@@ -44,6 +44,9 @@ namespace beecrypt {
 			inline UnrecoverableKeyException(const String* message) : GeneralSecurityException(message)
 			{
 			}
+			inline UnrecoverableKeyException(const Throwable* cause) : GeneralSecurityException(cause)
+			{
+			}
 			inline ~UnrecoverableKeyException()
 			{
 			}

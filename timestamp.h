@@ -1,11 +1,5 @@
 /*
- * timestamp.h
- *
- * Java-compatible 64 bit timestamp, header
- *
- * Copyright (c) 1999, 2000 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob@virtualunlimited.com>
+ * Copyright (c) 1999, 2000 Beeyond Software Holding BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

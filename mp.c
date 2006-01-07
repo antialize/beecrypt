@@ -19,7 +19,7 @@
 
 /*!\file mp.c
  * \brief Multi-precision integer routines.
- * \author Bob Deblier <bob.deblier@pandora.be>
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup MP_m
  */
 
@@ -474,7 +474,7 @@ void mpsetw(size_t size, mpw* xdata, mpw y)
 #ifndef ASM_MPSETWS
 void mpsetws(size_t size, mpw* xdata, size_t y)
 {
-	while (size--)
+	while (size-- && y)
 	{
 		xdata[size] = (mpw) y;
 		#if (MP_WBYTES > SIZEOF_SIZE_T)

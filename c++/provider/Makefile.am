@@ -112,5 +112,7 @@ SHA256withRSASignature.h \
 SHA384withRSASignature.h \
 SHA512withRSASignature.h 
 
+CLEANFILES = beecrypt.conf
+
 beecrypt.conf:
 	@echo "provider.1=$(pkgaltlibdir)/base.so" > beecrypt.conf

@@ -46,6 +46,9 @@ namespace beecrypt {
 			inline Exception(const String* message) : Throwable(message)
 			{
 			}
+			inline Exception(const Throwable* cause) : Throwable(cause)
+			{
+			}
 			inline ~Exception()
 			{
 			}

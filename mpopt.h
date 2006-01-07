@@ -19,7 +19,7 @@
 
 /*!\file mpopt.h
  * \brief Multi-precision integer optimization definitions.
- * \author Bob Deblier <bob.deblier@pandora.be>
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup MP_m
  */
 

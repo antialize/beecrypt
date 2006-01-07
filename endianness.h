@@ -1,11 +1,5 @@
 /*
- * endianness.h
- *
- * Endian-dependant encoding/decoding, header
- *
- * Copyright (c) 1998, 1999, 2000, 2001, 2004 Beeyond Software Holding
- *
- * Author: Bob Deblier <bob.deblier@telenet.be>
+ * Copyright (c) 1998, 1999, 2000, 2001, 2004 Beeyond Software Holding BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

@@ -19,7 +19,7 @@
 
 /*!\file mpprime.h
  * \brief Multi-precision primes, headers.
- * \author Bob Deblier <bob.deblier@pandora.be>
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup MP_m
  */
 

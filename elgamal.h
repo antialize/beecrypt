@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2001, 2002 Virtual Unlimited B.V.
+ * Copyright (c) 2000, 2001, 2002 Beeyond Software Holding BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,7 +31,7 @@
  * \todo Explore the possibility of using simultaneous multiple exponentiation,
  *       as described in HAC, 14.87 (iii).
  *
- * \author Bob Deblier <bob.deblier@pandora.be>
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup DL_m DL_elgamal_m
  */
 
@@ -44,9 +44,7 @@
 extern "C" {
 #endif
 
-/*!\fn int elgv1sign(const mpbarrett* p, const mpbarrett* n, const mpnumber* g,
-randomGeneratorContext* rgc, const mpnumber* hm, const mpnumber* x, mpnumber* r,
- mpnumber* s)
+/*!\fn int elgv1sign(const mpbarrett* p, const mpbarrett* n, const mpnumber* g, randomGeneratorContext* rgc, const mpnumber* hm, const mpnumber* x, mpnumber* r, mpnumber* s)
  * \brief This function performs raw ElGamal signing, variant 1.
  *
  * Signing equations:

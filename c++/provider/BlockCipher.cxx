@@ -277,7 +277,7 @@ void BlockCipher::engineInit(int opmode, const Key& key, AlgorithmParameters* pa
 		}
 		catch (InvalidParameterSpecException& e)
 		{
-			throw InvalidAlgorithmParameterException(e.getMessage());
+			throw InvalidAlgorithmParameterException().initCause(e);
 		}
 	}
 	else

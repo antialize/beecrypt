@@ -19,7 +19,7 @@
 
 /*!\file aes.h
  * \brief AES block cipher, as specified by NIST FIPS 197.
- * \author Bob Deblier <bob.deblier@pandora.be>
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup BC_m BC_aes_m
  */
 
@@ -87,6 +87,17 @@ int			aesSetup   (aesParam* ap, const byte* key, size_t keybits, cipherOperation
  */
 BEECRYPTAPI
 int			aesSetIV   (aesParam* ap, const byte* iv);
+
+/*!\fn int aesSetCTR(aesParam* ap, const byte* nivz, size_t counter)
+ * \brief This function sets the CTR mode counter.
+ * \note This function is only useful in CTR modes.
+ * \param ap The cipher's parameter block.
+ * \param nivz The concatenation of Nonce, IV, and padding Zeroes.
+ * \param counter The counter.
+ * \retval 0 on success.
+ */
+BEECRYPTAPI
+int			aesSetCTR  (aesParam* ap, const byte* nivz, size_t counter);
 
 /*!\fn aesEncrypt(aesParam* ap, uint32_t* dst, const uint32_t* src)
  * \brief This function performs the raw AES encryption; it encrypts one block

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 1998, 1999, 2000, 2002 Virtual Unlimited B.V.
+ * Copyright (c) 1997, 1998, 1999, 2000, 2002 Beeyond Software Holding BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,7 +19,7 @@
 
 /*!\file sha1.h
  * \brief SHA-1 hash function, headers.
- * \author Bob Deblier <bob.deblier@pandora.be>
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup HASH_m HASH_sha1_m
  */
 

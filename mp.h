@@ -34,7 +34,7 @@
  * With some smart use of available assembler instructions, it's possible
  * to speed these routines up by a factor of 2 to 4.
  *
- * \author Bob Deblier <bob.deblier@pandora.be>
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup MP_m
  */
 

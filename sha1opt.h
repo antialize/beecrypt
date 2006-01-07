@@ -1,11 +1,5 @@
 /*
- * sha1opt.h
- *
- * SHA-1 assembler-optimized routines, header
- *
- * Copyright (c) 2000, 2003 Virtual Unlimited B.V.
- *
- * Author: Bob Deblier <bob.deblier@pandora.be>
+ * Copyright (c) 2000, 2003 Beeyond Software Holding BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

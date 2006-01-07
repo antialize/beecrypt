@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2001 Virtual Unlimited B.V.
+ * Copyright (c) 2000, 2001 Beeyond Software Holding BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,7 +19,7 @@
 
 /*!\file sha256.c
  * \brief SHA-256 hash function, as specified by NIST DFIPS 180-2.
- * \author Bob Deblier <bob.deblier@pandora.be>
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup HASH_m HASH_sha256_m
  */
  

@@ -63,7 +63,7 @@ String::String(jchar c) : _value(&c, 1)
 {
 }
 
-String::String(const char* value) : _value(strlen(value))
+String::String(const char* value) : _value(::strlen(value))
 {
 	assert(_value.size() <= Integer::MAX_VALUE);
 

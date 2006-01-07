@@ -55,28 +55,28 @@ int FileInputStream::available() throw (IOException)
 
 	if ((_curr = ftell(_f)) == -1)
 		#if HAVE_ERRNO_H
-		throw IOException(strerror(errno));
+		throw IOException(::strerror(errno));
 		#else
 		throw IOException("ftell failed");
 		#endif
 
 	if (fseek(_f, 0, SEEK_END))
 		#if HAVE_ERRNO_H
-		throw IOException(strerror(errno));
+		throw IOException(::strerror(errno));
 		#else
 		throw IOException("fseek failed");
 		#endif
 
 	if ((_size = ftell(_f)) == -1)
 		#if HAVE_ERRNO_H
-		throw IOException(strerror(errno));
+		throw IOException(::strerror(errno));
 		#else
 		throw IOException("ftell failed");
 		#endif
 
 	if (fseek(_f, _curr, SEEK_SET))
 		#if HAVE_ERRNO_H
-		throw IOException(strerror(errno));
+		throw IOException(::strerror(errno));
 		#else
 		throw IOException("fseek failed");
 		#endif
@@ -93,7 +93,7 @@ void FileInputStream::close() throw (IOException)
 	{
 		if (fclose(_f))
 			#if HAVE_ERRNO_H
-			throw IOException(strerror(errno));
+			throw IOException(::strerror(errno));
 			#else
 			throw IOException("fclose failed");
 			#endif
@@ -152,7 +152,7 @@ void FileInputStream::reset() throw (IOException)
 
 	if (fseek(_f, _mark, SEEK_SET))
 		#if HAVE_ERRNO_H
-		throw IOException(strerror(errno));
+		throw IOException(::strerror(errno));
 		#else
 		throw IOException("fseek failed");
 		#endif
@@ -170,7 +170,7 @@ int FileInputStream::skip(int n) throw (IOException)
 
 	if (fseek(_f, (long) n, SEEK_CUR))
 		#if HAVE_ERRNO_H
-		throw IOException(strerror(errno));
+		throw IOException(::strerror(errno));
 		#else
 		throw IOException("fseek failed");
 		#endif

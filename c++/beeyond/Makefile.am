@@ -32,9 +32,18 @@ DHIESParameterSpec.h \
 DHIESDecryptParameterSpec.h \
 PKCS12PBEKey.h
 
+noinst_DATA = beecrypt-test.conf
+
+TESTS_ENVIRONMENT = BEECRYPT_CONF_FILE=beecrypt-test.conf
+
 TESTS = testcert
+
+CLEANFILES = beecrypt-test.conf
 
 check_PROGRAMS = testcert
 
 testcert_SOURCES = testcert.cxx
 testcert_LDADD = ../libbeecrypt_cxx.la
+
+beecrypt-test.conf:
+	@echo "provider.1=../provider/.libs/base.so" > beecrypt-test.conf

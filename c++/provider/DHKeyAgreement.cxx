@@ -167,7 +167,7 @@ SecretKey* DHKeyAgreement::engineGenerateSecret(const String& algorithm) throw (
 		}
 		catch (InvalidKeySpecException& e)
 		{
-			throw InvalidKeyException(e.getMessage());
+			throw InvalidKeyException().initCause(e);
 		}
 	}
 	else

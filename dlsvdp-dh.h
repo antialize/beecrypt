@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2002 Virtual Unlimited B.V.
+ * Copyright (c) 2000, 2002 Beeyond Software Holding BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,7 +19,7 @@
 
 /*!\file dlsvdp-dh.h
  * \brief Diffie-Hellman algorithm, headers.
- * \author Bob Deblier <bob.deblier@pandora.be>
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup DL_m DL_dh_m 
  */
 

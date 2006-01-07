@@ -409,7 +409,7 @@ const bytearray& BeeCertificate::getEncoded() const throw (CertificateEncodingEx
 		}
 		catch (IOException& e)
 		{
-			throw CertificateEncodingException(e.getMessage());
+			throw CertificateEncodingException().initCause(e);
 		}
 	}
 
@@ -627,7 +627,7 @@ bytearray* BeeCertificate::encodeTBS() const throw (CertificateEncodingException
 	}
 	catch (IOException& e)
 	{
-		throw CertificateEncodingException(e.getMessage());
+		throw CertificateEncodingException().initCause(e);
 	}
 
 	return bos.toByteArray();

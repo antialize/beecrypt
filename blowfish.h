@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2000, 2002 Virtual Unlimited B.V.
+ * Copyright (c) 1999, 2000, 2002 Beeyond Software Holding BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,7 +27,7 @@
  *
  * Also see http://www.counterpane.com/blowfish.html
  *
- * \author Bob Deblier <bob.deblier@pandora.be>
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup BC_m BC_blowfish_m
  */
 
@@ -76,8 +76,7 @@ extern "C" {
  */
 extern const BEECRYPTAPI blockCipher blowfish;
 
-/*!\fn int blowfishSetup(blowfishParam* bp, const byte* key, size_t keybits, cipherOperation
- op)
+/*!\fn int blowfishSetup(blowfishParam* bp, const byte* key, size_t keybits, cipherOperation op)
  * \brief The function performs the cipher's key expansion.
  * \param bp The cipher's parameter block.
  * \param key The key value.
@@ -98,7 +97,10 @@ int		blowfishSetup   (blowfishParam*, const byte*, size_t, cipherOperation);
  * \retval 0 on success.
  */
 BEECRYPTAPI
-int		blowfishSetIV   (blowfishParam*, const byte*);
+int		blowfishSetIV   (blowfishParam*, const byte* iv);
+
+BEECRYPTAPI
+int		blowfishSetCTR  (blowfishParam*, const byte* nivz, size_t counter);
 
 /*!\fn blowfishEncrypt(blowfishParam* bp, uint32_t* dst, const uint32_t* src)
  * \brief This function performs the Blowfish encryption; it encrypts one block

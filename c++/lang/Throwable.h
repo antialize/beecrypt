@@ -40,14 +40,20 @@ namespace beecrypt {
 		{
 		private:
 			String* _msg;
+			const Throwable* _cause;
 
 		public:
 			Throwable();
 			Throwable(const char* message);
 			Throwable(const String* message);
+			Throwable(const String* message, const Throwable* cause);
+			Throwable(const Throwable* cause);
 			~Throwable();
 
 			const String* getMessage() const throw ();
+			const Throwable* getCause() const throw ();
+
+			Throwable& initCause(const Throwable&);
 		};
 	}
 }

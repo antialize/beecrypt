@@ -31,6 +31,7 @@
 #include "beecrypt/c++/lang/Object.h"
 #include "beecrypt/c++/lang/Integer.h"
 #include "beecrypt/c++/lang/Thread.h"
+#include "beecrypt/c++/lang/Error.h"
 #include "beecrypt/c++/lang/CloneNotSupportedException.h"
 #include "beecrypt/c++/lang/IllegalMonitorStateException.h"
 #include "beecrypt/c++/lang/InterruptedException.h"
@@ -191,13 +192,17 @@ void Object::NonfairMonitor::lock()
 	{
 		if (_owner == self)
 		{
-			_lock_count++;
+			if (++_lock_count == 0)
+				throw Error("maximum lock count exceeded");
+
 			internal_state_unlock();
 			return;
 		}
 		else
 		{
-			_lock_wthreads++;
+			if (++_lock_wthreads == 0)
+				throw Error("maximum waiting threads exceeded");
+
 			while (_lock_count)
 			{
 				#if WIN32
@@ -284,13 +289,17 @@ void Object::NonfairMonitor::lockInterruptibly() throw (InterruptedException)
 		{
 			if (_owner == self)
 			{
-				_lock_count++;
+				if (++_lock_count == 0)
+					throw Error("maximum lock count exceeded");
+
 				internal_state_unlock();
 				return;
 			}
 			else
 			{
-				_lock_wthreads++;
+				if (++_lock_wthreads == 0)
+					throw Error("maximum waiting threads exceeded");
+
 				while (_lock_count)
 				{
 					#if WIN32
@@ -376,7 +385,8 @@ bool Object::NonfairMonitor::tryLock()
 	if (_lock_count)
 	{
 		if (result = (_owner == self))
-			_lock_count++;
+			if (++_lock_count == 0)
+				throw Error("maximum lock count exceeded");
 	}
 	else
 	{
@@ -549,7 +559,8 @@ void Object::NonfairMonitor::wait(jlong timeout) throw (InterruptedException)
 		_owner = 0;
 		_lock_count = 0;
 
-		_notify_wthreads++;
+		if (++_notify_wthreads == 0)
+			throw Error("maximum waiting threads exceeded");
 
 		#if WIN32
 		if (!ReleaseSemaphore(_lock_sig, 1, 0))
@@ -635,7 +646,9 @@ void Object::NonfairMonitor::wait(jlong timeout) throw (InterruptedException)
 		if (_lock_count)
 		{
 			// owner cannot be self; somebody else obtained the lock; wait until it's out turn
-			_lock_wthreads++;
+			if (++_lock_wthreads == 0)
+				throw Error("maximum waiting threads exceeded");
+
 			do
 			{
 				#if WIN32
@@ -837,7 +850,9 @@ void Object::FairMonitor::lock()
 	{
 		if (_owner == self)
 		{
-			_lock_count++;
+			if (++_lock_count == 0)
+				throw Error("maximum lock count exceeded");
+
 			internal_state_unlock();
 			return;
 		}
@@ -928,7 +943,9 @@ void Object::FairMonitor::lockInterruptibly() throw (InterruptedException)
 		{
 			if (_owner == self)
 			{
-				_lock_count++;
+				if (++_lock_count == 0)
+					throw Error("maximum lock count exceeded");
+
 				internal_state_unlock();
 				return;
 			}
@@ -1017,7 +1034,8 @@ bool Object::FairMonitor::tryLock()
 	if (_lock_count)
 	{
 		if (result = (_owner == self))
-			_lock_count++;
+			if (++_lock_count == 0)
+				throw Error("maximum lock count exceeded");
 	}
 	else
 	{
@@ -1580,6 +1598,7 @@ String Object::toString() const throw ()
 void beecrypt::lang::collection_attach(Object* obj) throw ()
 {
 	assert(obj != 0);
+
     obj->_ref_count++;
 }
 

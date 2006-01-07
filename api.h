@@ -19,7 +19,7 @@
 
 /*!\file api.h
  * \brief BeeCrypt API, portability headers.
- * \author Bob Deblier <bob.deblier@pandora.be>
+ * \author Bob Deblier <bob.deblier@telenet.be>
  */
 
 #ifndef _BEECRYPT_API_H

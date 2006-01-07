@@ -78,7 +78,7 @@ namespace beecrypt {
 
 			String& operator=(const String& copy);
 
-			virtual jchar charAt(int index) const throw (IndexOutOfBoundsException);
+			virtual jchar charAt(jint index) const throw (IndexOutOfBoundsException);
 			virtual jint compareTo(const String& str) const throw ();
 			jint compareToIgnoreCase(const String& str) const throw ();
 			String concat(const String& str) const throw ();

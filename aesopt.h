@@ -19,7 +19,7 @@
 
 /*!\file aesopt.h
  * \brief AES block cipher, assembler-optimized routines, headers.
- * \author Bob Deblier <bob.deblier@pandora.be>
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup BC_aes_m
  */
 

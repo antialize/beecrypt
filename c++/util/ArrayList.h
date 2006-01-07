@@ -49,7 +49,7 @@ namespace beecrypt {
 			{
 				register jint move = _count - index;
 				if (move)
-					memmove(_table.data() + index + 1, _table.data() + index, move * sizeof(E*));
+					::memmove(_table.data() + index + 1, _table.data() + index, move * sizeof(E*));
 				_table[index] = 0;
 				_count++;
 			}
@@ -57,7 +57,7 @@ namespace beecrypt {
 			{
 				register jint move = _count - index - 1;
 				if (move)
-					memmove(_table.data() + index, _table.data() + index + 1, move * sizeof(E*));
+					::memmove(_table.data() + index, _table.data() + index + 1, move * sizeof(E*));
 				_table[--_count] = 0;
 			}
 

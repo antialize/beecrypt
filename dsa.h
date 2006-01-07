@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2002 Virtual Unlimited B.V.
+ * Copyright (c) 2001, 2002 Beeyond Software Holding BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,7 +25,7 @@
  * \f$\mathds{Z}^{*}_p\f$ with order \f$q\f$. The private and public key
  * values are \f$x\f$ and \f$y\f$ respectively.
  *
- * \author Bob Deblier <bob.deblier@pandora.be>
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup DL_dsa_m
  */
 

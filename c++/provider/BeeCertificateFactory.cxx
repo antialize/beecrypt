@@ -40,7 +40,7 @@ Certificate* BeeCertificateFactory::engineGenerateCertificate(InputStream& in) t
 	}
 	catch (Exception& e)
 	{
-		throw CertificateException(e.getMessage());
+		throw CertificateException().initCause(e);
 	}
 }
 

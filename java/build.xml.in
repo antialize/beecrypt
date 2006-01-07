@@ -52,11 +52,13 @@
     <junit printsummary="on" fork="yes">
       <classpath refid="classpath.test"/>
       <test name="beecrypt.tests.SHA256Test"/>
+      <test name="beecrypt.tests.AESTest"/>
     </junit>
   </target>
 
   <target name="headers" depends="dist">
     <javah classpath="@builddir@/beecrypt-java.jar">
+       <class name="beecrypt.provider.AES"/>
        <class name="beecrypt.provider.MD5"/>
        <class name="beecrypt.provider.SHA1"/>
        <class name="beecrypt.provider.SHA256"/>
@@ -67,7 +69,6 @@
        <class name="beecrypt.provider.HMACSHA256"/>
        <class name="beecrypt.provider.HMACSHA384"/>
        <class name="beecrypt.provider.HMACSHA512"/>
-       <class name="beecrypt.provider.AES"/>
        <class name="beecrypt.provider.DHKeyPairGenerator"/>
        <class name="beecrypt.provider.RSAKeyPairGenerator"/>
     </javah>

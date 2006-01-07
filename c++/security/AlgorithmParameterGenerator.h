@@ -17,7 +17,7 @@
  */
 
 /*!\file AlgorithmParameterGenerator.h
- * \author Bob Deblier <bob.deblier@pandora.be>
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup CXX_SECURITY_m
  */
 

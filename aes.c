@@ -23,7 +23,7 @@
  * The table lookup method was inspired by Brian Gladman's AES implementation,
  * which is much more readable than the standard code.
  *
- * \author Bob Deblier <bob.deblier@pandora.be>
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup BC_aes_m BC_m
  */
 
@@ -80,6 +80,7 @@ const blockCipher aes = {
 	64,
 	(blockCipherSetup) aesSetup,
 	(blockCipherSetIV) aesSetIV,
+	(blockCipherSetCTR) aesSetCTR,
 	(blockCipherFeedback) aesFeedback,
 	/* raw */
 	{
@@ -320,6 +321,26 @@ int aesSetIV(aesParam* ap, const byte* iv)
 		memcpy(ap->fdback, iv, 16);
 	else
 		memset(ap->fdback, 0, 16);
+
+	return 0;
+}
+#endif
+
+#ifndef ASM_AESSETCTR
+int aesSetCTR(aesParam* ap, const byte* nivz, size_t counter)
+{
+	unsigned int blockwords = MP_BYTES_TO_WORDS(16);
+
+	if (nivz)
+	{
+		mpw tmp[MP_BYTES_TO_WORDS(16)];
+
+		os2ip((mpw*) ap->fdback, blockwords, nivz, 16);
+		mpsetws(blockwords, tmp, counter);
+		mpadd(blockwords, (mpw*) ap->fdback, tmp);
+	}
+	else
+		mpsetws(blockwords, (mpw*) ap->fdback, counter);
 
 	return 0;
 }

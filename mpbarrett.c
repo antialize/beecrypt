@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 1998, 1999, 2000, 2001 Virtual Unlimited B.V.
+ * Copyright (c) 2002 Bob Deblier
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,7 +23,7 @@
  *        "Handbook of Applied Cryptography", Chapter 14.3.3
  *        Menezes, van Oorschot, Vanstone
  *        CRC Press
- * \author Bob Deblier <bob.deblier@pandora.be>
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup MP__m
  */
 

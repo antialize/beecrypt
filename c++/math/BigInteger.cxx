@@ -32,6 +32,8 @@ using beecrypt::lang::ArithmeticException;
 #include "beecrypt/c++/lang/OutOfMemoryError.h"
 using beecrypt::lang::OutOfMemoryError;
 
+#include <cstdlib>
+
 using namespace beecrypt::math;
 
 namespace {

@@ -44,6 +44,9 @@ namespace beecrypt {
 			inline InvalidAlgorithmParameterException(const String* message) : GeneralSecurityException(message)
 			{
 			}
+			inline InvalidAlgorithmParameterException(const Throwable* cause) : GeneralSecurityException(cause)
+			{
+			}
 			inline ~InvalidAlgorithmParameterException()
 			{
 			}

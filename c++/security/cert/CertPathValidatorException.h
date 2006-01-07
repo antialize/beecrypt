@@ -45,6 +45,9 @@ namespace beecrypt {
 				inline CertPathValidatorException(const String* message) : GeneralSecurityException(message)
 				{
 				}
+				inline CertPathValidatorException(const Throwable* cause) : GeneralSecurityException(cause)
+				{
+				}
 				inline ~CertPathValidatorException()
 				{
 				}

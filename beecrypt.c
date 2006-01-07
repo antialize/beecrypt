@@ -18,7 +18,7 @@
 
 /*!\file beecrypt.c
  * \brief BeeCrypt API.
- * \author Bob Deblier <bob.deblier@pandora.be>
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup ES_m PRNG_m HASH_m HMAC_m BC_m
  */
 
@@ -827,9 +827,9 @@ int blockCipherContextSetIV(blockCipherContext* ctxt, const byte* iv)
 	return ctxt->algo->setiv(ctxt->param, iv);
 }
 
-int blockCipherContextSetCTR(blockCipherContext* ctxt, size_t counter)
+int blockCipherContextSetCTR(blockCipherContext* ctxt, const byte* nivz, size_t counter)
 {
-	register unsigned int blockwords;
+	register unsigned int blocksize, blockwords;
 	register uint32_t* fdback;
 	register int i;
 
@@ -842,18 +842,7 @@ int blockCipherContextSetCTR(blockCipherContext* ctxt, size_t counter)
 	if (ctxt->param == (blockCipherParam*) 0)
 		return -1;
 
-	blockwords = ctxt->algo->blocksize >> 2;
-	fdback = ctxt->algo->getfb(ctxt->param);
-
-	i = blockwords;
-
-	while (--i > 0)
-	{
-		fdback[i] = (uint32_t) counter;
-		counter >>= 32;
-	}
-
-	return 0;
+	return ctxt->algo->setctr(ctxt->param, nivz, counter);
 }
 
 int blockCipherContextFree(blockCipherContext* ctxt)

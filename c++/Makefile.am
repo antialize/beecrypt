@@ -29,7 +29,13 @@ resource.h
 
 EXTRA_DIST = Doxyheader
 
+noinst_DATA = beecrypt-test.conf
+
+TESTS_ENVIRONMENT = BEECRYPT_CONF_FILE=beecrypt-test.conf
+
 TESTS = testks testdsa testrsa testdhies 
+
+CLEANFILES = beecrypt-test.conf
 
 check_PROGRAMS = testks testdsa testrsa testdhies 
 
@@ -44,3 +50,6 @@ testrsa_LDADD = libbeecrypt_cxx.la
 
 testdhies_SOURCES = testdhies.cxx
 testdhies_LDADD = libbeecrypt_cxx.la
+
+beecrypt-test.conf:
+	@echo "provider.1=provider/.libs/base.so" > beecrypt-test.conf

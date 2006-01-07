@@ -19,7 +19,7 @@
 
 /*!\file mpnumber.h
  * \brief Multi-precision numbers, headers.
- * \author Bob Deblier <bob.deblier@pandora.be>
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup MP_m
  */
 

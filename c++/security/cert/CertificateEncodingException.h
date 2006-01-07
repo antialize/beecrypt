@@ -45,6 +45,9 @@ namespace beecrypt {
 				inline CertificateEncodingException(const String* message) : CertificateException(message)
 				{
 				}
+				inline CertificateEncodingException(const Throwable* cause) : CertificateException(cause)
+				{
+				}
 				inline ~CertificateEncodingException()
 				{
 				}

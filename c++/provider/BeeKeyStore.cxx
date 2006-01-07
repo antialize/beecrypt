@@ -259,7 +259,7 @@ Key* BeeKeyStore::engineGetKey(const String& alias, const array<jchar>& password
 				}
 				catch (InvalidKeyException& e)
 				{
-					throw UnrecoverableKeyException(e.getMessage());
+					throw UnrecoverableKeyException().initCause(e);
 				}
 			}
 		}

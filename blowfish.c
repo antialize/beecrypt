@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2000, 2002, 2005 Beeyond Software Holding B.V.
+ * Copyright (c) 1999, 2000, 2002, 2005 Beeyond Software Holding BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -340,6 +340,7 @@ const blockCipher blowfish = {
 	32,
 	(blockCipherSetup) blowfishSetup,
 	(blockCipherSetIV) blowfishSetIV,
+	(blockCipherSetCTR) blowfishSetCTR,
 	(blockCipherFeedback) blowfishFeedback,
 	/* raw */
 	{
@@ -462,19 +463,25 @@ int blowfishSetIV(blowfishParam* bp, const byte* iv)
 }
 #endif
 
-int blowfishBlowit(blowfishParam* bp, uint32_t* dst, const uint32_t* src)
+#ifndef ASM_BLOWFISHSETCTR
+int blowfishSetCTR(blowfishParam* bp, const byte* nivz, size_t counter)
 {
-	register uint32_t xl = src[0], xr = src[1];
-	register uint32_t* p = bp->p;
-	register uint32_t* s = bp->s;
+	unsigned int blockwords = MP_BYTES_TO_WORDS(8);
 
-	EROUND(xl, xr); EROUND(xr, xl);
+	if (nivz)
+	{
+		mpw tmp[MP_BYTES_TO_WORDS(8)];
 
-	dst[1] = xr;
-	dst[0] = xl;
+		os2ip((mpw*) bp->fdback, blockwords, nivz, 8);
+		mpsetws(blockwords, tmp, counter);
+		mpadd(blockwords, (mpw*) bp->fdback, tmp);
+	}
+	else
+		mpsetws(blockwords, (mpw*) bp->fdback, counter);
 
 	return 0;
 }
+#endif
 
 #ifndef ASM_BLOWFISHENCRYPT
 int blowfishEncrypt(blowfishParam* bp, uint32_t* dst, const uint32_t* src)

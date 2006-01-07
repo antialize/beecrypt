@@ -220,7 +220,7 @@ KeyStore* KeyStore::getInstance(const String& type) throw (KeyStoreException)
 	}
 	catch (NoSuchAlgorithmException& e)
 	{
-		throw KeyStoreException(e.getMessage());
+		throw KeyStoreException().initCause(e);
 	}
 }
 
@@ -240,7 +240,7 @@ KeyStore* KeyStore::getInstance(const String& type, const String& provider) thro
 	}
 	catch (NoSuchAlgorithmException& e)
 	{
-		throw KeyStoreException(e.getMessage());
+		throw KeyStoreException().initCause(e);
 	}
 }
 
@@ -260,7 +260,7 @@ KeyStore* KeyStore::getInstance(const String& type, const Provider& provider) th
 	}
 	catch (NoSuchAlgorithmException& e)
 	{
-		throw KeyStoreException(e.getMessage());
+		throw KeyStoreException().initCause(e);
 	}
 }
 

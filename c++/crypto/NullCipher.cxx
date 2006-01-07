@@ -41,7 +41,7 @@ int NullCipher::NullCipherSpi::engineDoFinal(const byte* input, int inputOffset,
 		if (output.size() - outputOffset > inputLength)
 			throw ShortBufferException("output buffer too short");
 
-		memcpy(output.data() + outputOffset, input+inputOffset, inputLength);
+		memmove(output.data() + outputOffset, input+inputOffset, inputLength);
 	}
 
 	return inputLength;
@@ -102,7 +102,7 @@ int NullCipher::NullCipherSpi::engineUpdate(const byte* input, int inputOffset, 
 		if (output.size() - outputOffset > inputLength)
 			throw ShortBufferException("output buffer too short");
 
-		memcpy(output.data() + outputOffset, input+inputOffset, inputLength);
+		memmove(output.data() + outputOffset, input+inputOffset, inputLength);
 	}
 
 	return inputLength;

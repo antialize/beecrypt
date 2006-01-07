@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2000, 2001, 2002 Virtual Unlimited B.V.
+ * Copyright (c) 1999, 2000, 2001, 2002 Beeyond Software Holding BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,7 +23,7 @@
  * These API functions provide an abstract way for using most of
  * the various algorithms implemented by the library.
  *
- * \author Bob Deblier <bob.deblier@pandora.be>
+ * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup ES_m PRNG_m HASH_m HMAC_m BC_m
  */
 
@@ -583,6 +583,19 @@ typedef int (*blockCipherSetup  )(blockCipherParam*, const byte*, size_t, cipher
  */
 typedef int (*blockCipherSetIV  )(blockCipherParam*, const byte*);
 
+/*!\typedef int (*blockCipherSetCTR)(blockCipherParam* bp, const byte* nivz, size_t counter)
+ * \brief Prototype definition for an initialization vector setup function.
+ * \param bp The blockcipher's parameters.
+ * \param nivz The concatenation of the Nonce, IV and padding Zero bytes.
+ * \param counter The blockciphers' counter value.
+ * \note nivz length must be equal to the cipher's block size.
+ * \retval 0 on success.
+ * \retval -1 on failure.
+ * \ingroup BC_m
+ */
+typedef int (*blockCipherSetCTR )(blockCipherParam*, const byte*, size_t);
+
+
 /*!\typedef int (*blockCipherRawcrypt)(blockCipherParam* bp, uint32_t* dst, const uint32_t* src)
  * \brief Prototype for a \e raw encryption or decryption function.
  * \param bp The blockcipher's parameters.
@@ -666,6 +679,10 @@ struct _blockCipher
 	 * \brief Pointer to the cipher's initialization vector setup function.
 	 */
 	const blockCipherSetIV		setiv;
+	/*!\var setctr
+	 * \brief Pointer to the cipher's ctr setup function.
+	 */
+	const blockCipherSetCTR		setctr;
 	/*!\var getfb
 	 * \brief Pointer to the cipher's feedback-returning function.
 	 */
@@ -788,7 +805,7 @@ BEECRYPTAPI
 int blockCipherContextSetIV(blockCipherContext*, const byte*);
 
 BEECRYPTAPI
-int blockCipherContextSetCTR(blockCipherContext*, size_t);
+int blockCipherContextSetCTR(blockCipherContext*, const byte*, size_t);
 
 BEECRYPTAPI
 int blockCipherContextFree(blockCipherContext*);

@@ -44,6 +44,9 @@ namespace beecrypt {
 			inline InvalidKeyException(const String* message) : KeyException(message)
 			{
 			}
+			inline InvalidKeyException(const Throwable* cause) : KeyException(cause)
+			{
+			}
 			inline ~InvalidKeyException()
 			{
 			}

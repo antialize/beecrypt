@@ -49,7 +49,7 @@ void FileOutputStream::close() throw (IOException)
 	{
 		if (fclose(_f))
 			#if HAVE_ERRNO_H
-			throw IOException(strerror(errno));
+			throw IOException(::strerror(errno));
 			#else
 			throw IOException("fclose failed");
 			#endif
@@ -65,7 +65,7 @@ void FileOutputStream::flush() throw (IOException)
 
 	if (fflush(_f))
 		#if HAVE_ERRNO_H
-		throw IOException(strerror(errno));
+		throw IOException(::strerror(errno));
 		#else
 		throw IOException("fflush failed");
 		#endif
@@ -80,7 +80,7 @@ void FileOutputStream::write(byte b) throw (IOException)
 
 	if (rc < 1)
 		#if HAVE_ERRNO_H
-		throw IOException(strerror(errno));
+		throw IOException(::strerror(errno));
 		#else
 		throw IOException("incomplete fwrite");
 		#endif
@@ -100,7 +100,7 @@ void FileOutputStream::write(const byte* data, int offset, int length) throw (IO
 
 		if (rc < length)
 			#if HAVE_ERRNO_H
-			throw IOException(strerror(errno));
+			throw IOException(::strerror(errno));
 			#else
 			throw IOException("incomplete fwrite");
 			#endif
