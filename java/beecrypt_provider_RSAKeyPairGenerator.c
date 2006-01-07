@@ -22,7 +22,7 @@ void JNICALL Java_beecrypt_provider_RSAKeyPairGenerator_generate(JNIEnv* env, jo
 {
 	jclass cls = (*env)->GetObjectClass(env, obj);
 	jfieldID sid = (*env)->GetFieldID(env, cls, "_size", "I");
-	jfieldID fid; // = (*env)->GetFieldID(env, cls, "_e", "Ljava/math/BigInteger;");
+	jfieldID fid;
 	if (sid)
 	{
 		randomGeneratorContext rngc;
