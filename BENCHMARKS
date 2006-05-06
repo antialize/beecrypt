@@ -14,9 +14,10 @@ BENCHmark Modular Exponentation (more is better):
 BeeCrypt 4.2.0 | gcc-4.0.0           | Fedora Core 4        | Athlon 64     3000+|   1 GB: 24910
 BeeCrypt 4.0.0 | gcc-3.3.3           | Fedora Core 2        | Athlon 64     3000+|   1 GB: 24870
 BeeCrypt 4.2.0 | gcc-3.4.3           | Fedora Core 3        | Athlon 64     3000+|   1 GB: 24654
-BeeCrypt 4.0.0 | gcc-3.2.2           | SuSE 8 EL            | Opteron       1600 |   1 GB: 19460
+BeeCrypt 4.0.0 | gcc-3.2.2           | SuSE Enterprise 8    | Opteron       1600 |   1 GB: 19460
 BeeCrypt 3.0.0 | gcc-3.x             | RedHat Linux         | Opteron MP    1600 |       : 17230
-BeeCrypt 3.1.0 | gcc-2.96            | RedHat AS 2.1        | Itanium 2     1400 |   1 GB: 11453
+BeeCrypt 3.1.0 | gcc-2.96            | RedHat AS 2.1        | Itanium 2     1400 |   1 GB: 11730
+BeeCrypt 4.2.0 | gcc-3.3.3           | SuSE Enterprise 9    | POWER5        1650 |   1 GB: 10150
 BeeCrypt 3.0.0 | gcc-3.2.2           | Debian Linux 3.0     | Itanium 2      900 |  12 GB:  7317
 BeeCrypt 3.0.0 | gcc-3.3             | RedHat AS 2.1        | P4 Xeon       2400 |   4 GB:  6920 [--with-arch=pentium4]
 BeeCrypt 4.1.0 | gcc-3.3.3           | Fedora Core 2        | P4 Xeon       2400 |   1 GB:  6811 [--with-arch=pentium4]
