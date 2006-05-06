@@ -30,7 +30,7 @@ C_FUNCTION_BEGIN(mpzero)
 	movl 12(%esp),%edi
 
 	xorl %eax,%eax
-	repz; stosl
+	rep; stosl
 
 	popl %edi
 	ret
@@ -44,7 +44,7 @@ C_FUNCTION_BEGIN(mpfill)
 	movl 12(%esp),%edi
 	movl 16(%esp),%eax
 
-	repz; stosl
+	rep; stosl
 
 	popl %edi
 	ret

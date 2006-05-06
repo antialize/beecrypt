@@ -26,7 +26,7 @@ C_FUNCTION_BEGIN(mpzero)
 	movq %rdi,%rcx
 	movq %rsi,%rdi
 	xorq %rax,%rax
-	repz stosq
+	rep stosq
 	ret
 C_FUNCTION_END(mpzero)
 
@@ -35,7 +35,7 @@ C_FUNCTION_BEGIN(mpfill)
 	movq %rdi,%rcx
 	movq %rsi,%rdi
 	movq %rdx,%rax
-	repz stosq
+	rep stosq
 	ret
 C_FUNCTION_END(mpfill)
 
