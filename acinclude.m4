@@ -579,8 +579,6 @@ AC_DEFUN([BEECRYPT_GNU_CC],[
         fi
         ;;
       powerpc*)
-        BEECRYPT_CFLAGS_REM([-O2])
-        CFLAGS="$CFLAGS -O3"
         ;;
       esac
       # Architecture-specific optimizations
