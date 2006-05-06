@@ -9,6 +9,7 @@ libcxxutilconcurrentlocks_la_SOURCES = \
 ReentrantLock.cxx
 
 cxxutilconcurrentlocks_HEADERS = \
+Condition.h \
 Lock.h \
 ReentrantLock.h
 

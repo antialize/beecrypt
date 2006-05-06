@@ -44,11 +44,6 @@ using beecrypt::util::AbstractSet;
 #include "beecrypt/c++/util/ConcurrentModificationException.h"
 using beecrypt::util::ConcurrentModificationException;
 
-using beecrypt::lang::collection_attach;
-using beecrypt::lang::collection_detach;
-using beecrypt::lang::collection_remove;
-using beecrypt::lang::collection_rcheck;
-
 namespace beecrypt {
 	namespace util {
 		/*!\ingroup CXX_UTIL_m

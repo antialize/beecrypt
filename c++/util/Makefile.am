@@ -26,6 +26,8 @@ Enumeration.h \
 Hashtable.h \
 Iterable.h \
 Iterator.h \
+List.h \
+ListIterator.h \
 Map.h \
 NoSuchElementException.h \
 Properties.h \

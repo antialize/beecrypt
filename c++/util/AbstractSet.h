@@ -84,7 +84,7 @@ namespace beecrypt {
 					Iterator<E>* it = c.iterator();
 					assert(it != 0);
 					while (--cpos >= 0)
-						result |= remove(it->next());
+						result |= AbstractCollection<E>::remove(it->next());
 					delete it;
 				}
 				else
