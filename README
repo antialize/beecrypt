@@ -1,7 +1,7 @@
 Welcome to the BeeCrypt crypto library!
 
 Copyright (c) 1997, 1998, 1999, 2000, 2001, 2004, 2005 Beeyond Software Holding BV
-Copyright (c) 2002, 2003, 2005 Bob Deblier (for certain parts)
+Copyright (c) 2002, 2003, 2005, 2006 Bob Deblier (for certain parts)
 
 Author: Bob Deblier <bob.deblier@telenet.be>
 
@@ -34,16 +34,11 @@ About BeeCrypt:
 BeeCrypt started its life when the need for a portable and fast cryptography
 library arose at Virtual Unlimited in 1997. I'm still trying to make it
 faster, easier to use and more portable, in addition to providing better
-documentation. The library is currently in full swing again, thanks to the
-Beeyond Software Holding BV in the Netherlands.
+documentation.
 
 Note that depending on where you are, the use of cryptography may be
 limited or forbidden by law. Before using this library, make sure you
 are legally entitled to do so.
-
-For more on Beeyond our products please consult our website:
-http://www.beeyond.com/
-
 
 <plug>
 Most of the algorithms are implemented from reliable sources such as:
@@ -100,9 +95,10 @@ The library has been tested on the following platforms:
 	- Darwin/MacOS X
     - Linux glibc 2.x alpha
     - Linux glibc 2.x arm
-	- Linux glibc 2.x ia64
+    - Linux glibc 2.x ia64
     - Linux glibc 2.x m68k
     - Linux glibc 2.x ppc
+    - Linux glibc 2.x ppc64
     - Linux glibc 2.x s390
     - Linux glibc 2.x s390x
     - Linux glibc 2.x sparc
