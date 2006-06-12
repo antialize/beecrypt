@@ -62,6 +62,10 @@ define(LOAD_ADDRESS,`
 define(EXTERNAL_VARIABLE)
 ')
 
+ifelse(substr(ASM_OS,0,6),lynxos,`
+define(USE_NUMERIC_REGISTERS)
+')
+
 
 ifdef(`USE_NUMERIC_REGISTERS',`
 define(r0,0)
