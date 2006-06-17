@@ -11,4 +11,4 @@ EXTRA_DIST = \
 all:
 
 check:
-	$(VALGRIND) PYTHONPATH=".. ../.libs/_bc.so" python test_all.py verbose
+	$(VALGRIND) PYTHONPATH="..:../.libs/_bc.so" python test_all.py verbose
