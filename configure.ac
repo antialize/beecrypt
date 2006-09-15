@@ -4,7 +4,7 @@ AC_INIT([beecrypt],[4.2.0-pre],[bob.deblier@telenet.be])
 AM_INIT_AUTOMAKE
 AC_CANONICAL_TARGET
 AC_CONFIG_SRCDIR(include/beecrypt/beecrypt.h)
-AC_CONFIG_HEADERS([include/beecrypt/config.h])
+AC_CONFIG_HEADERS([config.h])
 
 # Checks for package options
 AC_ARG_ENABLE(debug, [  --enable-debug          creates debugging code [[default=no]]],[
