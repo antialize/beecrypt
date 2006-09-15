@@ -24,7 +24,7 @@ LIBBEECRYPT_JAVA_LT_CURRENT = 7
 LIBBEECRYPT_JAVA_LT_AGE = 0
 LIBBEECRYPT_JAVA_LT_REVISION = 0
 
-INCLUDES = -I$(top_srcdir)/..
+INCLUDES = -I$(top_srcdir)/include
 
 libaltdir=$(prefix)/lib@LIBALT@
 
@@ -45,22 +45,6 @@ beecrypt_provider_HMACSHA384.c \
 beecrypt_provider_HMACSHA512.c \
 beecrypt_provider_DHKeyPairGenerator.c \
 beecrypt_provider_RSAKeyPairGenerator.c
-
-noinst_HEADERS = \
-beecrypt_tools.h \
-beecrypt_provider_AES.h \
-beecrypt_provider_MD5.h \
-beecrypt_provider_SHA1.h \
-beecrypt_provider_SHA256.h \
-beecrypt_provider_SHA384.h \
-beecrypt_provider_SHA512.h \
-beecrypt_provider_HMACMD5.h \
-beecrypt_provider_HMACSHA1.h \
-beecrypt_provider_HMACSHA256.h \
-beecrypt_provider_HMACSHA384.h \
-beecrypt_provider_HMACSHA512.h \
-beecrypt_provider_DHKeyPairGenerator.h \
-beecrypt_provider_RSAKeyPairGenerator.h
 
 libbeecrypt_java_la_LIBADD = $(top_builddir)/libbeecrypt.la
 libbeecrypt_java_la_LDFLAGS = -no-undefined -version-info $(LIBBEECRYPT_JAVA_LT_CURRENT):$(LIBBEECRYPT_JAVA_LT_REVISION):$(LIBBEECRYPT_JAVA_LT_AGE)

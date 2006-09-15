@@ -1,4 +1,4 @@
-INCLUDES = -I$(top_srcdir)/..
+INCLUDES = -I$(top_srcdir)/include
 
 LIBS = -licuuc -licuio
 
@@ -61,56 +61,6 @@ SHA512withRSASignature.cxx
 
 base_la_LDFLAGS = -module
 base_la_LIBADD = $(top_builddir)/c++/libbeecrypt_cxx.la
-
-noinst_HEADERS = \
-AESCipher.h \
-BeeCertificateFactory.h \
-BeeCertPathValidator.h \
-BaseProvider.h \
-BeeKeyStore.h \
-BeeSecureRandom.h \
-BlockCipher.h \
-BlowfishCipher.h \
-DHIESCipher.h \
-DHIESParameters.h \
-DHKeyAgreement.h \
-DHKeyFactory.h \
-DHKeyPairGenerator.h \
-DHParameterGenerator.h \
-DHParameters.h \
-DHPrivateKeyImpl.h \
-DHPublicKeyImpl.h \
-DSAKeyFactory.h \
-DSAKeyPairGenerator.h \
-DSAParameterGenerator.h \
-DSAParameters.h \
-DSAPrivateKeyImpl.h \
-DSAPublicKeyImpl.h \
-HMAC.h \
-HMACMD5.h \
-HMACSHA1.h \
-HMACSHA256.h \
-HMACSHA384.h \
-HMACSHA512.h \
-KeyProtector.h \
-MD5Digest.h \
-MD5withRSASignature.h \
-PKCS1RSASignature.h \
-PKCS12KeyFactory.h \
-RSAKeyFactory.h \
-RSAKeyPairGenerator.h \
-RSAPrivateCrtKeyImpl.h \
-RSAPrivateKeyImpl.h \
-RSAPublicKeyImpl.h \
-SHA1Digest.h \
-SHA256Digest.h \
-SHA384Digest.h \
-SHA512Digest.h \
-SHA1withDSASignature.h \
-SHA1withRSASignature.h \
-SHA256withRSASignature.h \
-SHA384withRSASignature.h \
-SHA512withRSASignature.h 
 
 CLEANFILES = beecrypt.conf
 

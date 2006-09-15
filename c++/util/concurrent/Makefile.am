@@ -1,4 +1,4 @@
-INCLUDES = -I$(top_srcdir)/..
+INCLUDES = -I$(top_srcdir)/include
 
 AUTOMAKE_OPTIONS = gnu
 
@@ -10,5 +10,3 @@ cxxutilconcurrentdir= $(pkgincludedir)/c++/util/concurrent
 libcxxutilconcurrent_la_SOURCES =
 
 libcxxutilconcurrent_la_LIBADD = locks/libcxxutilconcurrentlocks.la
-
-cxxutilconcurrent_HEADERS =

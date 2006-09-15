@@ -1,4 +1,4 @@
-INCLUDES = -I$(top_srcdir)/..
+INCLUDES = -I$(top_srcdir)/include
 
 AUTOMAKE_OPTIONS = gnu
 
@@ -17,40 +17,6 @@ StringBuilder.cxx \
 System.cxx \
 Thread.cxx \
 Throwable.cxx
-
-cxxlang_HEADERS = \
-Appendable.h \
-ArithmeticException.h \
-Character.h \
-CharSequence.h \
-ClassCastException.h \
-Cloneable.h \
-CloneNotSupportedException.h \
-Comparable.h \
-Error.h \
-Exception.h \
-IllegalArgumentException.h \
-IllegalMonitorStateException.h \
-IllegalStateException.h \
-IllegalThreadStateException.h \
-IndexOutOfBoundsException.h \
-Integer.h \
-InterruptedException.h \
-Long.h \
-NullPointerException.h \
-Number.h \
-NumberFormatException.h \
-Object.h \
-OutOfMemoryError.h \
-Runnable.h \
-RuntimeException.h \
-String.h \
-StringBuffer.h \
-StringBuilder.h \
-System.h \
-Thread.h \
-Throwable.h \
-UnsupportedOperationException.h
 
 TESTS = teststring testthread testnotify
 

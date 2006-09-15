@@ -1,4 +1,4 @@
-INCLUDES = -I$(top_srcdir)/..
+INCLUDES = -I$(top_srcdir)/include
 
 LIBS = -licuuc -licuio
 
@@ -18,19 +18,6 @@ BeeOutputStream.cxx \
 DHIESParameterSpec.cxx \
 DHIESDecryptParameterSpec.cxx \
 PKCS12PBEKey.cxx
-
-noinst_HEADERS = \
-AnyEncodedKeySpec.h \
-BeeCertificate.h \
-BeeCertPath.h \
-BeeCertPathParameters.h \
-BeeCertPathValidatorResult.h \
-BeeEncodedKeySpec.h \
-BeeInputStream.h \
-BeeOutputStream.h \
-DHIESParameterSpec.h \
-DHIESDecryptParameterSpec.h \
-PKCS12PBEKey.h
 
 noinst_DATA = beecrypt-test.conf
 

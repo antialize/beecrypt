@@ -34,11 +34,11 @@ LIBBEECRYPT_LT_REVISION = 0
 
 AUTOMAKE_OPTIONS = gnu check-news no-dependencies
 
-SUBDIRS = . $(MAYBE_SUB) tests docs gas masm
+SUBDIRS = . include $(MAYBE_SUB) tests docs gas masm
 
 SUFFIXES = .s
 
-INCLUDES = -I$(top_srcdir)/..
+INCLUDES = -I$(top_srcdir)/include
 
 .s.lo:
 	$(LTCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
@@ -53,10 +53,6 @@ libbeecrypt_la_SOURCES = aes.c base64.c beecrypt.c blockmode.c blockpad.c blowfi
 libbeecrypt_la_DEPENDENCIES = $(BEECRYPT_OBJECTS)
 libbeecrypt_la_LIBADD = aesopt.lo blowfishopt.lo mpopt.lo sha1opt.lo
 libbeecrypt_la_LDFLAGS = -no-undefined -version-info $(LIBBEECRYPT_LT_CURRENT):$(LIBBEECRYPT_LT_REVISION):$(LIBBEECRYPT_LT_AGE)
-
-pkginclude_HEADERS = aes.h aesopt.h api.h base64.h beecrypt.h blockmode.h blockpad.h blowfish.h blowfishopt.h dhies.h dldp.h dlkp.h dlpk.h dlsvdp-dh.h dsa.h elgamal.h endianness.h entropy.h fips186.h gnu.h hmac.h hmacmd5.h hmacsha1.h hmacsha256.h hmacsha384.h hmacsha512.h md5.h memchunk.h mp.h mpbarrett.h mpnumber.h mpopt.h mpprime.h mtprng.h pkcs1.h pkcs12.h rsa.h rsakp.h rsapk.h sha1.h sha1opt.h sha256.h sha384.h sha512.h sha_k.h timestamp.h win.h
-
-noinst_HEADERS = aes_be.h aes_le.h
 
 EXTRA_DIST = BENCHMARKS BUGS CONTRIBUTORS README.WIN32 Doxyheader autogen.sh
 

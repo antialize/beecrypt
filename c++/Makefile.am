@@ -2,7 +2,7 @@ LIBBEECRYPT_CXX_LT_CURRENT = 7
 LIBBEECRYPT_CXX_LT_AGE = 0
 LIBBEECRYPT_CXX_LT_REVISION = 0
 
-INCLUDES = -I$(top_srcdir)/..
+INCLUDES = -I$(top_srcdir)/include
 
 AUTOMAKE_OPTIONS = gnu
 
@@ -19,13 +19,6 @@ resource.cxx
 
 libbeecrypt_cxx_la_LIBADD = ../libbeecrypt.la lang/libcxxlang.la math/libcxxmath.la io/libcxxio.la nio/libcxxnio.la util/libcxxutil.la security/libcxxsecurity.la crypto/libcxxcrypto.la beeyond/libcxxbeeyond.la -licuuc -licuio -licui18n
 libbeecrypt_cxx_la_LDFLAGS = -no-undefined -version-info $(LIBBEECRYPT_CXX_LT_CURRENT):$(LIBBEECRYPT_CXX_LT_REVISION):$(LIBBEECRYPT_CXX_LT_AGE)
-
-cxx_HEADERS = \
-array.h
-
-noinst_HEADERS = \
-adapter.h \
-resource.h
 
 EXTRA_DIST = Doxyheader
 

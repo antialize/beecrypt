@@ -3,8 +3,8 @@
 AC_INIT([beecrypt],[4.2.0-pre],[bob.deblier@telenet.be])
 AM_INIT_AUTOMAKE
 AC_CANONICAL_TARGET
-AC_CONFIG_SRCDIR(beecrypt.h)
-AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_SRCDIR(include/beecrypt/beecrypt.h)
+AC_CONFIG_HEADERS([include/beecrypt/config.h])
 
 # Checks for package options
 AC_ARG_ENABLE(debug, [  --enable-debug          creates debugging code [[default=no]]],[
@@ -145,7 +145,7 @@ AC_CHECK_HEADERS([time.h sys/time.h])
 AC_HEADER_TIME
 AC_CHECK_HEADERS([assert.h ctype.h errno.h fcntl.h malloc.h stdio.h termio.h termios.h])
 AC_CHECK_HEADERS([sys/ioctl.h sys/mman.h sys/audioio.h sys/soundcard.h])
-AC_CHECK_HEADERS([endian.h asm/byteorder.h])
+AC_CHECK_HEADERS([endian.h sys/endian.h asm/byteorder.h])
 
 bc_include_stdio_h=
 bc_include_stdlib_h=
@@ -633,11 +633,11 @@ AC_CONFIG_FILES([
     Makefile
     Doxyfile
     config.m4
+	include/Makefile
     c++/Makefile
 	c++/Doxyfile
     c++/beeyond/Makefile
     c++/crypto/Makefile
-    c++/crypto/interfaces/Makefile
     c++/crypto/spec/Makefile
     c++/io/Makefile
     c++/lang/Makefile
@@ -647,7 +647,6 @@ AC_CONFIG_FILES([
     c++/security/Makefile
 	c++/security/auth/Makefile
     c++/security/cert/Makefile
-    c++/security/interfaces/Makefile
     c++/security/spec/Makefile
     c++/util/Makefile
     c++/util/concurrent/Makefile
@@ -663,14 +662,6 @@ AC_CONFIG_FILES([
   ])
 
 AC_CONFIG_FILES([gnu.h],[
-    if test $srcdir != "."; then
-      cp gnu.h $ac_top_srcdir/gnu.h
-    fi
-  ])
-AC_CONFIG_COMMANDS_POST([
-    if test -h "beecrypt"; then
-      rm -f beecrypt
-    fi
-    $LN_S $srcdir beecrypt
+    cp gnu.h $ac_top_srcdir/include/beecrypt/gnu.h
   ])
 AC_OUTPUT

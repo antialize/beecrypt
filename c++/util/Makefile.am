@@ -1,4 +1,4 @@
-INCLUDES = -I$(top_srcdir)/..
+INCLUDES = -I$(top_srcdir)/include
 
 AUTOMAKE_OPTIONS = gnu
 
@@ -12,28 +12,6 @@ Date.cxx \
 Properties.cxx
 
 libcxxutil_la_LIBADD = concurrent/libcxxutilconcurrent.la
-
-cxxutil_HEADERS =\
-AbstractCollection.h \
-AbstractList.h \
-AbstractMap.h \
-AbstractSet.h \
-ArrayList.h \
-Collection.h \
-ConcurrentModificationException.h \
-Date.h \
-Enumeration.h \
-Hashtable.h \
-Iterable.h \
-Iterator.h \
-List.h \
-ListIterator.h \
-Map.h \
-NoSuchElementException.h \
-Properties.h \
-RandomAccess.h \
-Queue.h \
-Set.h
 
 TESTS = testlist testdate testprop
 

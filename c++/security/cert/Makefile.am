@@ -1,4 +1,4 @@
-INCLUDES = -I$(top_srcdir)/..
+INCLUDES = -I$(top_srcdir)/include
 
 AUTOMAKE_OPTIONS = gnu
 
@@ -11,18 +11,3 @@ Certificate.cxx \
 CertificateFactory.cxx \
 CertPath.cxx \
 CertPathValidator.cxx
-
-cxxsecuritycert_HEADERS =\
-Certificate.h \
-CertificateEncodingException.h \
-CertificateException.h \
-CertificateExpiredException.h \
-CertificateFactory.h \
-CertificateFactorySpi.h \
-CertificateNotYetValidException.h \
-CertPath.h \
-CertPathParameters.h \
-CertPathValidator.h \
-CertPathValidatorException.h \
-CertPathValidatorResult.h \
-CertPathValidatorSpi.h

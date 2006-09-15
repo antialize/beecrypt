@@ -1,4 +1,4 @@
-INCLUDES = -I$(top_srcdir)/..
+INCLUDES = -I$(top_srcdir)/include
 
 AUTOMAKE_OPTIONS = gnu
 
@@ -13,11 +13,3 @@ DHPublicKeySpec.cxx \
 IvParameterSpec.cxx \
 PBEKeySpec.cxx \
 SecretKeySpec.cxx
-
-cxxcryptospec_HEADERS =\
-DHParameterSpec.h \
-DHPrivateKeySpec.h \
-DHPublicKeySpec.h \
-IvParameterSpec.h \
-PBEKeySpec.h \
-SecretKeySpec.h

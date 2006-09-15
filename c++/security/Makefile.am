@@ -1,8 +1,8 @@
-INCLUDES = -I$(top_srcdir)/..
+INCLUDES = -I$(top_srcdir)/include
 
 AUTOMAKE_OPTIONS = gnu
 
-SUBDIRS = auth cert interfaces spec
+SUBDIRS = auth cert spec
 
 noinst_LTLIBRARIES = libcxxsecurity.la
 
@@ -24,41 +24,3 @@ Security.cxx \
 Signature.cxx
 
 libcxxsecurity_la_LIBADD = auth/libcxxsecurityauth.la cert/libcxxsecuritycert.la spec/libcxxsecurityspec.la
-
-cxxsecurity_HEADERS =\
-AlgorithmParameterGenerator.h \
-AlgorithmParameterGeneratorSpi.h \
-AlgorithmParameters.h \
-AlgorithmParametersSpi.h \
-DigestInputStream.h \
-DigestOutputStream.h \
-GeneralSecurityException.h \
-InvalidAlgorithmParameterException.h \
-InvalidKeyException.h \
-InvalidParameterException.h \
-KeyFactory.h \
-KeyFactorySpi.h \
-Key.h \
-KeyException.h \
-KeyPairGenerator.h \
-KeyPairGeneratorSpi.h \
-KeyPair.h \
-KeyStoreException.h \
-KeyStore.h \
-KeyStoreSpi.h \
-MessageDigest.h \
-MessageDigestSpi.h \
-NoSuchAlgorithmException.h \
-NoSuchProviderException.h \
-PrivateKey.h \
-Provider.h \
-ProviderException.h \
-PublicKey.h \
-SecureRandom.h \
-SecureRandomSpi.h \
-Security.h \
-ShortBufferException.h \
-Signature.h \
-SignatureException.h \
-SignatureSpi.h \
-UnrecoverableKeyException.h

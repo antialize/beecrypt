@@ -1,4 +1,4 @@
-INCLUDES = -I$(top_srcdir)/..
+INCLUDES = -I$(top_srcdir)/include
 
 AUTOMAKE_OPTIONS = gnu
 
@@ -8,9 +8,3 @@ cxxniodir= $(pkgincludedir)/c++/nio
 libcxxnio_la_SOURCES = \
 Buffer.cxx \
 ByteOrder.cxx
-
-cxxnio_HEADERS = \
-Buffer.h \
-ByteOrder.h \
-InvalidMarkException.h \
-ReadOnlyBufferException.h

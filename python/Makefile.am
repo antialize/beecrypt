@@ -9,7 +9,7 @@ SUBDIRS = test
 EXTRA_DIST = debug-py.c
 
 INCLUDES = -I. \
-	-I$(top_srcdir)/.. @PYTHONINC@
+	-I$(top_srcdir)/include @PYTHONINC@
 
 noinst_HEADERS = mpw-py.h rng-py.h
 

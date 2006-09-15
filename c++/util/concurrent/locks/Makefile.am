@@ -1,4 +1,4 @@
-INCLUDES = -I$(top_srcdir)/..
+INCLUDES = -I$(top_srcdir)/include
 
 AUTOMAKE_OPTIONS = gnu
 
@@ -7,11 +7,6 @@ cxxutilconcurrentlocksdir= $(pkgincludedir)/c++/util/concurrent/locks
 
 libcxxutilconcurrentlocks_la_SOURCES = \
 ReentrantLock.cxx
-
-cxxutilconcurrentlocks_HEADERS = \
-Condition.h \
-Lock.h \
-ReentrantLock.h
 
 TESTS = testthread
 

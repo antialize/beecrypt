@@ -1,11 +1,11 @@
-INCLUDES = -I$(top_srcdir)/..
+INCLUDES = -I$(top_srcdir)/include
 
 AUTOMAKE_OPTIONS = gnu
 
 noinst_LTLIBRARIES = libcxxio.la
 cxxiodir= $(pkgincludedir)/c++/io
 
-libcxxio_la_SOURCES =\
+libcxxio_la_SOURCES = \
 ByteArrayInputStream.cxx \
 ByteArrayOutputStream.cxx \
 DataInputStream.cxx \
@@ -21,27 +21,6 @@ PushbackInputStream.cxx \
 Writer.cxx
 
 libcxxio_la_LIBADD = -licuuc
-
-cxxio_HEADERS =\
-ByteArrayInputStream.h \
-ByteArrayOutputStream.h \
-Closeable.h \
-DataInput.h \
-DataOutput.h \
-DataInputStream.h \
-DataOutputStream.h \
-EOFException.h \
-FileInputStream.h \
-FileOutputStream.h \
-FilterInputStream.h \
-FilterOutputStream.h \
-Flushable.h \
-InputStream.h \
-IOException.h \
-OutputStream.h \
-PrintStream.h \
-PushbackInputStream.h \
-Writer.h
 
 TESTS = test
 

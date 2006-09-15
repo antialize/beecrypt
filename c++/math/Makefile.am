@@ -1,4 +1,4 @@
-INCLUDES = -I$(top_srcdir)/..
+INCLUDES = -I$(top_srcdir)/include
 
 AUTOMAKE_OPTIONS = gnu
 
@@ -8,9 +8,6 @@ cxxmathdir=$(pkgincludedir)/c++/math
 
 libcxxmath_la_SOURCES = \
 BigInteger.cxx
-
-cxxmath_HEADERS = \
-BigInteger.h
 
 TESTS = testbigint
 
