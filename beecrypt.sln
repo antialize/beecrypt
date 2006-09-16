@@ -1,0 +1,38 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "beecrypt_cxx", "c++\c++.vcproj", "{AF2B67CF-1A6D-460C-9A8F-5313FAF4F6C4}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "beecrypt_provider", "c++\provider\provider.vcproj", "{540EC93B-6FC9-440E-A266-9A842594E8AC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AF2B67CF-1A6D-460C-9A8F-5313FAF4F6C4} = {AF2B67CF-1A6D-460C-9A8F-5313FAF4F6C4}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "beecrypt", "beecrypt.vcproj", "{EBB69EDA-9554-46EC-8E7C-A1573885D4BB}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{AF2B67CF-1A6D-460C-9A8F-5313FAF4F6C4}.Debug.ActiveCfg = Debug|Win32
+		{AF2B67CF-1A6D-460C-9A8F-5313FAF4F6C4}.Debug.Build.0 = Debug|Win32
+		{AF2B67CF-1A6D-460C-9A8F-5313FAF4F6C4}.Release.ActiveCfg = Release|Win32
+		{AF2B67CF-1A6D-460C-9A8F-5313FAF4F6C4}.Release.Build.0 = Release|Win32
+		{540EC93B-6FC9-440E-A266-9A842594E8AC}.Debug.ActiveCfg = Debug|Win32
+		{540EC93B-6FC9-440E-A266-9A842594E8AC}.Debug.Build.0 = Debug|Win32
+		{540EC93B-6FC9-440E-A266-9A842594E8AC}.Release.ActiveCfg = Release|Win32
+		{540EC93B-6FC9-440E-A266-9A842594E8AC}.Release.Build.0 = Release|Win32
+		{EBB69EDA-9554-46EC-8E7C-A1573885D4BB}.Debug.ActiveCfg = Debug|Win32
+		{EBB69EDA-9554-46EC-8E7C-A1573885D4BB}.Debug.Build.0 = Debug|Win32
+		{EBB69EDA-9554-46EC-8E7C-A1573885D4BB}.Release.ActiveCfg = Release|Win32
+		{EBB69EDA-9554-46EC-8E7C-A1573885D4BB}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
