@@ -26,7 +26,7 @@
 
 #include <stdio.h>
 
-#include "hmacsha1.h"
+#include "beecrypt/hmacsha1.h"
 
 struct vector
 {

@@ -17,7 +17,7 @@
  *
  */
 
-#include "beecrypt.h"
+#include "beecrypt/beecrypt.h"
 
 #include <string.h>
 

@@ -25,8 +25,8 @@
 
 #include <stdio.h>
 
-#include "beecrypt.h"
-#include "mpnumber.h"
+#include "beecrypt/beecrypt.h"
+#include "beecrypt/mpnumber.h"
 
 struct vector
 {

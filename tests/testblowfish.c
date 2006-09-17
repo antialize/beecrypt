@@ -25,7 +25,7 @@
 
 #include <stdio.h>
 
-#include "blowfish.h"
+#include "beecrypt/blowfish.h"
 
 extern int fromhex(byte*, const char*);
 

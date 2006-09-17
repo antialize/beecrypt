@@ -26,7 +26,7 @@
 
 #include <stdio.h>
 
-#include "hmacmd5.h"
+#include "beecrypt/hmacmd5.h"
 
 struct vector
 {

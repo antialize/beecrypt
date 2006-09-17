@@ -25,8 +25,8 @@
 
 #include <stdio.h>
 
-#include "beecrypt.h"
-#include "dldp.h"
+#include "beecrypt/beecrypt.h"
+#include "beecrypt/dldp.h"
 
 int main()
 {

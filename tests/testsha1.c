@@ -26,8 +26,8 @@
 
 #include <stdio.h>
 
-#include "sha1.h"
-#include "memchunk.h"
+#include "beecrypt/sha1.h"
+#include "beecrypt/memchunk.h"
 
 struct vector
 {

@@ -25,7 +25,7 @@
 
 #include <stdio.h>
 
-#include "aes.h"
+#include "beecrypt/aes.h"
 
 extern int fromhex(byte*, const char*);
 extern void hexdump(const byte*, size_t);

@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-#include "beecrypt.h"
-#include "mp.h"
+#include "beecrypt/beecrypt.h"
+#include "beecrypt/mp.h"
 
 #define INIT	0xdeadbeefU;
 

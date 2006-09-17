@@ -25,9 +25,9 @@
 
 #include <stdio.h>
 
-#include "beecrypt.h"
-#include "dlkp.h"
-#include "dsa.h"
+#include "beecrypt/beecrypt.h"
+#include "beecrypt/dlkp.h"
+#include "beecrypt/dsa.h"
 
 struct vector
 {

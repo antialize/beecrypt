@@ -23,7 +23,7 @@
 
 #include <stdio.h>
 
-#include "sha256.h"
+#include "beecrypt/sha256.h"
 
 struct vector
 {
