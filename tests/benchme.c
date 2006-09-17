@@ -22,9 +22,9 @@
  * \author Bob Deblier <bob.deblier@telenet.be>
  */
 
-#include "beecrypt.h"
-#include "dldp.h"
-#include "timestamp.h"
+#include "beecrypt/beecrypt.h"
+#include "beecrypt/dldp.h"
+#include "beecrypt/timestamp.h"
 
 #include <stdio.h>
 

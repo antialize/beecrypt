@@ -22,9 +22,9 @@
  * \author Bob Deblier <bob.deblier@telenet.be>
  */
 
-#include "beecrypt.h"
-#include "rsa.h"
-#include "timestamp.h"
+#include "beecrypt/beecrypt.h"
+#include "beecrypt/rsa.h"
+#include "beecrypt/timestamp.h"
 
 #include <stdio.h>
 
