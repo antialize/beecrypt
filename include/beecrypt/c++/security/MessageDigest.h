@@ -38,7 +38,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI MessageDigest : public beecrypt::lang::Object
+		class BEECRYPTCXXAPI MessageDigest : public Object
 		{
 		public:
 			static MessageDigest* getInstance(const String& algorithm) throw (NoSuchAlgorithmException);

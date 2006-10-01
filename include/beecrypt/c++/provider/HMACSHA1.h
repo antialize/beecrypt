@@ -31,7 +31,7 @@ using beecrypt::lang::Cloneable;
 
 namespace beecrypt {
 	namespace provider {
-		class HMACSHA1 : public HMAC, public beecrypt::lang::Cloneable
+		class HMACSHA1 : public HMAC, public Cloneable
 		{
 		public:
 			HMACSHA1();

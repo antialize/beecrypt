@@ -36,7 +36,7 @@ namespace beecrypt {
 		 * \warning See the description of beecrypt::util:Collection for limitations
          *  on template parameter class E.
 		 */
-		template<class E> class AbstractSet : public beecrypt::util::AbstractCollection<E>, public virtual beecrypt::util::Set<E>
+		template<class E> class AbstractSet : public AbstractCollection<E>, public virtual Set<E>
 		{
 		protected:
 			AbstractSet() {}

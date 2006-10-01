@@ -39,7 +39,7 @@ namespace beecrypt {
 		/*!\ingroup CXX_UTIL_m
 		 * \warning class E must be a subclass of Object
 		 */
-		template<class E> class ArrayList : public beecrypt::util::AbstractList<E>, public virtual beecrypt::util::RandomAccess, public virtual beecrypt::lang::Cloneable
+		template<class E> class ArrayList : public AbstractList<E>, public virtual RandomAccess, public virtual Cloneable
 		{
 		private:
 			array<E*> _table;

@@ -48,7 +48,7 @@ namespace beecrypt {
 		 *  Object::equals().
 		 *
 		 */
-		template<class E> class Collection : public virtual beecrypt::util::Iterable<E>
+		template<class E> class Collection : public virtual Iterable<E>
 		{
 		public:
 			virtual ~Collection() {}

@@ -30,7 +30,7 @@ using beecrypt::crypto::SecretKeyFactorySpi;
 
 namespace beecrypt {
 	namespace provider {
-		class PKCS12KeyFactory : public beecrypt::crypto::SecretKeyFactorySpi
+		class PKCS12KeyFactory : public SecretKeyFactorySpi
 		{
 		protected:
 			virtual SecretKey* engineGenerateSecret(const KeySpec&) throw (InvalidKeySpecException);

@@ -38,7 +38,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI MessageDigestSpi : public beecrypt::lang::Object
+		class BEECRYPTCXXAPI MessageDigestSpi : public Object
 		{
 			friend class MessageDigest;
 

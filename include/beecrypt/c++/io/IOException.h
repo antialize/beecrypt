@@ -33,7 +33,7 @@ namespace beecrypt {
 	namespace io {
 		/*!\ingroup CXX_IO_m
 		 */
-		class IOException : public beecrypt::lang::Exception
+		class IOException : public Exception
 		{
 		public:
 			inline IOException()

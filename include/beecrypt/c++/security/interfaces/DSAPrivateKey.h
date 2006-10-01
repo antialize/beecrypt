@@ -36,7 +36,7 @@ namespace beecrypt {
 			/*!\brief DSA private key interface
 			 * \ingroup CXX_SECURITY_INTERFACES_m
 			 */
-			class DSAPrivateKey : public virtual beecrypt::security::PrivateKey, public virtual beecrypt::security::interfaces::DSAKey
+			class DSAPrivateKey : public virtual PrivateKey, public virtual DSAKey
 			{
 			public:
 				virtual ~DSAPrivateKey() {}

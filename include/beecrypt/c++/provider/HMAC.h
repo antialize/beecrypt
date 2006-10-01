@@ -34,7 +34,7 @@ using beecrypt::lang::Cloneable;
 
 namespace beecrypt {
 	namespace provider {
-		class HMAC : public beecrypt::crypto::MacSpi
+		class HMAC : public MacSpi
 		{
 		private:
 			bytearray _key;

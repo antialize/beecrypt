@@ -52,7 +52,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI SignatureSpi : public beecrypt::lang::Object
+		class BEECRYPTCXXAPI SignatureSpi : public Object
 		{
 			friend class Signature;
 

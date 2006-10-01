@@ -42,7 +42,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI KeyStore : public beecrypt::lang::Object
+		class BEECRYPTCXXAPI KeyStore : public Object
 		{
 		public:
 			class BEECRYPTCXXAPI ProtectionParameter

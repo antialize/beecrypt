@@ -34,7 +34,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class GeneralSecurityException : public beecrypt::lang::Exception
+		class GeneralSecurityException : public Exception
 		{
 		public:
 			inline GeneralSecurityException()

@@ -58,7 +58,7 @@ namespace beecrypt {
 		*/
 		/*!\ingroup CXX_BEEYOND_m
 		 */
-		class BEECRYPTCXXAPI BeeCertificate : public beecrypt::security::cert::Certificate, public beecrypt::lang::Cloneable
+		class BEECRYPTCXXAPI BeeCertificate : public Certificate, public Cloneable
 		{
 			friend class ::BeeCertificateFactory;
 

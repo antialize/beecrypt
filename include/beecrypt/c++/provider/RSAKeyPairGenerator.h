@@ -38,7 +38,7 @@ using beecrypt::security::InvalidParameterException;
 
 namespace beecrypt {
 	namespace provider {
-		class RSAKeyPairGenerator : public beecrypt::security::KeyPairGeneratorSpi
+		class RSAKeyPairGenerator : public KeyPairGeneratorSpi
 		{
 		private:
 			int _size;

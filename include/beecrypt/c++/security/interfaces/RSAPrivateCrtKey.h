@@ -34,7 +34,7 @@ namespace beecrypt {
 			/*!\brief The interface to an RSA private key, as defined in the PKCS#1 standard, using the Chinese Remainder Theorem (CRT) information values.
 			 * \ingroup CXX_SECURITY_INTERFACES_m
 			 */
-			class RSAPrivateCrtKey : public virtual beecrypt::security::interfaces::RSAPrivateKey
+			class RSAPrivateCrtKey : public virtual RSAPrivateKey
 			{
 			public:
 				virtual ~RSAPrivateCrtKey() {}

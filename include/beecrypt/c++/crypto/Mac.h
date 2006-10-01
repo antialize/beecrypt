@@ -38,7 +38,7 @@ namespace beecrypt {
 	namespace crypto {
 		/*!\ingroup CXX_CRYPTO_m
 		 */
-		class BEECRYPTCXXAPI Mac : public beecrypt::lang::Object
+		class BEECRYPTCXXAPI Mac : public Object
 		{
 		public:
 			static Mac* getInstance(const String&) throw (NoSuchAlgorithmException);

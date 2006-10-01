@@ -34,14 +34,14 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class Provider : public beecrypt::util::Properties
+		class Provider : public Properties
 		{
 			friend class Security;
 
 		private:
 			typedef Object* (*instantiator)();
 
-			class Instantiator : public beecrypt::lang::Object
+			class Instantiator : public Object
 			{
 			private:
 				instantiator _inst;

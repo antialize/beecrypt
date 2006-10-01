@@ -34,7 +34,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI DigestInputStream : public beecrypt::io::FilterInputStream
+		class BEECRYPTCXXAPI DigestInputStream : public FilterInputStream
 		{
 		private:
 			bool _on;

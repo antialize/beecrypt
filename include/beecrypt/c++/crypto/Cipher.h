@@ -36,7 +36,7 @@ namespace beecrypt {
 	namespace crypto {
 		/*!\ingroup CXX_CRYPTO_m
 		 */
-		class BEECRYPTCXXAPI Cipher : public beecrypt::lang::Object
+		class BEECRYPTCXXAPI Cipher : public Object
 		{
 		public:
 			static Cipher* getInstance(const String& transformation) throw (NoSuchAlgorithmException, NoSuchPaddingException);

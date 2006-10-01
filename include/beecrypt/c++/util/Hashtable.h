@@ -48,10 +48,10 @@ namespace beecrypt {
 	namespace util {
 		/*!\ingroup CXX_UTIL_m
 		 */
-		template<class K, class V> class Hashtable : public beecrypt::lang::Object, public virtual beecrypt::util::Map<K,V>, public virtual beecrypt::lang::Cloneable
+		template<class K, class V> class Hashtable : public Object, public virtual Map<K,V>, public virtual Cloneable
 		{
 		private:
-			class Entry : public beecrypt::lang::Object, public virtual beecrypt::util::Map<K,V>::Entry, public virtual beecrypt::lang::Cloneable
+			class Entry : public Object, public virtual Map<K,V>::Entry, public virtual Cloneable
 			{
 			public:
 				jint hash;
@@ -126,7 +126,7 @@ namespace beecrypt {
 				}
 			};
 
-			class HashIter : public beecrypt::lang::Object
+			class HashIter : public Object
 			{
 			private:
 				      Hashtable* _ht;
@@ -206,7 +206,7 @@ namespace beecrypt {
 				}
 			};
 
-			class EntryIter : public HashIter, public virtual beecrypt::util::Iterator<class Map<K,V>::Entry>
+			class EntryIter : public HashIter, public virtual Iterator<class Map<K,V>::Entry>
 			{
 			public:
 				EntryIter(Hashtable* h) : HashIter(h)
@@ -231,7 +231,7 @@ namespace beecrypt {
 				}
 			};
 
-			class KeyIter : public HashIter, public virtual beecrypt::util::Iterator<K>
+			class KeyIter : public HashIter, public virtual Iterator<K>
 			{
 			public:
 				KeyIter(Hashtable* h) : HashIter(h)
@@ -256,7 +256,7 @@ namespace beecrypt {
 				}
 			};
 
-			class ValueIter : public HashIter, public virtual beecrypt::util::Iterator<V>
+			class ValueIter : public HashIter, public virtual Iterator<V>
 			{
 			public:
 				ValueIter(Hashtable* h) : HashIter(h)
@@ -281,7 +281,7 @@ namespace beecrypt {
 				}
 			};
 
-			class EntrySet : public beecrypt::util::AbstractSet<class Map<K,V>::Entry>
+			class EntrySet : public AbstractSet<class Map<K,V>::Entry>
 			{
 			private:
 				Hashtable*_ht;
@@ -306,7 +306,7 @@ namespace beecrypt {
 				}
 			};
 
-			class KeySet : public beecrypt::util::AbstractSet<K>
+			class KeySet : public AbstractSet<K>
 			{
 			private:
 				Hashtable* _ht;
@@ -331,7 +331,7 @@ namespace beecrypt {
 				}
 			};
 
-			class ValueCollection : public beecrypt::util::AbstractCollection<V>
+			class ValueCollection : public AbstractCollection<V>
 			{
 			private:
 				Hashtable* _ht;

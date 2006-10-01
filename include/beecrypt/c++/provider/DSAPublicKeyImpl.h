@@ -38,7 +38,7 @@ using beecrypt::security::spec::DSAParameterSpec;
 
 namespace beecrypt {
 	namespace provider {
-		class DSAPublicKeyImpl : public beecrypt::lang::Object, public beecrypt::security::interfaces::DSAPublicKey, public beecrypt::lang::Cloneable
+		class DSAPublicKeyImpl : public Object, public DSAPublicKey, public Cloneable
 		{
 		private:
 			DSAParameterSpec* _params;

@@ -34,7 +34,7 @@ namespace beecrypt {
 	namespace provider {
 		/*!\ingroup CXX_PROVIDER_m
 		 */
-		class BeeSecureRandom : public beecrypt::security::SecureRandomSpi
+		class BeeSecureRandom : public SecureRandomSpi
 		{
 		private:
 			randomGeneratorContext _rngc;

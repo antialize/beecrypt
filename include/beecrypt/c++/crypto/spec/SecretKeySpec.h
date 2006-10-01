@@ -35,7 +35,7 @@ namespace beecrypt {
 		namespace spec {
 			/*!\ingroup CXX_CRYPTO_SPEC_m
 			 */
-			class BEECRYPTCXXAPI SecretKeySpec : public beecrypt::security::spec::KeySpec, public virtual beecrypt::crypto::SecretKey
+			class BEECRYPTCXXAPI SecretKeySpec : public KeySpec, public virtual SecretKey
 			{
 			private:
 				bytearray _data;

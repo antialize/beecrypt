@@ -49,7 +49,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI KeyStoreSpi : public beecrypt::lang::Object
+		class BEECRYPTCXXAPI KeyStoreSpi : public Object
 		{
 			friend class KeyStore;
 

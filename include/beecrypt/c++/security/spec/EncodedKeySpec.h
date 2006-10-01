@@ -36,7 +36,7 @@ namespace beecrypt {
 			/*!\brief Encoded key specification
 			 * \ingroup CXX_SECURITY_SPEC_m
 			 */
-			class BEECRYPTCXXAPI EncodedKeySpec : public beecrypt::lang::Object, public virtual beecrypt::security::spec::KeySpec
+			class BEECRYPTCXXAPI EncodedKeySpec : public Object, public virtual KeySpec
 			{
 			private:
 				bytearray _encoded;

@@ -32,7 +32,7 @@ namespace beecrypt {
 	namespace util {
 		/*!\ingroup CXX_UTIL_m
 		 */
-		template<class E> class Set : public virtual beecrypt::util::Collection<E>
+		template<class E> class Set : public virtual Collection<E>
 		{
 		};
 	}

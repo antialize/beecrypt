@@ -33,7 +33,7 @@ namespace beecrypt {
 		namespace cert {
 			/*!\ingroup CXX_SECURITY_CERT_m
 			 */
-			class BEECRYPTCXXAPI CertPathParameters : public virtual beecrypt::lang::Cloneable
+			class BEECRYPTCXXAPI CertPathParameters : public virtual Cloneable
 			{
 			public:
 				virtual ~CertPathParameters() {}

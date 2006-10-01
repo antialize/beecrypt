@@ -33,7 +33,7 @@ namespace beecrypt {
 	namespace util {
 		/*!\ingroup CXX_UTIL_m
 		 */
-		class NoSuchElementException : public beecrypt::lang::RuntimeException
+		class NoSuchElementException : public RuntimeException
 		{
 		public:
 			inline NoSuchElementException()

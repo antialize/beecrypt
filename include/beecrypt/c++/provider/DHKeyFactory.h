@@ -36,7 +36,7 @@ using beecrypt::security::spec::KeySpec;
 
 namespace beecrypt {
 	namespace provider {
-		class DHKeyFactory : public beecrypt::security::KeyFactorySpi
+		class DHKeyFactory : public KeyFactorySpi
 		{
 		protected:
 			virtual PrivateKey* engineGeneratePrivate(const KeySpec&) throw (InvalidKeySpecException);

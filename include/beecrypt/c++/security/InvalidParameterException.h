@@ -34,7 +34,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class InvalidParameterException : public beecrypt::lang::IllegalArgumentException
+		class InvalidParameterException : public IllegalArgumentException
 		{
 		public:
 			inline InvalidParameterException()

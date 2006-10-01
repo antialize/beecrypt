@@ -39,10 +39,10 @@ namespace beecrypt {
 		/*!\ingroup CXX_UTIL_m
 		 * \warning class E must be a subclass of Object
 		 */
-		template<class E> class AbstractList : public beecrypt::util::AbstractCollection<E>, public virtual beecrypt::util::List<E>
+		template<class E> class AbstractList : public AbstractCollection<E>, public virtual List<E>
 		{
 		private:
-			class Iter : public beecrypt::lang::Object, public virtual beecrypt::util::Iterator<E>
+			class Iter : public Object, public virtual Iterator<E>
 			{
 			private:
 				      AbstractList*       _list;
@@ -117,7 +117,7 @@ namespace beecrypt {
 				}
 			};
 
-			class ListIter : public beecrypt::lang::Object, public virtual beecrypt::util::ListIterator<E>
+			class ListIter : public Object, public virtual ListIterator<E>
 			{
 			private:
 				      AbstractList*       _list;

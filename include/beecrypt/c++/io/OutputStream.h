@@ -38,7 +38,7 @@ namespace beecrypt {
 	namespace io {
 		/*!\ingroup CXX_IO_m
 		 */
-		class BEECRYPTCXXAPI OutputStream : public beecrypt::lang::Object, public virtual beecrypt::io::Closeable, public virtual beecrypt::io::Flushable
+		class BEECRYPTCXXAPI OutputStream : public Object, public virtual Closeable, public virtual Flushable
 		{
 		public:
 			virtual ~OutputStream() {}

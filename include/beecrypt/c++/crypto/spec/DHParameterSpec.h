@@ -35,7 +35,7 @@ namespace beecrypt {
 		namespace spec {
 			/*!\ingroup CXX_CRYPTO_SPEC_m
 			 */
-			class BEECRYPTCXXAPI DHParameterSpec : public beecrypt::lang::Object, public virtual beecrypt::security::spec::AlgorithmParameterSpec, public virtual beecrypt::crypto::interfaces::DHParams
+			class BEECRYPTCXXAPI DHParameterSpec : public Object, public virtual AlgorithmParameterSpec, public virtual DHParams
 			{
 			private:
 				BigInteger _p;

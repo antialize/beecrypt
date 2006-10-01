@@ -34,7 +34,7 @@ using beecrypt::security::interfaces::RSAPrivateKey;
 
 namespace beecrypt {
 	namespace provider {
-		class RSAPrivateKeyImpl : public beecrypt::lang::Object, public beecrypt::security::interfaces::RSAPrivateKey, public beecrypt::lang::Cloneable
+		class RSAPrivateKeyImpl : public Object, public RSAPrivateKey, public Cloneable
 		{
 		protected:
 			BigInteger _n;

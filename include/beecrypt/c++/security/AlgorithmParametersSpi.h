@@ -43,7 +43,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI AlgorithmParametersSpi : public beecrypt::lang::Object
+		class BEECRYPTCXXAPI AlgorithmParametersSpi : public Object
 		{
 			friend class AlgorithmParameters;
 

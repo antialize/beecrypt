@@ -32,7 +32,7 @@ namespace beecrypt {
 	namespace beeyond {
 		/*!\ingroup CXX_BEEYOND_m
 		 */
-		class BEECRYPTCXXAPI DHIESDecryptParameterSpec : public beecrypt::beeyond::DHIESParameterSpec
+		class BEECRYPTCXXAPI DHIESDecryptParameterSpec : public DHIESParameterSpec
 		{
 		private:
 			BigInteger _pub;

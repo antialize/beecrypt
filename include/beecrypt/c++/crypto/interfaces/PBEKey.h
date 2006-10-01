@@ -34,7 +34,7 @@ namespace beecrypt {
 			/*!\brief PBEKey interface
 			 * \ingroup CXX_CRYPTO_INTERFACES_m
 			 */
-			class BEECRYPTCXXAPI PBEKey : public beecrypt::crypto::SecretKey
+			class BEECRYPTCXXAPI PBEKey : public SecretKey
 			{
 			public:
 				virtual ~PBEKey() {}

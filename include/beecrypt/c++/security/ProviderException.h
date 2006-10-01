@@ -34,7 +34,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class ProviderException : public beecrypt::lang::RuntimeException
+		class ProviderException : public RuntimeException
 		{
 		public:
 			inline ProviderException()

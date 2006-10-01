@@ -41,7 +41,7 @@ namespace beecrypt {
 		namespace cert {
 			/*!\ingroup CXX_SECURITY_CERT_m
 			 */
-			class BEECRYPTCXXAPI CertificateFactorySpi : public beecrypt::lang::Object
+			class BEECRYPTCXXAPI CertificateFactorySpi : public Object
 			{
 				friend class CertificateFactory;
 

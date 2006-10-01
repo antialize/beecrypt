@@ -38,7 +38,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI Signature : public beecrypt::lang::Object
+		class BEECRYPTCXXAPI Signature : public Object
 		{
 		protected:
 			static const int UNINITIALIZED = 0;

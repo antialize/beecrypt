@@ -42,7 +42,7 @@ namespace beecrypt {
 		 * \warning See the description of beecrypt::util:Collection for limitations
 		 *  on template parameter class E.
 		 */
-		template<class E> class AbstractCollection : public beecrypt::lang::Object, public virtual beecrypt::util::Collection<E>
+		template<class E> class AbstractCollection : public Object, public virtual Collection<E>
 		{
 		protected:
 			AbstractCollection() {}

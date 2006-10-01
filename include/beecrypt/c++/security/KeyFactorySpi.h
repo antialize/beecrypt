@@ -44,7 +44,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI KeyFactorySpi : public beecrypt::lang::Object
+		class BEECRYPTCXXAPI KeyFactorySpi : public Object
 		{
 			friend class KeyFactory;
 

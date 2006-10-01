@@ -32,7 +32,7 @@ namespace beecrypt {
 	namespace util {
 		/*!\ingroup CXX_UTIL_m
 		 */
-		template<class E> class Queue : public virtual beecrypt::util::Collection<E>
+		template<class E> class Queue : public virtual Collection<E>
 		{
 		public:
 			virtual E* element() = 0;

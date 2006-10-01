@@ -33,7 +33,7 @@ namespace beecrypt {
 		/*!\brief Secret key interface
 		 * \ingroup CXX_CRYPTO_m
 		 */
-		class BEECRYPTCXXAPI SecretKey : public virtual beecrypt::security::Key
+		class BEECRYPTCXXAPI SecretKey : public virtual Key
 		{
 		public:
 			virtual ~SecretKey() {}

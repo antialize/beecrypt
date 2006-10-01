@@ -37,7 +37,7 @@ using beecrypt::lang::String;
 
 namespace beecrypt {
 	namespace nio {
-		class BEECRYPTCXXAPI ByteOrder : public beecrypt::lang::Object
+		class BEECRYPTCXXAPI ByteOrder : public Object
 		{
 		private:
 			String _name;

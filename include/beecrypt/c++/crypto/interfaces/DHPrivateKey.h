@@ -36,7 +36,7 @@ namespace beecrypt {
 			/*!\brief Diffie-Hellman private key interface
 			 * \ingroup CXX_CRYPTO_INTERFACES_m
 			 */
-			class DHPrivateKey : public virtual beecrypt::security::PrivateKey, public beecrypt::crypto::interfaces::DHKey
+			class DHPrivateKey : public virtual PrivateKey, public DHKey
 			{
 			public:
 				virtual ~DHPrivateKey() {}

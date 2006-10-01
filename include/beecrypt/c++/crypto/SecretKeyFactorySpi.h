@@ -41,7 +41,7 @@ namespace beecrypt {
 	namespace crypto {
 		/*!\ingroup CXX_CRYPTO_m
 		 */
-		class BEECRYPTCXXAPI SecretKeyFactorySpi : public beecrypt::lang::Object
+		class BEECRYPTCXXAPI SecretKeyFactorySpi : public Object
 		{
 			friend class SecretKeyFactory;
 

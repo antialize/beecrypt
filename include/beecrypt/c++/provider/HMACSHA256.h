@@ -29,7 +29,7 @@
 
 namespace beecrypt {
 	namespace provider {
-		class HMACSHA256 : public HMAC, public beecrypt::lang::Cloneable
+		class HMACSHA256 : public HMAC, public Cloneable
 		{
 		public:
 			HMACSHA256();

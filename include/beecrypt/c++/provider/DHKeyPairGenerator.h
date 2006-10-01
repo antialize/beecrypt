@@ -32,7 +32,7 @@ using beecrypt::security::KeyPairGeneratorSpi;
 
 namespace beecrypt {
 	namespace provider {
-		class DHKeyPairGenerator : public beecrypt::security::KeyPairGeneratorSpi
+		class DHKeyPairGenerator : public KeyPairGeneratorSpi
 		{
 		private:
 			int _size;

@@ -40,10 +40,10 @@ namespace beecrypt {
 	namespace util {
 		/*!\ingroup CXX_UTIL_m
 		 */
-		class BEECRYPTCXXAPI Properties : public beecrypt::util::Hashtable<Object,Object>
+		class BEECRYPTCXXAPI Properties : public Hashtable<Object,Object>
 		{
 		private:
-			class Names : public beecrypt::lang::Object, public virtual beecrypt::util::Enumeration<const String>
+			class Names : public Object, public virtual Enumeration<const String>
 			{
 			private:
 				array<String*> _list;

@@ -38,7 +38,7 @@ namespace beecrypt {
 		namespace spec {
 			/*!\ingroup CXX_CRYPTO_SPEC_m
 			 */
-			class BEECRYPTCXXAPI PBEKeySpec : public beecrypt::lang::Object, public virtual beecrypt::security::spec::KeySpec
+			class BEECRYPTCXXAPI PBEKeySpec : public Object, public virtual KeySpec
 			{
 			private:
 				array<jchar> _password;

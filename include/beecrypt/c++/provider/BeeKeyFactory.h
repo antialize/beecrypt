@@ -38,7 +38,7 @@ namespace beecrypt {
 	namespace provider {
 		/*!\ingroup CXX_PROVIDER_m
 		 */
-		class BeeKeyFactory : public beecrypt::security::KeyFactorySpi
+		class BeeKeyFactory : public KeyFactorySpi
 		{
 		public:
 			static PrivateKey* decodePrivate(const byte*, size_t, size_t);

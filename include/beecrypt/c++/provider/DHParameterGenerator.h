@@ -34,7 +34,7 @@ using beecrypt::crypto::spec::DHParameterSpec;
 
 namespace beecrypt {
 	namespace provider {
-		class DHParameterGenerator : public beecrypt::security::AlgorithmParameterGeneratorSpi
+		class DHParameterGenerator : public AlgorithmParameterGeneratorSpi
 		{
 		private:
 			int _size;

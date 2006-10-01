@@ -47,7 +47,7 @@ namespace beecrypt {
 		namespace cert {
 			/*!\ingroup CXX_SECURITY_CERT_m
 			 */
-			class BEECRYPTCXXAPI Certificate : public beecrypt::lang::Object
+			class BEECRYPTCXXAPI Certificate : public Object
 			{
 			private:
 				String _type;

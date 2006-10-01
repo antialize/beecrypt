@@ -32,7 +32,7 @@ namespace beecrypt {
 	namespace provider {
 		/*!\ingroup CXX_PROVIDER_m
 		 */
-		class BeeCertificateFactory : public beecrypt::security::cert::CertificateFactorySpi
+		class BeeCertificateFactory : public CertificateFactorySpi
 		{
 		protected:
 			virtual Certificate* engineGenerateCertificate(InputStream& in) throw (CertificateException);

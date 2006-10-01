@@ -33,7 +33,7 @@ namespace beecrypt {
 	namespace util {
 		/*!\ingroup CXX_UTIL_m
 		 */
-		class ConcurrentModificationException : public beecrypt::lang::RuntimeException
+		class ConcurrentModificationException : public RuntimeException
 		{
 		public:
 			inline ConcurrentModificationException()

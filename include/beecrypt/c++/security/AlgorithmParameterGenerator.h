@@ -39,7 +39,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI AlgorithmParameterGenerator : public beecrypt::lang::Object
+		class BEECRYPTCXXAPI AlgorithmParameterGenerator : public Object
 		{
 		public:
 			static AlgorithmParameterGenerator* getInstance(const String& algorithm) throw (NoSuchAlgorithmException);

@@ -38,7 +38,7 @@ using beecrypt::security::spec::KeySpec;
 
 namespace beecrypt {
 	namespace provider {
-		class RSAKeyFactory : public beecrypt::security::KeyFactorySpi
+		class RSAKeyFactory : public KeyFactorySpi
 		{
 			friend class BeeCryptProvider;
 

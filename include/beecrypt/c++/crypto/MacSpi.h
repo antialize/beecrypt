@@ -44,7 +44,7 @@ namespace beecrypt {
 	namespace crypto {
 		/*!\ingroup CXX_CRYPTO_m
 		 */
-		class BEECRYPTCXXAPI MacSpi : public beecrypt::lang::Object
+		class BEECRYPTCXXAPI MacSpi : public Object
 		{
 			friend class Mac;
 

@@ -36,7 +36,7 @@ namespace beecrypt {
 	namespace io {
 		/*!\ingroup CXX_IO_m
 		 */
-		class BEECRYPTCXXAPI DataInputStream : public beecrypt::io::FilterInputStream, public virtual beecrypt::io::DataInput
+		class BEECRYPTCXXAPI DataInputStream : public FilterInputStream, public virtual DataInput
 		{
 		private:
 			bool _del;

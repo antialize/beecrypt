@@ -36,7 +36,7 @@ namespace beecrypt {
 	namespace io {
 		/*!\ingroup CXX_LANG_m
 		 */
-		class BEECRYPTCXXAPI DataOutputStream : public beecrypt::io::FilterOutputStream, public virtual beecrypt::io::DataOutput
+		class BEECRYPTCXXAPI DataOutputStream : public FilterOutputStream, public virtual DataOutput
 		{
 		private:
 			UConverter* _utf;

@@ -34,7 +34,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI KeyPair : public beecrypt::lang::Object
+		class BEECRYPTCXXAPI KeyPair : public Object
 		{
 			friend class KeyPairGenerator;
 

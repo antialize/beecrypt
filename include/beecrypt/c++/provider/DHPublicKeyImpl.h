@@ -42,7 +42,7 @@ using beecrypt::lang::String;
 
 namespace beecrypt {
 	namespace provider {
-		class DHPublicKeyImpl : public beecrypt::lang::Object, public beecrypt::crypto::interfaces::DHPublicKey, public beecrypt::lang::Cloneable
+		class DHPublicKeyImpl : public Object, public DHPublicKey, public Cloneable
 		{
 		private:
 			DHParameterSpec* _params;

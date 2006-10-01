@@ -34,7 +34,7 @@ namespace beecrypt {
 	namespace util {
 		/*!\ingroup CXX_UTIL_m
 		 */
-		class BEECRYPTCXXAPI Date : public beecrypt::lang::Object, public beecrypt::lang::Cloneable, public beecrypt::lang::Comparable<Date>
+		class BEECRYPTCXXAPI Date : public Object, public Cloneable, public Comparable<Date>
 		{
 		private:
 			jlong _time;

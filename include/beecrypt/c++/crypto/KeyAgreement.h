@@ -32,7 +32,7 @@ namespace beecrypt {
 	namespace crypto {
 		/*!\ingroup CXX_CRYPTO_m
 		 */
-		class BEECRYPTCXXAPI KeyAgreement : public beecrypt::lang::Object
+		class BEECRYPTCXXAPI KeyAgreement : public Object
 		{
 		public:
 			static KeyAgreement* getInstance(const String&) throw (NoSuchAlgorithmException);

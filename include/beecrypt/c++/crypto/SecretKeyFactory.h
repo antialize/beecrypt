@@ -38,7 +38,7 @@ namespace beecrypt {
 	namespace crypto {
 		/*!\ingroup CXX_CRYPTO_m
 		 */
-		class BEECRYPTCXXAPI SecretKeyFactory : public beecrypt::lang::Object
+		class BEECRYPTCXXAPI SecretKeyFactory : public Object
 		{
 		public:
 			static SecretKeyFactory* getInstance(const String& algorithm) throw (NoSuchAlgorithmException);

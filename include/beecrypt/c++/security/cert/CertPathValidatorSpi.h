@@ -43,7 +43,7 @@ namespace beecrypt {
 		namespace cert {
 			/*!\ingroup CXX_SECURITY_CERT_m
 			 */
-			class BEECRYPTCXXAPI CertPathValidatorSpi : public beecrypt::lang::Object
+			class BEECRYPTCXXAPI CertPathValidatorSpi : public Object
 			{
 				friend class CertPathValidator;
 

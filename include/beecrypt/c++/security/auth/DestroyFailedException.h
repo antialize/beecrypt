@@ -34,7 +34,7 @@ namespace beecrypt {
 		namespace auth {
 			/*!\ingroup CXX_SECURITY_AUTH_m
 			 */
-			class DestroyFailedException : public beecrypt::lang::Exception
+			class DestroyFailedException : public Exception
 			{
 			public:
 				inline DestroyFailedException()

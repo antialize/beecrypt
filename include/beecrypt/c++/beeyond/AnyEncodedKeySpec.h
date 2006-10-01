@@ -34,7 +34,7 @@ namespace beecrypt {
 	namespace beeyond {
 		/*!\ingroup CXX_BEEYOND_m
 		 */
-		class BEECRYPTCXXAPI AnyEncodedKeySpec : public beecrypt::security::spec::EncodedKeySpec
+		class BEECRYPTCXXAPI AnyEncodedKeySpec : public EncodedKeySpec
 		{
 		private:
 			String _format;

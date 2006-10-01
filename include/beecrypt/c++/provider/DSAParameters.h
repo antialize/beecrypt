@@ -32,7 +32,7 @@ using beecrypt::security::spec::DSAParameterSpec;
 
 namespace beecrypt {
 	namespace provider {
-		class DSAParameters : public beecrypt::security::AlgorithmParametersSpi
+		class DSAParameters : public AlgorithmParametersSpi
 		{
 		private:
 			DSAParameterSpec* _spec;

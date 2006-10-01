@@ -34,7 +34,7 @@ using beecrypt::math::BigInteger;
 
 namespace beecrypt {
 	namespace provider {
-		class DHKeyAgreement : public beecrypt::crypto::KeyAgreementSpi
+		class DHKeyAgreement : public KeyAgreementSpi
 		{
 		private:
 			static const int UNINITIALIZED = 0;

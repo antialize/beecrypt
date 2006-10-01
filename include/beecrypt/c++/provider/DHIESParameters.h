@@ -32,7 +32,7 @@ using beecrypt::beeyond::DHIESDecryptParameterSpec;
 
 namespace beecrypt {
 	namespace provider {
-		class DHIESParameters : public beecrypt::security::AlgorithmParametersSpi
+		class DHIESParameters : public AlgorithmParametersSpi
 		{
 		private:
 			DHIESParameterSpec* _spec;

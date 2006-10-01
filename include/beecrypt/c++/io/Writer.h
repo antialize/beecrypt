@@ -38,7 +38,7 @@ namespace beecrypt {
 	namespace io {
 		/*!\ingroup CXX_IO_m
 		 */
-		class BEECRYPTCXXAPI Writer : public beecrypt::lang::Object, public virtual beecrypt::io::Closeable, public virtual beecrypt::io::Flushable, public virtual beecrypt::lang::Appendable
+		class BEECRYPTCXXAPI Writer : public Object, public virtual Closeable, public virtual Flushable, public virtual Appendable
 		{
 		protected:
 			Object* lock;

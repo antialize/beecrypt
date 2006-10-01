@@ -40,7 +40,7 @@ namespace beecrypt {
 	namespace math {
 		/*!\ingroup CXX_MATH_m
 		 */
-		class BEECRYPTCXXAPI BigInteger : public beecrypt::lang::Number, public virtual beecrypt::lang::Comparable<BigInteger>
+		class BEECRYPTCXXAPI BigInteger : public Number, public virtual Comparable<BigInteger>
 		{
 			friend BEECRYPTCXXAPI void transform(mpnumber& m, const BigInteger&);
 			friend BEECRYPTCXXAPI void transform(mpbarrett& b, const BigInteger&);

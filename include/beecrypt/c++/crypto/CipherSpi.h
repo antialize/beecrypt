@@ -56,7 +56,7 @@ namespace beecrypt {
 	namespace crypto {
 		/*!\ingroup CXX_CRYPTO_m
 		 */
-		class BEECRYPTCXXAPI CipherSpi : public beecrypt::lang::Object
+		class BEECRYPTCXXAPI CipherSpi : public Object
 		{
 			friend class Cipher;
 

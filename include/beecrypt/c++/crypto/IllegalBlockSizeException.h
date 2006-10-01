@@ -32,7 +32,7 @@ namespace beecrypt {
 	namespace crypto {
 		/*!\ingroup CXX_CRYPTO_m
 		 */
-		class IllegalBlockSizeException : public beecrypt::security::GeneralSecurityException
+		class IllegalBlockSizeException : public GeneralSecurityException
 		{
 		public:
 			inline IllegalBlockSizeException()

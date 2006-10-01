@@ -36,7 +36,7 @@ namespace beecrypt {
 			/*!\brief RSA private key interface
 			 * \ingroup CXX_SECURITY_INTERFACES_m
 			 */
-			class RSAPrivateKey : public virtual beecrypt::security::PrivateKey, public virtual beecrypt::security::interfaces::RSAKey
+			class RSAPrivateKey : public virtual PrivateKey, public virtual RSAKey
 			{
 			public:
 				virtual ~RSAPrivateKey() {}

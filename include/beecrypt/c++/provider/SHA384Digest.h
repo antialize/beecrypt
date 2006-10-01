@@ -35,7 +35,7 @@ using beecrypt::lang::Cloneable;
 
 namespace beecrypt {
 	namespace provider {
-		class SHA384Digest : public beecrypt::security::MessageDigestSpi, public beecrypt::lang::Cloneable
+		class SHA384Digest : public MessageDigestSpi, public Cloneable
 		{
 		private:
 			sha384Param _param;

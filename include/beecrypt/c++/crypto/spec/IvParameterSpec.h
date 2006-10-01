@@ -37,7 +37,7 @@ namespace beecrypt {
 		namespace spec {
 			/*!\ingroup CXX_CRYPTO_SPEC_m
 			 */
-			class BEECRYPTCXXAPI IvParameterSpec : public beecrypt::lang::Object, public virtual beecrypt::security::spec::AlgorithmParameterSpec
+			class BEECRYPTCXXAPI IvParameterSpec : public Object, public virtual AlgorithmParameterSpec
 			{
 			private:
 				bytearray _iv;

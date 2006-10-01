@@ -32,7 +32,7 @@ namespace beecrypt {
 	namespace util {
 		/*!\ingroup CXX_UTIL_m
 		 */
-		template<class E> class ListIterator : public virtual beecrypt::util::Iterator<E>
+		template<class E> class ListIterator : public virtual Iterator<E>
 		{
 		public:
 			virtual void add(E* e) = 0;

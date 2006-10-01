@@ -38,7 +38,7 @@ namespace beecrypt {
 			namespace locks {
 				/*!\ingroup CXX_UTIL_CONCURRENT_LOCKS_m
 				 */
-				class BEECRYPTCXXAPI ReentrantLock : public beecrypt::lang::Object, public virtual Lock
+				class BEECRYPTCXXAPI ReentrantLock : public Object, public virtual Lock
 				{
 				private:
 					class BEECRYPTCXXAPI Cond : public Object, public virtual Condition

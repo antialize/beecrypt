@@ -34,7 +34,7 @@ namespace beecrypt {
 	namespace util {
 		/*!\ingroup CXX_UTIL_m
 		 */
-		template <class E> class List : public virtual beecrypt::util::Collection<E>
+		template <class E> class List : public virtual Collection<E>
 		{
 		public:
 			virtual ~List() {}

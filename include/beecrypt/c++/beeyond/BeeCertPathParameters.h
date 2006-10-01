@@ -42,7 +42,7 @@ using beecrypt::util::ArrayList;
 
 namespace beecrypt {
 	namespace beeyond {
-		class BEECRYPTCXXAPI BeeCertPathParameters : public beecrypt::lang::Object, public beecrypt::security::cert::CertPathParameters
+		class BEECRYPTCXXAPI BeeCertPathParameters : public Object, public CertPathParameters
 		{
 		private:
 			ArrayList<Certificate> _cert;

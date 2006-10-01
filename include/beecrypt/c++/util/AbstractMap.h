@@ -36,13 +36,13 @@ namespace beecrypt {
 	namespace util {
 		/*!\ingroup CXX_UTIL_m
 		 */
-		template <class K, class V> class AbstractMap : public beecrypt::lang::Object, public virtual beecrypt::util::Map<K,V>
+		template <class K, class V> class AbstractMap : public Object, public virtual Map<K,V>
 		{
 		private:
-			class KeySet : public beecrypt::util::AbstractSet<K>
+			class KeySet : public AbstractSet<K>
 			{
 			private:
-				class Iter : public beecrypt::lang::Object, virtual public Iterator<K>
+				class Iter : public Object, virtual public Iterator<K>
 				{
 				private:
 					Iterator<class Map<K,V>::Entry>* _it;
@@ -96,10 +96,10 @@ namespace beecrypt {
 				}
 			};
 
-			class Values : public beecrypt::util::AbstractCollection<V>
+			class Values : public AbstractCollection<V>
 			{
 			private:
-				class Iter : public beecrypt::lang::Object, virtual public Iterator<V>
+				class Iter : public Object, virtual public Iterator<V>
 				{
 				private:
 					Iterator<class Map<K,V>::Entry>* _it;

@@ -35,7 +35,7 @@ using beecrypt::lang::Cloneable;
 
 namespace beecrypt {
 	namespace provider {
-		class MD5Digest : public beecrypt::security::MessageDigestSpi, public beecrypt::lang::Cloneable
+		class MD5Digest : public MessageDigestSpi, public Cloneable
 		{
 		private:
 			md5Param _param;

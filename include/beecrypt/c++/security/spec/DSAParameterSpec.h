@@ -40,7 +40,7 @@ namespace beecrypt {
 			/*!\brief DSA parameter specification
 			 * \ingroup CXX_SECURITY_SPEC_m
 			 */
-			class BEECRYPTCXXAPI DSAParameterSpec : public beecrypt::lang::Object, public virtual beecrypt::security::spec::AlgorithmParameterSpec, public virtual beecrypt::security::interfaces::DSAParams
+			class BEECRYPTCXXAPI DSAParameterSpec : public Object, public virtual AlgorithmParameterSpec, public virtual DSAParams
 			{
 			private:
 				BigInteger _p;

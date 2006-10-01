@@ -41,7 +41,7 @@ namespace beecrypt {
 		/*!\brief The default BeeCrypt KeyStore.
 		 * \ingroup CXX_PROVIDER_m
 		 */
-		class BeeKeyStore : public beecrypt::security::KeyStoreSpi
+		class BeeKeyStore : public KeyStoreSpi
 		{
 		private:
 			class Entry : public beecrypt::lang::Object

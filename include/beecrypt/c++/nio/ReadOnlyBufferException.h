@@ -32,7 +32,7 @@ namespace beecrypt {
 	namespace nio {
 		 /* \ingroup CXX_NIO_m
 		 */
-		class ReadOnlyBufferException : public beecrypt::lang::UnsupportedOperationException
+		class ReadOnlyBufferException : public UnsupportedOperationException
 		{
 		public:
 			inline ReadOnlyBufferException()

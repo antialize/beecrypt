@@ -32,7 +32,7 @@ using beecrypt::crypto::CipherSpi;
 
 namespace beecrypt {
 	namespace provider {
-		class BlockCipher : public beecrypt::crypto::CipherSpi
+		class BlockCipher : public CipherSpi
 		{
 		private:
 			static const int MODE_ECB;

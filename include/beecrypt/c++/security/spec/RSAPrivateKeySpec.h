@@ -37,7 +37,7 @@ namespace beecrypt {
 		namespace spec {
 			/*!\ingroup CXX_SECURITY_SPEC_m
 			 */
-			class BEECRYPTCXXAPI RSAPrivateKeySpec : public beecrypt::lang::Object, public virtual beecrypt::security::spec::KeySpec
+			class BEECRYPTCXXAPI RSAPrivateKeySpec : public Object, public virtual KeySpec
 			{
 			private:
 				BigInteger _n;

@@ -38,7 +38,7 @@ namespace beecrypt {
 			/*!\brief DSA private key specification
 			 * \ingroup CXX_SECURITY_SPEC_m
 			 */
-			class BEECRYPTCXXAPI DSAPrivateKeySpec : public beecrypt::lang::Object, public virtual beecrypt::security::spec::KeySpec
+			class BEECRYPTCXXAPI DSAPrivateKeySpec : public Object, public virtual KeySpec
 			{
 			private:
 				BigInteger _p;

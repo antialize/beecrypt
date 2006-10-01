@@ -40,7 +40,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI SecureRandom : public beecrypt::lang::Object
+		class BEECRYPTCXXAPI SecureRandom : public Object
 		{
 		public:
 			static SecureRandom* getInstance(const String& type) throw (NoSuchAlgorithmException);

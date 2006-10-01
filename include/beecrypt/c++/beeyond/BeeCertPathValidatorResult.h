@@ -36,7 +36,7 @@ namespace beecrypt {
 	namespace beeyond {
 		/*!\ingroup CXX_BEEYOND_m
 		 */
-		class BEECRYPTCXXAPI BeeCertPathValidatorResult : public beecrypt::lang::Object, public beecrypt::security::cert::CertPathValidatorResult
+		class BEECRYPTCXXAPI BeeCertPathValidatorResult : public Object, public CertPathValidatorResult
 		{
 		private:
 			BeeCertificate* _root;

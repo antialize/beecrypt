@@ -42,7 +42,7 @@ namespace beecrypt {
 	namespace beeyond {
 		/*!\ingroup CXX_BEEYOND_m
 		 */
-		class BEECRYPTCXXAPI DHIESParameterSpec : public beecrypt::lang::Object, public beecrypt::security::spec::AlgorithmParameterSpec
+		class BEECRYPTCXXAPI DHIESParameterSpec : public Object, public AlgorithmParameterSpec
 		{
 		private:
 			String _messageDigestAlgorithm;

@@ -32,7 +32,7 @@ namespace beecrypt {
 	namespace security {
 		/*!\ingroup CXX_SECURITY_m
 		 */
-		class BEECRYPTCXXAPI SecureRandomSpi : public beecrypt::lang::Object
+		class BEECRYPTCXXAPI SecureRandomSpi : public Object
 		{
 			friend class SecureRandom;
 

@@ -37,7 +37,7 @@ namespace beecrypt {
 		namespace cert {
 			/*!\ingroup CXX_SECURITY_CERT_m
 			 */
-			class BEECRYPTCXXAPI CertificateFactory : public beecrypt::lang::Object
+			class BEECRYPTCXXAPI CertificateFactory : public Object
 			{
 			public:
 				static CertificateFactory* getInstance(const String& type) throw (NoSuchAlgorithmException);

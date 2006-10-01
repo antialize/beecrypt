@@ -32,7 +32,7 @@ using beecrypt::crypto::spec::DHParameterSpec;
 
 namespace beecrypt {
 	namespace provider {
-		class DHParameters : public beecrypt::security::AlgorithmParametersSpi
+		class DHParameters : public AlgorithmParametersSpi
 		{
 		private:
 			DHParameterSpec* _spec;
