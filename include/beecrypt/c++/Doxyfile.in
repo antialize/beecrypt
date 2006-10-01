@@ -423,20 +423,20 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories 
 # with spaces.
 
-INPUT                  = @top_srcdir@/c++/Doxyheader \
-                         @top_srcdir@/c++/crypto \
-                         @top_srcdir@/c++/crypto/interfaces \
-                         @top_srcdir@/c++/crypto/spec \
-                         @top_srcdir@/c++/io \
-                         @top_srcdir@/c++/lang \
-                         @top_srcdir@/c++/nio \
-                         @top_srcdir@/c++/security \
-                         @top_srcdir@/c++/security/auth \
-                         @top_srcdir@/c++/security/cert \
-                         @top_srcdir@/c++/security/interfaces \
-                         @top_srcdir@/c++/security/spec \
-                         @top_srcdir@/c++/util \
-                         @top_srcdir@/c++/util/concurrent/locks
+INPUT                  = @top_srcdir@/include/beecrypt/c++/Doxyheader \
+                         @top_srcdir@/include/beecrypt/c++/crypto \
+                         @top_srcdir@/include/beecrypt/c++/crypto/interfaces \
+                         @top_srcdir@/include/beecrypt/c++/crypto/spec \
+                         @top_srcdir@/include/beecrypt/c++/io \
+                         @top_srcdir@/include/beecrypt/c++/lang \
+                         @top_srcdir@/include/beecrypt/c++/nio \
+                         @top_srcdir@/include/beecrypt/c++/security \
+                         @top_srcdir@/include/beecrypt/c++/security/auth \
+                         @top_srcdir@/include/beecrypt/c++/security/cert \
+                         @top_srcdir@/include/beecrypt/c++/security/interfaces \
+                         @top_srcdir@/include/beecrypt/c++/security/spec \
+                         @top_srcdir@/include/beecrypt/c++/util \
+                         @top_srcdir@/include/beecrypt/c++/util/concurrent/locks
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 
