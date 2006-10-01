@@ -1,6 +1,6 @@
 dnl  BeeCrypt specific autoconf macros
 
-dnl  Copyright (c) 2003, 2004, 2005  Bob Deblier <bob.deblier@telenet.be>
+dnl  Copyright (c) 2003, 2004, 2005, 2006  Bob Deblier <bob.deblier@telenet.be>
 dnl
 dnl  This file is part of the BeeCrypt crypto library
 dnl  
@@ -8,8 +8,34 @@ dnl
 dnl  LGPL
 
 
-dnl  BEECRYPT_WITH_CPU
-AC_DEFUN([BEECRYPT_WITH_CPU],[
+dnl  BEE_EXPERT_MODE
+AC_DEFUN([BEE_EXPERT_MODE],[
+  # try to get the architecture from CFLAGS
+  bc_target_arch=`echo $CFLAGS | awk '{for (i=1; i<=NF; i++) if (substr($i,0,7)=="-march=") print substr($i,8)}'`
+  echo "found bc_target_arch=$bc_target_arch"
+  # examine the other flags
+  for flag in `echo $CFLAGS`
+  do
+    case $flag in
+    -mmmx)
+       CPPFLAGS="$CPPFLAGS -DOPTIMIZE_MMX"
+       ;;
+    -msse)
+       CPPFLAGS="$CPPFLAGS -DOPTIMIZE_SSE"
+       ;;
+    -msse2)
+       CPPFLAGS="$CPPFLAGS -DOPTIMIZE_SSE2"
+       ;;
+    -msse3)
+       CPPFLAGS="$CPPFLAGS -DOPTIMIZE_SSE3"
+       ;;
+     esac
+  done
+  ])
+
+
+dnl  BEE_WITH_CPU
+AC_DEFUN([BEE_WITH_CPU],[
   ac_with_cpu=yes
   bc_target_cpu=$withval
   case $target_cpu in
@@ -67,23 +93,24 @@ AC_DEFUN([BEECRYPT_WITH_CPU],[
   ])
 
 
-dnl  BEECRYPT_WITHOUT_CPU
-AC_DEFUN([BEECRYPT_WITHOUT_CPU],[
+dnl  BEE_WITHOUT_CPU
+AC_DEFUN([BEE_WITHOUT_CPU],[
   ac_with_cpu=no
   bc_target_cpu=$target_cpu
   ])
 
 
-dnl  BEECRYPT_WITH_ARCH
-AC_DEFUN([BEECRYPT_WITH_ARCH],[
+dnl  BEE_WITH_ARCH
+AC_DEFUN([BEE_WITH_ARCH],[
   ac_with_arch=yes
   bc_target_arch=$withval
   case $target_cpu in
   i[[3456]]86)
     case $withval in
+    em64t | \
     i[[3456]]86 | \
     pentium | pentium-m | pentium-mmx | pentiumpro | pentium[[234]] | \
-    athlon | athlon-tbird | athlon-4 | athlon-xp | athlon-mp)
+    athlon | athlon-tbird | athlon-4 | athlon-xp | athlon-mp | athlon64 | k8)
       if test "$ac_with_cpu" != yes; then
         bc_target_cpu=$withval
       fi
@@ -105,46 +132,49 @@ AC_DEFUN([BEECRYPT_WITH_ARCH],[
   esac
   ])
 
-dnl  BEECRYPT_WITHOUT_ARCH
-AC_DEFUN([BEECRYPT_WITHOUT_ARCH],[
-  ac_with_arch=no
-  case $target_cpu in
-  alpha*)
-    bc_target_arch=alpha
-    ;;
-  arm*)
-    bc_target_arch=arm
-    ;;
-  i[[3456]]86)
-    bc_target_arch=i386
-    ;;
-  ia64)
-    bc_target_arch=ia64
-    ;;
-  m68k)
-    bc_target_arch=m68k
-    ;;
-  powerpc)
-    bc_target_arch=powerpc
-    ;;
-  powerpc64)
-    bc_target_arch=powerpc64
-    ;;
-  s390x)
-    bc_target_arch=s390x
-    ;;
-  sparc*)
-    bc_target_arch=sparc
-    ;;
-  x86_64)
-    bc_target_arch=x86_64
-    ;;
-  esac
+dnl  BEE_WITHOUT_ARCH
+AC_DEFUN([BEE_WITHOUT_ARCH],[
+  # if bc_target_arch hasn't been set (i.e. by expert mode)
+  if test "X$bc_target_arch" = "X"; then
+    ac_with_arch=no
+    case $target_cpu in
+    alpha*)
+      bc_target_arch=alpha
+      ;;
+    arm*)
+      bc_target_arch=arm
+      ;;
+    i[[3456]]86)
+      bc_target_arch=i386
+      ;;
+    ia64)
+      bc_target_arch=ia64
+      ;;
+    m68k)
+      bc_target_arch=m68k
+      ;;
+    powerpc)
+      bc_target_arch=powerpc
+      ;;
+    powerpc64)
+      bc_target_arch=powerpc64
+      ;;
+    s390x)
+      bc_target_arch=s390x
+      ;;
+    sparc*)
+      bc_target_arch=sparc
+      ;;
+    x86_64)
+      bc_target_arch=x86_64
+      ;;
+    esac
+  fi
   ])
 
 
-dnl  BEECRYPT_INT_TYPES
-AC_DEFUN([BEECRYPT_INT_TYPES],[
+dnl  BEE_INT_TYPES
+AC_DEFUN([BEE_INT_TYPES],[
   AC_TYPE_SIZE_T
   bc_typedef_size_t=
   if test $ac_cv_type_size_t != yes; then
@@ -260,12 +290,12 @@ AC_DEFUN([BEECRYPT_INT_TYPES],[
   ])
 
 
-dnl  BEECRYPT_CPU_BITS
-AC_DEFUN([BEECRYPT_CPU_BITS],[
-  AC_CHECK_SIZEOF([unsigned long])
-  if test $ac_cv_sizeof_unsigned_long -eq 8; then
+dnl  BEE_CPU_BITS
+AC_DEFUN([BEE_CPU_BITS],[
+  AC_CHECK_SIZEOF([unsigned long long])
+  if test $ac_cv_sizeof_unsigned_long_long -eq 8; then
     AC_SUBST(MP_WBITS,64U)
-  elif test $ac_cv_sizeof_unsigned_long -eq 4; then
+  elif test $ac_cv_sizeof_unsigned_long_long -eq 4; then
     AC_SUBST(MP_WBITS,32U)
   else
     AC_MSG_ERROR([Illegal CPU word size])
@@ -273,8 +303,8 @@ AC_DEFUN([BEECRYPT_CPU_BITS],[
   ])
 
 
-dnl  BEECRYPT_WORKING_AIO
-AC_DEFUN([BEECRYPT_WORKING_AIO],[
+dnl  BEE_WORKING_AIO
+AC_DEFUN([BEE_WORKING_AIO],[
   AC_CHECK_HEADERS(aio.h)
   if test "$ac_cv_header_aio_h" = yes; then
     AC_SEARCH_LIBS([aio_read],[c rt aio posix4],[
@@ -376,8 +406,8 @@ EOF
   ])
 
 
-dnl  BEECRYPT_AGGRESSIVE_OPT
-AC_DEFUN([BEECRYPT_AGGRESSIVE_OPT],[
+dnl  BEE_AGGRESSIVE_OPT
+AC_DEFUN([BEE_AGGRESSIVE_OPT],[
   if test "$CFLAGS" = ""; then
     bc_cv_c_aggressive_opt=yes
   else
@@ -390,8 +420,8 @@ AC_DEFUN([BEECRYPT_AGGRESSIVE_OPT],[
   fi
   ])
 
-dnl  BEECRYPT_CFLAGS_REM
-AC_DEFUN([BEECRYPT_CFLAGS_REM],[
+dnl  BEE_CFLAGS_REM
+AC_DEFUN([BEE_CFLAGS_REM],[
   if test "$CFLAGS" != ""; then
     CFLAGS_save=""
     for flag in $CFLAGS
@@ -405,8 +435,8 @@ AC_DEFUN([BEECRYPT_CFLAGS_REM],[
   ])
 
 
-dnl  BEECRYPT_CXXFLAGS_REM
-AC_DEFUN([BEECRYPT_CXXFLAGS_REM],[
+dnl  BEE_CXXFLAGS_REM
+AC_DEFUN([BEE_CXXFLAGS_REM],[
   if test "$CXXFLAGS" != ""; then
     CXXFLAGS_save=""
     for flag in $CXXFLAGS
@@ -420,8 +450,8 @@ AC_DEFUN([BEECRYPT_CXXFLAGS_REM],[
   ])
 
 
-dnl  BEECRYPT_GNU_CC_MTUNE
-AC_DEFUN([BEECRYPT_GNU_CC_MTUNE],[
+dnl  BEE_GNU_CC_MTUNE
+AC_DEFUN([BEE_GNU_CC_MTUNE],[
   AC_REQUIRE([AC_PROG_CC])
   case $bc_target_arch in
   i[[3456]]86 | \
@@ -441,13 +471,14 @@ AC_DEFUN([BEECRYPT_GNU_CC_MTUNE],[
   ])
 
 
-dnl  BEECRYPT_GNU_CXX_MTUNE
-AC_DEFUN([BEECRYPT_GNU_CXX_MTUNE],[
+dnl  BEE_GNU_CXX_MTUNE
+AC_DEFUN([BEE_GNU_CXX_MTUNE],[
   AC_REQUIRE([AC_PROG_CXX])
   case $bc_target_arch in
+  em64t | \
   i[[3456]]86 | \
   pentium | pentium-m | pentium-mmx | pentiumpro | pentium[[234]] | \
-  athlon | athlon-tbird | athlon-4 | athlon-xp | athlon-mp)
+  athlon | athlon-tbird | athlon-4 | athlon-xp | athlon-mp | athlon64 | k8)
     AC_MSG_CHECKING([if g++ supports -mtune option])
     AC_LANG_PUSH(C++)
     AC_COMPILE_IFELSE([AC_LANG_SOURCE([[][int x;]])],[
@@ -462,13 +493,17 @@ AC_DEFUN([BEECRYPT_GNU_CXX_MTUNE],[
   ])
 
 
-dnl  BEECRYPT_GNU_CC
-AC_DEFUN([BEECRYPT_GNU_CC],[
+dnl  BEE_GNU_CC
+AC_DEFUN([BEE_GNU_CC],[
   AC_REQUIRE([AC_PROG_CC])
   case $bc_target_arch in
+  x86_64 | athlon64 | athlon-fx  | k8 | opteron | em64t | nocona)
+    CC="$CC -m64"
+    CXX="$CXX -m64"
+    ;;
   i[[3456]]86 | \
-  pentium | pentium-m | pentium-mmx | pentiumpro | pentium[[234]] | \
-  athlon | athlon-tbird | athlon-4 | athlon-xp | athlon-mp)
+  pentium* | \
+  athlon*)
     CC="$CC -m32"
     CCAS="$CCAS -m32"
     CXX="$CXX -m32"
@@ -506,10 +541,6 @@ AC_DEFUN([BEECRYPT_GNU_CC],[
     CC="$CC -m64"
     CXX="$CXX -m64"
     ;;
-  x86_64)
-    CC="$CC -m64"
-    CXX="$CXX -m64"
-    ;;
   esac
   # Certain platforms needs special flags for multi-threaded code
   if test "$ac_enable_threads" = yes; then
@@ -526,25 +557,26 @@ AC_DEFUN([BEECRYPT_GNU_CC],[
     esac
   fi
   if test "$ac_enable_debug" = yes; then
-    BEECRYPT_CFLAGS_REM([-O2])
+    BEE_CFLAGS_REM([-O2])
     CFLAGS="$CFLAGS -Wall -pedantic"
   else
-	BEECRYPT_GNU_CC_MTUNE
+	BEE_GNU_CC_MTUNE
     # Generic optimizations, including cpu tuning
-    BEECRYPT_CFLAGS_REM([-g])
+    BEE_CFLAGS_REM([-g])
     CFLAGS="$CFLAGS -DNDEBUG -fomit-frame-pointer"
     if test "$bc_cv_c_aggressive_opt" = yes; then
       case $bc_target_cpu in
-      athlon64)
+      athlon64 | athlon-fx | k8 | opteron)
+        # CFLAGS="$CFLAGS -mtune=k8"
 		# -O3 degrades performance
         # -mcpu=athlon64 degrades performance
         ;;
       alpha*)
-        BEECRYPT_CFLAGS_REM([-O2])
+        BEE_CFLAGS_REM([-O2])
         CFLAGS="$CFLAGS -O3"
         ;;
       athlon*)
-        BEECRYPT_CFLAGS_REM([-O2])
+        BEE_CFLAGS_REM([-O2])
         if test "$bc_cv_gcc_mtune" = yes; then
           CFLAGS="$CFLAGS -O3 -mtune=pentiumpro"
         else
@@ -552,7 +584,7 @@ AC_DEFUN([BEECRYPT_GNU_CC],[
         fi
         ;;
       i586)
-        BEECRYPT_CFLAGS_REM([-O2])
+        BEE_CFLAGS_REM([-O2])
         if test "$bc_cv_gcc_mtune" = yes; then
           CFLAGS="$CFLAGS -O3 -mtune=pentium"
         else
@@ -560,7 +592,7 @@ AC_DEFUN([BEECRYPT_GNU_CC],[
         fi
         ;;
       i686)
-        BEECRYPT_CFLAGS_REM([-O2])
+        BEE_CFLAGS_REM([-O2])
         if test "$bc_cv_gcc_mtune" = yes; then
           CFLAGS="$CFLAGS -O3 -mtune=pentiumpro"
         else
@@ -571,7 +603,7 @@ AC_DEFUN([BEECRYPT_GNU_CC],[
         # no -mcpu=... option on ia64
         ;;
       pentium*)
-        BEECRYPT_CFLAGS_REM([-O2])
+        BEE_CFLAGS_REM([-O2])
         if test "$bc_cv_gcc_mtune" = yes; then
           CFLAGS="$CFLAGS -O3 -mtune=$bc_target_arch"
         else
@@ -584,11 +616,15 @@ AC_DEFUN([BEECRYPT_GNU_CC],[
       # Architecture-specific optimizations
       case $bc_target_arch in
       athlon64)
+        CFLAGS="$CFLAGS -march=k8"
         # -march=athlon64 degrades performance
 		# -msse2 also doesn't help
         ;;
       athlon*)
         CFLAGS="$CFLAGS -march=$bc_target_arch -mmmx"
+        ;;
+      em64t)
+        CFLAGS="$CFLAGS -march=em64t"
         ;;
       i586 | pentium)
         CFLAGS="$CFLAGS -march=pentium"
@@ -629,8 +665,8 @@ AC_DEFUN([BEECRYPT_GNU_CC],[
   ])
 
 
-dnl  BEECRYPT_GNU_CXX
-AC_DEFUN([BEECRYPT_GNU_CXX],[
+dnl  BEE_GNU_CXX
+AC_DEFUN([BEE_GNU_CXX],[
   AC_REQUIRE([AC_PROG_CXX])
   case $bc_target_arch in
   ia64)
@@ -667,12 +703,12 @@ AC_DEFUN([BEECRYPT_GNU_CXX],[
     esac
   fi
   if test "$ac_enable_debug" = yes; then
-    BEECRYPT_CXXFLAGS_REM([-O2])
+    BEE_CXXFLAGS_REM([-O2])
     CXXFLAGS="$CXXFLAGS -Wall -pedantic"
   else
     # Generic optimizations, including cpu tuning
-	BEECRYPT_GNU_CXX_MTUNE
-    BEECRYPT_CXXFLAGS_REM([-g])
+	BEE_GNU_CXX_MTUNE
+    BEE_CXXFLAGS_REM([-g])
 	CXXFLAGS="$CXXFLAGS -DNDEBUG"
     if test "$bc_cv_c_aggressive_opt" = yes; then
       case $bc_target_cpu in
@@ -721,8 +757,8 @@ AC_DEFUN([BEECRYPT_GNU_CXX],[
   ])
 
 
-dnl  BEECRYPT_COMPAQ_CC
-AC_DEFUN([BEECRYPT_COMPAQ_CC],[
+dnl  BEE_COMPAQ_CC
+AC_DEFUN([BEE_COMPAQ_CC],[
   AC_REQUIRE([AC_PROG_CC])
   AC_REQUIRE([AC_PROG_CPP])
   AC_CACHE_CHECK([whether we are using Compaq's C compiler],bc_cv_prog_COMPAQ_CC,[
@@ -738,7 +774,7 @@ AC_DEFUN([BEECRYPT_COMPAQ_CC],[
       CPPFLAGS="$CPPFLAGS -pthread"
     fi
     if test "$ac_enable_debug" != yes; then
-      BEECRYPT_CFLAGS_REM([-g])
+      BEE_CFLAGS_REM([-g])
       if test "$bc_cv_c_aggressive_opt" = yes; then
         CFLAGS="$CFLAGS -fast"
       fi
@@ -747,15 +783,15 @@ AC_DEFUN([BEECRYPT_COMPAQ_CC],[
   ])
 
 
-dnl  BEECRYPT_COMPAQ_CXX
-AC_DEFUN([BEECRYPT_COMPAQ_CXX],[
+dnl  BEE_COMPAQ_CXX
+AC_DEFUN([BEE_COMPAQ_CXX],[
   ])
 
 
-dnl  BEECRYPT_HPUX_CC
-AC_DEFUN([BEECRYPT_HPUX_CC],[
+dnl  BEE_HPUX_CC
+AC_DEFUN([BEE_HPUX_CC],[
   if test "$ac_enable_debug" != yes; then
-    BEECRYPT_CFLAGS_REM([-g])
+    BEE_CFLAGS_REM([-g])
     if test "$bc_cv_c_aggressive_opt" = yes; then
       CFLAGS="$CFLAGS -fast"
     fi
@@ -763,13 +799,13 @@ AC_DEFUN([BEECRYPT_HPUX_CC],[
   ])
 
 
-dnl  BEECRYPT_HP_CXX
-AC_DEFUN([BEECRYPT_HP_CXX],[
+dnl  BEE_HP_CXX
+AC_DEFUN([BEE_HP_CXX],[
   ])
 
 
-dnl  BEECRYPT_IBM_CC
-AC_DEFUN([BEECRYPT_IBM_CC],[
+dnl  BEE_IBM_CC
+AC_DEFUN([BEE_IBM_CC],[
   AC_REQUIRE([AC_PROG_CC])
   AC_REQUIRE([AC_PROG_CPP])
   AC_CACHE_CHECK([whether we are using IBM C],bc_cv_prog_IBM_CC,[
@@ -789,7 +825,7 @@ AC_DEFUN([BEECRYPT_IBM_CC],[
       ;;
     esac
     if test "$ac_enable_debug" != yes; then
-      BEECRYPT_CFLAGS_REM([-g])
+      BEE_CFLAGS_REM([-g])
       if test "$bc_cv_c_aggressive_opt" = yes; then
         if test "$ac_with_arch" = yes; then
           CFLAGS="$CFLAGS -O5"
@@ -804,13 +840,13 @@ AC_DEFUN([BEECRYPT_IBM_CC],[
   ])
 
 
-dnl  BEECRYPT_IBM_CXX
-AC_DEFUN([BEECRYPT_IBM_CXX],[
+dnl  BEE_IBM_CXX
+AC_DEFUN([BEE_IBM_CXX],[
   ])
 
 
-dnl  BEECRYPT_INTEL_CC
-AC_DEFUN([BEECRYPT_INTEL_CC],[
+dnl  BEE_INTEL_CC
+AC_DEFUN([BEE_INTEL_CC],[
   AC_REQUIRE([AC_PROG_CC])
   AC_REQUIRE([AC_PROG_CPP])
   AC_CACHE_CHECK([whether we are using Intel C],bc_cv_prog_INTEL_CC,[
@@ -822,7 +858,7 @@ AC_DEFUN([BEECRYPT_INTEL_CC],[
     ])
   if test "$bc_cv_prog_INTEL_CC" = yes; then
     if test "$ac_enable_debug" != yes; then
-      BEECRYPT_CFLAGS_REM([-g])
+      BEE_CFLAGS_REM([-g])
       if test "$bc_cv_c_aggressive_opt" = yes; then
         case $bc_target_cpu in
         i586 | pentium | pentium-mmx)
@@ -860,8 +896,8 @@ AC_DEFUN([BEECRYPT_INTEL_CC],[
   ])
 
 
-dnl  BEECRYPT_INTEL_CXX
-AC_DEFUN([BEECRYPT_INTEL_CXX],[
+dnl  BEE_INTEL_CXX
+AC_DEFUN([BEE_INTEL_CXX],[
   AC_REQUIRE([AC_PROG_CXX])
   AC_REQUIRE([AC_PROG_CPP])
   AC_CACHE_CHECK([whether we are using Intel C++],bc_cv_prog_INTEL_CXX,[
@@ -873,7 +909,7 @@ AC_DEFUN([BEECRYPT_INTEL_CXX],[
     ])
   if test "$bc_cv_prog_INTEL_CXX" = yes; then
     if test "$ac_enable_debug" != yes; then
-      BEECRYPT_CXXFLAGS_REM([-g])
+      BEE_CXXFLAGS_REM([-g])
       if test "$bc_cv_c_aggressive_opt" = yes; then
         case $bc_target_cpu in
         i586 | pentium | pentium-mmx)
@@ -909,8 +945,8 @@ AC_DEFUN([BEECRYPT_INTEL_CXX],[
   ])
 
 
-dnl  BEECRYPT_SUN_FORTE_CC
-AC_DEFUN([BEECRYPT_SUN_FORTE_CC],[
+dnl  BEE_SUN_FORTE_CC
+AC_DEFUN([BEE_SUN_FORTE_CC],[
   AC_REQUIRE([AC_PROG_CC])
   AC_REQUIRE([AC_PROG_CPP])
   AC_CACHE_CHECK([whether we are using Sun Forte C],bc_cv_prog_SUN_FORTE_CC,[
@@ -925,7 +961,7 @@ AC_DEFUN([BEECRYPT_SUN_FORTE_CC],[
       CFLAGS="$CFLAGS -mt"
     fi
     if test "$ac_enable_debug" != yes; then
-      BEECRYPT_CFLAGS_REM([-g])
+      BEE_CFLAGS_REM([-g])
       if test "$bc_cv_c_aggressive_opt" = yes; then
         CFLAGS="$CFLAGS -fast"
         case $bc_target_arch in
@@ -948,13 +984,13 @@ AC_DEFUN([BEECRYPT_SUN_FORTE_CC],[
   ])
 
 
-dnl  BEECRYPT_SUN_FORTE_CXX
-AC_DEFUN([BEECRYPT_SUN_FORTE_CXX],[
+dnl  BEE_SUN_FORTE_CXX
+AC_DEFUN([BEE_SUN_FORTE_CXX],[
   ])
 
 
-dnl  BEECRYPT_CC
-AC_DEFUN([BEECRYPT_CC],[
+dnl  BEE_CC
+AC_DEFUN([BEE_CC],[
   # set flags for large file support
   case $target_os in
   linux* | solaris*)
@@ -966,70 +1002,70 @@ AC_DEFUN([BEECRYPT_CC],[
     # Intel's icc can be mistakenly identified as gcc
     case $target_os in
     linux*)
-      BEECRYPT_INTEL_CC
+      BEE_INTEL_CC
       ;;
     esac
     if test "$bc_cv_prog_INTEL_CC" != yes; then
-      BEECRYPT_GNU_CC
+      BEE_GNU_CC
     fi
   else
     case $target_os in
     aix*)
-      BEECRYPT_IBM_CC
+      BEE_IBM_CC
       ;;
     hpux*)
-      BEECRYPT_HPUX_CC
+      BEE_HPUX_CC
       ;;
     linux*)
-      BEECRYPT_INTEL_CC
+      BEE_INTEL_CC
       ;;
     solaris*)
-      BEECRYPT_SUN_FORTE_CC
+      BEE_SUN_FORTE_CC
       ;;
     osf*)
-      BEECRYPT_COMPAQ_CC
+      BEE_COMPAQ_CC
       ;;
     esac
   fi
   ])
 
 
-dnl  BEECRYPT_CXX
-AC_DEFUN([BEECRYPT_CXX],[
+dnl  BEE_CXX
+AC_DEFUN([BEE_CXX],[
   if test "$ac_cv_cxx_compiler_gnu" = yes; then
     # Intel's icc can be mistakenly identified as gcc
     case $target_os in
     linux*)
-      BEECRYPT_INTEL_CXX
+      BEE_INTEL_CXX
       ;;
     esac
     if test "$bc_cv_prog_INTEL_CXX" != yes; then
-      BEECRYPT_GNU_CXX
+      BEE_GNU_CXX
     fi
   else
     case $target_os in
     aix*)
-      BEECRYPT_IBM_CXX
+      BEE_IBM_CXX
       ;;
     hpux*)
-      BEECRYPT_HPUX_CXX
+      BEE_HPUX_CXX
       ;;
     linux*)
-      BEECRYPT_INTEL_CXX
+      BEE_INTEL_CXX
       ;;
     solaris*)
-      BEECRYPT_SUN_FORTE_CXX
+      BEE_SUN_FORTE_CXX
       ;;
     osf*)
-      BEECRYPT_COMPAQ_CXX
+      BEE_COMPAQ_CXX
       ;;
     esac
   fi
   ])
 
 
-dnl BEECRYPT_NOEXECSTACK
-AC_DEFUN([BEECRYPT_NOEXECSTACK],[
+dnl BEE_NOEXECSTACK
+AC_DEFUN([BEE_NOEXECSTACK],[
   AC_CACHE_CHECK([whether the assembler can use noexecstack],bc_cv_as_noexecstack,[
     CFLAGS_save=$CFLAGS
     CXXFLAGS_save=$CXXFLAGS
@@ -1058,8 +1094,8 @@ AC_DEFUN([BEECRYPT_NOEXECSTACK],[
   ])
 
 
-dnl BEECRYPT_LIBTOOL
-AC_DEFUN([BEECRYPT_LIBTOOL],[
+dnl BEE_LIBTOOL
+AC_DEFUN([BEE_LIBTOOL],[
   case $target_os in
   aix*)
     case $bc_target_arch in
@@ -1080,8 +1116,8 @@ AC_DEFUN([BEECRYPT_LIBTOOL],[
   ])
 
 
-dnl  BEECRYPT_OS_DEFS
-AC_DEFUN([BEECRYPT_OS_DEFS],[
+dnl  BEE_OS_DEFS
+AC_DEFUN([BEE_OS_DEFS],[
   AH_TEMPLATE([AIX],[Define to 1 if you are using AIX])
   AH_TEMPLATE([CYGWIN],[Define to 1 if you are using Cygwin])
   AH_TEMPLATE([DARWIN],[Define to 1 if you are using Darwin/MacOS X])
@@ -1145,8 +1181,8 @@ AC_DEFUN([BEECRYPT_OS_DEFS],[
   ])
 
 
-dnl  BEECRYPT_ASM_DEFS
-AC_DEFUN([BEECRYPT_ASM_DEFS],[
+dnl  BEE_ASM_DEFS
+AC_DEFUN([BEE_ASM_DEFS],[
   AC_SUBST(ASM_OS,$target_os)
   AC_SUBST(ASM_CPU,$bc_target_cpu)
   AC_SUBST(ASM_ARCH,$bc_target_arch)
@@ -1155,8 +1191,8 @@ AC_DEFUN([BEECRYPT_ASM_DEFS],[
   ])
 
 
-dnl  BEECRYPT_ASM_TEXTSEG
-AC_DEFUN([BEECRYPT_ASM_TEXTSEG],[
+dnl  BEE_ASM_TEXTSEG
+AC_DEFUN([BEE_ASM_TEXTSEG],[
   AC_CACHE_CHECK([how to switch to text segment],
     bc_cv_asm_textseg,[
       case $target_os in
@@ -1177,8 +1213,8 @@ AC_DEFUN([BEECRYPT_ASM_TEXTSEG],[
   ])
 
 
-dnl  BEECRYPT_ASM_GLOBL
-AC_DEFUN([BEECRYPT_ASM_GLOBL],[
+dnl  BEE_ASM_GLOBL
+AC_DEFUN([BEE_ASM_GLOBL],[
   AC_CACHE_CHECK([how to declare a global symbol],
     bc_cv_asm_globl,[
       case $target_os in
@@ -1190,8 +1226,8 @@ AC_DEFUN([BEECRYPT_ASM_GLOBL],[
   ])
 
 
-dnl  BEECRYPT_ASM_GSYM_PREFIX
-AC_DEFUN([BEECRYPT_ASM_GSYM_PREFIX],[
+dnl  BEE_ASM_GSYM_PREFIX
+AC_DEFUN([BEE_ASM_GSYM_PREFIX],[
   AC_CACHE_CHECK([if global symbols need leading underscore],
     bc_cv_asm_gsym_prefix,[
       case $target_os in
@@ -1203,8 +1239,8 @@ AC_DEFUN([BEECRYPT_ASM_GSYM_PREFIX],[
   ])
 
 
-dnl  BEECRYPT_ASM_LSYM_PREFIX
-AC_DEFUN([BEECRYPT_ASM_LSYM_PREFIX],[
+dnl  BEE_ASM_LSYM_PREFIX
+AC_DEFUN([BEE_ASM_LSYM_PREFIX],[
   AC_CACHE_CHECK([how to declare a local symbol],
     bc_cv_asm_lsym_prefix,[
       case $target_os in
@@ -1223,13 +1259,15 @@ AC_DEFUN([BEECRYPT_ASM_LSYM_PREFIX],[
   ])
 
 
-dnl  BEECRYPT_ASM_ALIGN
-AC_DEFUN([BEECRYPT_ASM_ALIGN],[
+dnl  BEE_ASM_ALIGN
+AC_DEFUN([BEE_ASM_ALIGN],[
   AC_CACHE_CHECK([how to align symbols],
     bc_cv_asm_align,[
       case $target_cpu in
       alpha*)
         bc_cv_asm_align=".align 5" ;;
+      x86_64 | athlon64 | em64t | k8)
+        bc_cv_asm_align=".align 16" ;;
       i[[3456]]86 | athlon*)
         bc_cv_asm_align=".align 4" ;;
       ia64)
@@ -1240,16 +1278,14 @@ AC_DEFUN([BEECRYPT_ASM_ALIGN],[
         bc_cv_asm_align=".align 4" ;;
       sparc*)
         bc_cv_asm_align=".align 4" ;;
-      x86_64)
-        bc_cv_asm_align=".align 16" ;;
       esac
     ])
   AC_SUBST(ASM_ALIGN,$bc_cv_asm_align)
   ])
 
 
-dnl  BEECRYPT_ASM_SOURCES
-AC_DEFUN([BEECRYPT_ASM_SOURCES],[
+dnl  BEE_ASM_SOURCES
+AC_DEFUN([BEE_ASM_SOURCES],[
   echo > mpopt.s
   echo > aesopt.s
   echo > blowfishopt.s
@@ -1266,7 +1302,13 @@ AC_DEFUN([BEECRYPT_ASM_SOURCES],[
         m4 $srcdir/gas/mpopt.alpha.m4 > mpopt.s
         ])
       ;;
-    athlon* | i[[3456]]86 | pentium*)
+    x86_64 | athlon64 | em64t | k8)
+      AC_CONFIG_COMMANDS([mpopt.x86_64],[
+        m4 $srcdir/gas/mpopt.x86_64.m4 > mpopt.s
+        ])
+      ;;
+    i[[3456]]86 | pentium* | \
+    athlon*)
       AC_CONFIG_COMMANDS([aesopt.x86],[
         m4 $srcdir/gas/aesopt.x86.m4 > aesopt.s
         ])
@@ -1315,16 +1357,13 @@ AC_DEFUN([BEECRYPT_ASM_SOURCES],[
         m4 $srcdir/gas/mpopt.sparcv8plus.m4 > mpopt.s
         ])
       ;;
-    x86_64)
-      AC_CONFIG_COMMANDS([mpopt.x86_64],[
-        m4 $srcdir/gas/mpopt.x86_64.m4 > mpopt.s
-        ])
-      ;;
     esac
     if test "$ac_with_arch" = yes; then
       # Code is i586-specific!
       case $bc_target_arch in
-      athlon* | i[[56]]86 | pentium*)
+      athlon64 | em64t | k8)
+        ;;
+      i[[56]]86 | pentium* | athlon*)
         AC_CONFIG_COMMANDS([blowfishopt.i586],[
           m4 $srcdir/gas/blowfishopt.i586.m4 > blowfishopt.s
           ])
@@ -1335,9 +1374,9 @@ AC_DEFUN([BEECRYPT_ASM_SOURCES],[
   ])
 
 
-dnl  BEECRYPT_DLFCN
+dnl  BEE_DLFCN
 
-AC_DEFUN([BEECRYPT_DLFCN],[
+AC_DEFUN([BEE_DLFCN],[
   AH_TEMPLATE([HAVE_DLFCN_H],[.])
   AC_CHECK_HEADERS([dlfcn.h])
   if test "$ac_cv_header_dlfcn_h" = yes; then
@@ -1347,8 +1386,8 @@ AC_DEFUN([BEECRYPT_DLFCN],[
   ])
 
 
-dnl  BEECRYPT_MULTITHREAD
-AC_DEFUN([BEECRYPT_MULTITHREAD],[
+dnl  BEE_MULTITHREAD
+AC_DEFUN([BEE_MULTITHREAD],[
   AH_TEMPLATE([ENABLE_THREADS],[Define to 1 if you want to enable multithread support])
   AH_TEMPLATE([HAVE_THREAD_H],[.])
   AH_TEMPLATE([HAVE_PTHREAD_H],[.])
@@ -1445,8 +1484,8 @@ AH_BOTTOM([
 ])
 
 
-dnl  BEECRYPT_THREAD_LOCAL_STORAGE
-AC_DEFUN([BEECRYPT_THREAD_LOCAL_STORAGE],[
+dnl  BEE_THREAD_LOCAL_STORAGE
+AC_DEFUN([BEE_THREAD_LOCAL_STORAGE],[
   AH_TEMPLATE([ENABLE_THREAD_LOCAL_STORAGE],[Define to 1 if you want to enable thread-local-storage support])
   if test "$ac_enable_threads" = yes; then
     AC_MSG_CHECKING([if your compiler supports thread-local-storage])

@@ -6,25 +6,46 @@ AC_CANONICAL_TARGET
 AC_CONFIG_SRCDIR(include/beecrypt/beecrypt.h)
 AC_CONFIG_HEADERS([config.h])
 
-# Checks for package options
-AC_ARG_ENABLE(debug, [  --enable-debug          creates debugging code [[default=no]]],[
-  if test "$enableval" = no; then
-    ac_enable_debug=no
-  else
-    ac_enable_debug=yes
-  fi
-  ],[ ac_enable_debug=no])
+# Checks for AWK - used by expert mode
+AC_PROG_AWK
 
-AC_ARG_WITH(cpu,[  --with-cpu              optimize for specific cpu],[
-  BEECRYPT_WITH_CPU
+# Checks for package options
+AC_ARG_ENABLE(expert-mode, [  --enable-expert-mode      follow user-defined CFLAGS settings [[default=no]]],[
+  ac_enable_expert_mode=yes
   ],[
-  BEECRYPT_WITHOUT_CPU
+  if test "X$CFLAGS" != "X"; then
+    echo "enabling expert mode"
+    ac_enable_expert_mode=yes
+  else
+    ac_enable_expert_mode=no
+  fi
+  ])
+
+AC_ARG_ENABLE(debug, [  --enable-debug          creates debugging code [[default=no]]],[
+  if test "$ac_enable_expert_mode" = yes; then
+    AC_MSG_ERROR([--enable-debug cannot be used in conjunction with --enable-expert-mode])
+  fi
+  ac_enable_debug=yes
+  ],[
+  ac_enable_debug=no
+  ])
+
+AC_ARG_WITH(cpu,[  --with-cpu              optimize for specific cpu],[A
+  if test "$ac_enable_expert_mode" = yes; then
+    AC_MSG_ERROR([--with-cpu cannot be used in conjunction with --enable-expert-mode])
+  fi
+  BEE_WITH_CPU
+  ],[
+  BEE_WITHOUT_CPU
   ])
 
 AC_ARG_WITH(arch,[  --with-arch             optimize for specific architecture (may not run on other cpus of same family)],[
-  BEECRYPT_WITH_ARCH
+  if test "$ac_enable_expert_mode" = yes; then
+    AC_MSG_ERROR([--with-arch cannot be used in conjunction with --enable-expert-mode])
+  fi
+  BEE_WITH_ARCH
   ],[
-  BEECRYPT_WITHOUT_ARCH
+  BEE_WITHOUT_ARCH
   ])
 
 AC_ARG_ENABLE(threads,[  --enable-threads        enables multithread support [[default=yes]]],[
@@ -77,8 +98,13 @@ AC_ARG_WITH(python,[  --with-python           creates the Python module [[defaul
   fi
   ],[ac_with_python=yes])
 
+# Check for expert mode
+if test "$ac_enable_expert_mode" = yes; then
+  BEE_EXPERT_MODE
+fi
+
 # Check for aggressive optimization
-BEECRYPT_AGGRESSIVE_OPT
+BEE_AGGRESSIVE_OPT
 
 # Check for Unix variants
 AC_AIX
@@ -92,24 +118,23 @@ AM_PROG_AS
 AC_PROG_LD
 AC_PROG_LN_S
 AC_PROG_EGREP
-
-# Checks for compiler characteristics and flags
-BEECRYPT_CC
-BEECRYPT_CXX
-
-# Check for stack protection
-BEECRYPT_NOEXECSTACK
-
-# Checks for program flags needed by libtool
-BEECRYPT_LIBTOOL
-
-# Checks for further programs
-AC_PROG_AWK
 AC_PROG_INSTALL
 AC_PROG_LIBTOOL
 
+# Checks for compiler characteristics and flags
+if test "$ac_enable_expert_mode" = no; then
+  BEE_CC
+  BEE_CXX
+fi
+
+# Check for stack protection
+BEE_NOEXECSTACK
+
+# Checks for program flags needed by libtool
+BEE_LIBTOOL
+
 # Predefines for autoheader
-BEECRYPT_OS_DEFS
+BEE_OS_DEFS
 
 AH_TEMPLATE([HAVE_ASSERT_H],[.])
 AH_TEMPLATE([HAVE_CTYPE_H],[.])
@@ -184,13 +209,13 @@ AC_SUBST(INCLUDE_STRING_H,$bc_include_string_h)
 AC_SUBST(INCLUDE_UNISTD_H,$bc_include_unistd_h)
 AC_SUBST(INCLUDE_DLFCN_H,$bc_include_dlfcn_h)
 
-BEECRYPT_DLFCN
-BEECRYPT_MULTITHREAD
-BEECRYPT_THREAD_LOCAL_STORAGE
+BEE_DLFCN
+BEE_MULTITHREAD
+BEE_THREAD_LOCAL_STORAGE
 
 # Checks for libraries.
 if test "$ac_enable_aio" = yes; then
-  BEECRYPT_WORKING_AIO
+  BEE_WORKING_AIO
   if test "$bc_cv_aio_works" = yes; then
     AC_DEFINE([ENABLE_AIO],1)
   fi
@@ -504,6 +529,7 @@ if test "$ac_cv_have_dev_tty" = yes; then
   AC_DEFINE([HAVE_DEV_TTY],1)
 fi
 
+# Ffigure out extra flags
 if test "$ac_enable_debug" != yes; then
   case $bc_target_arch in
   alpha*)
@@ -511,6 +537,9 @@ if test "$ac_enable_debug" != yes; then
     ;;
   arm*)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_ARM"
+    ;;
+  x86_64 | athlon64 | athlon-fx | em64t | k8)
+    CPPFLAGS="$CPPFLAGS -DOPTIMIZE_X86_64"
     ;;
   athlon*)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_I686 -DOPTIMIZE_MMX"
@@ -572,28 +601,25 @@ if test "$ac_enable_debug" != yes; then
   sparcv9*)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_SPARCV9"
     ;;
-  x86_64)
-    CPPFLAGS="$CPPFLAGS -DOPTIMIZE_X86_64"
-    ;;
   esac
 fi
 
 if test "$ac_enable_debug" != yes; then
   # find out how to use assembler
-  BEECRYPT_ASM_DEFS
-  BEECRYPT_ASM_TEXTSEG
-  BEECRYPT_ASM_GLOBL
-  BEECRYPT_ASM_GSYM_PREFIX
-  BEECRYPT_ASM_LSYM_PREFIX
-  BEECRYPT_ASM_ALIGN
+  BEE_ASM_DEFS
+  BEE_ASM_TEXTSEG
+  BEE_ASM_GLOBL
+  BEE_ASM_GSYM_PREFIX
+  BEE_ASM_LSYM_PREFIX
+  BEE_ASM_ALIGN
 fi
 
 # generate assembler source files from m4 files
-BEECRYPT_ASM_SOURCES
+BEE_ASM_SOURCES
 
 # Check for standard types and integers of specific sizes
-BEECRYPT_INT_TYPES
-BEECRYPT_CPU_BITS
+BEE_INT_TYPES
+BEE_CPU_BITS
 
 MAYBE_SUB=
 # MAYBE_LTLIB=
@@ -631,11 +657,11 @@ AC_SUBST(LIBALT,$bc_libalt)
 # Generate output files.
 AC_CONFIG_FILES([
     Makefile
-    Doxyfile
     config.m4
 	include/Makefile
+	include/beecrypt/Doxyfile
+	include/beecrypt/c++/Doxyfile
     c++/Makefile
-	c++/Doxyfile
     c++/beeyond/Makefile
     c++/crypto/Makefile
     c++/crypto/spec/Makefile
