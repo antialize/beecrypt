@@ -11,8 +11,6 @@ EXTRA_DIST = debug-py.c
 INCLUDES = -I. \
 	-I$(top_srcdir)/include @PYTHONINC@
 
-noinst_HEADERS = mpw-py.h rng-py.h
-
 mylibs = $(top_builddir)/libbeecrypt.la
 
 LDADD =
