@@ -292,10 +292,10 @@ AC_DEFUN([BEE_INT_TYPES],[
 
 dnl  BEE_CPU_BITS
 AC_DEFUN([BEE_CPU_BITS],[
-  AC_CHECK_SIZEOF([unsigned long long])
-  if test $ac_cv_sizeof_unsigned_long_long -eq 8; then
+  AC_CHECK_SIZEOF([unsigned long])
+  if test $ac_cv_sizeof_unsigned_long -eq 8; then
     AC_SUBST(MP_WBITS,64U)
-  elif test $ac_cv_sizeof_unsigned_long_long -eq 4; then
+  elif test $ac_cv_sizeof_unsigned_long -eq 4; then
     AC_SUBST(MP_WBITS,32U)
   else
     AC_MSG_ERROR([Illegal CPU word size])
@@ -1333,9 +1333,6 @@ AC_DEFUN([BEE_ASM_SOURCES],[
       AC_CONFIG_COMMANDS([mpopt.ppc],[
         m4 $srcdir/gas/mpopt.ppc.m4 > mpopt.s
         ])
-      AC_CONFIG_COMMANDS([blowfishopt.ppc],[
-        m4 $srcdir/gas/blowfishopt.ppc.m4 > blowfishopt.s
-        ])
       ;;
     powerpc64)
       AC_CONFIG_COMMANDS([mpopt.ppc64],[
@@ -1358,18 +1355,20 @@ AC_DEFUN([BEE_ASM_SOURCES],[
         ])
       ;;
     esac
-    if test "$ac_with_arch" = yes; then
-      # Code is i586-specific!
-      case $bc_target_arch in
-      athlon64 | em64t | k8)
-        ;;
-      i[[56]]86 | pentium* | athlon*)
-        AC_CONFIG_COMMANDS([blowfishopt.i586],[
-          m4 $srcdir/gas/blowfishopt.i586.m4 > blowfishopt.s
-          ])
-        ;;
-      esac
-    fi
+    case $bc_target_arch in
+    athlon64 | em64t | k8)
+      ;;
+    i[[56]]86 | pentium* | athlon*)
+      AC_CONFIG_COMMANDS([blowfishopt.i586],[
+        m4 $srcdir/gas/blowfishopt.i586.m4 > blowfishopt.s
+        ])
+      ;;
+    powerpc)
+      AC_CONFIG_COMMANDS([blowfishopt.ppc],[
+        m4 $srcdir/gas/blowfishopt.ppc.m4 > blowfishopt.s
+        ])
+      ;;
+    esac
   fi
   ])
 
