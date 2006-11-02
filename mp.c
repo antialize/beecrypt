@@ -474,7 +474,7 @@ void mpsetw(size_t size, mpw* xdata, mpw y)
 #ifndef ASM_MPSETWS
 void mpsetws(size_t size, mpw* xdata, size_t y)
 {
-	while (size-- && y)
+	while (size--)
 	{
 		xdata[size] = (mpw) y;
 		#if (MP_WBYTES > SIZEOF_SIZE_T)
