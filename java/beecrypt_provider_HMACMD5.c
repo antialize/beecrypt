@@ -13,7 +13,7 @@
 # include <malloc.h>
 #endif
 
-#include "beecrypt_provider_HMACMD5.h"
+#include "beecrypt/java/beecrypt_provider_HMACMD5.h"
 
 jlong JNICALL Java_beecrypt_provider_HMACMD5_allocParam(JNIEnv* env, jclass dummy)
 {

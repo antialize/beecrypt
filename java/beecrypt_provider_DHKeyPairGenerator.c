@@ -13,8 +13,8 @@
 # include <malloc.h>
 #endif
 
-#include "beecrypt_tools.h"
-#include "beecrypt_provider_DHKeyPairGenerator.h"
+#include "beecrypt/java/beecrypt_tools.h"
+#include "beecrypt/java/beecrypt_provider_DHKeyPairGenerator.h"
 
 /* need an adapter from SecureRandom to randomGenerator */
 

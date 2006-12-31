@@ -13,7 +13,7 @@
 # include <malloc.h>
 #endif
 
-#include "beecrypt_provider_AES.h"
+#include "beecrypt/java/beecrypt_provider_AES.h"
 
 jlong JNICALL Java_beecrypt_provider_AES_allocParam(JNIEnv *env, jclass dummy)
 {

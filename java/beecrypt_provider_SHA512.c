@@ -13,7 +13,7 @@
 # include <malloc.h>
 #endif
 
-#include "beecrypt_provider_SHA512.h"
+#include "beecrypt/java/beecrypt_provider_SHA512.h"
 
 jlong JNICALL Java_beecrypt_provider_SHA512_allocParam(JNIEnv* env, jclass dummy)
 {

@@ -13,7 +13,7 @@
 # include <malloc.h>
 #endif
 
-#include "beecrypt_tools.h"
+#include "beecrypt/java/beecrypt_tools.h"
 
 jbyteArray mp_to_bigint(JNIEnv* env, size_t size, mpw* data)
 {
