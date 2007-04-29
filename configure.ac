@@ -641,19 +641,6 @@ fi
 AC_SUBST([MAYBE_SUB])
 # AC_SUBST([MAYBE_LTLIB])
 
-# Check where to install the libraries
-bc_libalt=
-case $target_os in
-linux*)
-  case $bc_target_arch in
-  powerpc64 | s390x | x86_64)
-    bc_libalt="64"
-    ;;
-  esac
-  ;;
-esac
-AC_SUBST(LIBALT,$bc_libalt)
-
 # Generate output files.
 AC_CONFIG_FILES([
     Makefile

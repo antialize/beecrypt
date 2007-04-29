@@ -4,8 +4,8 @@ LIBS = -licuuc -licuio
 
 AUTOMAKE_OPTIONS = gnu
 
-pkgaltlibdir=$(prefix)/lib@LIBALT@/beecrypt
-pkgaltlib_LTLIBRARIES = base.la
+pkglibdir=$(libdir)/beecrypt
+pkglib_LTLIBRARIES = base.la
 
 nodist_sysconf_DATA = beecrypt.conf
 

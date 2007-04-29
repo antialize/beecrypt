@@ -43,20 +43,18 @@ INCLUDES = -I$(top_srcdir)/include
 .s.lo:
 	$(LTCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
 
-BEECRYPT_OBJECTS = aes.lo aesopt.lo base64.lo beecrypt.lo blockmode.lo blockpad.lo blowfish.lo blowfishopt.lo dhies.lo dldp.lo dlkp.lo dlpk.lo dlsvdp-dh.lo dsa.lo elgamal.lo endianness.lo entropy.lo fips186.lo hmac.lo hmacmd5.lo hmacsha1.lo hmacsha256.lo md5.lo memchunk.lo mp.lo mpopt.lo mpbarrett.lo mpnumber.lo mpprime.lo mtprng.lo pkcs1.lo pkcs12.lo rsa.lo rsakp.lo rsapk.lo sha1.lo sha1opt.lo sha256.lo sha384.lo sha512.lo sha_k.lo timestamp.lo
+BEECRYPT_OBJECTS = aes.lo base64.lo beecrypt.lo blockmode.lo blockpad.lo blowfish.lo blowfishopt.lo dhies.lo dldp.lo dlkp.lo dlpk.lo dlsvdp-dh.lo dsa.lo elgamal.lo endianness.lo entropy.lo fips186.lo hmac.lo hmacmd5.lo hmacsha1.lo hmacsha256.lo md5.lo memchunk.lo mp.lo mpopt.lo mpbarrett.lo mpnumber.lo mpprime.lo mtprng.lo pkcs1.lo pkcs12.lo rsa.lo rsakp.lo rsapk.lo sha1.lo sha1opt.lo sha256.lo sha384.lo sha512.lo sha_k.lo timestamp.lo
 
-libaltdir=$(prefix)/lib@LIBALT@
-
-libalt_LTLIBRARIES = libbeecrypt.la
+lib_LTLIBRARIES = libbeecrypt.la
 
 libbeecrypt_la_SOURCES = aes.c base64.c beecrypt.c blockmode.c blockpad.c blowfish.c dhies.c dldp.c dlkp.c dlpk.c dlsvdp-dh.c dsa.c elgamal.c endianness.c entropy.c fips186.c hmac.c hmacmd5.c hmacsha1.c hmacsha256.c md5.c hmacsha384.c hmacsha512.c memchunk.c mp.c mpbarrett.c mpnumber.c mpprime.c mtprng.c pkcs1.c pkcs12.c rsa.c rsakp.c rsapk.c sha1.c sha256.c sha384.c sha512.c sha_k.c timestamp.c cppglue.cxx
 libbeecrypt_la_DEPENDENCIES = $(BEECRYPT_OBJECTS)
-libbeecrypt_la_LIBADD = aesopt.lo blowfishopt.lo mpopt.lo sha1opt.lo
+libbeecrypt_la_LIBADD = blowfishopt.lo mpopt.lo sha1opt.lo
 libbeecrypt_la_LDFLAGS = -no-undefined -version-info $(LIBBEECRYPT_LT_CURRENT):$(LIBBEECRYPT_LT_REVISION):$(LIBBEECRYPT_LT_AGE)
 
 EXTRA_DIST = BENCHMARKS BUGS CONTRIBUTORS README.WIN32 Doxyheader autogen.sh
 
-DISTCLEANFILES = mpopt.s aesopt.s blowfishopt.s sha1opt.s
+DISTCLEANFILES = mpopt.s blowfishopt.s sha1opt.s
 
 bench:
 	(cd tests && $(MAKE) $(AM_MAKEFLAGS) bench)

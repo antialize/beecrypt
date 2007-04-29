@@ -8,10 +8,9 @@ AUTOMAKE_OPTIONS = gnu
 
 SUBDIRS = lang math io nio util security crypto beeyond . provider
 
-libaltdir=$(prefix)/lib@LIBALT@
 cxxdir=$(pkgincludedir)/c++
 
-libalt_LTLIBRARIES = libbeecrypt_cxx.la
+lib_LTLIBRARIES = libbeecrypt_cxx.la
 
 libbeecrypt_cxx_la_SOURCES = \
 adapter.cxx \
