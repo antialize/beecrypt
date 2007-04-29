@@ -87,13 +87,13 @@ int sha512Reset(register sha512Param* sp)
 #ifdef OPTIMIZE_SSE2
 
 # define R(x,s) _mm_srli_si64(x,s)
-# define S(x,s) _m_pxor(_mm_srli_si64(x,s),_mm_slli_si64(x,64-(s)))
-# define CH(x,y,z) _m_pxor(_m_pand(x,_m_pxor(y,z)),z)
+# define S(x,s) _mm_xor_si64(_mm_srli_si64(x,s),_mm_slli_si64(x,64-(s)))
+# define CH(x,y,z) _mm_xor_si64(_m_pand(x,_mm_xor_si64(y,z)),z)
 # define MAJ(x,y,z) _m_por(_m_pand(_m_por(x,y),z),_m_pand(x,y))
-# define SIG0(x) _m_pxor(_m_pxor(S(x,28),S(x,34)),S(x,39))
-# define SIG1(x) _m_pxor(_m_pxor(S(x,14),S(x,18)),S(x,41))
-# define sig0(x) _m_pxor(_m_pxor(S(x,1),S(x,8)),R(x,7))
-# define sig1(x) _m_pxor(_m_pxor(S(x,19),S(x,61)),R(x,6))
+# define SIG0(x) _mm_xor_si64(_mm_xor_si64(S(x,28),S(x,34)),S(x,39))
+# define SIG1(x) _mm_xor_si64(_mm_xor_si64(S(x,14),S(x,18)),S(x,41))
+# define sig0(x) _mm_xor_si64(_mm_xor_si64(S(x,1),S(x,8)),R(x,7))
+# define sig1(x) _mm_xor_si64(_mm_xor_si64(S(x,19),S(x,61)),R(x,6))
 
 # define ROUND(a,b,c,d,e,f,g,h,w,k) \
 	temp = _mm_add_si64(h, _mm_add_si64(_mm_add_si64(SIG1(e), CH(e,f,g)), _mm_add_si64(k, w))); \
@@ -140,7 +140,7 @@ void sha512Process(register sha512Param* sp)
 	while (t--)
 	{
 		temp = *w;
-		*(w++) = _m_pxor(
+		*(w++) = _mm_xor_si64(
 				_mm_slli_si64(_m_pshufw(_m_pand(temp, MASK), 27), 8),
 				_m_pshufw(_m_pand(_mm_srli_si64(temp, 8), MASK), 27)
 			);
