@@ -19,8 +19,6 @@ resource.cxx
 libbeecrypt_cxx_la_LIBADD = ../libbeecrypt.la lang/libcxxlang.la math/libcxxmath.la io/libcxxio.la nio/libcxxnio.la util/libcxxutil.la security/libcxxsecurity.la crypto/libcxxcrypto.la beeyond/libcxxbeeyond.la -licuuc -licuio -licui18n
 libbeecrypt_cxx_la_LDFLAGS = -no-undefined -version-info $(LIBBEECRYPT_CXX_LT_CURRENT):$(LIBBEECRYPT_CXX_LT_REVISION):$(LIBBEECRYPT_CXX_LT_AGE)
 
-EXTRA_DIST = Doxyheader
-
 noinst_DATA = beecrypt-test.conf
 
 TESTS_ENVIRONMENT = BEECRYPT_CONF_FILE=beecrypt-test.conf

@@ -332,3 +332,5 @@ beecrypt/java/beecrypt_tools.h \
 beecrypt/python \
 beecrypt/python/mpw-py.h \
 beecrypt/python/rng-py.h
+
+EXTRA_DIST = beecrypt/Doxyheader beecrypt/c++/Doxyheader
