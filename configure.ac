@@ -90,13 +90,17 @@ AC_ARG_WITH(java,[  --with-java             creates the Java glue code [[default
   fi
   ],[ac_with_java=yes])
 
-AC_ARG_WITH(python,[  --with-python           creates the Python module [[default=yes]]],[
+AC_ARG_WITH(python,[  --with-python[[=ARG]]     creates the Python module [[default=yes]]; you can optionally specify the python executable],[
   if test "$withval" = no; then
     ac_with_python=no
   else
     ac_with_python=yes
+    ac_with_python_val=$withval
   fi
-  ],[ac_with_python=yes])
+  ],[
+  ac_with_python=yes
+  ac_with_python_val=python
+  ])
 
 # Check for expert mode
 if test "$ac_enable_expert_mode" = yes; then
@@ -427,17 +431,16 @@ fi
 AH_TEMPLATE([PYTHONGLUE],[Define to 1 if you want to include the Python code])
 
 if test "$ac_with_python" = yes ; then
-  AC_CHECK_PROG(ac_cv_have_python, python, yes, no)
-  if test "$ac_cv_have_python" = yes; then
+  AC_PATH_PROG([PYTHON], `basename $ac_with_python_val`, [no], `AS_DIRNAME(["$ac_with_python_val"])`)
+  if test "$PYTHON" = no; then
+    ac_with_python=no
+  else
     AC_CACHE_CHECK([for python headers], ac_cv_python_include, [
-      ac_cv_python_include="-I`python -c 'import distutils.sysconfig; print distutils.sysconfig.get_python_inc()'`"
+      ac_cv_python_include="-I`$PYTHON -c 'import distutils.sysconfig; print distutils.sysconfig.get_python_inc()'`"
     ])
     AC_CACHE_CHECK([where to install python libraries], ac_cv_python_libdir, [
-      echo "import distutils.sysconfig; print distutils.sysconfig.get_python_lib()" > conftest.py
-      ac_cv_python_libdir=`python conftest.py`
+      ac_cv_python_libdir=`$PYTHON -c 'import distutils.sysconfig; print distutils.sysconfig.get_python_lib()'`
     ])
-  else
-    ac_with_python=no
   fi
 fi
 
