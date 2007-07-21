@@ -12,7 +12,6 @@ dnl  BEE_EXPERT_MODE
 AC_DEFUN([BEE_EXPERT_MODE],[
   # try to get the architecture from CFLAGS
   bc_target_arch=`echo $CFLAGS | awk '{for (i=1; i<=NF; i++) if (substr($i,0,7)=="-march=") print substr($i,8)}'`
-  echo "found bc_target_arch=$bc_target_arch"
   # examine the other flags
   for flag in `echo $CFLAGS`
   do
@@ -43,7 +42,7 @@ AC_DEFUN([BEE_WITH_CPU],[
     case $withval in
     i[[3456]]86 | \
     pentium | pentium-m | pentium-mmx | pentiumpro | pentium[[234]] | \
-    athlon | athlon-tbird | athlon-4 | athlon-xp | athlon-mp)
+    athlon | athlon-tbird | athlon-4 | athlon-xp | athlon-mp | athlon-fx | athlon64 | k8)
       ;;
     *)
       AC_MSG_WARN([invalid cpu type])
@@ -112,7 +111,7 @@ AC_DEFUN([BEE_WITH_ARCH],[
     pentium | pentium-m | pentium-mmx | pentiumpro | pentium[[234]] | \
     athlon | athlon-tbird | athlon-4 | athlon-xp | athlon-mp | athlon64 | k8)
       if test "$ac_with_cpu" != yes; then
-        bc_target_cpu=$withval
+        bc_target_arch=$withval
       fi
       ;;
     esac
@@ -497,7 +496,7 @@ dnl  BEE_GNU_CC
 AC_DEFUN([BEE_GNU_CC],[
   AC_REQUIRE([AC_PROG_CC])
   case $bc_target_arch in
-  x86_64 | athlon64 | athlon-fx  | k8 | opteron | em64t | nocona)
+  x86_64 | athlon64 | athlon-fx | k8 | opteron | em64t | nocona)
     CC="$CC -m64"
     CXX="$CXX -m64"
     ;;
@@ -560,7 +559,7 @@ AC_DEFUN([BEE_GNU_CC],[
     BEE_CFLAGS_REM([-O2])
     CFLAGS="$CFLAGS -Wall -pedantic"
   else
-	BEE_GNU_CC_MTUNE
+    BEE_GNU_CC_MTUNE
     # Generic optimizations, including cpu tuning
     BEE_CFLAGS_REM([-g])
     CFLAGS="$CFLAGS -DNDEBUG -fomit-frame-pointer"
@@ -1082,7 +1081,7 @@ AC_DEFUN([BEE_NOEXECSTACK],[
       # convert conftest.c to conftest.s
       $CCAS $CFLAGS -S conftest.c
       # use egrep to find GNU-stack in in the output assembler
-      bc_gnu_stack=`$EGREP -e '\.section[[:space:]]+\.note\.GNU-stack' conftest.s`
+      bc_gnu_stack=`$EGREP -e '\.section.*GNU-stack' conftest.s`
       ],[
       CFLAGS=$CFLAGS_save
       CXXFLAGS=$CXXFLAGS_save
@@ -1302,7 +1301,7 @@ AC_DEFUN([BEE_ASM_SOURCES],[
         m4 $srcdir/gas/mpopt.alpha.m4 > mpopt.s
         ])
       ;;
-    x86_64 | athlon64 | em64t | k8)
+    x86_64 | athlon64 | athlon-fx | k8 | opteron | em64t | nocona)
       AC_CONFIG_COMMANDS([mpopt.x86_64],[
         m4 $srcdir/gas/mpopt.x86_64.m4 > mpopt.s
         ])
@@ -1356,7 +1355,7 @@ AC_DEFUN([BEE_ASM_SOURCES],[
       ;;
     esac
     case $bc_target_arch in
-    athlon64 | em64t | k8)
+    x86_64 | athlon64 | athlon-fx | k8 | opteron | em64t | nocona)
       ;;
     i[[56]]86 | pentium* | athlon*)
       AC_CONFIG_COMMANDS([blowfishopt.i586],[

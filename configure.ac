@@ -541,7 +541,7 @@ if test "$ac_enable_debug" != yes; then
   arm*)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_ARM"
     ;;
-  x86_64 | athlon64 | athlon-fx | em64t | k8)
+  x86_64 | athlon64 | athlon-fx | k8 | opteron | em64t | nocona)
     CPPFLAGS="$CPPFLAGS -DOPTIMIZE_X86_64"
     ;;
   athlon*)

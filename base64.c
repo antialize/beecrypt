@@ -252,7 +252,7 @@ char* b64encode(const void* data, size_t ns)
 	int lc;
 	unsigned c;
 
-	if (s == NULL)	return NULL;
+	if (s == NULL) return NULL;
 
 	if (ns == 0) ns = strlen((const char*) s);
 	nt = ((ns + 2) / 3) * 4;
@@ -275,7 +275,7 @@ char* b64encode(const void* data, size_t ns)
 		{
 			c = *s++;
 			*te++ = b64enc[ (c >> 2) ], lc++;
-			*te++ = b64enc[ ((c & 0x3) << 4) | (*s >> 4) ], lc++;
+			*te++ = b64enc[ ((c & 0x3) << 4) | (((ns-1) > 0 ? *s : 0) >> 4) ], lc++; 
 			if (--ns == 0)
 			{
 				*te++ = '=';
@@ -283,7 +283,7 @@ char* b64encode(const void* data, size_t ns)
 				continue;
 			}
 			c = *s++;
-			*te++ = b64enc[ ((c & 0xf) << 2) | (*s >> 6) ], lc++;
+			*te++ = b64enc[ ((c & 0xf) << 2) | (((ns-1) > 0 ? *s : 0) >> 6) ], lc++;
 			if (--ns == 0)
 			{
 				*te++ = '=';

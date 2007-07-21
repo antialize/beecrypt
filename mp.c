@@ -1321,7 +1321,7 @@ mpw mppndiv(mpw xhi, mpw xlo, mpw y)
 #ifndef ASM_MPMOD
 void mpmod(mpw* result, size_t xsize, const mpw* xdata, size_t ysize, const mpw* ydata, mpw* workspace)
 {
-	/* result size xsize, workspace size 2*ysize+1 */
+	/* result size ysize, workspace size 2*ysize+1 */
 	mpw q, msw;
 	mpw* rdata = result;
 	mpw* ynorm = workspace+ysize+1;
