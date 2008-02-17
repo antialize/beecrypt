@@ -268,7 +268,7 @@ namespace beecrypt {
 		 *  the object has been detached to it.
 		 */
 		BEECRYPTCXXAPI
-		void collection_retach(Object*) throw ();
+		void collection_detach(Object*) throw ();
 		/*!\brief This function is used inside a collection to detach the
 		 *  object, and delete it if no longer attached to any other
 		 *  collections.
