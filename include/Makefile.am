@@ -257,7 +257,7 @@ beecrypt/c++/util/concurrent/locks/Condition.h \
 beecrypt/c++/util/concurrent/locks/Lock.h \
 beecrypt/c++/util/concurrent/locks/ReentrantLock.h
 
-noinst_HEADER = \
+noinst_HEADERS = \
 beecrypt/aes_be.h \
 beecrypt/aes_le.h \
 \
