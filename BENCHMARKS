@@ -24,6 +24,7 @@ BeeCrypt 3.0.0 | gcc-3.3             | RedHat AS 2.1        | P4 Xeon       2400
 BeeCrypt 4.1.0 | gcc-3.3.3           | Fedora Core 2        | P4 Xeon       2400 |   1 GB:  6811 [--with-arch=pentium4]
 BeeCrypt 3.0.0 | gcc-2.95.4          | Debian Linux 3.0     | Alpha EV6.7    666 |   2 GB:  5742
 BeeCrypt 4.1.2 | gcc-3.3.3           | SuSE Enterprise 9    | POWER4        1000 |  16 GB:  5620 
+BeeCrypt 4.2.0 | gcc-4.3.1           | Debian Linux         | PPC 7455      1333 |   1 GB:  3320
 BeeCrypt 3.0.0 | gcc-2.96            | RedHat AS 2.1        | P4 Xeon       2400 |   4 GB:  3280 [--with-arch=pentiumpro]
 BeeCrypt 3.0.0 | gcc-3.x             | RedHat Linux         | POWER4+       1200 |       :  2592
 BeeCrypt 3.0.0 | gcc-3.x             | RedHat Linux         | P3 Xeon        900 |       :  2169
