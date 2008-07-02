@@ -706,9 +706,9 @@ AC_DEFUN([BEE_GNU_CXX],[
     CXXFLAGS="$CXXFLAGS -Wall -pedantic"
   else
     # Generic optimizations, including cpu tuning
-	BEE_GNU_CXX_MTUNE
+    BEE_GNU_CXX_MTUNE
     BEE_CXXFLAGS_REM([-g])
-	CXXFLAGS="$CXXFLAGS -DNDEBUG"
+    CXXFLAGS="$CXXFLAGS -DNDEBUG"
     if test "$bc_cv_c_aggressive_opt" = yes; then
       case $bc_target_cpu in
       athlon*)
@@ -985,6 +985,40 @@ AC_DEFUN([BEE_SUN_FORTE_CC],[
 
 dnl  BEE_SUN_FORTE_CXX
 AC_DEFUN([BEE_SUN_FORTE_CXX],[
+  AC_REQUIRE([AC_PROG_CXX])
+  AC_REQUIRE([AC_PROG_CPP])
+  AC_CACHE_CHECK([whether we are using Sun Forte C++],bc_cv_prog_SUN_FORTE_CXX,[
+    AC_EGREP_CPP(yes,[
+      #ifdef __SUNPRO_CC
+        yes;
+      #endif
+      ],bc_cv_prog_SUN_FORTE_CXX=yes,bc_cv_prog_SUN_FORTE_CXX=no)
+    ])
+  if test "$bc_cv_prog_SUN_FORTE_CXX" = yes; then
+    if test "$ac_enable_threads" = yes; then
+      CXXFLAGS="$CXXFLAGS -mt"
+    fi
+    if test "$ac_enable_debug" != yes; then
+      BEE_CFLAGS_REM([-g])
+      if test "$bc_cv_c_aggressive_opt" = yes; then
+        CXXFLAGS="$CXXFLAGS -fast"
+        case $bc_target_arch in
+        sparc)
+          CXXFLAGS="$CXXFLAGS -xtarget=generic -xarch=generic"
+          ;;
+        sparcv8)
+          CXXFLAGS="$CXXFLAGS -xtarget=generic -xarch=v8"
+          ;;
+        sparcv8plus*)
+          CXXFLAGS="$CXXFLAGS -xtarget=generic -xarch=v8plus"
+          ;;
+        sparcv9*)
+          CXXFLAGS="$CXXFLAGS -xtarget=generic64 -xarch=v9"
+          ;;
+        esac
+      fi
+    fi
+  fi
   ])
 
 
@@ -1076,7 +1110,7 @@ AC_DEFUN([BEE_NOEXECSTACK],[
       CXXFLAGS="$CXXFLAGS -Wa,--noexecstack"
     fi
     AC_LANG_PUSH(C)
-    AC_COMPILE_IFELSE([AC_LANG_SOURCE([[][int x;]])],[
+    AC_LINK_IFELSE([AC_LANG_SOURCE([[][int x;]])],[
       bc_cv_as_noexecstack=yes
       # convert conftest.c to conftest.s
       $CCAS $CFLAGS -S conftest.c
