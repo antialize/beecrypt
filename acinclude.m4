@@ -949,11 +949,18 @@ AC_DEFUN([BEE_SUN_FORTE_CC],[
   AC_REQUIRE([AC_PROG_CC])
   AC_REQUIRE([AC_PROG_CPP])
   AC_CACHE_CHECK([whether we are using Sun Forte C],bc_cv_prog_SUN_FORTE_CC,[
-    AC_EGREP_CPP(yes,[
-      #ifdef __SUNPRO_C
-        yes;
-      #endif
-      ],bc_cv_prog_SUN_FORTE_CC=yes,bc_cv_prog_SUN_FORTE_CC=no)
+    AC_LANG_PUSH(C)
+    AC_RUN_IFELSE([
+      AC_LANG_PROGRAM([[
+        ]],[[
+        #ifdef __SUNPRO_C
+        return 0;
+        #else
+        return 1;
+        #endif
+        ]])
+      ],[bc_cv_prog_SUN_FORTE_CC=yes],[bc_cv_prog_SUN_FORTE_CC=no])
+    AC_LANG_POP(C)
     ])
   if test "$bc_cv_prog_SUN_FORTE_CC" = yes; then
     if test "$ac_enable_threads" = yes; then
@@ -988,11 +995,18 @@ AC_DEFUN([BEE_SUN_FORTE_CXX],[
   AC_REQUIRE([AC_PROG_CXX])
   AC_REQUIRE([AC_PROG_CPP])
   AC_CACHE_CHECK([whether we are using Sun Forte C++],bc_cv_prog_SUN_FORTE_CXX,[
-    AC_EGREP_CPP(yes,[
-      #ifdef __SUNPRO_CC
-        yes;
-      #endif
-      ],bc_cv_prog_SUN_FORTE_CXX=yes,bc_cv_prog_SUN_FORTE_CXX=no)
+    AC_LANG_PUSH(C++)
+    AC_RUN_IFELSE([
+      AC_LANG_PROGRAM([[
+        ]],[[
+        #ifdef __SUNPRO_CC
+        return 0;
+        #else
+        return 1;
+        #endif
+        ]])
+      ],[bc_cv_prog_SUN_FORTE_CXX=yes],[bc_cv_prog_SUN_FORTE_CXX=no])
+    AC_LANG_POP(C++)
     ])
   if test "$bc_cv_prog_SUN_FORTE_CXX" = yes; then
     if test "$ac_enable_threads" = yes; then
@@ -1110,7 +1124,7 @@ AC_DEFUN([BEE_NOEXECSTACK],[
       CXXFLAGS="$CXXFLAGS -Wa,--noexecstack"
     fi
     AC_LANG_PUSH(C)
-    AC_LINK_IFELSE([AC_LANG_SOURCE([[][int x;]])],[
+    AC_LINK_IFELSE([AC_LANG_SOURCE([[][int main() { return 0; }]])],[
       bc_cv_as_noexecstack=yes
       # convert conftest.c to conftest.s
       $CCAS $CFLAGS -S conftest.c
