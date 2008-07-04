@@ -98,8 +98,12 @@ AC_ARG_WITH(python,[  --with-python[[=ARG]]     creates the Python module [[defa
     ac_with_python_val=$withval
   fi
   ],[
-  ac_with_python=yes
-  ac_with_python_val=python
+  ac_with_python_val=`which python`
+  if test "X$ac_with_python_val" = "X"; then
+    ac_with_python=no
+  else
+    ac_with_python=yes
+  fi
   ])
 
 # Check for expert mode
@@ -132,7 +136,8 @@ if test "$ac_enable_expert_mode" = no; then
 fi
 
 # Check for stack protection
-BEE_NOEXECSTACK
+BEE_CC_NOEXECSTACK
+BEE_CXX_NOEXECSTACK
 
 # Checks for program flags needed by libtool
 BEE_LIBTOOL

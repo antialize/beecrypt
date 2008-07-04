@@ -972,16 +972,16 @@ AC_DEFUN([BEE_SUN_FORTE_CC],[
         CFLAGS="$CFLAGS -fast"
         case $bc_target_arch in
         sparc)
-          CFLAGS="$CFLAGS -xtarget=generic -xarch=generic"
+          CFLAGS="$CFLAGS -m32 -xarch=generic"
           ;;
         sparcv8)
-          CFLAGS="$CFLAGS -xtarget=generic -xarch=v8"
+          CFLAGS="$CFLAGS -m32 -xarch=v8"
           ;;
         sparcv8plus*)
-          CFLAGS="$CFLAGS -xtarget=generic -xarch=v8plus"
+          CFLAGS="$CFLAGS -m32 -xarch=v8plus"
           ;;
         sparcv9*)
-          CFLAGS="$CFLAGS -xtarget=generic64 -xarch=v9"
+          CFLAGS="$CFLAGS -m64 -xarch=generic"
           ;;
         esac
       fi
@@ -1018,16 +1018,16 @@ AC_DEFUN([BEE_SUN_FORTE_CXX],[
         CXXFLAGS="$CXXFLAGS -fast"
         case $bc_target_arch in
         sparc)
-          CXXFLAGS="$CXXFLAGS -xtarget=generic -xarch=generic"
+          CXXFLAGS="$CXXFLAGS -m32 -xarch=generic"
           ;;
         sparcv8)
-          CXXFLAGS="$CXXFLAGS -xtarget=generic -xarch=v8"
+          CXXFLAGS="$CXXFLAGS -m32 -xarch=v8"
           ;;
         sparcv8plus*)
-          CXXFLAGS="$CXXFLAGS -xtarget=generic -xarch=v8plus"
+          CXXFLAGS="$CXXFLAGS -m32 -xarch=v8plus"
           ;;
         sparcv9*)
-          CXXFLAGS="$CXXFLAGS -xtarget=generic64 -xarch=v9"
+          CXXFLAGS="$CXXFLAGS -m64 -xarch=generic"
           ;;
         esac
       fi
@@ -1111,32 +1111,76 @@ AC_DEFUN([BEE_CXX],[
   ])
 
 
-dnl BEE_NOEXECSTACK
-AC_DEFUN([BEE_NOEXECSTACK],[
-  AC_CACHE_CHECK([whether the assembler can use noexecstack],bc_cv_as_noexecstack,[
+dnl BEE_CC_NOEXECSTACK
+AC_DEFUN([BEE_CC_NOEXECSTACK],[
+  AC_CACHE_CHECK([whether we can use noexecstack flag in C],bc_cv_cc_noexecstack,[
     CFLAGS_save=$CFLAGS
-    CXXFLAGS_save=$CXXFLAGS
     if test "$bc_cv_prog_INTEL_CC" = yes; then
       CFLAGS="$CFLAGS -Qoption,asm,--noexecstack"
-      CXXFLAGS="$CXXFLAGS -Qoption,asm,--noexecstack"
     else
       CFLAGS="$CFLAGS -Wa,--noexecstack"
-      CXXFLAGS="$CXXFLAGS -Wa,--noexecstack"
     fi
     AC_LANG_PUSH(C)
-    AC_LINK_IFELSE([AC_LANG_SOURCE([[][int main() { return 0; }]])],[
-      bc_cv_as_noexecstack=yes
-      # convert conftest.c to conftest.s
-      $CCAS $CFLAGS -S conftest.c
-      # use egrep to find GNU-stack in in the output assembler
-      bc_gnu_stack=`$EGREP -e '\.section.*GNU-stack' conftest.s`
+    # first try to compile it
+    AC_COMPILE_IFELSE([
+      AC_LANG_PROGRAM([[]],[[int x = 0]])
       ],[
+      # did compile
+      $CC -S $CFLAGS conftest.$ac_ext > /dev/null 2>&1
+      $CC -o conftest$ac_exeext $CFLAGS conftest.s > /dev/null 2>&1
+      if test $? -eq 0; then
+        # did assemble
+        bc_cv_cc_noexecstack=yes
+        bc_gnu_stack=`$EGREP -e '\.section.*GNU-stack' conftest.s`
+      else
+        # didn't assemble
+        CFLAGS=$CFLAGS_save
+        bc_cv_cc_noexecstack=no
+        bc_gnu_stack=''
+      fi
+      ],[
+      # didn't compile
       CFLAGS=$CFLAGS_save
-      CXXFLAGS=$CXXFLAGS_save
-      bc_cv_as_noexecstack=no
+      bc_cv_cc_noexecstack=no
       bc_gnu_stack=''
       ])
     AC_LANG_POP(C)
+    ])
+  ])
+
+
+dnl BEE_CXX_NOEXECSTACK
+AC_DEFUN([BEE_CXX_NOEXECSTACK],[
+  AC_CACHE_CHECK([whether we can use noexecstack flag in C++],bc_cv_cxx_noexecstack,[
+    CXXFLAGS_save=$CXXFLAGS
+    if test "$bc_cv_prog_INTEL_CXX" = yes; then
+      CXXFLAGS="$CXXFLAGS -Qoption,asm,--noexecstack"
+    else
+      CXXFLAGS="$CXXFLAGS -Wa,--noexecstack"
+    fi
+    AC_LANG_PUSH(C++)
+    # first try to compile it
+    AC_COMPILE_IFELSE([
+      AC_LANG_PROGRAM([[]],[[int x = 0]])
+      ],[
+      # did compile
+      $CXX -S $CXXFLAGS conftest.$ac_ext > /dev/null 2>&1
+      $CXX -o conftest$ac_exeext $CXXFLAGS conftest.s > /dev/null 2>&1
+      if test $? -eq 0; then
+        # did assemble
+        bc_cv_cxx_noexecstack=yes
+        bc_gnu_stack=`$EGREP -e '\.section.*GNU-stack' conftest.s`
+      else
+        # didn't assemble
+        CXXFLAGS=$CXXFLAGS_save
+        bc_cv_cxx_noexecstack=no
+      fi
+      ],[
+      # didn't compile
+      CXXFLAGS=$CXXFLAGS_save
+      bc_cv_cxx_noexecstack=no
+      ])
+    AC_LANG_POP(C++)
     ])
   ])
 
@@ -1155,7 +1199,8 @@ AC_DEFUN([BEE_LIBTOOL],[
   solaris*)
     case $bc_target_arch in
     sparcv9*)
-      LD="/usr/ccs/bin/ld -64"
+      LD="/usr/ccs/bin/ld"
+      LDFLAGS="$LDFLAGS -Wl,-64"
       ;;
     esac
     ;;
