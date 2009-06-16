@@ -113,6 +113,7 @@ int rsakpMake(rsakp* kp, randomGeneratorContext* rgc, size_t bits)
 		if (mpninv(&kp->d, &kp->e, &phi) == 0)
 		{
 			/* shouldn't happen, since gcd(p-1,e) = 1 and gcd(q-1,e) = 1 ==> gcd((p-1)(q-1),e) = 1 */
+			mpnfree(&phi);
 			free(temp);
 			return -1;
 		}
@@ -128,6 +129,7 @@ int rsakpMake(rsakp* kp, randomGeneratorContext* rgc, size_t bits)
 		/* compute qi = inv(q) mod p */
 		mpninv(&kp->qi, (mpnumber*) &kp->q, (mpnumber*) &kp->p);
 
+		mpnfree(&phi);
 		free(temp);
 
 		return 0;
