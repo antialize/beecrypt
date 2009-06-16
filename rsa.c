@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2000, 2001, 2002 Beeyond Software Holding BV
+ * Copyright (c) 2000, 2001, 2002 X-Way Rights BV
+ * Copyright (c) 2009 Bob Deblier
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -102,23 +103,32 @@ int rsapricrt(const mpbarrett* n, const mpbarrett* p, const mpbarrett* q,
 		return -1;
 	}
 
-	/* resize c for powmod p */
-	mpsetx(psize*2, ptemp, c->size, c->data);
+	#pragma omp parallel sections
+	{
+		#pragma omp section
+		{
+		/* resize c for powmod p */
+		mpsetx(psize*2, ptemp, c->size, c->data);
 
-	/* reduce modulo p before we powmod */
-	mpbmod_w(p, ptemp, ptemp+psize, ptemp+2*psize);
+		/* reduce modulo p before we powmod */
+		mpbmod_w(p, ptemp, ptemp+psize, ptemp+2*psize);
 
-	/* compute j1 = c^dp mod p, store @ ptemp */
-	mpbpowmod_w(p, psize, ptemp+psize, dp->size, dp->data, ptemp, ptemp+2*psize);
+		/* compute j1 = c^dp mod p, store @ ptemp */
+		mpbpowmod_w(p, psize, ptemp+psize, dp->size, dp->data, ptemp, ptemp+2*psize);
+		}
 
-	/* resize c for powmod q */
-	mpsetx(qsize*2, qtemp, c->size, c->data);
+		#pragma omp section
+		{
+		/* resize c for powmod q */
+		mpsetx(qsize*2, qtemp, c->size, c->data);
 
-	/* reduce modulo q before we powmod */
-	mpbmod_w(q, qtemp, qtemp+qsize, qtemp+2*qsize);
+		/* reduce modulo q before we powmod */
+		mpbmod_w(q, qtemp, qtemp+qsize, qtemp+2*qsize);
 
-	/* compute j2 = c^dq mod q, store @ qtemp */
-	mpbpowmod_w(q, qsize, qtemp+qsize, dq->size, dq->data, qtemp, qtemp+2*qsize);
+		/* compute j2 = c^dq mod q, store @ qtemp */
+		mpbpowmod_w(q, qsize, qtemp+qsize, dq->size, dq->data, qtemp, qtemp+2*qsize);
+		}
+	}
 
 	/* compute j1-j2 mod p, store @ ptemp */
 	mpbsubmod_w(p, psize, ptemp, qsize, qtemp, ptemp, ptemp+2*psize);
