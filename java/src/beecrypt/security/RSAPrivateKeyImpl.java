@@ -8,41 +8,34 @@ import java.security.spec.*;
 
 import beecrypt.io.*;
 
-public class RSAPrivateKeyImpl implements RSAPrivateKey, Cloneable
-{
+public class RSAPrivateKeyImpl implements RSAPrivateKey, Cloneable {
 	private BigInteger _n, _d;
 	private byte[] _enc;
 
-	public RSAPrivateKeyImpl(BigInteger modulus, BigInteger privateExponent)
-	{
+	public RSAPrivateKeyImpl(BigInteger modulus, BigInteger privateExponent) {
 		_n = modulus;
 		_d = privateExponent;
 	}
 
-	public RSAPrivateKeyImpl(RSAPrivateKeySpec spec)
-	{
+	public RSAPrivateKeyImpl(RSAPrivateKeySpec spec) {
 		_n = spec.getModulus();
 		_d = spec.getPrivateExponent();
 	}
 
-	public RSAPrivateKeyImpl(RSAPrivateKey key)
-	{
+	public RSAPrivateKeyImpl(RSAPrivateKey key) {
 		_n = key.getModulus();
 		_d = key.getPrivateExponent();
 	}
 
-	public Object clone()
-	{
+	public Object clone() {
 		return new RSAPrivateKeyImpl(this);
 	}
 
-	public boolean equals(Object obj)
-	{
+	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 
-		if (obj instanceof RSAPrivateKey)
-		{
+		if (obj instanceof RSAPrivateKey) {
 			RSAPrivateKey pri = (RSAPrivateKey) obj;
 
 			if (!pri.getModulus().equals(_n))
@@ -55,22 +48,17 @@ public class RSAPrivateKeyImpl implements RSAPrivateKey, Cloneable
 		return false;
 	}
 
-	public BigInteger getModulus()
-	{
+	public BigInteger getModulus() {
 		return _n;
 	}
 
-	public BigInteger getPrivateExponent()
-	{
+	public BigInteger getPrivateExponent() {
 		return _d;
 	}
 
-	public byte[] getEncoded()
-	{
-		if (_enc == null)
-		{
-			try
-			{
+	public byte[] getEncoded() {
+		if (_enc == null) {
+			try {
 				ByteArrayOutputStream bos = new ByteArrayOutputStream();
 				BeeOutputStream bee = new BeeOutputStream(bos);
 
@@ -79,9 +67,7 @@ public class RSAPrivateKeyImpl implements RSAPrivateKey, Cloneable
 				bee.close();
 
 				_enc = bos.toByteArray();
-			}
-			catch (IOException e)
-			{
+			} catch (IOException e) {
 				// shouldn't occur
 			}
 		}
@@ -89,13 +75,11 @@ public class RSAPrivateKeyImpl implements RSAPrivateKey, Cloneable
 		return _enc;
 	}
 
-	public String getAlgorithm()
-	{
+	public String getAlgorithm() {
 		return "RSA";
 	}
 
-	public String getFormat()
-	{
+	public String getFormat() {
 		return "BEE";
 	}
 }

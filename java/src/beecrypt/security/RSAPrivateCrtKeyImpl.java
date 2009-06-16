@@ -8,13 +8,14 @@ import java.security.spec.*;
 
 import beecrypt.io.*;
 
-public class RSAPrivateCrtKeyImpl implements RSAPrivateCrtKey, Cloneable
-{
+public class RSAPrivateCrtKeyImpl implements RSAPrivateCrtKey, Cloneable {
 	private BigInteger _n, _e, _d, _p, _q, _dp, _dq, _qi;
 	private byte[] _enc;
 
-	public RSAPrivateCrtKeyImpl(BigInteger modulus, BigInteger publicExponent, BigInteger privateExponent, BigInteger primeP, BigInteger primeQ, BigInteger primeExponentP, BigInteger primeExponentQ, BigInteger crtCoefficient)
-	{
+	public RSAPrivateCrtKeyImpl(BigInteger modulus, BigInteger publicExponent,
+			BigInteger privateExponent, BigInteger primeP, BigInteger primeQ,
+			BigInteger primeExponentP, BigInteger primeExponentQ,
+			BigInteger crtCoefficient) {
 		_n = modulus;
 		_e = publicExponent;
 		_d = privateExponent;
@@ -25,8 +26,7 @@ public class RSAPrivateCrtKeyImpl implements RSAPrivateCrtKey, Cloneable
 		_qi = crtCoefficient;
 	}
 
-	public RSAPrivateCrtKeyImpl(RSAPrivateCrtKeySpec spec)
-	{
+	public RSAPrivateCrtKeyImpl(RSAPrivateCrtKeySpec spec) {
 		_n = spec.getModulus();
 		_e = spec.getPublicExponent();
 		_d = spec.getPrivateExponent();
@@ -37,8 +37,7 @@ public class RSAPrivateCrtKeyImpl implements RSAPrivateCrtKey, Cloneable
 		_qi = spec.getCrtCoefficient();
 	}
 
-	public RSAPrivateCrtKeyImpl(RSAPrivateCrtKey key)
-	{
+	public RSAPrivateCrtKeyImpl(RSAPrivateCrtKey key) {
 		_n = key.getModulus();
 		_e = key.getPublicExponent();
 		_d = key.getPrivateExponent();
@@ -49,18 +48,15 @@ public class RSAPrivateCrtKeyImpl implements RSAPrivateCrtKey, Cloneable
 		_qi = key.getCrtCoefficient();
 	}
 
-	public Object clone()
-	{
+	public Object clone() {
 		return new RSAPrivateCrtKeyImpl(this);
 	}
 
-	public boolean equals(Object obj)
-	{
+	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 
-		if (obj instanceof RSAPrivateCrtKey)
-		{
+		if (obj instanceof RSAPrivateCrtKey) {
 			RSAPrivateCrtKey pri = (RSAPrivateCrtKey) obj;
 
 			if (!pri.getModulus().equals(_n))
@@ -85,83 +81,68 @@ public class RSAPrivateCrtKeyImpl implements RSAPrivateCrtKey, Cloneable
 		return false;
 	}
 
-	public BigInteger getModulus()
-	{
+	public BigInteger getModulus() {
 		return _n;
 	}
 
-	public BigInteger getPublicExponent()
-	{
+	public BigInteger getPublicExponent() {
 		return _e;
 	}
 
-	public BigInteger getPrivateExponent()
-	{
+	public BigInteger getPrivateExponent() {
 		return _d;
 	}
 
-	public BigInteger getPrimeP()
-	{
+	public BigInteger getPrimeP() {
 		return _p;
 	}
 
-	public BigInteger getPrimeQ()
-	{
+	public BigInteger getPrimeQ() {
 		return _q;
 	}
 
-	public BigInteger getPrimeExponentP()
-	{
+	public BigInteger getPrimeExponentP() {
 		return _dp;
 	}
 
-	public BigInteger getPrimeExponentQ()
-	{
+	public BigInteger getPrimeExponentQ() {
 		return _dq;
 	}
 
-	public BigInteger getCrtCoefficient()
-	{
+	public BigInteger getCrtCoefficient() {
 		return _qi;
 	}
 
-	public byte[] getEncoded()
-	{
-		if (_enc == null)
-		{
-            try
-            {
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                BeeOutputStream bee = new BeeOutputStream(bos);
+	public byte[] getEncoded() {
+		if (_enc == null) {
+			try {
+				ByteArrayOutputStream bos = new ByteArrayOutputStream();
+				BeeOutputStream bee = new BeeOutputStream(bos);
 
-                bee.writeBigInteger(_n);
-                bee.writeBigInteger(_d);
-                bee.writeBigInteger(_e);
-                bee.writeBigInteger(_p);
-                bee.writeBigInteger(_q);
-                bee.writeBigInteger(_dp);
-                bee.writeBigInteger(_dq);
-                bee.writeBigInteger(_qi);
-                bee.close();
+				bee.writeBigInteger(_n);
+				bee.writeBigInteger(_d);
+				bee.writeBigInteger(_e);
+				bee.writeBigInteger(_p);
+				bee.writeBigInteger(_q);
+				bee.writeBigInteger(_dp);
+				bee.writeBigInteger(_dq);
+				bee.writeBigInteger(_qi);
+				bee.close();
 
-                _enc = bos.toByteArray();
-            }
-            catch (IOException e)
-            {
-                // shouldn't occur
-            }
+				_enc = bos.toByteArray();
+			} catch (IOException e) {
+				// shouldn't occur
+			}
 		}
 
 		return _enc;
 	}
 
-	public String getAlgorithm()
-	{
+	public String getAlgorithm() {
 		return "RSA";
 	}
 
-	public String getFormat()
-	{
+	public String getFormat() {
 		return "BEE";
 	}
 }

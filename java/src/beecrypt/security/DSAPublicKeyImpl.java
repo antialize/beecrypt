@@ -8,48 +8,42 @@ import java.security.spec.*;
 
 import beecrypt.io.*;
 
-public class DSAPublicKeyImpl implements DSAPublicKey, Cloneable
-{
+public class DSAPublicKeyImpl implements DSAPublicKey, Cloneable {
 	private DSAParameterSpec _params;
 	private BigInteger _y;
 	private byte[] _enc;
 
-	public DSAPublicKeyImpl(BigInteger p, BigInteger q, BigInteger g, BigInteger y)
-	{
+	public DSAPublicKeyImpl(BigInteger p, BigInteger q, BigInteger g,
+			BigInteger y) {
 		_params = new DSAParameterSpec(p, q, g);
 		_y = y;
 	}
 
-	public DSAPublicKeyImpl(DSAParameterSpec params, BigInteger y)
-	{
+	public DSAPublicKeyImpl(DSAParameterSpec params, BigInteger y) {
 		_params = params;
 		_y = y;
 	}
 
-	public DSAPublicKeyImpl(DSAPublicKeySpec spec)
-	{
+	public DSAPublicKeyImpl(DSAPublicKeySpec spec) {
 		_params = new DSAParameterSpec(spec.getP(), spec.getQ(), spec.getG());
 		_y = spec.getY();
 	}
 
-	public DSAPublicKeyImpl(DSAPublicKey key)
-	{
-		_params = new DSAParameterSpec(key.getParams().getP(), key.getParams().getQ(), key.getParams().getG());
+	public DSAPublicKeyImpl(DSAPublicKey key) {
+		_params = new DSAParameterSpec(key.getParams().getP(), key.getParams()
+				.getQ(), key.getParams().getG());
 		_y = key.getY();
 	}
 
-	public Object clone()
-	{
+	public Object clone() {
 		return new DSAPublicKeyImpl(this);
 	}
 
-	public boolean equals(Object obj)
-	{
+	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 
-		if (obj instanceof DSAPublicKey)
-		{
+		if (obj instanceof DSAPublicKey) {
 			DSAPublicKey pri = (DSAPublicKey) obj;
 
 			if (!pri.getParams().getP().equals(_params.getP()))
@@ -66,22 +60,17 @@ public class DSAPublicKeyImpl implements DSAPublicKey, Cloneable
 		return false;
 	}
 
-	public DSAParams getParams()
-	{
+	public DSAParams getParams() {
 		return _params;
 	}
 
-	public BigInteger getY()
-	{
+	public BigInteger getY() {
 		return _y;
 	}
 
-	public byte[] getEncoded()
-	{
-		if (_enc == null)
-		{
-			try
-			{
+	public byte[] getEncoded() {
+		if (_enc == null) {
+			try {
 				ByteArrayOutputStream bos = new ByteArrayOutputStream();
 				BeeOutputStream bee = new BeeOutputStream(bos);
 
@@ -92,9 +81,7 @@ public class DSAPublicKeyImpl implements DSAPublicKey, Cloneable
 				bee.close();
 
 				_enc = bos.toByteArray();
-			}
-			catch (IOException e)
-			{
+			} catch (IOException e) {
 				// shouldn't occur
 			}
 		}
@@ -102,13 +89,11 @@ public class DSAPublicKeyImpl implements DSAPublicKey, Cloneable
 		return _enc;
 	}
 
-	public String getAlgorithm()
-	{
+	public String getAlgorithm() {
 		return "DSA";
 	}
 
-	public String getFormat()
-	{
+	public String getFormat() {
 		return "BEE";
 	}
 }

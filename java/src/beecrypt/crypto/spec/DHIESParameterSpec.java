@@ -3,9 +3,9 @@ package beecrypt.crypto.spec;
 import java.security.spec.*;
 import java.util.regex.*;
 
-public class DHIESParameterSpec implements AlgorithmParameterSpec
-{
-	private static final Pattern DHIESPAT = Pattern.compile("DHIES\\((\\w(?:\\w|\\d)*(?:-(?:\\w|\\d)*)*),(\\w(?:\\w|\\d)*(?:-(?:\\w|\\d)*)*),(\\w(?:\\w|\\d)*(?:-(?:\\w|\\d)*)*)(?:,(\\d+))?(?:,(\\d+))?\\)");
+public class DHIESParameterSpec implements AlgorithmParameterSpec {
+	private static final Pattern DHIESPAT = Pattern
+			.compile("DHIES\\((\\w(?:\\w|\\d)*(?:-(?:\\w|\\d)*)*),(\\w(?:\\w|\\d)*(?:-(?:\\w|\\d)*)*),(\\w(?:\\w|\\d)*(?:-(?:\\w|\\d)*)*)(?:,(\\d+))?(?:,(\\d+))?\\)");
 
 	private String messageDigestAlgorithm;
 	private String cipherAlgorithm;
@@ -14,11 +14,12 @@ public class DHIESParameterSpec implements AlgorithmParameterSpec
 	private int cipherKeyLength;
 	private int macKeyLength;
 
-	public DHIESParameterSpec(String description) throws IllegalArgumentException
-	{
+	public DHIESParameterSpec(String description)
+			throws IllegalArgumentException {
 		Matcher m = DHIESPAT.matcher(description);
 		if (!m.matches())
-			throw new IllegalArgumentException("couldn't parse descriptor into DHIES(<digest>,<cipher>,<mac>[,<cipherkeylen>[,<mackeylen>]])");
+			throw new IllegalArgumentException(
+					"couldn't parse descriptor into DHIES(<digest>,<cipher>,<mac>[,<cipherkeylen>[,<mackeylen>]])");
 
 		messageDigestAlgorithm = m.group(1);
 		cipherAlgorithm = m.group(2);
@@ -37,13 +38,14 @@ public class DHIESParameterSpec implements AlgorithmParameterSpec
 			macKeyLength = 0;
 	}
 
-	public DHIESParameterSpec(String messageDigestAlgorithm, String cipherAlgorithm, String macAlgorithm)
-	{
+	public DHIESParameterSpec(String messageDigestAlgorithm,
+			String cipherAlgorithm, String macAlgorithm) {
 		this(messageDigestAlgorithm, cipherAlgorithm, macAlgorithm, 0, 0);
 	}
 
-	public DHIESParameterSpec(String messageDigestAlgorithm, String cipherAlgorithm, String macAlgorithm, int cipherKeyLength, int macKeyLength)
-	{
+	public DHIESParameterSpec(String messageDigestAlgorithm,
+			String cipherAlgorithm, String macAlgorithm, int cipherKeyLength,
+			int macKeyLength) {
 		if (cipherKeyLength < 0 || macKeyLength < 0)
 			throw new IllegalArgumentException();
 
@@ -55,8 +57,7 @@ public class DHIESParameterSpec implements AlgorithmParameterSpec
 		this.macKeyLength = macKeyLength;
 	}
 
-	public DHIESParameterSpec(DHIESParameterSpec copy)
-	{
+	public DHIESParameterSpec(DHIESParameterSpec copy) {
 		this.messageDigestAlgorithm = copy.messageDigestAlgorithm;
 		this.cipherAlgorithm = copy.cipherAlgorithm;
 		this.macAlgorithm = copy.macAlgorithm;
@@ -65,44 +66,36 @@ public class DHIESParameterSpec implements AlgorithmParameterSpec
 		this.macKeyLength = copy.macKeyLength;
 	}
 
-	public String getCipherAlgorithm()
-	{
+	public String getCipherAlgorithm() {
 		return cipherAlgorithm;
 	}
 
-	public String getMacAlgorithm()
-	{
+	public String getMacAlgorithm() {
 		return macAlgorithm;
 	}
 
-	public String getMessageDigestAlgorithm()
-	{
+	public String getMessageDigestAlgorithm() {
 		return messageDigestAlgorithm;
 	}
 
-	public int getCipherKeyLength()
-	{
+	public int getCipherKeyLength() {
 		return cipherKeyLength;
 	}
 
-	public int getMacKeyLength()
-	{
+	public int getMacKeyLength() {
 		return macKeyLength;
 	}
 
-	public String toString()
-	{
+	public String toString() {
 		StringBuffer tmp = new StringBuffer();
 
-		tmp.append("DHIES(").append(messageDigestAlgorithm).append(',').append(cipherAlgorithm).append(',').append(macAlgorithm);
+		tmp.append("DHIES(").append(messageDigestAlgorithm).append(',').append(
+				cipherAlgorithm).append(',').append(macAlgorithm);
 
-		if (macKeyLength > 0)
-		{
+		if (macKeyLength > 0) {
 			tmp.append(',').append(Integer.toString(cipherKeyLength));
 			tmp.append(',').append(Integer.toString(macKeyLength));
-		}
-		else if (cipherKeyLength > 0)
-		{
+		} else if (cipherKeyLength > 0) {
 			tmp.append(',').append(Integer.toString(cipherKeyLength));
 		}
 

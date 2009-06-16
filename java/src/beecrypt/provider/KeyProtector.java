@@ -9,14 +9,13 @@ import javax.crypto.spec.*;
 
 import beecrypt.beeyond.*;
 
-public class KeyProtector
-{
+public class KeyProtector {
 	private SecretKeySpec _cipher_key;
 	private SecretKeySpec _mac_key;
 	private IvParameterSpec _iv;
 
-	public KeyProtector(PBEKey key) throws InvalidKeyException, NoSuchAlgorithmException
-	{
+	public KeyProtector(PBEKey key) throws InvalidKeyException,
+			NoSuchAlgorithmException {
 		byte[] rawKey = key.getEncoded();
 		if (rawKey == null)
 			throw new InvalidKeyException("PBEKey must have an encoding");
@@ -27,20 +26,21 @@ public class KeyProtector
 
 		MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
 
-		_cipher_key = new SecretKeySpec(PKCS12.deriveKey(sha256, 64, 32, PKCS12.ID_CIPHER, rawKey, salt, iter), "RAW");
-		_mac_key = new SecretKeySpec(PKCS12.deriveKey(sha256, 64, 32, PKCS12.ID_MAC, rawKey, salt, iter), "RAW");
-		_iv = new IvParameterSpec(PKCS12.deriveKey(sha256, 64, 16, PKCS12.ID_IV, rawKey, salt, iter));
+		_cipher_key = new SecretKeySpec(PKCS12.deriveKey(sha256, 64, 32,
+				PKCS12.ID_CIPHER, rawKey, salt, iter), "RAW");
+		_mac_key = new SecretKeySpec(PKCS12.deriveKey(sha256, 64, 32,
+				PKCS12.ID_MAC, rawKey, salt, iter), "RAW");
+		_iv = new IvParameterSpec(PKCS12.deriveKey(sha256, 64, 16,
+				PKCS12.ID_IV, rawKey, salt, iter));
 	}
 
-	byte[] protect(PrivateKey key)
-	{
+	byte[] protect(PrivateKey key) {
 		if (key.getEncoded() == null)
 			return null;
 		if (key.getFormat() == null)
 			return null;
 
-		try
-		{
+		try {
 			byte[] enc = key.getEncoded();
 
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -65,15 +65,13 @@ public class KeyProtector
 			c.init(Cipher.ENCRYPT_MODE, _cipher_key, _iv);
 
 			return c.doFinal(clearText);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			return null;
 		}
 	}
 
-	PrivateKey recover(byte[] encryptedKey) throws NoSuchAlgorithmException, NoSuchPaddingException, UnrecoverableKeyException
-	{
+	PrivateKey recover(byte[] encryptedKey) throws NoSuchAlgorithmException,
+			NoSuchPaddingException, UnrecoverableKeyException {
 		Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		Mac m = Mac.getInstance("HmacSHA256");
 
@@ -83,8 +81,7 @@ public class KeyProtector
 		if (cipherTextLength <= 0)
 			throw new UnrecoverableKeyException("encrypted data way too short");
 
-		try
-		{
+		try {
 			c.init(Cipher.DECRYPT_MODE, _cipher_key, _iv);
 
 			byte[] clearText = c.doFinal(encryptedKey, 0, cipherTextLength);
@@ -95,10 +92,12 @@ public class KeyProtector
 
 			byte[] originalMac = new byte[m.getMacLength()];
 
-			System.arraycopy(encryptedKey, cipherTextLength, originalMac, 0, macLength);
+			System.arraycopy(encryptedKey, cipherTextLength, originalMac, 0,
+					macLength);
 
 			if (!Arrays.equals(computedMac, originalMac))
-				throw new UnrecoverableKeyException("mac of decrypted key didn't match");
+				throw new UnrecoverableKeyException(
+						"mac of decrypted key didn't match");
 
 			ByteArrayInputStream bis = new ByteArrayInputStream(clearText);
 			DataInputStream dis = new DataInputStream(bis);
@@ -117,9 +116,7 @@ public class KeyProtector
 			KeyFactory kf = KeyFactory.getInstance(algorithm);
 
 			return kf.generatePrivate(new AnyEncodedKeySpec(format, enc));
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 		}
 		throw new UnrecoverableKeyException("unable to recover key");
 	}

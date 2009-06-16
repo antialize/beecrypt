@@ -7,73 +7,61 @@ import java.security.cert.Certificate;
 import java.security.spec.*;
 import java.util.*;
 
-public class BeeCertificate extends Certificate
-{
+public class BeeCertificate extends Certificate {
 	public static final Date FOREVER = new Date(Long.MAX_VALUE);
 
-	protected static abstract class Field
-	{
+	protected static abstract class Field {
 		public int type;
 
 		public abstract void decode(DataInputStream in) throws IOException;
+
 		public abstract void encode(DataOutputStream out) throws IOException;
 	}
 
-	protected static class UnknownField extends Field implements Cloneable
-	{
+	protected static class UnknownField extends Field implements Cloneable {
 		byte[] encoding;
 
-		public UnknownField()
-		{
+		public UnknownField() {
 		}
 
-		public UnknownField(int type, byte[] encoding)
-		{
+		public UnknownField(int type, byte[] encoding) {
 			this.type = type;
 			this.encoding = encoding;
 		}
 
-		public Object clone()
-		{
+		public Object clone() {
 			return new UnknownField(type, encoding);
 		}
 
-		public void decode(DataInputStream in) throws IOException
-		{
+		public void decode(DataInputStream in) throws IOException {
 			encoding = new byte[in.available()];
 			in.readFully(encoding);
 		}
 
-		public void encode(DataOutputStream out) throws IOException
-		{
+		public void encode(DataOutputStream out) throws IOException {
 			out.write(encoding);
 		}
 	}
 
-	protected static class PublicKeyField extends Field implements Cloneable
-	{
+	protected static class PublicKeyField extends Field implements Cloneable {
 		public static final int FIELD_TYPE = 0x5055424b;
 
 		public PublicKey pub;
 
-		public PublicKeyField()
-		{
+		public PublicKeyField() {
 			this.type = FIELD_TYPE;
 		}
 
-		public PublicKeyField(PublicKey pub)
-		{
+		public PublicKeyField(PublicKey pub) {
 			this.type = FIELD_TYPE;
 			this.pub = pub;
 		}
 
-		public Object clone()
-		{
+		public Object clone() {
 			return new PublicKeyField(pub);
 		}
 
-		public void decode(DataInputStream in) throws IOException
-		{
+		public void decode(DataInputStream in) throws IOException {
 			String algorithm = in.readUTF();
 			String format = in.readUTF();
 
@@ -88,24 +76,18 @@ public class BeeCertificate extends Certificate
 
 			AnyEncodedKeySpec spec = new AnyEncodedKeySpec(format, enc);
 
-			try
-			{
+			try {
 				KeyFactory kf = KeyFactory.getInstance(algorithm);
 
 				pub = kf.generatePublic(spec);
-			}
-			catch (InvalidKeySpecException e)
-			{
+			} catch (InvalidKeySpecException e) {
 				throw new IOException("Invalid key spec");
-			}
-			catch (NoSuchAlgorithmException e)
-			{
+			} catch (NoSuchAlgorithmException e) {
 				throw new IOException("Invalid key format");
 			}
 		}
 
-		public void encode(DataOutputStream out) throws IOException
-		{
+		public void encode(DataOutputStream out) throws IOException {
 			out.writeUTF(pub.getAlgorithm());
 			out.writeUTF(pub.getFormat());
 
@@ -118,30 +100,25 @@ public class BeeCertificate extends Certificate
 		}
 	}
 
-	protected static class ParentCertificateField extends Field
-	{
+	protected static class ParentCertificateField extends Field {
 		public static final int FIELD_TYPE = 0x43455254;
 
 		public Certificate parent;
 
-		public ParentCertificateField()
-		{
+		public ParentCertificateField() {
 			this.type = FIELD_TYPE;
 		}
 
-		public ParentCertificateField(Certificate parent)
-		{
+		public ParentCertificateField(Certificate parent) {
 			this.type = FIELD_TYPE;
 			this.parent = parent;
 		}
 
-		public Object clone()
-		{
+		public Object clone() {
 			return new ParentCertificateField(parent);
 		}
 
-		public void decode(DataInputStream in) throws IOException
-		{
+		public void decode(DataInputStream in) throws IOException {
 			String type = in.readUTF();
 			int encsize = in.readInt();
 
@@ -154,40 +131,31 @@ public class BeeCertificate extends Certificate
 
 			ByteArrayInputStream bin = new ByteArrayInputStream(enc);
 
-			try
-			{
+			try {
 				CertificateFactory cf = CertificateFactory.getInstance(type);
 
 				parent = cf.generateCertificate(bin);
-			}
-			catch (CertificateException e)
-			{
+			} catch (CertificateException e) {
 				throw new IOException("Invalid certificate encoding or type");
 			}
 		}
 
-		public void encode(DataOutputStream out) throws IOException
-		{
+		public void encode(DataOutputStream out) throws IOException {
 			out.writeUTF(parent.getType());
 
-			try
-			{
+			try {
 				byte[] enc = parent.getEncoded();
 
 				out.writeInt(enc.length);
 				out.write(enc);
-			}
-			catch (CertificateEncodingException e)
-			{
+			} catch (CertificateEncodingException e) {
 				throw new IOException("Couldn't encoding certificate");
 			}
 		}
 	}
 
-	protected static Field instantiateField(int type)
-	{
-		switch (type)
-		{
+	protected static Field instantiateField(int type) {
+		switch (type) {
 		case PublicKeyField.FIELD_TYPE:
 			return new PublicKeyField();
 		case ParentCertificateField.FIELD_TYPE:
@@ -207,22 +175,19 @@ public class BeeCertificate extends Certificate
 	protected String signatureAlgorithm = null;
 	protected byte[] signature = null;
 
-	protected void encodeTBS(DataOutputStream out) throws IOException
-	{
+	protected void encodeTBS(DataOutputStream out) throws IOException {
 		out.writeUTF(issuer);
 		out.writeUTF(subject);
 		out.writeLong(created.getTime());
 		out.writeLong(expires.getTime());
 		out.writeInt(fields.size());
 
-		for (int i = 0; i < fields.size(); i++)
-		{
+		for (int i = 0; i < fields.size(); i++) {
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			DataOutputStream dos = new DataOutputStream(bos);
 
 			Object obj = fields.get(i);
-			if (obj instanceof Field)
-			{
+			if (obj instanceof Field) {
 				Field f = (Field) obj;
 
 				f.encode(dos);
@@ -237,31 +202,25 @@ public class BeeCertificate extends Certificate
 		}
 	}
 
-	protected byte[] encodeTBS() throws CertificateEncodingException
-	{
+	protected byte[] encodeTBS() throws CertificateEncodingException {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		DataOutputStream dos = new DataOutputStream(bos);
 
-		try
-		{
+		try {
 			encodeTBS(dos);
 			dos.close();
-		}
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			throw new CertificateEncodingException(e.getMessage());
 		}
 
 		return bos.toByteArray();
 	}
 
-	protected BeeCertificate()
-	{
+	protected BeeCertificate() {
 		super("BEE");
 	}
 
-	public BeeCertificate(BeeCertificate copy)
-	{
+	public BeeCertificate(BeeCertificate copy) {
 		super("BEE");
 
 		issuer = copy.issuer;
@@ -274,8 +233,7 @@ public class BeeCertificate extends Certificate
 			signature = (byte[]) copy.signature.clone();
 	}
 
-	public BeeCertificate(InputStream in) throws IOException
-	{
+	public BeeCertificate(InputStream in) throws IOException {
 		super("BEE");
 
 		DataInputStream din = new DataInputStream(in);
@@ -292,8 +250,7 @@ public class BeeCertificate extends Certificate
 
 		fields.ensureCapacity(fieldCount);
 
-		for (int i = 0; i < fieldCount; i++)
-		{
+		for (int i = 0; i < fieldCount; i++) {
 			int type = din.readInt();
 
 			int fieldSize = din.readInt();
@@ -325,15 +282,12 @@ public class BeeCertificate extends Certificate
 		din.readFully(signature);
 	}
 
-	public byte[] getEncoded() throws CertificateEncodingException
-	{
-		if (_enc == null)
-		{
+	public byte[] getEncoded() throws CertificateEncodingException {
+		if (_enc == null) {
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			DataOutputStream dos = new DataOutputStream(bos);
 
-			try
-			{
+			try {
 				encodeTBS(dos);
 
 				dos.writeUTF(signatureAlgorithm);
@@ -342,19 +296,15 @@ public class BeeCertificate extends Certificate
 				dos.close();
 
 				_enc = bos.toByteArray();
-			}
-			catch (IOException e)
-			{
+			} catch (IOException e) {
 				throw new CertificateEncodingException(e.getMessage());
 			}
 		}
 		return _enc;
 	}
 
-	public PublicKey getPublicKey()
-	{
-		for (int i = 0; i < fields.size(); i++)
-		{
+	public PublicKey getPublicKey() {
+		for (int i = 0; i < fields.size(); i++) {
 			Object obj = fields.get(i);
 			if (obj instanceof PublicKeyField)
 				return ((PublicKeyField) obj).pub;
@@ -362,10 +312,8 @@ public class BeeCertificate extends Certificate
 		return null;
 	}
 
-	public Certificate getParentCertificate()
-	{
-		for (int i = 0; i < fields.size(); i++)
-		{
+	public Certificate getParentCertificate() {
+		for (int i = 0; i < fields.size(); i++) {
 			Object obj = fields.get(i);
 			if (obj instanceof ParentCertificateField)
 				return ((ParentCertificateField) obj).parent;
@@ -373,8 +321,8 @@ public class BeeCertificate extends Certificate
 		return null;
 	}
 
-	public void verify(PublicKey pub) throws CertificateException, NoSuchAlgorithmException, InvalidKeyException, SignatureException
-	{
+	public void verify(PublicKey pub) throws CertificateException,
+			NoSuchAlgorithmException, InvalidKeyException, SignatureException {
 		Signature sig = Signature.getInstance(signatureAlgorithm);
 
 		sig.initVerify(pub);
@@ -384,8 +332,9 @@ public class BeeCertificate extends Certificate
 			throw new CertificateException("signature doesn't match");
 	}
 
-	public void verify(PublicKey pub, String algorithm) throws CertificateException, NoSuchAlgorithmException, InvalidKeyException, SignatureException
-	{
+	public void verify(PublicKey pub, String algorithm)
+			throws CertificateException, NoSuchAlgorithmException,
+			InvalidKeyException, SignatureException {
 		Signature sig = Signature.getInstance(algorithm);
 
 		sig.initVerify(pub);
@@ -395,8 +344,7 @@ public class BeeCertificate extends Certificate
 			throw new CertificateException("signature doesn't match");
 	}
 
-	public String toString()
-	{
+	public String toString() {
 		StringBuffer tmp = new StringBuffer();
 
 		tmp.append("BEE ").append(subject);
@@ -404,20 +352,21 @@ public class BeeCertificate extends Certificate
 		if (issuer.length() > 0)
 			tmp.append(" issued by ").append(issuer);
 
-		tmp.append(" valid from ").append(created.toString()).append(" until ").append(expires.equals(FOREVER) ? "-" : expires.toString());
+		tmp.append(" valid from ").append(created.toString()).append(" until ")
+				.append(expires.equals(FOREVER) ? "-" : expires.toString());
 
 		/** todo add fields */
 
 		return tmp.toString();
 	}
 
-	public void checkValidity() throws CertificateExpiredException, CertificateNotYetValidException
-	{
+	public void checkValidity() throws CertificateExpiredException,
+			CertificateNotYetValidException {
 		checkValidity(new Date());
 	}
 
-	public void checkValidity(Date at) throws CertificateExpiredException, CertificateNotYetValidException
-	{
+	public void checkValidity(Date at) throws CertificateExpiredException,
+			CertificateNotYetValidException {
 		if (at.before(created))
 			throw new CertificateNotYetValidException();
 
@@ -425,8 +374,7 @@ public class BeeCertificate extends Certificate
 			if (at.after(expires))
 				throw new CertificateExpiredException();
 
-		if (hasParentCertificate())
-		{
+		if (hasParentCertificate()) {
 			// parent certificate had to be valid when this one was created
 			Certificate parent = getParentCertificate();
 			if (parent instanceof BeeCertificate)
@@ -434,30 +382,24 @@ public class BeeCertificate extends Certificate
 		}
 	}
 
-	public Date getNotAfter()
-	{
+	public Date getNotAfter() {
 		return expires;
 	}
 
-	public Date getNotBefore()
-	{
+	public Date getNotBefore() {
 		return created;
 	}
 
-	public byte[] getSignature()
-	{
+	public byte[] getSignature() {
 		return signature;
 	}
 
-	public String getSigAlgName()
-	{
+	public String getSigAlgName() {
 		return signatureAlgorithm;
 	}
 
-	public boolean hasPublicKey()
-	{
-		for (int i = 0; i < fields.size(); i++)
-		{
+	public boolean hasPublicKey() {
+		for (int i = 0; i < fields.size(); i++) {
 			Object obj = fields.get(i);
 			if (obj instanceof PublicKeyField)
 				return true;
@@ -465,10 +407,8 @@ public class BeeCertificate extends Certificate
 		return false;
 	}
 
-	public boolean hasParentCertificate()
-	{
-		for (int i = 0; i < fields.size(); i++)
-		{
+	public boolean hasParentCertificate() {
+		for (int i = 0; i < fields.size(); i++) {
 			Object obj = fields.get(i);
 			if (obj instanceof ParentCertificateField)
 				return true;
@@ -476,27 +416,25 @@ public class BeeCertificate extends Certificate
 		return false;
 	}
 
-	public boolean isSelfSignedCertificate()
-	{
+	public boolean isSelfSignedCertificate() {
 		if (hasParentCertificate())
 			return false;
 
 		if (!hasPublicKey())
 			return false;
 
-		try
-		{
+		try {
 			verify(getPublicKey());
 			return true;
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			return false;
 		}
 	}
 
-	public static BeeCertificate self(PublicKey publicKey, PrivateKey signKey, String signatureAlgorithm) throws InvalidKeyException, SignatureException, CertificateEncodingException, NoSuchAlgorithmException
-	{
+	public static BeeCertificate self(PublicKey publicKey, PrivateKey signKey,
+			String signatureAlgorithm) throws InvalidKeyException,
+			SignatureException, CertificateEncodingException,
+			NoSuchAlgorithmException {
 		if (publicKey.getEncoded() == null)
 			throw new InvalidKeyException("PublicKey doesn't have an encoding");
 
@@ -520,8 +458,10 @@ public class BeeCertificate extends Certificate
 		return cert;
 	}
 
-	public BeeCertificate make(PublicKey publicKey, PrivateKey signKey, String signatureAlgorithm, Certificate parent) throws InvalidKeyException, CertificateEncodingException, SignatureException, NoSuchAlgorithmException
-	{
+	public BeeCertificate make(PublicKey publicKey, PrivateKey signKey,
+			String signatureAlgorithm, Certificate parent)
+			throws InvalidKeyException, CertificateEncodingException,
+			SignatureException, NoSuchAlgorithmException {
 		if (publicKey.getEncoded() == null)
 			throw new InvalidKeyException("PublicKey doesn't have an encoding");
 
