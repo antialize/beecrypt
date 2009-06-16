@@ -486,7 +486,6 @@ AC_DEFUN([BEE_GNU_CXX_MTUNE],[
       bc_cv_gxx_mtune=no
       ])
     AC_LANG_POP(C++)
-    AC_MSG_RESULT([$bc_cv_gxx_mtune])
     ;;
   esac
   ])
@@ -498,14 +497,12 @@ AC_DEFUN([BEE_GNU_CC],[
   case $bc_target_arch in
   x86_64 | athlon64 | athlon-fx | k8 | opteron | em64t | nocona)
     CC="$CC -m64"
-    CXX="$CXX -m64"
     ;;
   i[[3456]]86 | \
   pentium* | \
   athlon*)
     CC="$CC -m32"
     CCAS="$CCAS -m32"
-    CXX="$CXX -m32"
     ;;
   ia64)
     case $target_os in
@@ -524,21 +521,17 @@ AC_DEFUN([BEE_GNU_CC],[
     case $target_os in
     aix*)
       CC="$CC -maix64"
-      CXX="$CXX -maix64"
       ;;
     linux*)
       CC="$CC -m64"
-      CXX="$CXX -m64"
       ;;
     esac
     ;;
   sparc | sparcv8*)
     CC="$CC -m32"
-    CXX="$CXX -m32"
     ;;
   sparc64 | sparcv9*)
     CC="$CC -m64"
-    CXX="$CXX -m64"
     ;;
   esac
   # Certain platforms needs special flags for multi-threaded code
@@ -668,6 +661,14 @@ dnl  BEE_GNU_CXX
 AC_DEFUN([BEE_GNU_CXX],[
   AC_REQUIRE([AC_PROG_CXX])
   case $bc_target_arch in
+  x86_64 | athlon64 | athlon-fx | k8 | opteron | em64t | nocona | core2)
+    CXX="$CXX -m64"
+    ;;
+  i[[3456]]86 | \
+  pentium* | \
+  athlon*)
+    CXX="$CXX -m32"
+    ;;
   ia64)
     case $target_os in
     # HP/UX on Itanium needs to be told that a long is 64-bit!
@@ -686,7 +687,16 @@ AC_DEFUN([BEE_GNU_CXX],[
     aix*)
       CXX="$CXX -maix64"
       ;;
+    linux*)
+      CXX="$CXX -m64"
+      ;;
     esac
+    ;;
+  sparc | sparcv8*)
+    CXX="$CXX -m64"
+    ;;
+  sparc64 | sparcv9*)
+    CXX="$CXX -m64"
     ;;
   esac
   # Certain platforms needs special flags for multi-threaded code
@@ -1074,6 +1084,8 @@ AC_DEFUN([BEE_CC],[
       ;;
     esac
   fi
+  # set flags for OpenMP support
+  CFLAGS="$CFLAGS $OPENMP_CFLAGS"
   ])
 
 
@@ -1108,6 +1120,8 @@ AC_DEFUN([BEE_CXX],[
       ;;
     esac
   fi
+  # set flags for OpenMP support
+  CXXFLAGS="$CXXFLAGS $OPENMP_CFLAGS"
   ])
 
 
@@ -1394,7 +1408,7 @@ AC_DEFUN([BEE_ASM_SOURCES],[
         m4 $srcdir/gas/mpopt.alpha.m4 > mpopt.s
         ])
       ;;
-    x86_64 | athlon64 | athlon-fx | k8 | opteron | em64t | nocona)
+    x86_64 | athlon64 | athlon-fx | k8 | opteron | em64t | nocona | core2)
       AC_CONFIG_COMMANDS([mpopt.x86_64],[
         m4 $srcdir/gas/mpopt.x86_64.m4 > mpopt.s
         ])
@@ -1448,7 +1462,7 @@ AC_DEFUN([BEE_ASM_SOURCES],[
       ;;
     esac
     case $bc_target_arch in
-    x86_64 | athlon64 | athlon-fx | k8 | opteron | em64t | nocona)
+    x86_64 | athlon64 | athlon-fx | k8 | opteron | em64t | nocona | core2) 
       ;;
     i[[56]]86 | pentium* | athlon*)
       AC_CONFIG_COMMANDS([blowfishopt.i586],[
@@ -1466,7 +1480,6 @@ AC_DEFUN([BEE_ASM_SOURCES],[
 
 
 dnl  BEE_DLFCN
-
 AC_DEFUN([BEE_DLFCN],[
   AH_TEMPLATE([HAVE_DLFCN_H],[.])
   AC_CHECK_HEADERS([dlfcn.h])

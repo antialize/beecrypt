@@ -54,7 +54,7 @@ AC_ARG_ENABLE(threads,[  --enable-threads        enables multithread support [[d
   else
     ac_enable_threads=yes
   fi
-  ],[ ac_enable_threads=yes])
+  ],[ac_enable_threads=yes])
 
 AC_ARG_ENABLE(aio,[  --enable-aio            enables asynchronous i/o for entropy gathering [[default=yes]]],[
   if test "$enableval" = no; then
@@ -128,6 +128,14 @@ AC_PROG_LN_S
 AC_PROG_EGREP
 AC_PROG_INSTALL
 AC_PROG_LIBTOOL
+
+# Checks for OpenMP support
+AC_LANG_PUSH(C)
+AC_OPENMP
+AC_LANG_POP(C)
+AC_LANG_PUSH(C++)
+AC_OPENMP
+AC_LANG_POP(C++)
 
 # Checks for compiler characteristics and flags
 if test "$ac_enable_expert_mode" = no; then
