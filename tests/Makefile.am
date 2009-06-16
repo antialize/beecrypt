@@ -1,7 +1,8 @@
 #
-# Makefile.am's purpose is to build the beetest_ test_ program.
+# Makefile.am's purpose is to build the unit test programs and benchmarks.
 #
-# Copyright (c) 2001, 2002, 2003 Beeyond Software Holding BV
+# Copyright (c) 2001, 2002, 2003 X-Way Rights BV
+# Copyright (c) 2009 Bob Deblier
 #
 # Author: Bob Deblier <bob.deblier@telenet.be>
 #
@@ -26,9 +27,9 @@ INCLUDES = -I$(top_srcdir)/include
 
 LDADD = $(top_builddir)/libbeecrypt.la
 
-TESTS = testmd5 testsha1 testsha256 testsha384 testsha512 testhmacmd5 testhmacsha1 testaes testblowfish testmp testmpinv testdsa testrsa testrsacrt testdldp
+TESTS = testmd5 testsha1 testsha256 testsha384 testsha512 testhmacmd5 testhmacsha1 testaes testblowfish testmp testmpinv testdsa testrsa testrsacrt testdldp testelgamal
 
-check_PROGRAMS = testmd5 testsha1 testsha256 testsha384 testsha512 testhmacmd5 testhmacsha1 testaes testblowfish testmp testmpinv testdsa testrsa testrsacrt  testdldp
+check_PROGRAMS = testmd5 testsha1 testsha256 testsha384 testsha512 testhmacmd5 testhmacsha1 testaes testblowfish testmp testmpinv testdsa testrsa testrsacrt testdldp testelgamal
 
 testmd5_SOURCES = testmd5.c
 
@@ -59,6 +60,8 @@ testrsa_SOURCES = testrsa.c
 testrsacrt_SOURCES = testrsacrt.c
 
 testdldp_SOURCES = testdldp.c
+
+testelgamal_SOURCES = testelgamal.c
 
 EXTRA_PROGRAMS = benchme benchrsa benchhf benchbc
 
