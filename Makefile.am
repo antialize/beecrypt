@@ -1,7 +1,7 @@
 #
 # Makefile.am contains the top-level automake definitions
 #
-# Copyright (c) 2001, 2002, 2004 Beeyond Software Holding BV
+# Copyright (c) 2001, 2002, 2004 X-Way Rights BV
 #
 # Author: Bob Deblier <bob.deblier@telenet.be>
 #

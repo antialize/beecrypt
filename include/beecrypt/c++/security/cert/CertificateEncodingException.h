@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004 Beeyond Software Holding BV
+ * Copyright (c) 2004 X-Way Rights BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -36,21 +36,11 @@ namespace beecrypt {
 			class CertificateEncodingException : public CertificateException
 			{
 			public:
-				inline CertificateEncodingException()
-				{
-				}
-				inline CertificateEncodingException(const char* message) : CertificateException(message)
-				{
-				}
-				inline CertificateEncodingException(const String* message) : CertificateException(message)
-				{
-				}
-				inline CertificateEncodingException(const Throwable* cause) : CertificateException(cause)
-				{
-				}
-				inline ~CertificateEncodingException()
-				{
-				}
+				inline CertificateEncodingException() {}
+				inline CertificateEncodingException(const char* message) : CertificateException(message) {}
+				inline CertificateEncodingException(const String& message) : CertificateException(message) {}
+				inline CertificateEncodingException(const Throwable* cause) : CertificateException(cause) {}
+				inline ~CertificateEncodingException() {}
 			};
 		}
 	}

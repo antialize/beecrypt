@@ -648,7 +648,7 @@ BeeCertificate* BeeCertificate::self(const PublicKey& pub, const PrivateKey& pri
 	try
 	{
 		// issuer is kept blank
-		cert->subject = "Public Key Certificate";
+		cert->subject = String("Public Key Certificate");
 		cert->expires = FOREVER;
 		cert->signatureAlgorithm = signatureAlgorithm;
 		cert->fields.add(new PublicKeyField(pub));
@@ -682,7 +682,7 @@ BeeCertificate* BeeCertificate::make(const PublicKey& pub, const PrivateKey& pri
 	try
 	{
 		// issuer is kept blank
-		cert->subject = "Public Key Certificate";
+		cert->subject = String("Public Key Certificate");
 		cert->expires = FOREVER;
 		cert->signatureAlgorithm = signatureAlgorithm;
 		cert->fields.add(new PublicKeyField(pub));

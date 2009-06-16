@@ -23,4 +23,4 @@ SecureRandom.cxx \
 Security.cxx \
 Signature.cxx
 
-libcxxsecurity_la_LIBADD = auth/libcxxsecurityauth.la cert/libcxxsecuritycert.la spec/libcxxsecurityspec.la
+libcxxsecurity_la_LIBADD = cert/libcxxsecuritycert.la spec/libcxxsecurityspec.la

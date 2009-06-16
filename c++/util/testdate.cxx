@@ -33,5 +33,7 @@ int main(int argc, char* argv[])
 {
 	Date now;
 
-	cout << now.toString() << endl;
+//	cout << now.toString() << endl;
+
+	
 }

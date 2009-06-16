@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004 Beeyond Software Holding BV
+ * Copyright (c) 2004 X-Way Rights BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -37,21 +37,11 @@ namespace beecrypt {
 		class Exception : public Throwable
 		{
 		public:
-			inline Exception()
-			{
-			}
-			inline Exception(const char* message) : Throwable(message)
-			{
-			}
-			inline Exception(const String* message) : Throwable(message)
-			{
-			}
-			inline Exception(const Throwable* cause) : Throwable(cause)
-			{
-			}
-			inline ~Exception()
-			{
-			}
+			inline Exception() {}
+			inline Exception(const char* message) : Throwable(message) {}
+			inline Exception(const String& message) : Throwable(message) {}
+			inline Exception(const Throwable* cause) : Throwable(cause) {}
+			inline ~Exception() {}
 		};
 	}
 }

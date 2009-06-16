@@ -5,8 +5,7 @@
  * BeeCrypt started its life when the need for a portable and fast cryptography
  * library arose at Virtual Unlimited in 1997. I'm still trying to make it
  * faster, easier to use and more portable, in addition to providing better
- * documentation. The library is currently in full swing again, thanks to the
- * Beeyond Software Holding BV.
+ * documentation.
  * 
  * \section license_sec License
  *

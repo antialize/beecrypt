@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004 Beeyond Software Holding BV
+ * Copyright (c) 2004 X-Way Rights BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,6 +29,8 @@
 using beecrypt::array;
 #include "beecrypt/c++/lang/Object.h"
 using beecrypt::lang::Object;
+#include "beecrypt/c++/lang/String.h"
+using beecrypt::lang::String;
 #include "beecrypt/c++/security/PublicKey.h"
 using beecrypt::security::PublicKey;
 #include "beecrypt/c++/security/InvalidKeyException.h"

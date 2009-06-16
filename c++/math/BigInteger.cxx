@@ -511,6 +511,7 @@ BigInteger BigInteger::multiply(const BigInteger& val) const
 	return BigInteger(rsize, rdata, sign * val.sign);
 }
 
+#if 0
 BigInteger BigInteger::mod(const BigInteger& m) const throw (ArithmeticException)
 {
 	if (m.compareTo(ZERO) <= 0)
@@ -554,7 +555,6 @@ BigInteger BigInteger::mod(const BigInteger& m) const throw (ArithmeticException
 	}
 }
 
-#if 0
 BigInteger BigInteger::modPow(const BigInteger& exponent, const BigInteger& m) const
 {
 	// if the modulus is not positive, bail out

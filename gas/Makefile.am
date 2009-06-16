@@ -1,7 +1,7 @@
 #
 # Makefile.am's purpose is to add the GNU Assembler sources to the dist
 #
-# Copyright (c) 2001, 2002, 2003 Beeyond Software Holding BV
+# Copyright (c) 2001, 2002, 2003 X-Way Rights BV
 #
 # Author: Bob Deblier <bob.deblier@telenet.be>
 #

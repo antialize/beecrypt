@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004 Beeyond Software Holding BV
+ * Copyright (c) 2004 X-Way Rights BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,21 +35,10 @@ namespace beecrypt {
 		class NoSuchAlgorithmException : public GeneralSecurityException
 		{
 		public:
-			inline NoSuchAlgorithmException()
-			{
-			}
-			inline NoSuchAlgorithmException(const char* message) : GeneralSecurityException(message)
-			{
-			}
-			inline NoSuchAlgorithmException(const String* message) : GeneralSecurityException(message)
-			{
-			}
-			inline NoSuchAlgorithmException(const String& message) : GeneralSecurityException(&message)
-			{
-			}
-			inline ~NoSuchAlgorithmException()
-			{
-			}
+			inline NoSuchAlgorithmException() {}
+			inline NoSuchAlgorithmException(const char* message) : GeneralSecurityException(message) {}
+			inline NoSuchAlgorithmException(const String& message) : GeneralSecurityException(message) {}
+			inline ~NoSuchAlgorithmException() {}
 		};
 	}
 }

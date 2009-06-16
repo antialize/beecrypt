@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004 Beeyond Software Holding BV
+ * Copyright (c) 2004 X-Way Rights BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,18 +35,10 @@ namespace beecrypt {
 		class IllegalBlockSizeException : public GeneralSecurityException
 		{
 		public:
-			inline IllegalBlockSizeException()
-			{
-			}
-			inline IllegalBlockSizeException(const char* message) : GeneralSecurityException(message)
-			{
-			}
-			inline IllegalBlockSizeException(const String* message) : GeneralSecurityException(message)
-			{
-			}
-			inline ~IllegalBlockSizeException()
-			{
-			}
+			inline IllegalBlockSizeException() {}
+			inline IllegalBlockSizeException(const char* message) : GeneralSecurityException(message) {}
+			inline IllegalBlockSizeException(const String& message) : GeneralSecurityException(message) {}
+			inline ~IllegalBlockSizeException() {}
 		};
 	}
 }

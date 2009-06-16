@@ -27,7 +27,7 @@
 #include "beecrypt/c++/lang/IllegalStateException.h"
 using namespace beecrypt::lang;
 
-Throwable::Throwable() : _msg(0)
+Throwable::Throwable()
 {
 	_cause = this;
 }
@@ -37,7 +37,7 @@ Throwable::Throwable(const char* message) : _msg(message ? new String(message) :
 	_cause = this;
 }
 
-Throwable::Throwable(const String* message) : _msg(message ? new String(*message) : 0)
+Throwable::Throwable(const String& message) : _msg(new String(message))
 {
 	_cause = this;
 }

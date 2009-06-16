@@ -17,7 +17,7 @@ int main()
 	std::cout << BigInteger::ONE.subtract(BigInteger::TEN).toString() << std::endl;
 	std::cout << BigInteger::TEN.subtract(BigInteger::ONE).toString() << std::endl;
 	std::cout << BigInteger::TEN.multiply(BigInteger::TEN).subtract(BigInteger::ONE).toString() << std::endl;
-	std::cout << BigInteger::TEN.multiply(BigInteger::TEN).subtract(BigInteger::ONE).mod(BigInteger::valueOf(97)).toString() << std::endl;
+	std::cout << BigInteger::valueOf(97).toString() << std::endl;
 	BigInteger n = BigInteger::ONE.negate();
 	BigInteger m = n.add(BigInteger::ONE);
 	if (m == BigInteger::ZERO)

@@ -101,6 +101,17 @@ String& String::operator=(const String& copy)
 	return *this;
 }
 
+String& String::operator=(const UnicodeString& copy)
+{
+	assert(copy.length() <= Integer::MAX_VALUE);
+
+	_value.resize((int) copy.length());
+
+	copy.extract(0, copy.length(), _value.data());
+
+	return *this;
+}
+
 int String::compareTo(const String& str) const throw ()
 {
 	int result;

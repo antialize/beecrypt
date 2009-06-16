@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2002, 2004 Beeyond Software Holding BV
+ * Copyright (c) 2001, 2002, 2004 X-Way Rights BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,7 +30,7 @@
 #endif
 
 #if WIN32
-# if !__CYGWIN32__
+# if !__CYGWIN32__ && !__MINGW32__
 #  include "beecrypt/win.h"
 # else
 #  include "beecrypt/gnu.h"

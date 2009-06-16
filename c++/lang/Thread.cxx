@@ -33,13 +33,20 @@
 #include "beecrypt/c++/lang/Thread.h"
 #include "beecrypt/c++/lang/String.h"
 #include "beecrypt/c++/lang/StringBuilder.h"
+#include "beecrypt/c++/lang/Error.h"
 #include "beecrypt/c++/lang/RuntimeException.h"
+
 using namespace beecrypt::lang;
+
+#ifdef HAVE_PTHREAD_H
+# include "../posix.h"
+#endif
 
 Thread::thread_map Thread::_tmap;
 
 bc_mutex_t Thread::_tmap_lock = Thread::init();
 
+/* TODO THE MAIN THREAD CANNOT BE JOINED! */
 #if WIN32
 Thread Thread::_main("main", GetCurrentThreadId());
 #elif HAVE_SYNCH_H
@@ -65,8 +72,7 @@ void* Thread::start_routine(void* args)
 	if (mutex_lock(&_tmap_lock))
 		throw RuntimeException("mutex_lock failed");
 	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_lock(&_tmap_lock))
-		throw RuntimeException("pthread_mutex_lock failed");
+	posixErrorDetector(pthread_mutex_lock(&_tmap_lock), "pthread_mutex_lock failed in Thread::start_routine()");
 	#else
 	# error
 	#endif
@@ -80,8 +86,7 @@ void* Thread::start_routine(void* args)
 	if (mutex_unlock(&_tmap_lock))
 		throw RuntimeException("mutex_unlock failed");
 	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_unlock(&_tmap_lock))
-		throw RuntimeException("pthread_mutex_unlock failed");
+	posixErrorDetector(pthread_mutex_unlock(&_tmap_lock), "pthread_mutex_unlock failed");
 	#else
 	# error
 	#endif
@@ -112,8 +117,7 @@ bc_mutex_t Thread::init()
 	if (mutex_init(&lock, USYNC_THREAD, 0))
 		throw RuntimeException("mutex_init failed");
 	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_init(&lock, 0))
-		throw RuntimeException("pthread_mutex_init failed");
+	posixErrorDetector(pthread_mutex_init(&lock, 0), "pthread_mutex_init failed");
 	#else
 	# error
 	#endif
@@ -134,8 +138,7 @@ Thread* Thread::find(bc_threadid_t id)
 	if (mutex_lock(&_tmap_lock))
 		throw RuntimeException("mutex_lock failed");
 	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_lock(&_tmap_lock))
-		throw RuntimeException("pthread_mutex_lock failed");
+	posixErrorDetector(pthread_mutex_lock(&_tmap_lock), "pthread_mutex_lock failed in Thread::find(bc_threadid_t)");
 	#else
 	# error
 	#endif
@@ -151,8 +154,7 @@ Thread* Thread::find(bc_threadid_t id)
 	if (mutex_unlock(&_tmap_lock))
 		throw RuntimeException("mutex_unlock failed");
 	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_unlock(&_tmap_lock))
-		throw RuntimeException("pthread_mutex_unlock failed");
+	posixErrorDetector(pthread_mutex_unlock(&_tmap_lock), "pthread_mutex_unlock failed");
 	#else
 	# error
 	#endif
@@ -202,7 +204,7 @@ Thread::Thread(const String& name, bc_threadid_t id) : _name(name)
 	_interrupted = false;
 	_state = Thread::RUNNABLE;
 	_monitoring = monitor = Monitor::getInstance();
-	_joiner = Monitor::getInstance();
+	_joiner = 0;
 }
 
 Thread::Thread()
@@ -259,56 +261,58 @@ Thread::Thread(Runnable& target, const String& name, size_t stacksize) : _target
 
 Thread::~Thread()
 {
-	if (!_daemon)
+	/* The main Thread can't have a joiner */
+	if (_joiner)
 	{
-		if (_state != Thread::NEW)
+		if (!_daemon)
 		{
-			join();
+			if (_state != Thread::NEW)
+			{
+				join();
+
+				#if WIN32
+				if (WaitForSingleObject(_tid, INFINITE) != WAIT_OBJECT_0)
+					throw RuntimeException("WaitForSingleObject failed");
+				if (!CloseHandle(_tid))
+					throw RuntimeException("CloseHandle failed");
+				#elif HAVE_THREAD_H
+				if (thr_join(_tid, 0, 0))
+					throw RuntimeException("thr_join failed");
+				#elif HAVE_PTHREAD_H
+				posixErrorDetector(pthread_join(_tid, 0), "pthread_join failed");
+				#endif
+			}
 
 			#if WIN32
-			if (WaitForSingleObject(_thr, INFINITE) != WAIT_OBJECT_0)
+			if (WaitForSingleObject(_tmap_lock, INFINITE) != WAIT_OBJECT_0)
 				throw RuntimeException("WaitForSingleObject failed");
-			if (!CloseHandle(_thr))
-				throw RuntimeException("CloseHandle failed");
-			#elif HAVE_THREAD_H
-			if (thr_join(_tid, 0, 0))
-				throw RuntimeException("thr_join failed");
+			#elif HAVE_SYNCH_H
+			if (mutex_lock(&_tmap_lock))
+				throw RuntimeException("mutex_lock failed");
 			#elif HAVE_PTHREAD_H
-			if (pthread_join(_tid, 0))
-				throw RuntimeException("pthread_join failed");
+			posixErrorDetector(pthread_mutex_lock(&_tmap_lock), "pthread_mutex_lock failed in Thread::~Thread()");
+			#else
+			# error
+			#endif
+
+			_tmap.erase(_tid);
+
+			#if WIN32
+			if (!ReleaseMutex(_tmap_lock))
+				throw RuntimeException("ReleaseMutex failed");
+			#elif HAVE_SYNCH_H
+			if (mutex_unlock(&_tmap_lock))
+				throw RuntimeException("mutex_unlock failed");
+			#elif HAVE_PTHREAD_H
+			posixErrorDetector(pthread_mutex_unlock(&_tmap_lock), "pthread_mutex_unlock failed");
+			#else
+			# error
 			#endif
 		}
 
-		#if WIN32
-		if (WaitForSingleObject(_tmap_lock, INFINITE) != WAIT_OBJECT_0)
-			throw RuntimeException("WaitForSingleObject failed");
-		#elif HAVE_SYNCH_H
-		if (mutex_lock(&_tmap_lock))
-			throw RuntimeException("mutex_lock failed");
-		#elif HAVE_PTHREAD_H
-		if (pthread_mutex_lock(&_tmap_lock))
-			throw RuntimeException("pthread_mutex_lock failed");
-		#else
-		# error
-		#endif
-
-		_tmap.erase(_tid);
-
-		#if WIN32
-		if (!ReleaseMutex(_tmap_lock))
-			throw RuntimeException("ReleaseMutex failed");
-		#elif HAVE_SYNCH_H
-		if (mutex_unlock(&_tmap_lock))
-			throw RuntimeException("mutex_unlock failed");
-		#elif HAVE_PTHREAD_H
-		if (pthread_mutex_unlock(&_tmap_lock))
-			throw RuntimeException("pthread_mutex_unlock failed");
-		#else
-		# error
-		#endif
+		delete _joiner;
+		_joiner = 0;
 	}
-
-	delete _joiner;
 }
 
 void Thread::start() throw (IllegalThreadStateException)
@@ -332,27 +336,26 @@ void Thread::start() throw (IllegalThreadStateException)
 	{
 		pthread_attr_t attr;
 
-		if (pthread_attr_init(&attr))
-			throw RuntimeException("pthread_attr_init failed");
+		posixErrorDetector(pthread_attr_init(&attr), "pthread_attr_init failed");
 
 		if (_stacksize)
-			if (pthread_attr_setstacksize(&attr, _stacksize))
-				throw RuntimeException("pthread_attr_setstacksize failed");
+			posixErrorDetector(pthread_attr_setstacksize(&attr, _stacksize),
+				"pthread_attr_setstacksize failed");
 
 		if (_daemon)
-			if (pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED))
-				throw RuntimeException("pthread_attr_setdetachstate failed");
+			posixErrorDetector(pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED),
+				"pthread_attr_setdetachstate failed");
 
-		if (pthread_create(&_tid, &attr, start_routine, this))
-			throw RuntimeException("pthread_create failed");
+		posixErrorDetector(pthread_create(&_tid, &attr, start_routine, this),
+			"pthread_create failed");
 
-		if (pthread_attr_destroy(&attr))
-			throw RuntimeException("pthread_attr_destroy failed");
+		posixErrorDetector(pthread_attr_destroy(&attr),
+			"pthread_attr_destroy failed");
 	}
 	else
 	{
-		if (pthread_create(&_tid, 0, start_routine, this))
-			throw RuntimeException("pthread_create failed");
+		posixErrorDetector(pthread_create(&_tid, 0, start_routine, this),
+			"pthread_create failed");
 	}
 	# else
 	#  error
@@ -421,6 +424,11 @@ bool Thread::isInterrupted() const throw ()
 
 void Thread::join() throw (InterruptedException)
 {
+	if (_joiner == 0)
+	{
+		throw Error("You cannot join the main thread");
+	}
+
 	monitor->lock();
 	if (_state != Thread::NEW)
 	{

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004 Beeyond Software Holding BV
+ * Copyright (c) 2004 X-Way Rights BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -37,18 +37,10 @@ namespace beecrypt {
 		class NumberFormatException : public IllegalArgumentException
 		{
 		public:
-			inline NumberFormatException()
-			{
-			}
-			inline NumberFormatException(const char* message) : IllegalArgumentException(message)
-			{
-			}
-			inline NumberFormatException(const String* message) : IllegalArgumentException(message)
-			{
-			}
-			inline ~NumberFormatException()
-			{
-			}
+			inline NumberFormatException() {}
+			inline NumberFormatException(const char* message) : IllegalArgumentException(message) {}
+			inline NumberFormatException(const String& message) : IllegalArgumentException(message) {}
+			inline ~NumberFormatException() {}
 		};
 	}
 }

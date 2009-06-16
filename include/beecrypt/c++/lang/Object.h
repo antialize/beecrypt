@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004 Beeyond Software Holding BV
+ * Copyright (c) 2004 X-Way Rights BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -74,37 +74,8 @@ namespace beecrypt {
 				bc_mutex_t            _lock;
 				volatile unsigned int _lock_count;
 
-				inline void internal_state_lock()
-				{
-					#if WIN32
-					if (WaitForSingleObject(_lock, INFINITE) != WAIT_OBJECT_0)
-						throw RuntimeException("WaitForSingleObject failed");
-					#elif HAVE_SYNC_H
-					if (mutex_lock(&_lock))
-						throw RuntimeException("mutex_lock failed");
-					#elif HAVE_PTHREAD_H
-					if (pthread_mutex_lock(&_lock))
-						throw RuntimeException("pthread_mutex_lock failed");
-					#else
-					# error
-					#endif
-				}
-
-				inline void internal_state_unlock()
-				{
-					#if WIN32
-					if (!ReleaseMutex(_lock))
-						throw RuntimeException("ReleaseMutex failed");
-					#elif HAVE_SYNCH_H
-					if (mutex_unlock(&_lock))
-						throw RuntimeException("mutex_unlock failed");
-					#elif HAVE_PTHREAD_H
-					if (pthread_mutex_unlock(&_lock))
-						throw RuntimeException("pthread_mutex_unlock failed");
-					#else
-					# error
-					#endif
-				}
+				void internal_state_lock();
+				void internal_state_unlock();
 
 				Monitor();
 

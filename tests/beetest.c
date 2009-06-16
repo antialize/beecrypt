@@ -3,9 +3,9 @@
  *
  * BeeCrypt test and benchmark application
  *
- * Copyright (c) 1999, 2000, 2001, 2002 Virtual Unlimited B.V.
+ * Copyright (c) 1999, 2000, 2001, 2002 X-Way Rights BV
  *
- * Author: Bob Deblier <bob@virtualunlimited.com>
+ * Author: Bob Deblier <bob.deblier@telenet.be>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

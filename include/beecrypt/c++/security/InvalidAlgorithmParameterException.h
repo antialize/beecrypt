@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004 Beeyond Software Holding BV
+ * Copyright (c) 2004 X-Way Rights BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,21 +35,11 @@ namespace beecrypt {
 		class InvalidAlgorithmParameterException : public GeneralSecurityException
 		{
 		public:
-			inline InvalidAlgorithmParameterException()
-			{
-			}
-			inline InvalidAlgorithmParameterException(const char* message) : GeneralSecurityException(message)
-			{
-			}
-			inline InvalidAlgorithmParameterException(const String* message) : GeneralSecurityException(message)
-			{
-			}
-			inline InvalidAlgorithmParameterException(const Throwable* cause) : GeneralSecurityException(cause)
-			{
-			}
-			inline ~InvalidAlgorithmParameterException()
-			{
-			}
+			inline InvalidAlgorithmParameterException() {}
+			inline InvalidAlgorithmParameterException(const char* message) : GeneralSecurityException(message) {}
+			inline InvalidAlgorithmParameterException(const String& message) : GeneralSecurityException(message) {}
+			inline InvalidAlgorithmParameterException(const Throwable* cause) : GeneralSecurityException(cause) {}
+			inline ~InvalidAlgorithmParameterException() {}
 		};
 	}
 }

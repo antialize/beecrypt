@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004 Beeyond Software Holding BV
+ * Copyright (c) 2004 X-Way Rights BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -38,18 +38,10 @@ namespace beecrypt {
 		class IllegalStateException : public RuntimeException
 		{
 		public:
-			inline IllegalStateException()
-			{
-			}
-			inline IllegalStateException(const char* message) : RuntimeException(message)
-			{
-			}
-			inline IllegalStateException(const String* message) : RuntimeException(message)
-			{
-			}
-			inline ~IllegalStateException()
-			{
-			}
+			inline IllegalStateException() {}
+			inline IllegalStateException(const char* message) : RuntimeException(message) {}
+			inline IllegalStateException(const String& message) : RuntimeException(message) {}
+			inline ~IllegalStateException() {}
 		};
 	}
 }

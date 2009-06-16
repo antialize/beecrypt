@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004 Beeyond Software Holding BV
+ * Copyright (c) 2004 X-Way Rights BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,18 +35,10 @@ namespace beecrypt {
 		class IllegalThreadStateException : public IllegalArgumentException
 		{
 		public:
-			inline IllegalThreadStateException()
-			{
-			}
-			inline IllegalThreadStateException(const char* message) : IllegalArgumentException(message)
-			{
-			}
-			inline IllegalThreadStateException(const String* message) : IllegalArgumentException(message)
-			{
-			}
-			inline ~IllegalThreadStateException()
-			{
-			}
+			inline IllegalThreadStateException() {}
+			inline IllegalThreadStateException(const char* message) : IllegalArgumentException(message) {}
+			inline IllegalThreadStateException(const String& message) : IllegalArgumentException(message) {}
+			inline ~IllegalThreadStateException() {}
 		};
 	}
 }

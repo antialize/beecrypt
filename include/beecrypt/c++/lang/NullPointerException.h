@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004 Beeyond Software Holding BV
+ * Copyright (c) 2004 X-Way Rights BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -37,18 +37,10 @@ namespace beecrypt {
 		class NullPointerException : public RuntimeException
 		{
 		public:
-			inline NullPointerException()
-			{
-			}
-			inline NullPointerException(const char* message) : RuntimeException(message)
-			{
-			}
-			inline NullPointerException(const String* message) : RuntimeException(message)
-			{
-			}
-			inline ~NullPointerException()
-			{
-			}
+			inline NullPointerException() {}
+			inline NullPointerException(const char* message) : RuntimeException(message) {}
+			inline NullPointerException(const String& message) : RuntimeException(message) {}
+			inline ~NullPointerException() {}
 		};
 	}
 }

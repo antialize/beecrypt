@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004 Beeyond Software Holding BV
+ * Copyright (c) 2004 X-Way Rights BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -37,21 +37,11 @@ namespace beecrypt {
 		class GeneralSecurityException : public Exception
 		{
 		public:
-			inline GeneralSecurityException()
-			{
-			}
-			inline GeneralSecurityException(const char* message) : Exception(message)
-			{
-			}
-			inline GeneralSecurityException(const String* message) : Exception(message)
-			{
-			}
-			inline GeneralSecurityException(const Throwable* cause) : Exception(cause)
-			{
-			}
-			inline ~GeneralSecurityException()
-			{
-			}
+			inline GeneralSecurityException() {}
+			inline GeneralSecurityException(const char* message) : Exception(message) {}
+			inline GeneralSecurityException(const String& message) : Exception(message) {}
+			inline GeneralSecurityException(const Throwable* cause) : Exception(cause) {}
+			inline ~GeneralSecurityException() {}
 		};
 	}
 }

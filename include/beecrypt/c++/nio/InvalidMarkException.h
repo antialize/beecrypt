@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004 Beeyond Software Holding BV
+ * Copyright (c) 2004 X-Way Rights BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -36,18 +36,10 @@ namespace beecrypt {
 		class InvalidMarkException : public IllegalStateException
 		{
 		public:
-			inline InvalidMarkException()
-			{
-			}
-			inline InvalidMarkException(const char* message) : IllegalStateException(message)
-			{
-			}
-			inline InvalidMarkException(const String* message) : IllegalStateException(message)
-			{
-			}
-			inline ~InvalidMarkException()
-			{
-			}
+			inline InvalidMarkException() {}
+			inline InvalidMarkException(const char* message) : IllegalStateException(message) {}
+			inline InvalidMarkException(const String& message) : IllegalStateException(message) {}
+			inline ~InvalidMarkException() {}
 		};
 	}
 }

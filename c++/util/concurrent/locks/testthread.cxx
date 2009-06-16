@@ -100,21 +100,30 @@ public:
 
 int main(int argc, char* argv[])
 {
-	Worker a("a");
-	Worker b("b");
+	try
+	{
+		Worker a("a");
+		Worker b("b");
 
-	a.start();
-	a.sleep(100);
-	b.start();
-	b.sleep(100);
-	a.push();
-	a.push();
-	b.push();
-	a.push();
-	a.yield();
-	b.interrupt();
-	a.push();
-	a.yield();
-	a.interrupt();
-	a.yield();
+		a.start();
+		a.sleep(100);
+		b.start();
+		b.sleep(100);
+		a.push();
+		a.push();
+		b.push();
+		a.push();
+		a.yield();
+		b.interrupt();
+		a.push();
+		a.yield();
+		a.interrupt();
+		a.yield();
+		b.join();
+		a.join();
+	}
+	catch (Exception& e)
+	{
+		std::cout << "Exception:" << e.getMessage() << std::endl;
+	}
 }

@@ -26,6 +26,8 @@
 # include <errno.h>
 #endif
 
+#include <string.h>
+
 #include "beecrypt/timestamp.h"
 
 #include "beecrypt/c++/lang/Object.h"
@@ -35,19 +37,69 @@
 #include "beecrypt/c++/lang/CloneNotSupportedException.h"
 #include "beecrypt/c++/lang/IllegalMonitorStateException.h"
 #include "beecrypt/c++/lang/InterruptedException.h"
+#include "beecrypt/c++/lang/StringBuilder.h"
 using namespace beecrypt::lang;
 
 #include <typeinfo>
 
+#if HAVE_PTHREAD_H
+# include "../posix.h"
+#endif
+
 Object::Monitor::Monitor() : _owner(0), _interruptee(0)
 {
+	#if WIN32
+	if (!(_lock = CreateMutex(0, FALSE, 0)))
+		throw Error("CreateMutex failed");
+	#elif HAVE_SYNCH_H
+	if (mutex_init(&_lock, USYNC_THREAD, 0))
+		throw Error("mutex_init failed");
+	#elif HAVE_PTHREAD_H
+	posixErrorDetector(pthread_mutex_init(&_lock, 0), "pthread_mutex_init failed ");
+	#else
+	# error
+	#endif
+	_lock_count = 0;
 }
 
+void Object::Monitor::internal_state_lock()
+{
+	#if WIN32
+	if (WaitForSingleObject(_lock, INFINITE) != WAIT_OBJECT_0)
+		throw RuntimeException("WaitForSingleObject failed");
+	#elif HAVE_SYNCH_H
+	if (mutex_lock(&_lock))
+		throw RuntimeException("mutex_lock failed");
+	#elif HAVE_PTHREAD_H
+	posixErrorDetector(pthread_mutex_lock(&_lock),
+		"pthread_mutex_lock failed in Object::Monitor::internal_state_lock()");
+	#else
+	# error
+	#endif
+}
+
+void Object::Monitor::internal_state_unlock()
+{
+	#if WIN32
+	if (!ReleaseMutex(_lock))
+		throw RuntimeException("ReleaseMutex failed");
+	#elif HAVE_SYNCH_H
+	if (mutex_unlock(&_lock))
+		throw RuntimeException("mutex_unlock failed");
+	#elif HAVE_PTHREAD_H
+	posixErrorDetector(pthread_mutex_unlock(&_lock),
+		"pthread_mutex_unlock failed in Object::Monitor::internal_state_unlock()");
+	#else
+	# error
+	#endif
+}
+    
 bool Object::Monitor::interrupted(bc_threadid_t target)
 {
 	bool result;
 	internal_state_lock();
-	if (result = (_interruptee == target))
+	result = (_interruptee == target);
+	if (result)
 		_interruptee = false;
 	internal_state_unlock();
 	return result;
@@ -82,36 +134,28 @@ Object::Monitor* Object::Monitor::getInstance(bool fair)
 Object::NonfairMonitor::NonfairMonitor()
 {
 	#if WIN32
-	if (!(_lock = CreateMutex(0, FALSE, 0)))
-		throw RuntimeException("CreateMutex failed");
 	if (!(_lock_sig = CreateSemaphore(NULL, 0, 0x7fffffff, NULL)))
-		throw RuntimeException("CreateSemaphore failed");
+		throw Error("CreateSemaphore failed");
 	_lock_sig_all = false;
 	if (!(_lock_sig_all_done = CreateEvent(NULL, FALSE, FALSE, NULL)))
-		throw RuntimeException("CreateEvent failed");
+		throw Error("CreateEvent failed");
 	if (!(_notify_sig = CreateSemaphore(NULL, 0, 0x7fffffff, NULL)))
-		throw RuntimeException("CreateSemaphore failed");
+		throw Error("CreateSemaphore failed");
 	_notify_sig_all = false;
 	if (!(_notify_sig_all_done = CreateEvent(NULL, FALSE, FALSE, NULL)))
-		throw RuntimeException("CreateEvent failed");
+		throw Error("CreateEvent failed");
 	#elif HAVE_SYNCH_H
-	if (mutex_init(&_lock, USYNC_THREAD, 0))
-		throw RuntimeException("mutex_init failed");
 	if (cond_init(&_lock_sig, USYNC_THREAD, 0))
-		throw RuntimeException("cond_init failed");
+		throw Error("cond_init failed");
 	if (cond_init(&_notify_sig, USYNC_THREAD, 0))
-		throw RuntimeException("cond_init failed");
+		throw Error("cond_init failed");
 	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_init(&_lock, 0))
-		throw RuntimeException("pthread_mutex_init failed");
-	if (pthread_cond_init(&_lock_sig, 0))
-		throw RuntimeException("pthread_cond_init failed");
-	if (pthread_cond_init(&_notify_sig, 0))
-		throw RuntimeException("pthread_cond_init failed");
+	posixErrorDetector(pthread_cond_init(&_lock_sig, 0), "pthread_cond_init failed");
+	posixErrorDetector(pthread_cond_init(&_notify_sig, 0), "pthread_cond_init failed");
 	#else
 	# error
 	#endif
-	_lock_count = 0;
+
 	_lock_wthreads = 0;
 	_notify_wthreads = 0;
 }
@@ -120,29 +164,28 @@ Object::NonfairMonitor::~NonfairMonitor()
 {
 	#if WIN32
 	if (!CloseHandle(_lock))
-		throw RuntimeException("CloseHandle failed");
+		throw Error("CloseHandle failed");
 	if (!CloseHandle(_lock_sig))
-		throw RuntimeException("CloseHandle failed");
+		throw Error("CloseHandle failed");
 	if (!CloseHandle(_lock_sig_all_done))
-		throw RuntimeException("CloseHandle failed");
+		throw Error("CloseHandle failed");
 	if (!CloseHandle(_notify_sig))
-		throw RuntimeException("CloseHandle failed");
+		throw Error("CloseHandle failed");
 	if (!CloseHandle(_notify_sig_all_done))
-		throw RuntimeException("CloseHandle failed");
-	#elif HAVE_SYNC_H
+		throw Error("CloseHandle failed");
+	#elif HAVE_SYNCH_H
 	if (mutex_destroy(&_lock))
-		throw RuntimeException("mutex_destroy failed");
+		throw Error("mutex_destroy failed");
 	if (cond_destroy(&_lock_sig))
-		throw RuntimeException("cond_destroy failed");
+		throw Error("cond_destroy failed");
 	if (cond_destroy(&_notify_sig))
-		throw RuntimeException("cond_destroy failed");
+		throw Error("cond_destroy failed");
 	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_destroy(&_lock))
-		throw RuntimeException("pthread_mutex_destroy failed");
-	if (pthread_cond_destroy(&_lock_sig))
-		throw RuntimeException("pthread_cond_destroy failed");
-	if (pthread_cond_destroy(&_notify_sig))
-		throw RuntimeException("pthread_cond_destroy failed");
+	posixErrorDetector(pthread_mutex_lock(&_lock), "pthread_mutex_lock failed in Object::NonfairMonitor::~NonfairMonitor()");
+	posixErrorDetector(pthread_mutex_unlock(&_lock), "pthread_mutex_unlock failed");
+	posixErrorDetector(pthread_mutex_destroy(&_lock), "pthread_mutex_destroy failed");
+	posixErrorDetector(pthread_cond_destroy(&_lock_sig), "pthread_cond_destroy failed");
+	posixErrorDetector(pthread_cond_destroy(&_notify_sig), "pthread_cond_destroy failed");
 	#else
 	# error
 	#endif
@@ -159,13 +202,12 @@ void Object::NonfairMonitor::interrupt(bc_threadid_t target)
 		#if WIN32
 		_notify_sig_all = true;
 		if (!ReleaseSemaphore(_notify_sig, _notify_wthreads, 0))
-			throw RuntimeException("ReleaseSemaphore failed");
+			throw Error("ReleaseSemaphore failed");
 		#elif HAVE_SYNCH_H
 		if (cond_broadcast(&_notify_sig))
-			throw RuntimeException("cond_broadcast failed");
+			throw Error("cond_broadcast failed");
 		#elif HAVE_PTHREAD_H
-		if (pthread_cond_broadcast(&_notify_sig))
-			throw RuntimeException("pthread_cond_broadcast failed");
+		posixErrorDetector(pthread_cond_broadcast(&_notify_sig), "pthread_cond_broadcast failed");
 		#else
 		# error
 		#endif
@@ -211,27 +253,28 @@ void Object::NonfairMonitor::lock()
 				case WAIT_OBJECT_0:
 					break;
 				default:
-					throw RuntimeException("SignalObjectAndWait failed");
+					throw Error("SignalObjectAndWait failed");
 				}
 				if (WaitForSingleObject(_lock, INFINITE) != WAIT_OBJECT_0)
-					throw RuntimeException("WaitForSingleObject failed");
-				#elif HAVE_SYNC_H
+					throw Error("WaitForSingleObject failed");
+				#elif HAVE_SYNCH_H
 				switch (cond_wait(&_lock_sig, &_lock))
 				{
 				case EINTR:
 				case 0:
 					break;
 				default:
-					throw RuntimeException("cond_wait failed");
+					throw Error("cond_wait failed");
 				}
 				#elif HAVE_PTHREAD_H
-				switch (pthread_cond_wait(&_lock_sig, &_lock))
+				int err;
+				switch ((err = pthread_cond_wait(&_lock_sig, &_lock)))
 				{
 				case EINTR:
 				case 0:
 					break;
 				default:
-					throw RuntimeException("pthread_cond_wait failed");
+					posixErrorDetector(err, "pthread_cond_wait failed");
 				}
 				#else
 				# error
@@ -242,13 +285,13 @@ void Object::NonfairMonitor::lock()
 			if (_lock_sig_all && (_lock_wthreads == 0))
 			{
 				if (!ReleaseMutex(_lock))
-					throw RuntimeException("ReleaseMutex failed");
+					throw Error("ReleaseMutex failed");
 				switch (SignalObjectAndWait(_lock_sig_all_done, _lock, INFINITE, FALSE))
 				{
 				case WAIT_OBJECT_0:
 					break;
 				default:
-					throw RuntimeException("SetEvent failed");
+					throw Error("SetEvent failed");
 				}
 			}
 			#endif
@@ -308,11 +351,11 @@ void Object::NonfairMonitor::lockInterruptibly() throw (InterruptedException)
 					case WAIT_OBJECT_0:
 						break;
 					default:
-						throw RuntimeException("SignalObjectAndWait failed");
+						throw Error("SignalObjectAndWait failed");
 					}
 					if (WaitForSingleObject(_lock, INFINITE) != WAIT_OBJECT_0)
-						throw RuntimeException("WaitForSingleObject failed");
-					#elif HAVE_SYNC_H
+						throw Error("WaitForSingleObject failed");
+					#elif HAVE_SYNCH_H
 					switch (cond_wait(&_lock_sig, &_lock))
 					{
 					case EINTR:
@@ -320,17 +363,18 @@ void Object::NonfairMonitor::lockInterruptibly() throw (InterruptedException)
 					case 0:
 						break;
 					default:
-						throw RuntimeException("cond_wait failed");
+						throw Error("cond_wait failed");
 					}
 					#elif HAVE_PTHREAD_H
-					switch (pthread_cond_wait(&_lock_sig, &_lock))
+					int err;
+					switch ((err = pthread_cond_wait(&_lock_sig, &_lock)))
 					{
 					case EINTR:
 						interrupted = true;
 					case 0:
 						break;
 					default:
-						throw RuntimeException("pthread_cond_wait failed");
+						posixErrorDetector(err, "pthread_cond_wait failed");
 					}
 					#else
 					# error
@@ -341,13 +385,13 @@ void Object::NonfairMonitor::lockInterruptibly() throw (InterruptedException)
 				if (_lock_sig_all && (_lock_wthreads == 0))
 				{
 					if (!ReleaseMutex(_lock))
-						throw RuntimeException("ReleaseMutex failed");
+						throw Error("ReleaseMutex failed");
 					switch (SignalObjectAndWait(_lock_sig_all_done, _lock, INFINITE, FALSE))
 					{
 					case WAIT_OBJECT_0:
 						break;
 					default:
-						throw RuntimeException("SetEvent failed");
+						throw Error("SetEvent failed");
 					}
 				}
 				#endif
@@ -384,7 +428,8 @@ bool Object::NonfairMonitor::tryLock()
 
 	if (_lock_count)
 	{
-		if (result = (_owner == self))
+		result = (_owner == self);
+		if (result)
 			if (++_lock_count == 0)
 				throw Error("maximum lock count exceeded");
 	}
@@ -423,13 +468,12 @@ void Object::NonfairMonitor::unlock()
 			{
 				#if WIN32
 				if (!ReleaseSemaphore(_lock_sig, 1, 0))
-					throw RuntimeException("ReleaseSemaphore failed");
+					throw Error("ReleaseSemaphore failed");
 				#elif HAVE_SYNCH_H
 				if (cond_signal(&_lock_sig))
-					throw RuntimeException("cond_signal failed");
+					throw Error("cond_signal failed");
 				#elif HAVE_PTHREAD_H
-				if (pthread_cond_signal(&_lock_sig))
-					throw RuntimeException("pthread_cond_signal failed");
+				posixErrorDetector(pthread_cond_signal(&_lock_sig), "pthread_cond_signal failed");
 				#else
 				# error
 				#endif
@@ -460,19 +504,19 @@ void Object::NonfairMonitor::notify()
 
 	internal_state_lock();
 
-	if (owned = (_owner == self))
+	owned = (_owner == self);
+	if (owned)
 	{
 		if (_notify_wthreads)
 		{
 			#if WIN32
 			if (!ReleaseSemaphore(_notify_sig, 1, 0))
-				throw RuntimeException("ReleaseSemaphore failed");
+				throw Error("ReleaseSemaphore failed");
 			#elif HAVE_SYNCH_H
 			if (cond_signal(&_notify_sig))
-				throw RuntimeException("cond_signal failed");
+				throw Error("cond_signal failed");
 			#elif HAVE_PTHREAD_H
-			if (pthread_cond_signal(&_notify_sig))
-				throw RuntimeException("pthread_cond_signal failed");
+			posixErrorDetector(pthread_cond_signal(&_notify_sig), "pthread_cond_signal failed");
 			#else
 			# error
 			#endif
@@ -501,20 +545,20 @@ void Object::NonfairMonitor::notifyAll()
 
 	internal_state_lock();
 
-	if (owned = (_owner == self))
+	owned = (_owner == self);
+	if (owned)
 	{
 		if (_notify_wthreads)
 		{
 			#if WIN32
 			_notify_sig_all = true;
 			if (!ReleaseSemaphore(_notify_sig, _notify_wthreads, 0))
-				throw RuntimeException("ReleaseSemaphore failed");
+				throw Error("ReleaseSemaphore failed");
 			#elif HAVE_SYNCH_H
 			if (cond_broadcast(&_notify_sig))
-				throw RuntimeException("cond_broadcast failed");
+				throw Error("cond_broadcast failed");
 			#elif HAVE_PTHREAD_H
-			if (pthread_cond_broadcast(&_notify_sig))
-				throw RuntimeException("pthread_cond_broadcast failed");
+			posixErrorDetector(pthread_cond_broadcast(&_notify_sig), "pthread_cond_broadcast failed");
 			#else
 			# error
 			#endif
@@ -564,7 +608,7 @@ void Object::NonfairMonitor::wait(jlong timeout) throw (InterruptedException)
 
 		#if WIN32
 		if (!ReleaseSemaphore(_lock_sig, 1, 0))
-			throw RuntimeException("ReleaseSemaphore failed");
+			throw Error("ReleaseSemaphore failed");
 		switch (SignalObjectAndWait(_lock, _notify_sig, timeout ? timeout : INFINITE, TRUE))
 		{
 		case WAIT_IO_COMPLETION:
@@ -573,15 +617,15 @@ void Object::NonfairMonitor::wait(jlong timeout) throw (InterruptedException)
 		case WAIT_TIMEOUT:
 			break;
 		default:
-			throw RuntimeException("SignalObjectAndWait failed");
+			throw Error("SignalObjectAndWait failed");
 		}
 		if (WaitForSingleObject(_lock, INFINITE) != WAIT_OBJECT_0)
-			throw RuntimeException("WaitForSingleObject failed");
+			throw Error("WaitForSingleObject failed");
 		#else
 		register int rc;
 		# if HAVE_SYNCH_H
 		if (cond_signal(&_lock_sig))
-			throw RuntimeException("cond_signal failed");
+			throw Error("cond_signal failed");
 		if (timeout)
 		{
 			timestruc to;
@@ -594,8 +638,7 @@ void Object::NonfairMonitor::wait(jlong timeout) throw (InterruptedException)
 		else
 			rc = cond_wait(&_notify_sig, &_lock);
 		# elif HAVE_PTHREAD_H
-		if (pthread_cond_signal(&_lock_sig))
-			throw RuntimeException("pthread_cond_signal failed");
+		posixErrorDetector(pthread_cond_signal(&_lock_sig), "pthread_cond_signal failed");
 		if (timeout)
 		{
 			struct timespec to;
@@ -629,14 +672,14 @@ void Object::NonfairMonitor::wait(jlong timeout) throw (InterruptedException)
 		default:
 			# if HAVE_SYNCH_H
 			if (timeout)
-				throw RuntimeException("cond_timedwait failed");
+				throw Error("cond_timedwait failed");
 			else
-				throw RuntimeException("cond_wait failed");
+				throw Error("cond_wait failed");
 			# elif HAVE_PTHREAD_H
 			if (timeout)
-				throw RuntimeException("pthread_cond_timedwait failed");
+				throw Error("pthread_cond_timedwait failed");
 			else
-				throw RuntimeException("pthread_cond_wait failed");
+				throw Error("pthread_cond_wait failed");
 			# else
 			#  error
 			# endif
@@ -659,10 +702,10 @@ void Object::NonfairMonitor::wait(jlong timeout) throw (InterruptedException)
 				case WAIT_OBJECT_0:
 					break;
 				default:
-					throw RuntimeException("SignalObjectAndWait failed");
+					throw Error("SignalObjectAndWait failed");
 				}
 				if (WaitForSingleObject(_lock, INFINITE) != WAIT_OBJECT_0)
-					throw RuntimeException("WaitForSingleObject failed");
+					throw Error("WaitForSingleObject failed");
 				#elif HAVE_SYNCH_H
 				switch (cond_wait(&_lock_sig, &_lock))
 				{
@@ -671,7 +714,7 @@ void Object::NonfairMonitor::wait(jlong timeout) throw (InterruptedException)
 				case 0:
 					break;
 				default:
-					throw RuntimeException("cond_wait failed");
+					throw Error("cond_wait failed");
 				}
 				#elif HAVE_PTHREAD_H
 				switch (pthread_cond_wait(&_lock_sig, &_lock))
@@ -681,7 +724,7 @@ void Object::NonfairMonitor::wait(jlong timeout) throw (InterruptedException)
 				case 0:
 					break;
 				default:
-					throw RuntimeException("pthread_cond_wait failed");
+					throw Error("pthread_cond_wait failed");
 				}
 				#else
 				# error
@@ -695,7 +738,7 @@ void Object::NonfairMonitor::wait(jlong timeout) throw (InterruptedException)
 		#if WIN32
 		if (_notify_sig_all && (_notify_wthreads == 0))
 			if (!SetEvent(_notify_sig_all_done))
-				throw RuntimeException("SetEvent failed");
+				throw Error("SetEvent failed");
 		#endif
 	}
 
@@ -709,13 +752,13 @@ Object::FairMonitor::waiter::waiter(bc_threadid_t owner, unsigned int lock_count
 {
 	#if WIN32
 	if (!(event = CreateEvent(NULL, FALSE, FALSE, NULL)))
-		throw RuntimeException("CreateEvent failed");
+		throw Error("CreateEvent failed");
 	#elif HAVE_THREAD_H
 	if (cond_init(&event, USYNC_THREAD, 0))
-		throw RuntimeException("cond_init failed");
+		throw Error("cond_init failed");
 	#elif HAVE_PTHREAD_H
 	if (pthread_cond_init(&event, 0))
-		throw RuntimeException("pthread_cond_init failed");
+		throw Error("pthread_cond_init failed");
 	#else
 	# error
 	#endif
@@ -727,13 +770,13 @@ Object::FairMonitor::waiter::~waiter()
 {
 	#if WIN32
 	if (!CloseHandle(event))
-		throw RuntimeException("CloseHandle failed");
+		throw Error("CloseHandle failed");
 	#elif HAVE_THREAD_H
 	if (cond_destroy(&event))
-		throw RuntimeException("cond_destroy failed");
+		throw Error("cond_destroy failed");
 	#elif HAVE_PTHREAD_H
 	if (pthread_cond_destroy(&event))
-		throw RuntimeException("pthread_cond_destroy failed");
+		throw Error("pthread_cond_destroy failed");
 	#else
 	# error
 	#endif
@@ -771,13 +814,12 @@ Object::FairMonitor::~FairMonitor()
 
 	#if WIN32
 	if (!CloseHandle(_lock))
-		throw RuntimeException("CloseHandle failed");
+		throw Error("CloseHandle failed");
 	#elif HAVE_SYNCH_H
 	if (mutex_destroy(&_lock))
-		throw RuntimeException("mutex_destroy failed");
+		throw Error("mutex_destroy failed");
 	#elif HAVE_PTHREAD_H
-	if (pthread_mutex_destroy(&_lock))
-		throw RuntimeException("pthread_mutex_destroy failed");
+	posixErrorDetector(pthread_mutex_destroy(&_lock), "pthread_mutex_destroy failed");
 	#else
 	# error
 	#endif
@@ -813,13 +855,13 @@ void Object::FairMonitor::interrupt(bc_threadid_t target)
 
 				#if WIN32
 				if (!SetEvent(tmp->event))
-					throw RuntimeException("SetEvent failed");
+					throw Error("SetEvent failed");
 				#elif HAVE_SYNCH_H
 				if (cond_signal(&tmp->event))
-					throw RuntimeException("cond_signal failed");
+					throw Error("cond_signal failed");
 				#elif HAVE_PTHREAD_H
 				if (pthread_cond_signal(&tmp->event))
-					throw RuntimeException("pthread_cond_signal failed");
+					throw Error("pthread_cond_signal failed");
 				#else
 				# error
 				#endif
@@ -876,18 +918,18 @@ void Object::FairMonitor::lock()
 				case WAIT_OBJECT_0:
 					break;
 				default:
-					throw RuntimeException("SignalObjectAndWait failed");
+					throw Error("SignalObjectAndWait failed");
 				}
 				if (WaitForSingleObject(_lock, INFINITE) != WAIT_OBJECT_0)
-					throw RuntimeException("WaitForSingleObject failed");
+					throw Error("WaitForSingleObject failed");
 				#elif HAVE_SYNCH_H
-				switch (cond_wait(&me->event, &lock))
+				switch (cond_wait(&me->event, &_lock))
 				{
 				case EINTR:
 				case 0:
 					break;
 				default:
-					throw RuntimeException("cond_wait failed");
+					throw Error("cond_wait failed");
 				}
 				#elif HAVE_PTHREAD_H
 				switch (pthread_cond_wait(&me->event, &_lock))
@@ -896,7 +938,7 @@ void Object::FairMonitor::lock()
 				case 0:
 					break;
 				default:
-					throw RuntimeException("pthread_cond_wait failed");
+					throw Error("pthread_cond_wait failed");
 				}
 				#else
 				# error
@@ -969,19 +1011,19 @@ void Object::FairMonitor::lockInterruptibly() throw (InterruptedException)
 					case WAIT_OBJECT_0:
 						break;
 					default:
-						throw RuntimeException("SignalObjectAndWait failed");
+						throw Error("SignalObjectAndWait failed");
 					}
 					if (WaitForSingleObject(_lock, INFINITE) != WAIT_OBJECT_0)
-						throw RuntimeException("WaitForSingleObject failed");
+						throw Error("WaitForSingleObject failed");
 					#elif HAVE_SYNCH_H
-					switch (cond_wait(&me->event, &lock))
+					switch (cond_wait(&me->event, &_lock))
 					{
 					case EINTR:
 						interrupted = true;
 					case 0:
 						break;
 					default:
-						throw RuntimeException("cond_wait failed");
+						throw Error("cond_wait failed");
 					}
 					#elif HAVE_PTHREAD_H
 					switch (pthread_cond_wait(&me->event, &_lock))
@@ -991,7 +1033,7 @@ void Object::FairMonitor::lockInterruptibly() throw (InterruptedException)
 					case 0:
 						break;
 					default:
-						throw RuntimeException("pthread_cond_wait failed");
+						throw Error("pthread_cond_wait failed");
 					}
 					#else
 					# error
@@ -1033,7 +1075,8 @@ bool Object::FairMonitor::tryLock()
 
 	if (_lock_count)
 	{
-		if (result = (_owner == self))
+		result = (_owner == self);
+		if (result)
 			if (++_lock_count == 0)
 				throw Error("maximum lock count exceeded");
 	}
@@ -1064,7 +1107,8 @@ void Object::FairMonitor::unlock()
 
 	internal_state_lock();
 
-	if (owned = (_owner == self))
+	owned = (_owner == self);
+	if (owned)
 	{
 		if (!--_lock_count)
 		{
@@ -1075,13 +1119,13 @@ void Object::FairMonitor::unlock()
 
 				#if WIN32
 				if (!SetEvent(_lock_head->event))
-					throw RuntimeException("SetEvent failed");
+					throw Error("SetEvent failed");
 				#elif HAVE_SYNCH_H
 				if (cond_signal(&_lock_head->event))
-					throw RuntimeException("cond_signal failed");
+					throw Error("cond_signal failed");
 				#elif HAVE_PTHREAD_H
 				if (pthread_cond_signal(&_lock_head->event))
-					throw RuntimeException("pthread_cond_signal failed");
+					throw Error("pthread_cond_signal failed");
 				#else
 				# error
 				#endif
@@ -1121,7 +1165,8 @@ void Object::FairMonitor::notify()
 
 	internal_state_lock();
 
-	if (owned = (_owner == self))
+	owned = (_owner == self);
+	if (owned)
 	{
 		if (_notify_head)
 		{
@@ -1130,13 +1175,13 @@ void Object::FairMonitor::notify()
 
 			#if WIN32
 			if (!SetEvent(&target->event))
-				throw RuntimeException("SetEvent failed");
+				throw Error("SetEvent failed");
 			#elif HAVE_SYNCH_H
 			if (cond_signal(&target->event))
-				throw RuntimeException("cond_signal failed");
+				throw Error("cond_signal failed");
 			#elif HAVE_PTHREAD_H
 			if (pthread_cond_signal(&target->event))
-				throw RuntimeException("pthread_cond_signal failed");
+				throw Error("pthread_cond_signal failed");
 			#else
 			# error
 			#endif
@@ -1178,7 +1223,8 @@ void Object::FairMonitor::notifyAll()
 
 	internal_state_lock();
 
-	if (owned = (_owner == self))
+	owned = (_owner == self);
+	if (owned)
 	{
 		if (_notify_head)
 		{
@@ -1188,13 +1234,13 @@ void Object::FairMonitor::notifyAll()
 
 				#if WIN32
 				if (!SetEvent(target->event))
-					throw RuntimeException("SetEvent failed");
+					throw Error("SetEvent failed");
 				#elif HAVE_SYNCH_H
 				if (cond_signal(&target->event))
-					throw RuntimeException("cond_signal failed");
+					throw Error("cond_signal failed");
 				#elif HAVE_PTHREAD_H
 				if (pthread_cond_signal(&target->event))
-					throw RuntimeException("pthread_cond_signal failed");
+					throw Error("pthread_cond_signal failed");
 				#else
 				# error
 				#endif
@@ -1266,13 +1312,13 @@ void Object::FairMonitor::wait(jlong timeout) throw (InterruptedException)
 
 			#if WIN32
 			if (!SetEvent(_lock_head->event))
-				throw RuntimeException("SetEvent failed");
+				throw Error("SetEvent failed");
 			#elif HAVE_SYNCH_H
 			if (cond_signal(&_lock_head->event))
-				throw RuntimeException("cond_signal failed");
+				throw Error("cond_signal failed");
 			#elif HAVE_PTHREAD_H
 			if (pthread_cond_signal(&_lock_head->event))
-				throw RuntimeException("pthread_cond_signal failed");
+				throw Error("pthread_cond_signal failed");
 			#else
 			# error
 			#endif
@@ -1353,14 +1399,14 @@ void Object::FairMonitor::wait(jlong timeout) throw (InterruptedException)
 		default:
 			# if HAVE_SYNCH_H
 			if (timeout)
-				throw RuntimeException("cond_reltimedwait failed");
+				throw Error("cond_reltimedwait failed");
 			else
-				throw RuntimeException("cond_wait failed");
+				throw Error("cond_wait failed");
 			# elif HAVE_PTHREAD_H
 			if (timeout)
-				throw RuntimeException("pthread_cond_timedwait failed");
+				throw Error("pthread_cond_timedwait failed");
 			else
-				throw RuntimeException("pthread_cond_wait failed");
+				throw Error("pthread_cond_wait failed");
 			# else
 			#  error
 			# endif
@@ -1411,18 +1457,17 @@ bc_mutex_t Object::init()
 {
 	bc_mutex_t tmp;
 
-    #if WIN32
-    if (!(tmp = CreateMutex(NULL, FALSE, NULL)))
-        throw RuntimeException("CreateMutex failed");
-    #elif HAVE_SYNCH_H
-    if (mutex_init(&tmp, USYNC_THREAD, 0))
-        throw RuntimeException("mutex_init failed");
-    #elif HAVE_PTHREAD_H
-    if (pthread_mutex_init(&tmp, 0))
-        throw RuntimeException("pthread_mutex_init failed");
-    #else
-    # error
-    #endif
+	#if WIN32
+	if (!(tmp = CreateMutex(NULL, FALSE, NULL)))
+		throw Error("CreateMutex failed");
+	#elif HAVE_SYNCH_H
+	if (mutex_init(&tmp, USYNC_THREAD, 0))
+		throw Error("mutex_init failed");
+	#elif HAVE_PTHREAD_H
+	posixErrorDetector(pthread_mutex_init(&tmp, 0), "pthread_mutex_init failed");
+	#else
+	# error
+	#endif
 
 	return tmp;
 }
@@ -1434,6 +1479,7 @@ Object::Object() : _ref_count(0), monitor(0)
 Object::~Object()
 {
 	delete monitor;
+	monitor = 0;
 }
 
 Object* Object::clone() const throw (CloneNotSupportedException)
@@ -1465,29 +1511,30 @@ void Object::lock() const
 		// lazy initialization of the notifier
 		#if WIN32
 		if (WaitForSingleObject(_init_lock, INFINITE) != WAIT_OBJECT_0)
-			throw RuntimeException("WaitForSingleObject failed");
+			throw Error("WaitForSingleObject failed");
 		#elif HAVE_SYNCH_H
 		if (mutex_lock(&_init_lock))
-			throw RuntimeException("mutex_lock failed");
+			throw Error("mutex_lock failed");
 		#elif HAVE_PTHREAD_H
-		if (pthread_mutex_lock(&_init_lock))
-			throw RuntimeException("pthread_mutex_lock failed");
+		posixErrorDetector(pthread_mutex_lock(&_init_lock),
+			"pthread_mutex_lock failed in Object::lock()");
 		#else
 		# error
 		#endif
 
 		if (!monitor)
+		{
 			monitor = Monitor::getInstance();
+		}
 
 		#if WIN32
 		if (!ReleaseMutex(_init_lock))
-			throw RuntimeException("ReleaseMutex failed");
+			throw Error("ReleaseMutex failed");
 		#elif HAVE_SYNCH_H
 		if (mutex_unlock(&_init_lock))
-			throw RuntimeException("mutex_unlock failed");
+			throw Error("mutex_unlock failed");
 		#elif HAVE_PTHREAD_H
-		if (pthread_mutex_unlock(&_init_lock))
-			throw RuntimeException("pthread_mutex_unlock failed");
+		posixErrorDetector(pthread_mutex_unlock(&_init_lock), "pthread_mutex_unlock failed");
 		#else
 		# error
 		#endif
@@ -1591,33 +1638,32 @@ void Object::wait(jlong timeout) const throw (InterruptedException)
 
 String Object::toString() const throw ()
 {
-	return String(typeid(*this).name()) + "@" + Integer::toHexString(hashCode());
+	return StringBuilder(typeid(*this).name()).append('@').append(Integer::toHexString(hashCode())).toString();
 }
 
 
 void beecrypt::lang::collection_attach(Object* obj) throw ()
 {
 	assert(obj != 0);
-
-    obj->_ref_count++;
+	obj->_ref_count++;
 }
 
 void beecrypt::lang::collection_detach(Object* obj) throw ()
 {
 	assert(obj != 0);
-    obj->_ref_count--;
+	obj->_ref_count--;
 }
 
 void beecrypt::lang::collection_remove(Object* obj) throw ()
 {
 	assert(obj != 0);
-    if (--obj->_ref_count == 0)
-        delete obj;
+	if (--obj->_ref_count == 0)
+		delete obj;
 }
 
 void beecrypt::lang::collection_rcheck(Object* obj) throw ()
 {
 	assert(obj != 0);
-    if (obj->_ref_count == 0)
-        delete obj;
+	if (obj->_ref_count == 0)
+		delete obj;
 }

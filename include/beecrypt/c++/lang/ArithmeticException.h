@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005 Beeyond Software Holding BV
+ * Copyright (c) 2005 X-Way Rights BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,18 +35,10 @@ namespace beecrypt {
 		class ArithmeticException : public RuntimeException
 		{
 		public:
-			inline ArithmeticException()
-			{
-			}
-			inline ArithmeticException(const char* message) : RuntimeException(message)
-			{
-			}
-			inline ArithmeticException(const String* message) : RuntimeException(message)
-			{
-			}
-			inline ~ArithmeticException()
-			{
-			}
+			inline ArithmeticException() {}
+			inline ArithmeticException(const char* message) : RuntimeException(message) {}
+			inline ArithmeticException(const String& message) : RuntimeException(message) {}
+			inline ~ArithmeticException() {}
 		};
 	}
 }

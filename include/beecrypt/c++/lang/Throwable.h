@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004 Beeyond Software Holding BV
+ * Copyright (c) 2004 X-Way Rights BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,9 +29,8 @@
 
 namespace beecrypt {
 	namespace lang {
-		/* forward declaration
-		 */
-		class BEECRYPTCXXAPI String;
+		class String;
+
 		/*!\brief This class is the superclass of all errors and exceptions
 		 *        used by the BeeCrypt C++ API
 		 * \ingroup CXX_LANG_m
@@ -39,13 +38,14 @@ namespace beecrypt {
 		class BEECRYPTCXXAPI Throwable
 		{
 		private:
-			String* _msg;
+			      String* _msg;
 			const Throwable* _cause;
 
 		public:
 			Throwable();
 			Throwable(const char* message);
-			Throwable(const String* message);
+		//	Throwable(const String* message);
+			Throwable(const String& message);
 			Throwable(const String* message, const Throwable* cause);
 			Throwable(const Throwable* cause);
 			~Throwable();

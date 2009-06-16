@@ -109,10 +109,14 @@ void Date::setTime(jlong time) throw ()
 
 String Date::toString() const throw ()
 {
+	String result;
+
 	if (!format)
 		format = DateFormat::createDateTimeInstance();
 
 	UnicodeString tmp;
 
-	return String(format->format((UDate) _time, tmp));
+	result = format->format((UDate) _time, tmp);
+
+	return result;
 }

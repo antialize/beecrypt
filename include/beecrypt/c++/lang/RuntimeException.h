@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004 Beeyond Software Holding BV
+ * Copyright (c) 2004 X-Way Rights BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -37,21 +37,11 @@ namespace beecrypt {
 		class RuntimeException : public Exception
 		{
 		public:
-			inline RuntimeException()
-			{
-			}
-			inline RuntimeException(const char* message) : Exception(message)
-			{
-			}
-			inline RuntimeException(const String* message) : Exception(message)
-			{
-			}
-			inline RuntimeException(const Throwable* cause) : Exception(cause)
-			{
-			}
-			inline ~RuntimeException()
-			{
-			}
+			inline RuntimeException() {}
+			inline RuntimeException(const char* message) : Exception(message) {}
+			inline RuntimeException(const String& message) : Exception(message) {}
+			inline RuntimeException(const Throwable* cause) : Exception(cause) {}
+			inline ~RuntimeException() {}
 		};
 	}
 }

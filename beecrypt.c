@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2000, 2001, 2002, 2004 Beeyond Software Holding BV
+ * Copyright (c) 1999, 2000, 2001, 2002, 2004 X-Way Rights BV
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
