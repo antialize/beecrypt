@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2003, 2005 Beeyond Software Holding BV
+# Copyright (c) 2003, 2005 X-Way Rights BV
 #
 # Author: Bob Deblier <bob.deblier@telenet.be>
 #
