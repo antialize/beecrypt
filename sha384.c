@@ -37,7 +37,7 @@
 #endif
 
 #include "beecrypt/sha384.h"
-#include "beecrypt/sha_k.h"
+#include "beecrypt/sha2k64.h"
 #include "beecrypt/endianness.h"
 
 /*!\addtogroup HASH_sha384_m

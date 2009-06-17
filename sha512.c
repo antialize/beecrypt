@@ -37,7 +37,7 @@
 #endif
 
 #include "beecrypt/sha512.h"
-#include "beecrypt/sha_k.h"
+#include "beecrypt/sha2k64.h"
 #include "beecrypt/endianness.h"
 
 /*!\addtogroup HASH_sha512_m
