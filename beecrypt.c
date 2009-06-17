@@ -36,6 +36,8 @@
 #include "beecrypt/mtprng.h"
 
 #include "beecrypt/md5.h"
+#include "beecrypt/ripemd128.h"
+#include "beecrypt/ripemd160.h"
 #include "beecrypt/sha1.h"
 #include "beecrypt/sha224.h"
 #include "beecrypt/sha256.h"
@@ -247,6 +249,8 @@ int randomGeneratorContextSeed(randomGeneratorContext* ctxt, const byte* data, s
 static const hashFunction* hashFunctionList[] =
 {
 	&md5,
+	&ripemd128,
+	&ripemd160,
 	&sha1,
 	&sha224,
 	&sha256,
@@ -833,10 +837,6 @@ int blockCipherContextSetIV(blockCipherContext* ctxt, const byte* iv)
 
 int blockCipherContextSetCTR(blockCipherContext* ctxt, const byte* nivz, size_t counter)
 {
-	register unsigned int blocksize, blockwords;
-	register uint32_t* fdback;
-	register int i;
-
 	if (ctxt == (blockCipherContext*) 0)
 		return -1;
 

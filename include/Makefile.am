@@ -36,6 +36,8 @@ beecrypt/mpprime.h \
 beecrypt/mtprng.h \
 beecrypt/pkcs12.h \
 beecrypt/pkcs1.h \
+beecrypt/ripemd128.h \
+beecrypt/ripemd160.h \
 beecrypt/rsa.h \
 beecrypt/rsakp.h \
 beecrypt/rsapk.h \
