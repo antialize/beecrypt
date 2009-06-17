@@ -37,12 +37,14 @@
 
 #include "beecrypt/md5.h"
 #include "beecrypt/sha1.h"
+#include "beecrypt/sha224.h"
 #include "beecrypt/sha256.h"
 #include "beecrypt/sha384.h"
 #include "beecrypt/sha512.h"
 
 #include "beecrypt/hmacmd5.h"
 #include "beecrypt/hmacsha1.h"
+#include "beecrypt/hmacsha224.h"
 #include "beecrypt/hmacsha256.h"
 #include "beecrypt/hmacsha384.h"
 #include "beecrypt/hmacsha512.h"
@@ -246,6 +248,7 @@ static const hashFunction* hashFunctionList[] =
 {
 	&md5,
 	&sha1,
+	&sha224,
 	&sha256,
 	&sha384,
 	&sha512
@@ -480,6 +483,7 @@ static const keyedHashFunction* keyedHashFunctionList[] =
 {
 	&hmacmd5,
 	&hmacsha1,
+	&hmacsha224,
 	&hmacsha256,
 	&hmacsha384,
 	&hmacsha512
