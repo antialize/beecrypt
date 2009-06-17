@@ -14,4 +14,4 @@ TESTS = testbigint
 check_PROGRAMS = testbigint
 
 testbigint_SOURCES = testbigint.cxx
-testbigint_LDADD = ../libbeecrypt_cxx.la ../../libbeecrypt.la -lefence
+testbigint_LDADD = ../libbeecrypt_cxx.la ../../libbeecrypt.la
