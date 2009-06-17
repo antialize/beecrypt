@@ -15,30 +15,30 @@
  *
  */
 
-/*!\file ripemd160.h
- * \brief RIPEMD-1160 hash function, headers.
+/*!\file ripemd256.h
+ * \brief RIPEMD-1128 hash function, headers.
  * \author Jeff Johnson <jbj@rpm5.org>
  * \author Bob Deblier <bob.deblier@telenet.be>
- * \ingroup HASH_m HASH_ripemd160_m
+ * \ingroup HASH_m HASH_ripemd256_m
  */
 
-#ifndef _RIPEMD160_H
-#define _RIPEMD160_H
+#ifndef _RIPEMD256_H
+#define _RIPEMD256_H
 
 #include "beecrypt/beecrypt.h"
 
-/*!\brief Holds all the parameters necessary for the RIPEMD-160 algorithm.
- * \ingroup HASH_ripemd160_m
+/*!\brief Holds all the parameters necessary for the RIPEMD-128 algorithm.
+ * \ingroup HASH_ripemd256_m
  */
 #ifdef __cplusplus
-struct BEECRYPTAPI ripemd160Param
+struct BEECRYPTAPI ripemd256Param
 #else
-struct _ripemd160Param
+struct _ripemd256Param
 #endif
 {
 	/*!\var h
 	 */
-	uint32_t h[5];
+	uint32_t h[8];
 	/*!\var data
 	 */
 	uint32_t data[16];
@@ -61,36 +61,36 @@ struct _ripemd160Param
 };
 
 #ifndef __cplusplus
-typedef struct _ripemd160Param ripemd160Param;
+typedef struct _ripemd256Param ripemd256Param;
 #endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/*!\var ripemd160
- * \brief Holds the full API description of the RIPEMD-160 algorithm.
+/*!\var ripemd256
+ * \brief Holds the full API description of the RIPEMD-128 algorithm.
  */
-extern BEECRYPTAPI const hashFunction ripemd160;
+extern BEECRYPTAPI const hashFunction ripemd256;
 
-/*!\fn void ripemd160Process(ripemd160Param* mp)
- * \brief This function performs the core of the RIPEMD-160 hash algorithm; it
+/*!\fn void ripemd256Process(ripemd256Param* mp)
+ * \brief This function performs the core of the RIPEMD-128 hash algorithm; it
  *  processes a block of 64 bytes.
  * \param mp The hash function's parameter block.
  */
 BEECRYPTAPI
-void ripemd160Process(ripemd160Param* mp);
+void ripemd256Process(ripemd256Param* mp);
 
-/*!\fn int ripemd160Reset(ripemd160Param* mp)
+/*!\fn int ripemd256Reset(ripemd256Param* mp)
  * \brief This function resets the parameter block so that it's ready for a
  *  new hash.
  * \param mp The hash function's parameter block.
  * \retval 0 on success. 
  */
 BEECRYPTAPI
-int  ripemd160Reset  (ripemd160Param* mp);
+int  ripemd256Reset  (ripemd256Param* mp);
 
-/*!\fn int ripemd160Update(ripemd160Param* mp, const byte* data, size_t size)
+/*!\fn int ripemd256Update(ripemd256Param* mp, const byte* data, size_t size)
  * \brief This function should be used to pass successive blocks of data 
  *  to be hashed.
  * \param mp The hash function's parameter block.
@@ -99,9 +99,9 @@ int  ripemd160Reset  (ripemd160Param* mp);
  * \retval 0 on success.
  */
 BEECRYPTAPI
-int  ripemd160Update (ripemd160Param* mp, const byte* data, size_t size);
+int  ripemd256Update (ripemd256Param* mp, const byte* data, size_t size);
 
-/*!\fn int ripemd160Digest(ripemd160Param* mp, byte* digest)
+/*!\fn int ripemd256Digest(ripemd256Param* mp, byte* digest)
  * \brief This function finishes the current hash computation and copies
  *  the digest value into \a digest.
  * \param mp The hash function's parameter block.
@@ -109,7 +109,7 @@ int  ripemd160Update (ripemd160Param* mp, const byte* data, size_t size);
  * \retval 0 on success.
  */
 BEECRYPTAPI
-int  ripemd160Digest (ripemd160Param* mp, byte* digest);
+int  ripemd256Digest (ripemd256Param* mp, byte* digest);
 
 #ifdef __cplusplus
 }

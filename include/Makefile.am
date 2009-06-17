@@ -38,6 +38,8 @@ beecrypt/pkcs12.h \
 beecrypt/pkcs1.h \
 beecrypt/ripemd128.h \
 beecrypt/ripemd160.h \
+beecrypt/ripemd256.h \
+beecrypt/ripemd320.h \
 beecrypt/rsa.h \
 beecrypt/rsakp.h \
 beecrypt/rsapk.h \
