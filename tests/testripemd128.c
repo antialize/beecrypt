@@ -18,7 +18,7 @@
  */
 
 /*!\file testripemd128.c
- * \brief Unit test program for the RIPEMD-160 algorithm.
+ * \brief Unit test program for the RIPEMD-128 algorithm.
  * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup UNIT_m
  */
