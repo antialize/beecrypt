@@ -38,6 +38,8 @@
 #include "beecrypt/md5.h"
 #include "beecrypt/ripemd128.h"
 #include "beecrypt/ripemd160.h"
+#include "beecrypt/ripemd256.h"
+#include "beecrypt/ripemd320.h"
 #include "beecrypt/sha1.h"
 #include "beecrypt/sha224.h"
 #include "beecrypt/sha256.h"
@@ -251,6 +253,8 @@ static const hashFunction* hashFunctionList[] =
 	&md5,
 	&ripemd128,
 	&ripemd160,
+	&ripemd256,
+	&ripemd320,
 	&sha1,
 	&sha224,
 	&sha256,
