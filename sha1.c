@@ -30,11 +30,6 @@
 #endif
 
 #include "beecrypt/sha1.h"
-
-#if HAVE_ENDIAN_H && HAVE_ASM_BYTEORDER_H
-# include <endian.h>
-#endif
-
 #include "beecrypt/endianness.h"
 
 /*!\addtogroup HASH_sha1_m
@@ -213,12 +208,12 @@ int sha1Update(sha1Param* sp, const byte* data, size_t size)
 	mpw add[1];
 	mpsetw(1, add, size);
 	mplshift(1, add, 3);
-	mpadd(1, sp->length, add);
+	(void) mpadd(1, sp->length, add);
 	#elif (MP_WBITS == 32)
 	mpw add[2];
 	mpsetw(2, add, size);
 	mplshift(2, add, 3);
-	mpadd(2, sp->length, add);
+	(void) mpadd(2, sp->length, add);
 	#else
 	# error
 	#endif
@@ -231,7 +226,7 @@ int sha1Update(sha1Param* sp, const byte* data, size_t size)
 		data += proclength;
 		sp->offset += proclength;
 
-		if (sp->offset == 64)
+		if (sp->offset == 64U)
 		{
 			sha1Process(sp);
 			sp->offset = 0;
