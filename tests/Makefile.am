@@ -27,13 +27,15 @@ INCLUDES = -I$(top_srcdir)/include
 
 LDADD = $(top_builddir)/libbeecrypt.la
 
-TESTS = testmd5 testsha1 testsha256 testsha384 testsha512 testhmacmd5 testhmacsha1 testaes testblowfish testmp testmpinv testdsa testrsa testrsacrt testdldp testelgamal
+TESTS = testmd5 testsha1 testsha224 testsha256 testsha384 testsha512 testhmacmd5 testhmacsha1 testaes testblowfish testmp testmpinv testdsa testrsa testrsacrt testdldp testelgamal
 
-check_PROGRAMS = testmd5 testsha1 testsha256 testsha384 testsha512 testhmacmd5 testhmacsha1 testaes testblowfish testmp testmpinv testdsa testrsa testrsacrt testdldp testelgamal
+check_PROGRAMS = testmd5 testsha1 testsha224 testsha256 testsha384 testsha512 testhmacmd5 testhmacsha1 testaes testblowfish testmp testmpinv testdsa testrsa testrsacrt testdldp testelgamal
 
 testmd5_SOURCES = testmd5.c
 
 testsha1_SOURCES = testsha1.c
+
+testsha224_SOURCES = testsha224.c
 
 testsha256_SOURCES = testsha256.c
 
