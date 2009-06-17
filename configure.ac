@@ -2,9 +2,9 @@
 
 AC_INIT([beecrypt],[4.2.0],[bob.deblier@telenet.be])
 AC_CANONICAL_TARGET
-AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR(include/beecrypt/beecrypt.h)
 AC_CONFIG_HEADERS([config.h])
+AM_INIT_AUTOMAKE
 
 # Checks for AWK - used by expert mode
 AC_PROG_AWK
