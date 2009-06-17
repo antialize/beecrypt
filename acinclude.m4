@@ -1393,7 +1393,6 @@ AC_DEFUN([BEE_ASM_ALIGN],[
 dnl  BEE_ASM_SOURCES
 AC_DEFUN([BEE_ASM_SOURCES],[
   echo > mpopt.s
-  echo > aesopt.s
   echo > blowfishopt.s
   echo > sha1opt.s
   if test "$ac_enable_debug" != yes; then
@@ -1415,9 +1414,6 @@ AC_DEFUN([BEE_ASM_SOURCES],[
       ;;
     i[[3456]]86 | pentium* | \
     athlon*)
-      AC_CONFIG_COMMANDS([aesopt.x86],[
-        m4 $srcdir/gas/aesopt.x86.m4 > aesopt.s
-        ])
       AC_CONFIG_COMMANDS([mpopt.x86],[
         m4 $srcdir/gas/mpopt.x86.m4 > mpopt.s
         ])
