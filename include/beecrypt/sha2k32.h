@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004 X-Way Rights BV
+ * Copyright (c) 2009 Bob Deblier
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,14 +17,14 @@
  *
  */
 
-/*!\file sha_k.h
- * \brief SHA-512 and SHA-384 shared constants, headers.
+/*!\file sha2k32.h
+ * \brief SHA-256 and SHA-224 shared constants, headers.
  * \author Bob Deblier <bob.deblier@telenet.be>
- * \ingroup HASH_sha512_m HASH_sha384_m
+ * \ingroup HASH_sha256_m HASH_sha224_m
  */
 
-#ifndef _SHA_K_H
-#define _SHA_K_H
+#ifndef _SHA2K32_H
+#define _SHA2K32_H
 
 #include "beecrypt/beecrypt.h"
 
@@ -32,7 +32,7 @@
 extern "C" {
 #endif
 
-extern BEECRYPTAPI const uint64_t SHA2_64BIT_K[80];
+extern BEECRYPTAPI const uint32_t SHA2_32BIT_K[64];
 
 #ifdef __cplusplus
 }

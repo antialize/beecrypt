@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000, 2001 X-Way Rights BV
+ * Copyright (c) 2009 Bob Deblier
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,10 +17,10 @@
  *
  */
 
-/*!\file sha256.c
- * \brief SHA-256 hash function, as specified by NIST DFIPS 180-2.
+/*!\file sha224.c
+ * \brief SHA-2224hash function, as specified by IETF RFC-3874.
  * \author Bob Deblier <bob.deblier@telenet.be>
- * \ingroup HASH_m HASH_sha256_m
+ * \ingroup HASH_m HASH_sha224_m
  */
  
 #define BEECRYPT_DLL_EXPORT
@@ -29,21 +29,21 @@
 # include "config.h"
 #endif
 
-#include "beecrypt/sha256.h"
+#include "beecrypt/sha224.h"
 #include "beecrypt/sha2k32.h"
 #include "beecrypt/endianness.h"
 
-/*!\addtogroup HASH_sha256_m
+/*!\addtogroup HASH_sha224_m
  * \{
  */
 
 static const uint32_t hinit[8] = {
-	0x6a09e667U, 0xbb67ae85U, 0x3c6ef372U, 0xa54ff53aU, 0x510e527fU, 0x9b05688cU, 0x1f83d9abU, 0x5be0cd19U
+	0xc1059ed8U, 0x367cd507U, 0x3070dd17U, 0xf70e5939U, 0xffc00b31U, 0x68581511U, 0x64f98fa7U, 0xbefa4fa4U
 };
 
-const hashFunction sha256 = { "SHA-256", sizeof(sha256Param), 64, 32, (hashFunctionReset) sha256Reset, (hashFunctionUpdate) sha256Update, (hashFunctionDigest) sha256Digest };
+const hashFunction sha224 = { "SHA-224", sizeof(sha224Param), 64, 24, (hashFunctionReset) sha224Reset, (hashFunctionUpdate) sha224Update, (hashFunctionDigest) sha224Digest };
 
-int sha256Reset(register sha256Param* sp)
+int sha224Reset(register sha224Param* sp)
 {
 	memcpy(sp->h, hinit, 8 * sizeof(uint32_t));
 	memset(sp->data, 0, 64 * sizeof(uint32_t));
@@ -73,8 +73,8 @@ int sha256Reset(register sha256Param* sp)
 	h = temp + SIG0(a) + MAJ(a,b,c);	\
 	d += temp
 
-#ifndef ASM_SHA256PROCESS
-void sha256Process(register sha256Param* sp)
+#ifndef ASM_SHA224PROCESS
+void sha224Process(register sha224Param* sp)
 {
 	register uint32_t a, b, c, d, e, f, g, h, temp;
 	register       uint32_t *w;
@@ -183,7 +183,7 @@ void sha256Process(register sha256Param* sp)
 }
 #endif
 
-int sha256Update(register sha256Param* sp, const byte* data, size_t size)
+int sha224Update(register sha224Param* sp, const byte* data, size_t size)
 {
 	register uint32_t proclength;
 
@@ -211,14 +211,14 @@ int sha256Update(register sha256Param* sp, const byte* data, size_t size)
 
 		if (sp->offset == 64U)
 		{
-			sha256Process(sp);
+			sha224Process(sp);
 			sp->offset = 0;
 		}
 	}
 	return 0;
 }
 
-static void sha256Finish(register sha256Param* sp)
+static void sha224Finish(register sha224Param* sp)
 {
 	register byte *ptr = ((byte *) sp->data) + sp->offset++;
 
@@ -229,7 +229,7 @@ static void sha256Finish(register sha256Param* sp)
 		while (sp->offset++ < 64)
 			*(ptr++) = 0;
 
-		sha256Process(sp);
+		sha224Process(sp);
 		sp->offset = 0;
 	}
 
@@ -259,13 +259,13 @@ static void sha256Finish(register sha256Param* sp)
 	# error
 	#endif
 
-	sha256Process(sp);
+	sha224Process(sp);
 	sp->offset = 0;
 }
 
-int sha256Digest(register sha256Param* sp, byte* data)
+int sha224Digest(register sha224Param* sp, byte* data)
 {
-	sha256Finish(sp);
+	sha224Finish(sp);
 
 	/* encode 8 integers big-endian style */
 	data[ 0] = (byte)(sp->h[0] >> 24);
@@ -296,12 +296,8 @@ int sha256Digest(register sha256Param* sp, byte* data)
 	data[25] = (byte)(sp->h[6] >> 16);
 	data[26] = (byte)(sp->h[6] >>  8);
 	data[27] = (byte)(sp->h[6] >>  0);
-	data[28] = (byte)(sp->h[7] >> 24);
-	data[29] = (byte)(sp->h[7] >> 16);
-	data[30] = (byte)(sp->h[7] >>  8);
-	data[31] = (byte)(sp->h[7] >>  0);
 
-	sha256Reset(sp);
+	sha224Reset(sp);
 	return 0;
 }
 

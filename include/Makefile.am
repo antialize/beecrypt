@@ -22,6 +22,7 @@ beecrypt/gnu.h \
 beecrypt/hmac.h \
 beecrypt/hmacmd5.h \
 beecrypt/hmacsha1.h \
+beecrypt/hmacsha224.h \
 beecrypt/hmacsha256.h \
 beecrypt/hmacsha384.h \
 beecrypt/hmacsha512.h \
@@ -40,10 +41,12 @@ beecrypt/rsakp.h \
 beecrypt/rsapk.h \
 beecrypt/sha1.h \
 beecrypt/sha1opt.h \
+beecrypt/sha224.h \
 beecrypt/sha256.h \
 beecrypt/sha384.h \
 beecrypt/sha512.h \
-beecrypt/sha_k.h \
+beecrypt/sha2k32.h \
+beecrypt/sha2k64.h \
 beecrypt/timestamp.h \
 beecrypt/win.h \
 \

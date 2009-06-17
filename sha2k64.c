@@ -16,7 +16,7 @@
  *
  */
 
-/*!\file sha512k.c
+/*!\file sha2k64.c
  * \brief SHA-512 and SHA-384 hash function constants, as specified by NIST FIPS 180-2.
  * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup HASH_sha512_m HASH_sha_384_m
@@ -28,7 +28,7 @@
 # include "config.h"
 #endif
 
-#include "beecrypt/sha_k.h"
+#include "beecrypt/sha2k64.h"
 
 const uint64_t SHA2_64BIT_K[80] = {
 	#if (SIZEOF_UNSIGNED_LONG == 8) || !HAVE_UNSIGNED_LONG_LONG
