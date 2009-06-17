@@ -17,6 +17,13 @@
  *
  */
 
+const uint32_t _aes_mask[4] = {
+	0x000000ff,
+	0x0000ff00,
+	0x00ff0000,
+	0xff000000
+};
+
 typedef struct
 {
 	#if defined(OPTIMIZE_MMX) && (defined(OPTIMIZE_I586) || defined(OPTIMIZE_I686))
@@ -356,11 +363,19 @@ const _table _aes_enc = {
 		0xb0b0b0b0, 0x54545454, 0xbbbbbbbb, 0x16161616 }
 };
 
-#define _ae0 _aes_enc.t0
-#define _ae1 _aes_enc.t1
-#define _ae2 _aes_enc.t2
-#define _ae3 _aes_enc.t3
-#define _ae4 _aes_enc.t4
+#if defined(OPTIMIZE_MMX) && (defined(OPTIMIZE_I586) || defined(OPTIMIZE_I686))
+# define _ae0 ((__m64*) _aes_enc.t0)
+# define _ae1 ((__m64*) _aes_enc.t1)
+# define _ae2 ((__m64*) _aes_enc.t2)
+# define _ae3 ((__m64*) _aes_enc.t3)
+# define _ae4 _aes_enc.t4
+#else
+# define _ae0 _aes_enc.t0
+# define _ae1 _aes_enc.t1
+# define _ae2 _aes_enc.t2
+# define _ae3 _aes_enc.t3
+# define _ae4 _aes_enc.t4
+#endif
 
 const _table _aes_dec = {
 	{	0x50a7f451, 0x5365417e, 0xc3a4171a, 0x965e273a,
@@ -697,7 +712,42 @@ static const uint32_t _arc[] = {
     0x0000001b, 0x00000036
 };
 
-#define etfs(i) \
+#if defined(OPTIMIZE_MMX) && (defined(OPTIMIZE_I586) || defined(OPTIMIZE_I686))
+# define etfs(i) \
+	i0 = _mm_cvtsi64_si32(s0); \
+	i1 = _mm_cvtsi64_si32(s1); \
+	i2 = _mm_cvtsi64_si32(s2); \
+	i3 = _mm_cvtsi64_si32(s3); \
+	t0 = _mm_xor_si64( \
+			_mm_xor_si64( \
+				_mm_xor_si64(_ae0[(i0      ) & 0xff], \
+						 	 _ae1[(i1 >>  8) & 0xff]), \
+				_mm_xor_si64(_ae2[(i2 >> 16) & 0xff], \
+						 	 _ae3[(i3 >> 24)       ]) \
+			), _mm_cvtsi32_si64(rk[i+0])); \
+	t1 = _mm_xor_si64( \
+			_mm_xor_si64( \
+				_mm_xor_si64(_ae0[(i1      ) & 0xff], \
+						 	 _ae1[(i2 >>  8) & 0xff]), \
+				_mm_xor_si64(_ae2[(i3 >> 16) & 0xff], \
+						 	 _ae3[(i0 >> 24)       ]) \
+			), _mm_cvtsi32_si64(rk[i+1])); \
+	t2 = _mm_xor_si64( \
+			_mm_xor_si64( \
+				_mm_xor_si64(_ae0[(i2      ) & 0xff], \
+						 	 _ae1[(i3 >>  8) & 0xff]), \
+				_mm_xor_si64(_ae2[(i0 >> 16) & 0xff], \
+						 	  _ae3[(i1 >> 24)       ]) \
+			), _mm_cvtsi32_si64(rk[i+2])); \
+	t3 = _mm_xor_si64( \
+			_mm_xor_si64( \
+				_mm_xor_si64(_ae0[(i3      ) & 0xff], \
+						 	 _ae1[(i0 >>  8) & 0xff]), \
+				_mm_xor_si64(_ae2[(i1 >> 16) & 0xff], \
+						 	 _ae3[(i2 >> 24)       ]) \
+			), _mm_cvtsi32_si64(rk[i+3]));
+#else
+# define etfs(i) \
 	t0 = \
 		_ae0[(s0      ) & 0xff] ^ \
 		_ae1[(s1 >>  8) & 0xff] ^ \
@@ -722,8 +772,44 @@ static const uint32_t _arc[] = {
 		_ae2[(s1 >> 16) & 0xff] ^ \
 		_ae3[(s2 >> 24)       ] ^ \
 		rk[i+3];
+#endif
 
-#define esft(i) \
+#if defined(OPTIMIZE_MMX) && (defined(OPTIMIZE_I586) || defined(OPTIMIZE_I686))
+# define esft(i) \
+	i0 = _mm_cvtsi64_si32(t0); \
+	i1 = _mm_cvtsi64_si32(t1); \
+	i2 = _mm_cvtsi64_si32(t2); \
+	i3 = _mm_cvtsi64_si32(t3); \
+	s0 = _mm_xor_si64( \
+			_mm_xor_si64( \
+				_mm_xor_si64(_ae0[(i0      ) & 0xff], \
+						 	 _ae1[(i1 >>  8) & 0xff]), \
+				_mm_xor_si64(_ae2[(i2 >> 16) & 0xff], \
+						 	 _ae3[(i3 >> 24)       ]) \
+			), _mm_cvtsi32_si64(rk[i+0])); \
+	s1 = _mm_xor_si64( \
+			_mm_xor_si64( \
+				_mm_xor_si64(_ae0[(i1      ) & 0xff], \
+						 	 _ae1[(i2 >>  8) & 0xff]), \
+				_mm_xor_si64(_ae2[(i3 >> 16) & 0xff], \
+						 	 _ae3[(i0 >> 24)       ]) \
+			), _mm_cvtsi32_si64(rk[i+1])); \
+	s2 = _mm_xor_si64( \
+			_mm_xor_si64( \
+				_mm_xor_si64(_ae0[(i2      ) & 0xff], \
+						 	 _ae1[(i3 >>  8) & 0xff]), \
+				_mm_xor_si64(_ae2[(i0 >> 16) & 0xff], \
+						 	 _ae3[(i1 >> 24)       ]) \
+			), _mm_cvtsi32_si64(rk[i+2])); \
+	s3 = _mm_xor_si64( \
+			_mm_xor_si64( \
+				_mm_xor_si64(_ae0[(i3      ) & 0xff], \
+						 	 _ae1[(i0 >>  8) & 0xff]), \
+				_mm_xor_si64(_ae2[(i1 >> 16) & 0xff], \
+						 	 _ae3[(i2 >> 24)       ]) \
+			), _mm_cvtsi32_si64(rk[i+3]));
+#else
+# define esft(i) \
 	s0 = \
 		_ae0[(t0      ) & 0xff] ^ \
 		_ae1[(t1 >>  8) & 0xff] ^ \
@@ -748,32 +834,65 @@ static const uint32_t _arc[] = {
 		_ae2[(t1 >> 16) & 0xff] ^ \
 		_ae3[(t2 >> 24)       ] ^ \
 		rk[i+3];
+#endif
 
-#define elr() \
+#if defined(OPTIMIZE_MMX) && (defined(OPTIMIZE_I586) || defined(OPTIMIZE_I686))
+# define elr() \
+	i0 = _mm_cvtsi64_si32(t0); \
+	i1 = _mm_cvtsi64_si32(t1); \
+	i2 = _mm_cvtsi64_si32(t2); \
+	i3 = _mm_cvtsi64_si32(t3); \
+	s0 = _mm_cvtsi32_si64( \
+		(_ae4[(i0      ) & 0xff] & _aes_mask[0]) ^ \
+		(_ae4[(i1 >>  8) & 0xff] & _aes_mask[1]) ^ \
+		(_ae4[(i2 >> 16) & 0xff] & _aes_mask[2]) ^ \
+		(_ae4[(i3 >> 24)       ] & _aes_mask[3]) ^ \
+		rk[0]); \
+	s1 = _mm_cvtsi32_si64( \
+		(_ae4[(i1      ) & 0xff] & _aes_mask[0]) ^ \
+		(_ae4[(i2 >>  8) & 0xff] & _aes_mask[1]) ^ \
+		(_ae4[(i3 >> 16) & 0xff] & _aes_mask[2]) ^ \
+		(_ae4[(i0 >> 24)       ] & _aes_mask[3]) ^ \
+		rk[1]); \
+	s2 = _mm_cvtsi32_si64( \
+		(_ae4[(i2      ) & 0xff] & _aes_mask[0]) ^ \
+		(_ae4[(i3 >>  8) & 0xff] & _aes_mask[1]) ^ \
+		(_ae4[(i0 >> 16) & 0xff] & _aes_mask[2]) ^ \
+		(_ae4[(i1 >> 24)       ] & _aes_mask[3]) ^ \
+		rk[2]); \
+	s3 = _mm_cvtsi32_si64( \
+		(_ae4[(i3      ) & 0xff] & _aes_mask[0]) ^ \
+		(_ae4[(i0 >>  8) & 0xff] & _aes_mask[1]) ^ \
+		(_ae4[(i1 >> 16) & 0xff] & _aes_mask[2]) ^ \
+		(_ae4[(i2 >> 24)       ] & _aes_mask[3]) ^ \
+		rk[3]);
+#else
+# define elr() \
 	s0 = \
-		(_ae4[(t0      ) & 0xff] & 0x000000ff) ^ \
-		(_ae4[(t1 >>  8) & 0xff] & 0x0000ff00) ^ \
-		(_ae4[(t2 >> 16) & 0xff] & 0x00ff0000) ^ \
-		(_ae4[(t3 >> 24)       ] & 0xff000000) ^ \
+		(_ae4[(t0      ) & 0xff] & _aes_mask[0]) ^ \
+		(_ae4[(t1 >>  8) & 0xff] & _aes_mask[1]) ^ \
+		(_ae4[(t2 >> 16) & 0xff] & _aes_mask[2]) ^ \
+		(_ae4[(t3 >> 24)       ] & _aes_mask[3]) ^ \
 		rk[0]; \
 	s1 = \
-		(_ae4[(t1      ) & 0xff] & 0x000000ff) ^ \
-		(_ae4[(t2 >>  8) & 0xff] & 0x0000ff00) ^ \
-		(_ae4[(t3 >> 16) & 0xff] & 0x00ff0000) ^ \
-		(_ae4[(t0 >> 24)       ] & 0xff000000) ^ \
+		(_ae4[(t1      ) & 0xff] & _aes_mask[0]) ^ \
+		(_ae4[(t2 >>  8) & 0xff] & _aes_mask[1]) ^ \
+		(_ae4[(t3 >> 16) & 0xff] & _aes_mask[2]) ^ \
+		(_ae4[(t0 >> 24)       ] & _aes_mask[3]) ^ \
 		rk[1]; \
 	s2 = \
-		(_ae4[(t2      ) & 0xff] & 0x000000ff) ^ \
-		(_ae4[(t3 >>  8) & 0xff] & 0x0000ff00) ^ \
-		(_ae4[(t0 >> 16) & 0xff] & 0x00ff0000) ^ \
-		(_ae4[(t1 >> 24)       ] & 0xff000000) ^ \
+		(_ae4[(t2      ) & 0xff] & _aes_mask[0]) ^ \
+		(_ae4[(t3 >>  8) & 0xff] & _aes_mask[1]) ^ \
+		(_ae4[(t0 >> 16) & 0xff] & _aes_mask[2]) ^ \
+		(_ae4[(t1 >> 24)       ] & _aes_mask[3]) ^ \
 		rk[2]; \
 	s3 = \
-		(_ae4[(t3      ) & 0xff] & 0x000000ff) ^ \
-		(_ae4[(t0 >>  8) & 0xff] & 0x0000ff00) ^ \
-		(_ae4[(t1 >> 16) & 0xff] & 0x00ff0000) ^ \
-		(_ae4[(t2 >> 24)       ] & 0xff000000) ^ \
+		(_ae4[(t3      ) & 0xff] & _aes_mask[0]) ^ \
+		(_ae4[(t0 >>  8) & 0xff] & _aes_mask[1]) ^ \
+		(_ae4[(t1 >> 16) & 0xff] & _aes_mask[2]) ^ \
+		(_ae4[(t2 >> 24)       ] & _aes_mask[3]) ^ \
 		rk[3];
+#endif
 
 #define dtfs(i) \
 	t0 = \

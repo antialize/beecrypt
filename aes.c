@@ -33,6 +33,10 @@
 # include "config.h"
 #endif
 
+#ifdef OPTIMIZE_MMX
+# include <mmintrin.h>
+#endif
+
 #include "beecrypt/aes.h"
 
 #if defined(BYTE_ORDER) && defined(BIG_ENDIAN) && defined(LITTLE_ENDIAN)
@@ -349,14 +353,27 @@ int aesSetCTR(aesParam* ap, const byte* nivz, size_t counter)
 #ifndef ASM_AESENCRYPT
 int aesEncrypt(aesParam* ap, uint32_t* dst, const uint32_t* src)
 {
+	#if defined (OPTIMIZE_MMX) && (defined(OPTIMIZE_I586) || defined(OPTIMIZE_I686))
+	register __m64 s0, s1, s2, s3;
+	register __m64 t0, t1, t2, t3;
+	register uint32_t i0, i1, i2, i3;
+	#else
 	register uint32_t s0, s1, s2, s3;
 	register uint32_t t0, t1, t2, t3;
+	#endif
 	register uint32_t* rk = ap->k;
 
+	#if defined (OPTIMIZE_MMX) && (defined(OPTIMIZE_I586) || defined(OPTIMIZE_I686))
+	s0 = _mm_cvtsi32_si64(src[0] ^ rk[0]);
+	s1 = _mm_cvtsi32_si64(src[1] ^ rk[1]);
+	s2 = _mm_cvtsi32_si64(src[2] ^ rk[2]);
+	s3 = _mm_cvtsi32_si64(src[3] ^ rk[3]);
+	#else
 	s0 = src[0] ^ rk[0];
 	s1 = src[1] ^ rk[1];
 	s2 = src[2] ^ rk[2];
 	s3 = src[3] ^ rk[3];
+	#endif
 
 	etfs(4);		/* round 1 */
 	esft(8);		/* round 2 */
@@ -383,10 +400,17 @@ int aesEncrypt(aesParam* ap, uint32_t* dst, const uint32_t* src)
 
 	elr(); /* last round */
 
+	#if defined(OPTIMIZE_MMX) && (defined(OPTIMIZE_I586) || defined(OPTIMIZE_I686))
+	dst[0] = _mm_cvtsi64_si32(s0);
+	dst[1] = _mm_cvtsi64_si32(s1);
+	dst[2] = _mm_cvtsi64_si32(s2);
+	dst[3] = _mm_cvtsi64_si32(s3);
+	#else
 	dst[0] = s0;
 	dst[1] = s1;
 	dst[2] = s2;
 	dst[3] = s3;
+	#endif
 
 	return 0;
 }
