@@ -79,6 +79,10 @@ int main()
 					failures++;
 				}
 
+				mpnfree(&hm);
+				mpnfree(&r);
+				mpnfree(&s);
+
 				dlkp_pFree(&keypair);
 			}
 

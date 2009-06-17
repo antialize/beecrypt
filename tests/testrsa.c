@@ -101,7 +101,13 @@ int main()
 		if (mpnex(m.size, m.data, decipher.size, decipher.data))
 			failures++;
 
+		mpnfree(&m);
+		mpnfree(&decipher);
+		mpnfree(&cipher);
+
 		rsakpFree(&keypair);
+
+		randomGeneratorContextFree(&rngc);
 	}
 	return failures;
 }
