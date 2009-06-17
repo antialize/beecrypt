@@ -36,7 +36,7 @@
  */
 
 /*@unchecked@*/ /*@observer@*/
-static uint32_t ripemd128hinit[5] =
+static uint32_t ripemd128hinit[4] =
 	{ 0x67452301U, 0xefcdab89U, 0x98badcfeU, 0x10325476U };
 
 /*@-sizeoftype@*/
@@ -357,7 +357,7 @@ int ripemd128Digest(ripemd128Param* mp, byte* data)
 {
         ripemd128Finish(mp);
 
-        /* encode 5 integers little-endian style */
+        /* encode 4 integers little-endian style */
         data[ 0] = (byte)(mp->h[0]      );
         data[ 1] = (byte)(mp->h[0] >>  8);
         data[ 2] = (byte)(mp->h[0] >> 16);
@@ -374,10 +374,6 @@ int ripemd128Digest(ripemd128Param* mp, byte* data)
         data[13] = (byte)(mp->h[3] >>  8);
         data[14] = (byte)(mp->h[3] >> 16);
         data[15] = (byte)(mp->h[3] >> 24);
-        data[16] = (byte)(mp->h[4]      );
-        data[17] = (byte)(mp->h[4] >>  8);
-        data[18] = (byte)(mp->h[4] >> 16);
-        data[19] = (byte)(mp->h[4] >> 24);
 
         (void) ripemd128Reset(mp);
 
