@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003 Bob Deblier
+ * Copyright (c) 2003, 2009 Bob Deblier
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,14 @@
 
 #ifndef _BEECRYPT_GNU_H
 #define _BEECRYPT_GNU_H
+
+#if __MINGW32__
+# define _REENTRANT
+# if !defined(_WIN32_WINNT)
+#  define _WIN32_WINNT 0x0400
+# endif
+# include <windows.h>
+#endif
 
 @INCLUDE_INTTYPES_H@
 @INCLUDE_STDINT_H@
