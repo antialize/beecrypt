@@ -560,7 +560,7 @@ AC_DEFUN([BEE_GNU_CC],[
       case $bc_target_cpu in
       athlon64 | athlon-fx | k8 | opteron)
         # CFLAGS="$CFLAGS -mtune=k8"
-		# -O3 degrades performance
+        # -O3 degrades performance
         # -mcpu=athlon64 degrades performance
         ;;
       alpha*)
@@ -610,7 +610,7 @@ AC_DEFUN([BEE_GNU_CC],[
       athlon64)
         CFLAGS="$CFLAGS -march=k8"
         # -march=athlon64 degrades performance
-		# -msse2 also doesn't help
+        # -msse2 also doesn't help
         ;;
       athlon*)
         CFLAGS="$CFLAGS -march=$bc_target_arch -mmmx"
@@ -1230,6 +1230,7 @@ AC_DEFUN([BEE_OS_DEFS],[
   AH_TEMPLATE([FREEBSD],[Define to 1 if you are using FreeBSD])
   AH_TEMPLATE([HPUX],[Define to 1 if you are using HPUX])
   AH_TEMPLATE([LINUX],[Define to 1 if you are using GNU/Linux])
+  AH_TEMPLATE([MINGW],[Define to 1 if you are using MinGW])
   AH_TEMPLATE([NETBSD],[Define to 1 if you are using NetBSD])
   AH_TEMPLATE([OPENBSD],[Define to 1 if you are using OpenBSD])
   AH_TEMPLATE([OSF],[Define to 1 if you are using OSF])
@@ -1261,6 +1262,10 @@ AC_DEFUN([BEE_OS_DEFS],[
       ;;
     linux*)
       AC_DEFINE([LINUX])
+      ;;
+    mingw*)
+      AC_DEFINE([MINGW])
+      AC_DEFINE([WIN32])
       ;;
     netbsd*)
       AC_DEFINE([NETBSD])
@@ -1324,8 +1329,10 @@ AC_DEFUN([BEE_ASM_GLOBL],[
   AC_CACHE_CHECK([how to declare a global symbol],
     bc_cv_asm_globl,[
       case $target_os in
-      hpux*) bc_cv_asm_globl=".export" ;;
-      *)     bc_cv_asm_globl=".globl" ;;
+      hpux*)
+        bc_cv_asm_globl=".export" ;;
+      *)
+        bc_cv_asm_globl=".globl" ;;
       esac
     ])
   AC_SUBST(ASM_GLOBL,$bc_cv_asm_globl)
@@ -1337,8 +1344,10 @@ AC_DEFUN([BEE_ASM_GSYM_PREFIX],[
   AC_CACHE_CHECK([if global symbols need leading underscore],
     bc_cv_asm_gsym_prefix,[
       case $target_os in
-      cygwin* | darwin*) bc_cv_asm_gsym_prefix="_" ;;
-      *)                 bc_cv_asm_gsym_prefix="" ;;
+      cygwin* | mingw* | darwin*)
+        bc_cv_asm_gsym_prefix="_" ;;
+      *)
+        bc_cv_asm_gsym_prefix="" ;;
       esac
     ])
   AC_SUBST(ASM_GSYM_PREFIX,$bc_cv_asm_gsym_prefix)
@@ -1553,7 +1562,17 @@ AC_DEFUN([BEE_MULTITHREAD],[
           ;;
         esac
       else
-        AC_MSG_WARN([Don't know which thread library to check for])
+        case $target_os in
+        mingw*)
+          bc_typedef_bc_cond_t="typedef HANDLE bc_cond_t;"
+          bc_typedef_bc_mutex_t="typedef HANDLE bc_mutex_t;"
+          bc_typedef_bc_thread_t="typedef HANDLE bc_thread_t;"
+          bc_typedef_bc_threadid_t="typedef DWORD bc_threadid_t;"
+          ;;
+        *)
+          AC_MSG_WARN([Don't know which thread library to check for])
+          ;;
+        esac
       fi
     fi
   fi

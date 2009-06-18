@@ -468,7 +468,7 @@ fi
 AC_MSG_CHECKING([for platform-specific entropy devices])
 AC_MSG_RESULT()
 case $target_os in
-cygwin*)
+cygwin* | mingw*)
   AC_MSG_CHECKING([for wavein])
   AC_MSG_RESULT(yes)
   AC_MSG_CHECKING([for wincrypt])
@@ -506,7 +506,7 @@ solaris*)
 esac
 
 case $target_os in
-cygwin*)
+cygwin* | mingw*)
   ;;
 *)
   AC_MSG_CHECKING([for generic entropy devices])
