@@ -41,7 +41,15 @@ static const uint32_t hinit[8] = {
 	0x6a09e667U, 0xbb67ae85U, 0x3c6ef372U, 0xa54ff53aU, 0x510e527fU, 0x9b05688cU, 0x1f83d9abU, 0x5be0cd19U
 };
 
-const hashFunction sha256 = { "SHA-256", sizeof(sha256Param), 64, 32, (hashFunctionReset) sha256Reset, (hashFunctionUpdate) sha256Update, (hashFunctionDigest) sha256Digest };
+const hashFunction sha256 = {
+	.name = "SHA-256",
+	.paramsize = sizeof(sha256Param),
+	.blocksize = 64,
+	.digestsize = 32,
+	.reset = (hashFunctionReset) sha256Reset,
+	.update = (hashFunctionUpdate) sha256Update,
+	.digest = (hashFunctionDigest) sha256Digest
+};
 
 int sha256Reset(register sha256Param* sp)
 {

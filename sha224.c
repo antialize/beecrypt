@@ -18,7 +18,7 @@
  */
 
 /*!\file sha224.c
- * \brief SHA-2224hash function, as specified by IETF RFC-3874.
+ * \brief SHA-224 hash function, as specified by IETF RFC-3874.
  * \author Bob Deblier <bob.deblier@telenet.be>
  * \ingroup HASH_m HASH_sha224_m
  */
@@ -41,7 +41,15 @@ static const uint32_t hinit[8] = {
 	0xc1059ed8U, 0x367cd507U, 0x3070dd17U, 0xf70e5939U, 0xffc00b31U, 0x68581511U, 0x64f98fa7U, 0xbefa4fa4U
 };
 
-const hashFunction sha224 = { "SHA-224", sizeof(sha224Param), 64, 24, (hashFunctionReset) sha224Reset, (hashFunctionUpdate) sha224Update, (hashFunctionDigest) sha224Digest };
+const hashFunction sha224 = {
+	.name = "SHA-224",
+	.paramsize = sizeof(sha224Param),
+	.blocksize = 64,
+	.digestsize = 24,
+	.reset = (hashFunctionReset) sha224Reset,
+	.update = (hashFunctionUpdate) sha224Update,
+	.digest = (hashFunctionDigest) sha224Digest
+};
 
 int sha224Reset(register sha224Param* sp)
 {

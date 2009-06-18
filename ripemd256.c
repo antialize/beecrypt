@@ -36,20 +36,21 @@
  */
 
 /*@unchecked@*/ /*@observer@*/
-static uint32_t ripemd256hinit[8] =
-	{ 0x67452301U, 0xefcdab89U, 0x98badcfeU, 0x10325476U,
-	  0x76543210U, 0xfedcba98U, 0x89abcdefU, 0x01234567U };
+static uint32_t ripemd256hinit[8] = {
+	0x67452301U, 0xefcdab89U, 0x98badcfeU, 0x10325476U,
+	0x76543210U, 0xfedcba98U, 0x89abcdefU, 0x01234567U
+};
 
 /*@-sizeoftype@*/
 /*@unchecked@*/ /*@observer@*/
 const hashFunction ripemd256 = {
-	"RIPEMD-256",
-	sizeof(ripemd256Param),
-	64,
-	32,
-	(hashFunctionReset) ripemd256Reset,
-	(hashFunctionUpdate) ripemd256Update,
-	(hashFunctionDigest) ripemd256Digest
+	.name = "RIPEMD-256",
+	.paramsize = sizeof(ripemd256Param),
+	.blocksize = 64,
+	.digestsize = 32,
+	.reset = (hashFunctionReset) ripemd256Reset,
+	.update = (hashFunctionUpdate) ripemd256Update,
+	.digest = (hashFunctionDigest) ripemd256Digest
 };
 /*@=sizeoftype@*/
 

@@ -36,19 +36,20 @@
  */
 
 /*@unchecked@*/ /*@observer@*/
-static uint32_t ripemd160hinit[5] =
-	{ 0x67452301U, 0xefcdab89U, 0x98badcfeU, 0x10325476U, 0xc3d2e1f0U };
+static uint32_t ripemd160hinit[5] = {
+	0x67452301U, 0xefcdab89U, 0x98badcfeU, 0x10325476U, 0xc3d2e1f0U
+};
 
 /*@-sizeoftype@*/
 /*@unchecked@*/ /*@observer@*/
 const hashFunction ripemd160 = {
-	"RIPEMD-160",
-	sizeof(ripemd160Param),
-	64,
-	20,
-	(hashFunctionReset) ripemd160Reset,
-	(hashFunctionUpdate) ripemd160Update,
-	(hashFunctionDigest) ripemd160Digest
+	.name = "RIPEMD-160",
+	.paramsize = sizeof(ripemd160Param),
+	.blocksize = 64,
+	.digestsize = 20,
+	.reset = (hashFunctionReset) ripemd160Reset,
+	.update = (hashFunctionUpdate) ripemd160Update,
+	.digest = (hashFunctionDigest) ripemd160Digest
 };
 /*@=sizeoftype@*/
 

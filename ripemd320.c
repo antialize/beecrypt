@@ -36,20 +36,21 @@
  */
 
 /*@unchecked@*/ /*@observer@*/
-static uint32_t ripemd320hinit[10] =
-	{ 0x67452301U, 0xefcdab89U, 0x98badcfeU, 0x10325476U, 0xc3d2e1f0U,
-	  0x76543210U, 0xfedcba98U, 0x89abcdefU, 0x01234567U, 0x3c2d1e0fU };
+static uint32_t ripemd320hinit[10] = {
+	0x67452301U, 0xefcdab89U, 0x98badcfeU, 0x10325476U, 0xc3d2e1f0U,
+	0x76543210U, 0xfedcba98U, 0x89abcdefU, 0x01234567U, 0x3c2d1e0fU
+};
 
 /*@-sizeoftype@*/
 /*@unchecked@*/ /*@observer@*/
 const hashFunction ripemd320 = {
-	"RIPEMD-320",
-	sizeof(ripemd320Param),
-	64,
-	40,
-	(hashFunctionReset) ripemd320Reset,
-	(hashFunctionUpdate) ripemd320Update,
-	(hashFunctionDigest) ripemd320Digest
+	.name = "RIPEMD-320",
+	.paramsize = sizeof(ripemd320Param),
+	.blocksize = 64,
+	.digestsize = 40,
+	.reset = (hashFunctionReset) ripemd320Reset,
+	.update = (hashFunctionUpdate) ripemd320Update,
+	.digest = (hashFunctionDigest) ripemd320Digest
 };
 /*@=sizeoftype@*/
 

@@ -66,7 +66,15 @@ static const uint64_t hinit[8] = {
 	#endif
 };
 
-const hashFunction sha512 = { "SHA-512", sizeof(sha512Param), 128, 64, (hashFunctionReset) sha512Reset, (hashFunctionUpdate) sha512Update, (hashFunctionDigest) sha512Digest };
+const hashFunction sha512 = {
+	.name = "SHA-512",
+	.paramsize = sizeof(sha512Param),
+	.blocksize = 128,
+	.digestsize = 64,
+	.reset = (hashFunctionReset) sha512Reset,
+	.update = (hashFunctionUpdate) sha512Update,
+	.digest = (hashFunctionDigest) sha512Digest
+};
 
 int sha512Reset(register sha512Param* sp)
 {
