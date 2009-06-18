@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2003 Bob Deblier
+ * Copyright (c) 2002, 2003, 2009 Bob Deblier
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -76,58 +76,58 @@ extern int aesDecryptCTR(aesParam*, uint32_t*, const uint32_t*, unsigned int);
 #endif
 
 const blockCipher aes = {
-	"AES",
-	sizeof(aesParam),
-	16,
-	128,
-	256,
-	64,
-	(blockCipherSetup) aesSetup,
-	(blockCipherSetIV) aesSetIV,
-	(blockCipherSetCTR) aesSetCTR,
-	(blockCipherFeedback) aesFeedback,
-	/* raw */
+	.name = "AES",
+	.paramsize = sizeof(aesParam),
+	.blocksize = 16,
+	.keybitsmin = 128,
+	.keybitsmax = 256,
+	.keybitsinc = 64,
+	.setup = (blockCipherSetup) aesSetup,
+	.setiv = (blockCipherSetIV) aesSetIV,
+	.setctr = (blockCipherSetCTR) aesSetCTR,
+	.getfb = (blockCipherFeedback) aesFeedback,
+	.raw =
 	{
-		(blockCipherRawcrypt) aesEncrypt,
-		(blockCipherRawcrypt) aesDecrypt
+		.encrypt = (blockCipherRawcrypt) aesEncrypt,
+		.decrypt = (blockCipherRawcrypt) aesDecrypt
 	},
-	/* ecb */
+	.ecb =
 	{
 		#ifdef ASM_AESENCRYPTECB
-		(blockCipherModcrypt) aesEncryptECB,
+		.encrypt = (blockCipherModcrypt) aesEncryptECB,
 		#else
-		(blockCipherModcrypt) 0,
+		.encrypt = (blockCipherModcrypt) 0,
 		#endif
 		#ifdef ASM_AESDECRYPTECB
-		(blockCipherModcrypt) aesDecryptECB,
+		.decrypt = (blockCipherModcrypt) aesDecryptECB,
 		#else
-		(blockCipherModcrypt) 0,
+		.decrypt = (blockCipherModcrypt) 0,
 		#endif
 	},
-	/* cbc */
+	.cbc =
 	{
 		#ifdef ASM_AESENCRYPTCBC
-		(blockCipherModcrypt) aesEncryptCBC,
+		.encrypt = (blockCipherModcrypt) aesEncryptCBC,
 		#else
-		(blockCipherModcrypt) 0,
+		.encrypt = (blockCipherModcrypt) 0,
 		#endif
 		#ifdef ASM_AESDECRYPTCBC
-		(blockCipherModcrypt) aesDecryptCBC,
+		.decrypt = (blockCipherModcrypt) aesDecryptCBC,
 		#else
-		(blockCipherModcrypt) 0
+		.decrypt = (blockCipherModcrypt) 0
 		#endif
 	},
-	/* ctr */
+	.ctr =
 	{
 		#ifdef ASM_AESENCRYPTCTR
-		(blockCipherModcrypt) aesEncryptCTR,
+		.encrypt = (blockCipherModcrypt) aesEncryptCTR,
 		#else
-		(blockCipherModcrypt) 0,
+		.encrypt = (blockCipherModcrypt) 0,
 		#endif
 		#ifdef ASM_AESDECRYPTCTR
-		(blockCipherModcrypt) aesDecryptCTR,
+		.decrypt = (blockCipherModcrypt) aesDecryptCTR,
 		#else
-		(blockCipherModcrypt) 0
+		.decrypt = (blockCipherModcrypt) 0
 		#endif
 	}
 };
