@@ -246,7 +246,7 @@ if test "$ac_with_mtmalloc" = yes; then
 fi
 
 case $target_os in
-  cygwin*)
+  cygwin* | mingw*)
     AC_CHECK_LIB([winmm],[main]) ac_cv_lib_winmm=ac_cv_lib_winmm_main
     ;;
 esac
@@ -545,7 +545,7 @@ if test "$ac_cv_have_dev_tty" = yes; then
   AC_DEFINE([HAVE_DEV_TTY],1)
 fi
 
-# Ffigure out extra flags
+# Figure out extra flags
 if test "$ac_enable_debug" != yes; then
   case $bc_target_arch in
   alpha*)
