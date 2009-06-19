@@ -85,14 +85,14 @@ Included in the library are:
 Planned for the near future are:
     - compliance with and compliance statements for IEEE P1363
     - more blockciphers (Twofish, ... )
-	- more blickcipher mods (CTR, OFB, ... )
-	- more hash functions (RIPEMD-160, HAVAL, Tiger)
-	- Elliptic Curves (ECDSA, ... )
-	- RSA signatures as specified by RFC-2440.
+    - more blickcipher mods (OFB, ... )
+    - more hash functions (MD2, MD4, Tiger)
+    - Elliptic Curves (ECDSA, ... )
+    - RSA signatures as specified by RFC-2440.
 
 The library has been tested on the following platforms:
-	- Cygwin
-	- Darwin/MacOS X
+    - Cygwin
+    - Darwin/MacOS X
     - Linux glibc 2.x alpha
     - Linux glibc 2.x arm
     - Linux glibc 2.x ia64
@@ -110,7 +110,8 @@ The library has been tested on the following platforms:
     - Win32 (Windows 95, 98, NT 4.0, 2000, XP)
 
 The library is currently in the process of being ported to:
-	- AIX (shared libraries don't seem to work in 64-bit mode)
+    - MinGW
+    - AIX (shared libraries don't seem to work in 64-bit mode)
 
 For more information, refer to the HTML documentation, which can be generated
 with Doxygen, in the docs directory.
