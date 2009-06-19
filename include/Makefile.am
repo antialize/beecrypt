@@ -269,6 +269,7 @@ beecrypt/aes_be.h \
 beecrypt/aes_le.h \
 \
 beecrypt/c++/adapter.h \
+beecrypt/c++/posix.h \
 beecrypt/c++/resource.h \
 \
 beecrypt/c++/provider/AESCipher.h \
