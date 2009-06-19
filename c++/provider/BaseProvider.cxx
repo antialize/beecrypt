@@ -49,6 +49,7 @@
 #include "beecrypt/c++/provider/RSAKeyFactory.h"
 #include "beecrypt/c++/provider/RSAKeyPairGenerator.h"
 #include "beecrypt/c++/provider/SHA1Digest.h"
+#include "beecrypt/c++/provider/SHA224Digest.h"
 #include "beecrypt/c++/provider/SHA256Digest.h"
 #include "beecrypt/c++/provider/SHA384Digest.h"
 #include "beecrypt/c++/provider/SHA512Digest.h"
@@ -238,6 +239,12 @@ PROVAPI
 void* beecrypt_SHA1Digest_create()
 {
 	return new beecrypt::provider::SHA1Digest();
+}
+
+PROVAPI
+void* beecrypt_SHA224Digest_create()
+{
+	return new beecrypt::provider::SHA224Digest();
 }
 
 PROVAPI
