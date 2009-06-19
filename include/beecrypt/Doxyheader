@@ -46,7 +46,12 @@
  *  <li>hash functions
  *   <ul>
  *    <li>MD5
+ *    <li>RIPEMD-128
+ *    <li>RIPEMD-160
+ *    <li>RIPEMD-256
+ *    <li>RIPEMD-320
  *    <li>SHA-1
+ *    <li>SHA-224
  *    <li>SHA-256
  *    <li>SHA-384
  *    <li>SHA-512
@@ -55,6 +60,7 @@
  *   <ul>
  *    <li>HMAC-MD5
  *    <li>HMAC-SHA-1
+ *    <li>HMAC-SHA-224
  *    <li>HMAC-SHA-256
  *    <li>HMAC-SHA-384
  *    <li>HMAC-SHA-512
@@ -101,6 +107,7 @@
  *
  * The library is currently in the process of being ported to:
  * <ul>
+ *  <li>MinGW
  *  <li>AIX (shared libraries don't seem to work in 64-bit mode)
  * </ul>
  * 
@@ -114,8 +121,8 @@
  * <ul>
  *  <li>compliance with and compliance statements for IEEE P1363
  *  <li>more blockciphers (Twofish, ... )
- *  <li>more blockcipher modes (CTR, OFB, ... )
- *  <li>more hash functions (RIPEMD-160, HAVAL, Tiger)
+ *  <li>more blockcipher modes (OFB, ... )
+ *  <li>more hash functions (MD2, MD4, Tiger, ...)
  *  <li>Elliptic Curves (ECDSA, ... )
  *  <li>RSA signatures as specified by RFC-2440.
  * </ul>

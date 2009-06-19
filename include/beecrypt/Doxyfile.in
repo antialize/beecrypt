@@ -876,7 +876,7 @@ INCLUDE_FILE_PATTERNS  =
 # or name=definition (no spaces). If the definition and the = are 
 # omitted =1 is assumed.
 
-PREDEFINED             = __cplusplus MP_WBITS=@MP_WBITS@
+PREDEFINED             = __cplusplus BEECRYPTAPI= MP_WBITS=@MP_WBITS@
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then 
 # this tag can be used to specify a list of macro names that should be expanded. 
