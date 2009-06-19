@@ -59,8 +59,8 @@ int rsapub(const mpbarrett* n, const mpnumber* e,
  * It performs the operation:
  * \li \f$m=c^{d}\ \textrm{mod}\ n\f$
  *
- * \param n The RSA modulus.
- * \param d The RSA private exponent.
+ * \param n The modulus.
+ * \param d The private exponent.
  * \param c The ciphertext.
  * \param m The message.
  * \retval 0 on success.
@@ -81,12 +81,12 @@ int rsapri(const mpbarrett* n, const mpnumber* d,
  * \li \f$h=qi \cdot (j_1-j_2)\ \textrm{mod}\ p\f$
  * \li \f$m=j_2+hq\f$
  *
- * \param n The RSA modulus.
- * \param p The first RSA prime factor.
- * \param q The second RSA prime factor.
- * \param dp
- * \param dq
- * \param qi
+ * \param n The modulus.
+ * \param p The first prime factor.
+ * \param q The second prime factor.
+ * \param dp The private exponent d mod (p-1).
+ * \param dq The private exponent d (q-1).
+ * \param qi The inverse of q mod p.
  * \param c The ciphertext.
  * \param m The message.
  * \retval 0 on success.
@@ -103,8 +103,8 @@ int rsapricrt(const mpbarrett* n, const mpbarrett* p, const mpbarrett* q,
  * It verifies if ciphertext \a c was encrypted from cleartext \a m
  * with the private key matching the given public key \a (n, e).
  *
- * \param n The RSA modulus.
- * \param e The RSA public exponent.
+ * \param n The modulus.
+ * \param e The public exponent.
  * \param m The cleartext message.
  * \param c The ciphertext message.
  * \retval 1 on success.
