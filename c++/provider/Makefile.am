@@ -50,6 +50,7 @@ RSAPrivateCrtKeyImpl.cxx \
 RSAPrivateKeyImpl.cxx \
 RSAPublicKeyImpl.cxx \
 SHA1Digest.cxx \
+SHA224Digest.cxx \
 SHA256Digest.cxx \
 SHA384Digest.cxx \
 SHA512Digest.cxx \
