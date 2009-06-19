@@ -39,7 +39,7 @@
 using namespace beecrypt::lang;
 
 #ifdef HAVE_PTHREAD_H
-# include "../posix.h"
+# include "beecrypt/c++/posix.h"
 #endif
 
 Thread::thread_map Thread::_tmap;

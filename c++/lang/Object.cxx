@@ -40,11 +40,11 @@
 #include "beecrypt/c++/lang/StringBuilder.h"
 using namespace beecrypt::lang;
 
-#include <typeinfo>
-
 #if HAVE_PTHREAD_H
-# include "../posix.h"
+# include "beecrypt/c++/posix.h"
 #endif
+
+#include <typeinfo>
 
 Object::Monitor::Monitor() : _owner(0), _interruptee(0)
 {
