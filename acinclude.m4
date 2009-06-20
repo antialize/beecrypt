@@ -693,7 +693,7 @@ AC_DEFUN([BEE_GNU_CXX],[
     esac
     ;;
   sparc | sparcv8*)
-    CXX="$CXX -m64"
+    CXX="$CXX -m32"
     ;;
   sparc64 | sparcv9*)
     CXX="$CXX -m64"
