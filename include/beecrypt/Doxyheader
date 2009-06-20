@@ -69,7 +69,7 @@
  *      for a range of processors; optimized to perform well on both 32-bit
  *      and 64-bit machines; uses Barrett modular reduction instead of the
  *      more common usual Montgomery algorithm; also implements sliding
- *      windows.
+ *      windows
  *  <li>probabilistic primality testing, with optimized small prime trial
  *      division
  *  <li>discrete logarithm parameter generation over a prime field
@@ -79,6 +79,7 @@
  *  <li>ElGamal signature scheme (two variants)
  *  <li>RSA keypair generation with chinese remainder theorem variables
  *  <li>RSA public & private key operations
+    <li>OpenMP support
  * </ul>
  * 
  * \section testing_sec Testing
@@ -120,8 +121,10 @@
  *
  * <ul>
  *  <li>compliance with and compliance statements for IEEE P1363
+ *  <li>switch from OSS to ALSA for entropy gathering
+ *  <li>experiments with CUDA (AES, MD6?)
  *  <li>more blockciphers (Twofish, ... )
- *  <li>more blockcipher modes (OFB, ... )
+ *  <li>more hash functions (SHA-3 candidates, MD2, MD4, Tiger)
  *  <li>more hash functions (MD2, MD4, Tiger, ...)
  *  <li>Elliptic Curves (ECDSA, ... )
  *  <li>RSA signatures as specified by RFC-2440.
@@ -152,7 +155,17 @@
  */
 /*!\defgroup	HASH_md5_m	Hash Functions: MD5
  */
+/*!\defgroup	HASH_rmd128_m	Hash Functions: RIPEMD-128
+ */
+/*!\defgroup	HASH_rmd160_m	Hash Functions: RIPEMD-160
+ */
+/*!\defgroup	HASH_rmd256_m	Hash Functions: RIPEMD-256
+ */
+/*!\defgroup	HASH_rmd320_m	Hash Functions: RIPEMD-320
+ */
 /*!\defgroup	HASH_sha1_m	Hash Functions: SHA-1
+ */
+/*!\defgroup	HASH_sha224_m	Hash Functions: SHA-224
  */
 /*!\defgroup	HASH_sha256_m	Hash Functions: SHA-256
  */
