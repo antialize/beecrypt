@@ -2,15 +2,22 @@ Note: timings are average values and may vary under different conditions,
 i.e. the amount of free memory, swapped memory, amount of cpu cache, etc.
 I've tried to make them as accurate as possible, within limits.
 
-Note: many of the testing systems were provided by HP's testdrive program;
-many thanks to them for giving me access to their systems. Also thanks to
-SourceForge for their compile farm!
+Note: many of the testing systems were provided by FSF France's GCC
+Compile Farm initiative (http://gcc.gnu.org/wiki/CompileFarm).
+Many thanks for allowing me to test BeeCrypt there!
+
+In the past I've used HP's TestDrive program (has been retired)
+and the SourceForge Compile Farm project (also retired).
 
 Note: to avoid religious wars, in the table below read GNU/Linux for
 Linux - I'm just a little cramped for space...
 
 BENCHmark Modular Exponentation (more is better):
 
+BeeCrypt 4.2.0 | gcc-4.4.r0          | Debian Linux         | Opteron 8354  2200 |  16 GB: 29373 [--with-arch=k8]
+BeeCrypt 4.2.0 | gcc-4.1.2           | Debian Linux         | Opteron 8354  2200 |  16 GB: 27911
+BeeCrypt 4.2.0 | gcc-4.4.0           | Debian Linux         | Xeon X5450    3000 |  16 GB: 25677
+BeeCrypt 4.2.0 | gcc-4.3.3           | Debian Linux         | Xeon X5450    3000 |  16 GB: 25511
 BeeCrypt 4.2.0 | gcc-4.0.0           | Fedora Core 4        | Athlon 64     3000+|   1 GB: 24910
 BeeCrypt 4.0.0 | gcc-3.3.3           | Fedora Core 2        | Athlon 64     3000+|   1 GB: 24870
 BeeCrypt 4.2.0 | gcc-3.4.3           | Fedora Core 3        | Athlon 64     3000+|   1 GB: 24654
@@ -18,6 +25,7 @@ BeeCrypt 4.0.0 | gcc-3.2.2           | SuSE Enterprise 8    | Opteron       1600
 BeeCrypt 3.0.0 | gcc-3.x             | RedHat Linux         | Opteron MP    1600 |       : 17230
 BeeCrypt 3.1.0 | gcc-2.96            | RedHat AS 2.1        | Itanium 2     1400 |   1 GB: 11730
 BeeCrypt 4.2.0 | gcc-3.4.6           | CentOS 4.x           | P4 Xeon       3000 |  10 GB: 11648
+BeeCrypt 4.2.0 | gcc-4.1.2           | Debian Linux         | PPC 970       1800 | 512 MB: 10815
 BeeCrypt 4.2.0 | gcc-3.3.3           | SuSE Enterprise 9    | POWER5        1650 |   1 GB: 10150
 BeeCrypt 3.0.0 | gcc-3.2.2           | Debian Linux 3.0     | Itanium 2      900 |  12 GB:  7317
 BeeCrypt 3.0.0 | gcc-3.3             | RedHat AS 2.1        | P4 Xeon       2400 |   4 GB:  6920 [--with-arch=pentium4]

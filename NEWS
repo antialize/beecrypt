@@ -4,6 +4,7 @@
 	- Added RIPEMD-128, RIPEMD-160 (thanks to Jeff Johnson).
 	- Applied RedHat/Debian/Gentoo patches for 4.1.2.
 	- Improved gcc compilation flags for sparc.
+	- Started work on MinGW compatibility.
 	- Major overhaul of the C++ API; be warned that the code is still
 	  tricky in certain places.
 	- Added synchronization methods to Object class; there's also a
