@@ -102,7 +102,7 @@ int  sha224Reset  (sha224Param* sp);
 BEECRYPTAPI
 int  sha224Update (sha224Param* sp, const byte* data, size_t size);
 
-/*!\fn int sha246Digest(sha224Param* sp, byte* digest)
+/*!\fn int sha224Digest(sha224Param* sp, byte* digest)
  * \brief This function finishes the current hash computation and copies
  *  the digest value into \a digest.
  * \param sp The hash function's parameter block.
