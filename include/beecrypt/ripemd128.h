@@ -19,7 +19,7 @@
  * \brief RIPEMD-1128 hash function, headers.
  * \author Jeff Johnson <jbj@rpm5.org>
  * \author Bob Deblier <bob.deblier@telenet.be>
- * \ingroup HASH_m HASH_ripemd128_m
+ * \ingroup HASH_m HASH_rmd128_m
  */
 
 #ifndef _RIPEMD128_H
@@ -28,7 +28,7 @@
 #include "beecrypt/beecrypt.h"
 
 /*!\brief Holds all the parameters necessary for the RIPEMD-128 algorithm.
- * \ingroup HASH_ripemd128_m
+ * \ingroup HASH_rmd128_m
  */
 #ifdef __cplusplus
 struct BEECRYPTAPI ripemd128Param

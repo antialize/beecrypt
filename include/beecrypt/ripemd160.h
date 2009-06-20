@@ -16,10 +16,10 @@
  */
 
 /*!\file ripemd160.h
- * \brief RIPEMD-1160 hash function, headers.
+ * \brief RIPEMD-160 hash function, headers.
  * \author Jeff Johnson <jbj@rpm5.org>
  * \author Bob Deblier <bob.deblier@telenet.be>
- * \ingroup HASH_m HASH_ripemd160_m
+ * \ingroup HASH_m HASH_rmd160_m
  */
 
 #ifndef _RIPEMD160_H
@@ -28,7 +28,7 @@
 #include "beecrypt/beecrypt.h"
 
 /*!\brief Holds all the parameters necessary for the RIPEMD-160 algorithm.
- * \ingroup HASH_ripemd160_m
+ * \ingroup HASH_rmd160_m
  */
 #ifdef __cplusplus
 struct BEECRYPTAPI ripemd160Param
