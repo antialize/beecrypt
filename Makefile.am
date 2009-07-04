@@ -39,7 +39,7 @@ SUBDIRS = . include $(MAYBE_SUB) tests docs gas masm
 
 SUFFIXES = .s
 
-CFLAGS = @CFLAGS@ $(OPENMP_CFLAGS)
+AM_CFLAGS = $(OPENMP_CFLAGS)
 
 INCLUDES = -I$(top_srcdir)/include
 
