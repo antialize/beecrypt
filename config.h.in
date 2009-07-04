@@ -213,6 +213,9 @@
    */
 #undef LT_OBJDIR
 
+/* Define to 1 if you are using MinGW */
+#undef MINGW
+
 /* Define to 1 if you are using NetBSD */
 #undef NETBSD
 
