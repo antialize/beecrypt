@@ -35,6 +35,7 @@
 #include "beecrypt/fips186.h"
 #include "beecrypt/mtprng.h"
 
+#include "beecrypt/md4.h"
 #include "beecrypt/md5.h"
 #include "beecrypt/ripemd128.h"
 #include "beecrypt/ripemd160.h"
@@ -250,6 +251,7 @@ int randomGeneratorContextSeed(randomGeneratorContext* ctxt, const byte* data, s
 
 static const hashFunction* hashFunctionList[] =
 {
+	&md4,
 	&md5,
 	&ripemd128,
 	&ripemd160,

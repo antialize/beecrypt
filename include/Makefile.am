@@ -26,6 +26,7 @@ beecrypt/hmacsha224.h \
 beecrypt/hmacsha256.h \
 beecrypt/hmacsha384.h \
 beecrypt/hmacsha512.h \
+beecrypt/md4.h \
 beecrypt/md5.h \
 beecrypt/memchunk.h \
 beecrypt/mpbarrett.h \
