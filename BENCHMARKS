@@ -14,7 +14,7 @@ Linux - I'm just a little cramped for space...
 
 BENCHmark Modular Exponentation (more is better):
 
-BeeCrypt 4.2.0 | gcc-4.4.r0          | Debian Linux         | Opteron 8354  2200 |  16 GB: 29373 [--with-arch=k8]
+BeeCrypt 4.2.0 | gcc-4.4.0           | Debian Linux         | Opteron 8354  2200 |  16 GB: 29373 [--with-arch=k8]
 BeeCrypt 4.2.0 | gcc-4.1.2           | Debian Linux         | Opteron 8354  2200 |  16 GB: 27911
 BeeCrypt 4.2.0 | gcc-4.4.0           | Debian Linux         | Xeon X5450    3000 |  16 GB: 25677
 BeeCrypt 4.2.0 | gcc-4.3.3           | Debian Linux         | Xeon X5450    3000 |  16 GB: 25511
