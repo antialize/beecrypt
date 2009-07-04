@@ -30,11 +30,6 @@
 #endif
 
 #include "beecrypt/md5.h"
-
-#if HAVE_ENDIAN_H && HAVE_ASM_BYTEORDER_H
-# include <endian.h>
-#endif
-
 #include "beecrypt/endianness.h"
 
 /*!\addtogroup HASH_md5_m
@@ -69,24 +64,16 @@ int md5Reset(register md5Param* mp)
 }
 
 #define FF(a, b, c, d, w, s, t)	\
-	a += ((b&(c^d))^d) + w + t;	\
-	a = ROTL32(a, s);	\
-	a += b;
+	a = ROTL32(((b&(c^d))^d) + a + w + t, s) + b;
 
 #define GG(a, b, c, d, w, s, t)	\
-	a += ((d&(b^c))^c) + w + t;	\
-	a = ROTL32(a, s);	\
-	a += b;
+	a = ROTL32(((d&(b^c))^c) + a + w + t, s) + b;
 
 #define HH(a, b, c, d, w, s, t)	\
-	a += (b^c^d) + w + t;	\
-	a = ROTL32(a, s);	\
-	a += b;
+	a = ROTL32((b^c^d) + a + w + t, s) + b;
 
 #define II(a, b, c, d, w, s, t)	\
-	a += (c^(b|~d)) + w + t;	\
-	a = ROTL32(a, s);	\
-	a += b;
+	a = ROTL32((c^(b|~d)) + a + w + t, s) + b;
 
 #ifndef ASM_MD5PROCESS
 void md5Process(md5Param* mp)
