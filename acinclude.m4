@@ -558,7 +558,7 @@ AC_DEFUN([BEE_GNU_CC],[
     BEE_GNU_CC_MTUNE
     # Generic optimizations, including cpu tuning
     BEE_CFLAGS_REM([-g])
-    CFLAGS="$CFLAGS -DNDEBUG -fomit-frame-pointer"
+    CFLAGS="$CFLAGS -DNDEBUG"
     if test "$bc_cv_c_aggressive_opt" = yes; then
       case $bc_target_cpu in
       athlon64 | athlon-fx | k8 | opteron)
