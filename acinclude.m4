@@ -495,7 +495,7 @@ dnl  BEE_GNU_CC
 AC_DEFUN([BEE_GNU_CC],[
   AC_REQUIRE([AC_PROG_CC])
   if test "$OPENMP_CFLAGS" != ""; then
-    LIBS="-lgomp $LIBS"
+    AC_SUBST(OPENMP_LIBS,"-lgomp")
   fi
   case $bc_target_arch in
   x86_64 | athlon64 | athlon-fx | k8 | opteron | em64t | nocona)
@@ -869,9 +869,6 @@ AC_DEFUN([BEE_INTEL_CC],[
       ],bc_cv_prog_INTEL_CC=yes,bc_cv_prog_INTEL_CC=no)
     ])
   if test "$bc_cv_prog_INTEL_CC" = yes; then
-    if test "$OPENMP_CFLAGS" != ""; then
-      LIBS="-liomp5 $LIBS"
-    fi
     if test "$ac_enable_debug" != yes; then
       BEE_CFLAGS_REM([-g])
       if test "$bc_cv_c_aggressive_opt" = yes; then
@@ -907,6 +904,9 @@ AC_DEFUN([BEE_INTEL_CC],[
     fi
     AC_CHECK_FUNC([_rotl])
     AC_CHECK_FUNC([_rotr])
+    if test "$OPENMP_CFLAGS" != ""; then
+      AC_SUBST(OPENMP_LIBS,"-liomp5")
+    fi
   fi
   ])
 
