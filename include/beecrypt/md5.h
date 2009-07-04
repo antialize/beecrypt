@@ -69,7 +69,7 @@ typedef struct _md5Param md5Param;
 extern "C" {
 #endif
 
-/*!\var sha1
+/*!\var md5
  * \brief Holds the full API description of the MD5 algorithm.
  */
 extern BEECRYPTAPI const hashFunction md5;
