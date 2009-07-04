@@ -1,7 +1,7 @@
 Welcome to the BeeCrypt crypto library!
 
 Copyright (c) 1997, 1998, 1999, 2000, 2001, 2004, 2005 X-Way Rights BV
-Copyright (c) 2002, 2003, 2005, 2006 Bob Deblier
+Copyright (c) 2002, 2003, 2005, 2006, 2009 Bob Deblier (for certain parts)
 
 Author: Bob Deblier <bob.deblier@telenet.be>
 
@@ -68,8 +68,8 @@ Included in the library are:
     - entropy sources for initializing pseudo-random generators
     - pseudo-random generators: FIPS-186, Mersenne Twister
     - block ciphers: AES, Blowfish
-    - hash functions: MD5, SHA-1, SHA-256, SHA-384, SHA-512
-    - keyed hash functions: HMAC-MD5, HMAC-SHA-1, HMAC-SHA-256, HMAC-SHA-384, HMAC-SHA-512
+    - hash functions: MD5, RIPEMD-128, RIPEMD-160, RIPEMD-256, RIPEMD-320, SHA-1, SHA-224, SHA-256, SHA-384, SHA-512
+    - keyed hash functions: HMAC-MD5, HMAC-SHA-1, HMAC-SHA-224, HMAC-SHA-256, HMAC-SHA-384, HMAC-SHA-512
     - multi-precision integer library, with assembler-optimized routines
       for several processors
     - probabilistic primality testing, with optimized small prime trial
@@ -84,9 +84,11 @@ Included in the library are:
 
 Planned for the near future are:
     - compliance with and compliance statements for IEEE P1363
+    - switch from OSS to ALSA for entropy gathering
+    - experiments with CUDA (AES, MD6?)
     - more blockciphers (Twofish, ... )
-    - more blickcipher mods (OFB, ... )
-    - more hash functions (MD2, MD4, Tiger)
+    - more blockcipher modes (OFB, ... )
+    - more hash functions (SHA-3 candidates, HAVAL, Tiger)
     - Elliptic Curves (ECDSA, ... )
     - RSA signatures as specified by RFC-2440.
 
