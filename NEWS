@@ -1,7 +1,7 @@
 4.2.0:
 	- Added OpenMP support (initially for RSA CRT).
 	- Added SHA-224 and HMAC-SHA-224.
-	- Added RIPEMD-128, RIPEMD-160 (thanks to Jeff Johnson).
+	- Added RIPEMD-128/160/256/320 (thanks to Jeff Johnson).
 	- Added MD4 (thanks to Jeff Johnson).
 	- Applied RedHat/Debian/Gentoo patches for 4.1.2.
 	- Improved gcc compilation flags for sparc.
