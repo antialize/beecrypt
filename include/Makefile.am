@@ -53,8 +53,10 @@ beecrypt/sha512.h \
 beecrypt/sha2k32.h \
 beecrypt/sha2k64.h \
 beecrypt/timestamp.h \
-beecrypt/win.h \
-\
+beecrypt/win.h
+
+if WITH_CPLUSPLUS
+nobase_include_HEADERS += \
 beecrypt/c++/array.h \
 beecrypt/c++/mutex.h \
 \
@@ -260,10 +262,13 @@ beecrypt/c++/util/Queue.h \
 beecrypt/c++/util/RandomAccess.h \
 beecrypt/c++/util/Set.h \
 \
+beecrypt/c++/util/concurrent/Callable.h \
+\
 beecrypt/c++/util/concurrent/locks \
 beecrypt/c++/util/concurrent/locks/Condition.h \
 beecrypt/c++/util/concurrent/locks/Lock.h \
 beecrypt/c++/util/concurrent/locks/ReentrantLock.h
+endif
 
 noinst_HEADERS = \
 beecrypt/aes_be.h \
