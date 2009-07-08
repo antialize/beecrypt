@@ -335,9 +335,11 @@ beecrypt/java/beecrypt_provider_HMACSHA1.h \
 beecrypt/java/beecrypt_provider_HMACSHA256.h \
 beecrypt/java/beecrypt_provider_HMACSHA384.h \
 beecrypt/java/beecrypt_provider_HMACSHA512.h \
+beecrypt/java/beecrypt_provider_MD4.h \
 beecrypt/java/beecrypt_provider_MD5.h \
 beecrypt/java/beecrypt_provider_RSAKeyPairGenerator.h \
 beecrypt/java/beecrypt_provider_SHA1.h \
+beecrypt/java/beecrypt_provider_SHA224.h \
 beecrypt/java/beecrypt_provider_SHA256.h \
 beecrypt/java/beecrypt_provider_SHA384.h \
 beecrypt/java/beecrypt_provider_SHA512.h \
