@@ -322,6 +322,7 @@ beecrypt/c++/provider/SHA1Digest.h \
 beecrypt/c++/provider/SHA1withDSASignature.h \
 beecrypt/c++/provider/SHA1withRSASignature.h \
 beecrypt/c++/provider/SHA256Digest.h \
+beecrypt/c++/provider/SHA2224igest.h \
 beecrypt/c++/provider/SHA256withRSASignature.h \
 beecrypt/c++/provider/SHA384Digest.h \
 beecrypt/c++/provider/SHA384withRSASignature.h \
