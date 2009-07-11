@@ -72,6 +72,7 @@ src/beecrypt/provider/DSAKeyFactory.java \
 src/beecrypt/provider/KeyProtector.java \
 src/beecrypt/provider/MD4.java \
 src/beecrypt/provider/MD5.java \
+src/beecrypt/provider/PKCS12.java \
 src/beecrypt/provider/RSAKeyFactory.java \
 src/beecrypt/provider/RSAKeyPairGenerator.java \
 src/beecrypt/provider/SHA1.java \
