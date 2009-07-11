@@ -264,7 +264,6 @@ beecrypt/c++/util/Set.h \
 \
 beecrypt/c++/util/concurrent/Callable.h \
 \
-beecrypt/c++/util/concurrent/locks \
 beecrypt/c++/util/concurrent/locks/Condition.h \
 beecrypt/c++/util/concurrent/locks/Lock.h \
 beecrypt/c++/util/concurrent/locks/ReentrantLock.h
