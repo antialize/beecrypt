@@ -1,6 +1,7 @@
 4.2.1-pre:
 	- Cleaned up old autotools cruft (thanks to Anìbal Monsalve Salazar).
 	- Different automake approach to compiling separate components.
+	- Fixed C++ header installation problem.
 
 4.2.0:
 	- Added OpenMP support (initially for RSA CRT).
