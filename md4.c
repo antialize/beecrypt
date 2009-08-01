@@ -2,6 +2,8 @@
  *
  */
 
+#define BEECRYPT_DLL_EXPORT
+
 #include "beecrypt/md4.h"
 #include "beecrypt/endianness.h"
 
