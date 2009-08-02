@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([beecrypt],[4.2.1],[bob.deblier@telenet.be])
+AC_INIT([beecrypt],[4.2.2],[bob.deblier@telenet.be])
 AC_CANONICAL_TARGET
 AC_CONFIG_SRCDIR(include/beecrypt/beecrypt.h)
 AC_CONFIG_HEADERS([config.h])
@@ -456,7 +456,7 @@ if test "$ac_with_python" = yes ; then
       ac_cv_python_include="-I`$PYTHON -c 'import distutils.sysconfig; print distutils.sysconfig.get_python_inc()'`"
     ])
     AC_CACHE_CHECK([where to install python libraries], ac_cv_python_libdir, [
-      ac_cv_python_libdir=`$PYTHON -c 'import distutils.sysconfig; print distutils.sysconfig.get_python_lib()'`
+      ac_cv_python_libdir=`$PYTHON -c 'import distutils.sysconfig; print distutils.sysconfig.get_python_lib(1, 0)'`
     ])
   fi
 fi
