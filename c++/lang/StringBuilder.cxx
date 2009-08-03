@@ -46,12 +46,12 @@ StringBuilder::StringBuilder(const String& s) : _buffer(16 + s._value.size())
 	memcpy(_buffer.data(), s._value.data(), (_used = s._value.size()) * sizeof(jchar));
 }
 
-StringBuilder& StringBuilder::append(bool b)
+StringBuilder& StringBuilder::append(const bool b)
 {
 	return append(b ? "true" : "false");
 }
 
-StringBuilder& StringBuilder::append(char c)
+StringBuilder& StringBuilder::append(const char c)
 {
 	ensureCapacity(_used+1);
 
@@ -60,7 +60,7 @@ StringBuilder& StringBuilder::append(char c)
 	return *this;
 }
 
-Appendable& StringBuilder::append(jchar c)
+Appendable& StringBuilder::append(const jchar c)
 {
 	ensureCapacity(_used+1);
 
@@ -81,12 +81,12 @@ Appendable& StringBuilder::append(const CharSequence& c)
 	return *this;
 }
 
-StringBuilder& StringBuilder::append(jint i)
+StringBuilder& StringBuilder::append(const jint i)
 {
 	return append(Integer::toString(i));
 }
 
-StringBuilder& StringBuilder::append(jlong l)
+StringBuilder& StringBuilder::append(const jlong l)
 {
 	return append(Long::toString(l));
 }
@@ -174,7 +174,7 @@ StringBuilder& StringBuilder::reverse()
 	return *this;
 }
 
-void StringBuilder::ensureCapacity(jint minimum)
+void StringBuilder::ensureCapacity(const jint minimum)
 {
 	if (minimum > _buffer.size())
 	{
@@ -187,7 +187,7 @@ void StringBuilder::ensureCapacity(jint minimum)
 	}
 }
 
-jchar StringBuilder::charAt(jint index) const throw (IndexOutOfBoundsException)
+jchar StringBuilder::charAt(const jint index) const throw (IndexOutOfBoundsException)
 {
 	if (index >= _used)
 		throw IndexOutOfBoundsException();
@@ -200,7 +200,7 @@ jint StringBuilder::length() const throw ()
 	return _used;
 }
 
-CharSequence* StringBuilder::subSequence(jint beginIndex, jint endIndex) const throw (IndexOutOfBoundsException)
+CharSequence* StringBuilder::subSequence(const jint beginIndex, const jint endIndex) const throw (IndexOutOfBoundsException)
 {
 	if (beginIndex < 0 || endIndex < 0)
 		throw IndexOutOfBoundsException();

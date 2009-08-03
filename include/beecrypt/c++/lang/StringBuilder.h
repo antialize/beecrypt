@@ -40,7 +40,7 @@ namespace beecrypt {
 
 		private:
 			array<jchar> _buffer;
-			int _used;
+			jint _used;
 
 		public:
 			StringBuilder();
@@ -48,13 +48,13 @@ namespace beecrypt {
 			StringBuilder(const String&);
 			virtual ~StringBuilder() {}
 
-			virtual Appendable& append(jchar c);
+			virtual Appendable& append(const jchar c);
 			virtual Appendable& append(const CharSequence& cseq);
 
-			StringBuilder& append(bool b);
-			StringBuilder& append(char c);
-			StringBuilder& append(jint i);
-			StringBuilder& append(jlong l);
+			StringBuilder& append(const bool b);
+			StringBuilder& append(const char c);
+			StringBuilder& append(const jint i);
+			StringBuilder& append(const jlong l);
 			StringBuilder& append(const char*);
 			StringBuilder& append(const String& s);
 			StringBuilder& append(const StringBuilder& s);
@@ -62,10 +62,10 @@ namespace beecrypt {
 
 			StringBuilder& reverse();
 
-			virtual jchar charAt(jint index) const throw (IndexOutOfBoundsException);
-			void ensureCapacity(jint minimum);
+			virtual jchar charAt(const jint index) const throw (IndexOutOfBoundsException);
+			void ensureCapacity(const jint minimum);
 			virtual jint length() const throw ();
-			virtual CharSequence* subSequence(jint beginIndex, jint endIndex) const throw (IndexOutOfBoundsException);
+			virtual CharSequence* subSequence(const jint beginIndex, const jint endIndex) const throw (IndexOutOfBoundsException);
 			virtual String toString() const throw ();
 		};
 	}

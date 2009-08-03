@@ -35,9 +35,9 @@ namespace beecrypt {
 		public:
 			virtual ~CharSequence() {}
 
-			virtual jchar charAt(jint index) const throw (IndexOutOfBoundsException) = 0;
+			virtual jchar charAt(const jint index) const throw (IndexOutOfBoundsException) = 0;
 			virtual jint length() const throw () = 0;
-			virtual CharSequence* subSequence(jint beginIndex, jint endIndex) const throw (IndexOutOfBoundsException) = 0;
+			virtual CharSequence* subSequence(const jint beginIndex, const jint endIndex) const throw (IndexOutOfBoundsException) = 0;
 			virtual String toString() const throw () = 0;
 		};
 	}

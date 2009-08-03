@@ -35,7 +35,7 @@ namespace beecrypt {
 		public:
 			virtual ~Appendable() {}
 
-			virtual Appendable& append(jchar c) = 0;
+			virtual Appendable& append(const jchar c) = 0;
 			virtual Appendable& append(const CharSequence& cseq) = 0;
 		};
 	}

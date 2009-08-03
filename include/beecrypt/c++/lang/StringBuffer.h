@@ -42,7 +42,7 @@ namespace beecrypt {
 			array<jchar> _buffer;
 			jint _used;
 
-			void core_ensureCapacity(int minimum);
+			void core_ensureCapacity(const jint minimum);
 
 		public:
 			StringBuffer();
@@ -50,20 +50,20 @@ namespace beecrypt {
 			StringBuffer(const String&);
 			virtual ~StringBuffer() {}
 
-			virtual Appendable& append(jchar c);
+			virtual Appendable& append(const jchar c);
 			virtual Appendable& append(const CharSequence& cseq);
 
-			StringBuffer& append(bool b);
-			StringBuffer& append(char c);
+			StringBuffer& append(const bool b);
+			StringBuffer& append(const char c);
 			StringBuffer& append(const char*);
 			StringBuffer& append(const String& s);
 			StringBuffer& append(const StringBuffer& s);
 			StringBuffer& append(const Object* obj);
 
-			virtual jchar charAt(jint index) const throw (IndexOutOfBoundsException);
-			void ensureCapacity(jint minimum);
+			virtual jchar charAt(const jint index) const throw (IndexOutOfBoundsException);
+			void ensureCapacity(const jint minimum);
 			virtual jint length() const throw ();
-			virtual CharSequence* subSequence(jint beginIndex, jint endIndex) const throw (IndexOutOfBoundsException);
+			virtual CharSequence* subSequence(const jint beginIndex, const jint endIndex) const throw (IndexOutOfBoundsException);
 			virtual String toString() const throw ();
 		};
 	}

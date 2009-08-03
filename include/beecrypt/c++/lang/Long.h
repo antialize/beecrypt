@@ -45,14 +45,14 @@ namespace beecrypt {
 			static const jlong MIN_VALUE;
 			static const jlong MAX_VALUE;
 
-			static String toHexString(jlong l) throw ();
-			static String toOctalString(jlong l) throw ();
-			static String toString(jlong l) throw ();
+			static String toHexString(const jlong l) throw ();
+			static String toOctalString(const jlong l) throw ();
+			static String toString(const jlong l) throw ();
 
 			static jlong parseLong(const String& s) throw (NumberFormatException);
 
 		public:
-			Long(jlong value) throw ();
+			Long(const jlong value) throw ();
 			Long(const String& s) throw (NumberFormatException);
 			virtual ~Long() {}
 

@@ -33,7 +33,7 @@ using namespace beecrypt::lang;
 const jint Integer::MIN_VALUE = (((jint) 1) << 31);
 const jint Integer::MAX_VALUE = ~MIN_VALUE;
 
-String Integer::toString(jint i) throw ()
+String Integer::toString(const jint i) throw ()
 {
 	char tmp[12];
 
@@ -46,7 +46,7 @@ String Integer::toString(jint i) throw ()
 	return String(tmp);
 }
 
-String Integer::toHexString(jint i) throw ()
+String Integer::toHexString(const jint i) throw ()
 {
 	char tmp[10];
 
@@ -59,7 +59,7 @@ String Integer::toHexString(jint i) throw ()
 	return String(tmp);
 }
 
-String Integer::toOctalString(jint i) throw ()
+String Integer::toOctalString(const jint i) throw ()
 {
 	char tmp[13];
 
@@ -95,7 +95,7 @@ jint Integer::parseInteger(const String& s) throw (NumberFormatException)
 		throw RuntimeException("unable to create ICU NumberFormat instance");
 }
 
-Integer::Integer(jint value) throw () : _val(value)
+Integer::Integer(const jint value) throw () : _val(value)
 {
 }
 

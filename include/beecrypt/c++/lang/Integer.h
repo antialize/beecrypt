@@ -45,14 +45,14 @@ namespace beecrypt {
 			static const jint MIN_VALUE;
 			static const jint MAX_VALUE;
 
-			static String toHexString(jint l) throw ();
-			static String toOctalString(jint l) throw ();
-			static String toString(jint l) throw ();
+			static String toHexString(const jint l) throw ();
+			static String toOctalString(const jint l) throw ();
+			static String toString(const jint l) throw ();
 
 			static jint parseInteger(const String& s) throw (NumberFormatException);
 
 		public:
-			Integer(jint value) throw ();
+			Integer(const jint value) throw ();
 			Integer(const String& s) throw (NumberFormatException);
 			virtual ~Integer() {}
 

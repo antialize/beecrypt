@@ -43,22 +43,22 @@ const jint Character::MAX_CODE_POINT = 0x10FFFF;
 const jint Character::MIN_RADIX = 2;
 const jint Character::MAX_RADIX = 36;
 
-String Character::toString(jchar c) throw ()
+String Character::toString(const jchar c) throw ()
 {
 	return String(&c, 0, 1);
 }
 
-bool Character::isHighSurrogate(jchar c) throw ()
+bool Character::isHighSurrogate(const jchar c) throw ()
 {
 	return c >= MIN_HIGH_SURROGATE && c <= MAX_HIGH_SURROGATE;
 }
 
-bool Character::isLowSurrogate(jchar c) throw ()
+bool Character::isLowSurrogate(const jchar c) throw ()
 {
 	return c >= MIN_LOW_SURROGATE && c <= MAX_LOW_SURROGATE;
 }
 
-Character::Character(jchar value) throw () : _val(value)
+Character::Character(const jchar value) throw () : _val(value)
 {
 }
 

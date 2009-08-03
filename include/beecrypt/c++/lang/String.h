@@ -69,7 +69,7 @@ namespace beecrypt {
 			String(char);
 			String(jchar);
 			String(const char*);
-			String(const jchar*, jint offset, jint length);
+			String(const jchar*, const jint offset, const jint length);
 			String(const bytearray&);
 			String(const array<jchar>&);
 			String(const String& copy);
@@ -79,7 +79,7 @@ namespace beecrypt {
 			String& operator=(const String& copy);
 			String& operator=(const UnicodeString& copy);
 
-			virtual jchar charAt(jint index) const throw (IndexOutOfBoundsException);
+			virtual jchar charAt(const jint index) const throw (IndexOutOfBoundsException);
 			virtual jint compareTo(const String& str) const throw ();
 			jint compareToIgnoreCase(const String& str) const throw ();
 			String concat(const String& str) const throw ();
@@ -90,13 +90,13 @@ namespace beecrypt {
 			bool equals(const String& str) const throw ();
 			bool equalsIgnoreCase(const String& str) const throw ();
 			virtual jint hashCode() const throw ();
-			jint indexOf(jint ch, jint fromIndex = 0) const throw ();
-			jint indexOf(const String& str, jint fromIndex = 0) const throw ();
+			jint indexOf(const jint ch, const jint fromIndex = 0) const throw ();
+			jint indexOf(const String& str, const jint fromIndex = 0) const throw ();
 			virtual jint length() const throw ();
-			bool startsWith(const String& prefix, jint offset = 0) const throw ();
-			virtual CharSequence* subSequence(jint beginIndex, jint endIndex) const throw (IndexOutOfBoundsException);
-			String substring(jint beginIndex) const throw (IndexOutOfBoundsException);
-			String substring(jint beginIndex, jint endIndex) const throw (IndexOutOfBoundsException);
+			bool startsWith(const String& prefix, const jint offset = 0) const throw ();
+			virtual CharSequence* subSequence(const jint beginIndex, const jint endIndex) const throw (IndexOutOfBoundsException);
+			String substring(const jint beginIndex) const throw (IndexOutOfBoundsException);
+			String substring(const jint beginIndex, const jint endIndex) const throw (IndexOutOfBoundsException);
 			String toLowerCase() const throw ();
 			String toUpperCase() const throw ();
 			const array<jchar>& toCharArray() const throw ();

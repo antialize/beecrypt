@@ -43,12 +43,12 @@ StringBuffer::StringBuffer(const String& s) : _buffer(16 + s._value.size())
 	memcpy(_buffer.data(), s._value.data(), (_used = s._value.size()) * sizeof(jchar));
 }
 
-StringBuffer& StringBuffer::append(bool b)
+StringBuffer& StringBuffer::append(const bool b)
 {
 	return append(b ? "true" : "false");
 }
 
-StringBuffer& StringBuffer::append(char c)
+StringBuffer& StringBuffer::append(const char c)
 {
 	synchronized (this)
 	{
@@ -58,7 +58,7 @@ StringBuffer& StringBuffer::append(char c)
 	return *this;
 }
 
-Appendable& StringBuffer::append(jchar c)
+Appendable& StringBuffer::append(const jchar c)
 {
 	synchronized (this)
 	{
@@ -123,7 +123,7 @@ StringBuffer& StringBuffer::append(const StringBuffer& s)
 	return *this;
 }
 
-void StringBuffer::core_ensureCapacity(jint minimum)
+void StringBuffer::core_ensureCapacity(const jint minimum)
 {
 	if (minimum > _buffer.size())
 	{
@@ -136,7 +136,7 @@ void StringBuffer::core_ensureCapacity(jint minimum)
 	}
 }
 
-void StringBuffer::ensureCapacity(jint minimum)
+void StringBuffer::ensureCapacity(const jint minimum)
 {
 	synchronized (this)
 	{
@@ -144,7 +144,7 @@ void StringBuffer::ensureCapacity(jint minimum)
 	}
 }
 
-jchar StringBuffer::charAt(jint index) const throw (IndexOutOfBoundsException)
+jchar StringBuffer::charAt(const jint index) const throw (IndexOutOfBoundsException)
 {
 	jchar result = 0;
 
@@ -169,7 +169,7 @@ jint StringBuffer::length() const throw ()
 	return result;
 }
 
-CharSequence* StringBuffer::subSequence(jint beginIndex, jint endIndex) const throw (IndexOutOfBoundsException)
+CharSequence* StringBuffer::subSequence(const jint beginIndex, const jint endIndex) const throw (IndexOutOfBoundsException)
 {
 	String* result = 0;
 

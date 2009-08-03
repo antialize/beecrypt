@@ -55,13 +55,13 @@ namespace beecrypt {
 			static const jint MIN_RADIX;
 			static const jint MAX_RADIX;
 
-			static String toString(jchar c) throw ();
+			static String toString(const jchar c) throw ();
 
-			static bool isHighSurrogate(jchar ch) throw ();
-			static bool isLowSurrogate(jchar ch) throw ();
+			static bool isHighSurrogate(const jchar ch) throw ();
+			static bool isLowSurrogate(const jchar ch) throw ();
 
 		public:
-			Character(jchar value) throw ();
+			Character(const jchar value) throw ();
 			virtual ~Character() {}
 
 			virtual jint hashCode() const throw ();

@@ -33,7 +33,7 @@ using namespace beecrypt::lang;
 const jlong Long::MIN_VALUE = (((jlong) 1) << 63);
 const jlong Long::MAX_VALUE = ~MIN_VALUE;
 
-String Long::toString(jlong l) throw ()
+String Long::toString(const jlong l) throw ()
 {
 	char tmp[21];
 
@@ -67,7 +67,7 @@ String Long::toHexString(jlong l) throw ()
 	return String(tmp);
 }
 
-String Long::toOctalString(jlong l) throw ()
+String Long::toOctalString(const jlong l) throw ()
 {
 	char tmp[23];
 
@@ -107,7 +107,7 @@ jlong Long::parseLong(const String& s) throw (NumberFormatException)
 		throw RuntimeException("unable to create ICU NumberFormat instance");
 }
 
-Long::Long(jlong value) throw () : _val(value)
+Long::Long(const jlong value) throw () : _val(value)
 {
 }
 

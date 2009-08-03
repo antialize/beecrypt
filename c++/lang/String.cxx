@@ -70,7 +70,7 @@ String::String(const char* value) : _value(::strlen(value))
 	u_charsToUChars(value, _value.data(), _value.size());
 }
 
-String::String(const jchar* value, int offset, int length) : _value(value+offset, length)
+String::String(const jchar* value, const jint offset, const jint length) : _value(value+offset, length)
 {
 	assert(_value.size() <= Integer::MAX_VALUE);
 }
@@ -105,7 +105,7 @@ String& String::operator=(const UnicodeString& copy)
 {
 	assert(copy.length() <= Integer::MAX_VALUE);
 
-	_value.resize((int) copy.length());
+	_value.resize((jint) copy.length());
 
 	copy.extract(0, copy.length(), _value.data());
 
@@ -150,7 +150,7 @@ int String::compareTo(const String& str) const throw ()
 	return result;
 }
 
-jchar String::charAt(int index) const throw (IndexOutOfBoundsException)
+jchar String::charAt(const jint index) const throw (IndexOutOfBoundsException)
 {
 	if ((index < 0) || (index >= _value.size()))
 		throw IndexOutOfBoundsException();
@@ -180,7 +180,7 @@ bool String::contentEquals(const CharSequence& seq) const throw ()
 	if (tlen != seq.length())
 		return false;
 
-	for (int i = 0; i < tlen; i++)
+	for (jint i = 0; i < tlen; i++)
 		if (_value[i] != seq.charAt(i))
 			return false;
 
@@ -313,7 +313,7 @@ int String::length() const throw ()
 	return _value.size();
 }
 
-bool String::startsWith(const String& prefix, int offset) const throw ()
+bool String::startsWith(const String& prefix, const jint offset) const throw ()
 {
 	register int tlen = _value.size(), plen = prefix._value.size();
 
@@ -334,7 +334,7 @@ bool String::startsWith(const String& prefix, int offset) const throw ()
 	return true;
 }
 
-CharSequence* String::subSequence(int beginIndex, int endIndex) const throw (IndexOutOfBoundsException)
+CharSequence* String::subSequence(const jint beginIndex, const jint endIndex) const throw (IndexOutOfBoundsException)
 {
 	assert(beginIndex <= Integer::MAX_VALUE);
 	assert(endIndex <= Integer::MAX_VALUE);
@@ -348,7 +348,7 @@ CharSequence* String::subSequence(int beginIndex, int endIndex) const throw (Ind
 		return new String(_value.data(), beginIndex, endIndex - beginIndex);
 }
 
-String String::substring(int beginIndex) const throw (IndexOutOfBoundsException)
+String String::substring(const jint beginIndex) const throw (IndexOutOfBoundsException)
 {
 	assert(beginIndex <= Integer::MAX_VALUE);
 
@@ -361,7 +361,7 @@ String String::substring(int beginIndex) const throw (IndexOutOfBoundsException)
 		return String(_value.data(), beginIndex, _value.size() - beginIndex);
 }
 
-String String::substring(int beginIndex, int endIndex) const throw (IndexOutOfBoundsException)
+String String::substring(const jint beginIndex, const jint endIndex) const throw (IndexOutOfBoundsException)
 {
 	assert(beginIndex <= Integer::MAX_VALUE);
 	assert(endIndex <= Integer::MAX_VALUE);
