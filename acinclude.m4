@@ -1130,37 +1130,47 @@ AC_DEFUN([BEE_CXX],[
 dnl BEE_CC_NOEXECSTACK
 AC_DEFUN([BEE_CC_NOEXECSTACK],[
   AC_CACHE_CHECK([whether we can use noexecstack flag in C],bc_cv_cc_noexecstack,[
-    CFLAGS_save=$CFLAGS
-    if test "$bc_cv_prog_INTEL_CC" = yes; then
-      CFLAGS="$CFLAGS -Qoption,asm,--noexecstack"
-    else
-      CFLAGS="$CFLAGS -Wa,--noexecstack"
-    fi
-    AC_LANG_PUSH(C)
-    # first try to compile it
-    AC_COMPILE_IFELSE([
-      AC_LANG_PROGRAM([[]],[[int x = 0]])
-      ],[
-      # did compile
-      $CC -S $CFLAGS conftest.$ac_ext > /dev/null 2>&1
-      $CC -o conftest$ac_exeext $CFLAGS conftest.s > /dev/null 2>&1
-      if test $? -eq 0; then
-        # did assemble
-        bc_cv_cc_noexecstack=yes
-        bc_gnu_stack=`$EGREP -e '\.section.*GNU-stack' conftest.s`
+    case $target_os in
+    darwin*)
+      # Darwin's as doesn't grok noexecstack
+      bc_cv_cc_noexecstack=no
+      bc_gnu_stack=''
+      ;;
+
+    *)
+      CFLAGS_save=$CFLAGS
+      if test "$bc_cv_prog_INTEL_CC" = yes; then
+        CFLAGS="$CFLAGS -Qoption,asm,--noexecstack"
       else
-        # didn't assemble
+        CFLAGS="$CFLAGS -Wa,--noexecstack"
+      fi
+      AC_LANG_PUSH(C)
+      # first try to compile it
+      AC_COMPILE_IFELSE([
+        AC_LANG_PROGRAM([[]],[[int x = 0]])
+        ],[
+        # did compile
+        $CC -S $CFLAGS conftest.$ac_ext > /dev/null 2>&1
+        $CC -o conftest$ac_exeext $CFLAGS conftest.s > /dev/null 2>&1
+        if test $? -eq 0; then
+          # did assemble
+          bc_cv_cc_noexecstack=yes
+          bc_gnu_stack=`$EGREP -e '\.section.*GNU-stack' conftest.s`
+        else
+          # didn't assemble
+          CFLAGS=$CFLAGS_save
+          bc_cv_cc_noexecstack=no
+          bc_gnu_stack=''
+        fi
+        ],[
+        # didn't compile
         CFLAGS=$CFLAGS_save
         bc_cv_cc_noexecstack=no
         bc_gnu_stack=''
-      fi
-      ],[
-      # didn't compile
-      CFLAGS=$CFLAGS_save
-      bc_cv_cc_noexecstack=no
-      bc_gnu_stack=''
-      ])
-    AC_LANG_POP(C)
+        ])
+      AC_LANG_POP(C)
+      ;;
+    esac
     ])
   ])
 
