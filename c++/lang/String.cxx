@@ -33,7 +33,7 @@ using namespace beecrypt::lang;
 #include <unicode/ustdio.h>
 #include <unicode/ustring.h>
 
-String::String(array<jchar>& swapWith)
+String::String(const array<jchar>& swapWith)
 {
 	assert(swapWith.size() <= Integer::MAX_VALUE);
 
@@ -54,12 +54,12 @@ String::String()
 {
 }
 
-String::String(char c) : _value(1)
+String::String(const char c) : _value(1)
 {
 	u_charsToUChars(&c, _value.data(), 1);
 }
 
-String::String(jchar c) : _value(&c, 1)
+String::String(const jchar c) : _value(&c, 1)
 {
 }
 
@@ -112,7 +112,7 @@ String& String::operator=(const UnicodeString& copy)
 	return *this;
 }
 
-int String::compareTo(const String& str) const throw ()
+jint String::compareTo(const String& str) const throw ()
 {
 	int result;
 
@@ -158,7 +158,7 @@ jchar String::charAt(const jint index) const throw (IndexOutOfBoundsException)
 	return _value[index];
 }
 
-int String::compareToIgnoreCase(const String& str) const throw ()
+jint String::compareToIgnoreCase(const String& str) const throw ()
 {
 	return toUnicodeString().caseCompare(str.toUnicodeString(), 0);
 }
@@ -234,7 +234,7 @@ bool String::equalsIgnoreCase(const String& str) const throw ()
 	return compareToIgnoreCase(str) == 0;
 }
 
-int String::indexOf(int ch, int fromIndex) const throw ()
+jint String::indexOf(const jint ch, const jint fromIndex) const throw ()
 {
 	if (ch < 0)
 		return -1;
@@ -244,7 +244,7 @@ int String::indexOf(int ch, int fromIndex) const throw ()
 
 	if (ch < Character::MIN_SUPPLEMENTARY_CODE_POINT)
 	{	// it's a regular jchar
-		for (int i = fromIndex; i < _value.size(); i++)
+		for (jint i = fromIndex; i < _value.size(); i++)
 			if (_value[i] == ch)
 				return i;
 		return -1;
@@ -259,7 +259,7 @@ int String::indexOf(int ch, int fromIndex) const throw ()
 	return -1;
 }
 
-int String::indexOf(const String& str, int fromIndex) const throw ()
+jint String::indexOf(const String& str, const jint fromIndex) const throw ()
 {
 	register int tlen = _value.size(), slen = str._value.size();
 
@@ -308,7 +308,7 @@ jint String::hashCode() const throw ()
 	return result;
 }
 
-int String::length() const throw ()
+jint String::length() const throw ()
 {
 	return _value.size();
 }
@@ -408,12 +408,12 @@ String String::valueOf(bool b)
 		return String("false");
 }
 
-String String::valueOf(jint i)
+String String::valueOf(const jint i)
 {
 	return Integer::toString(i);
 }
 
-String String::valueOf(jlong l)
+String String::valueOf(const jlong l)
 {
 	return Long::toString(l);
 }

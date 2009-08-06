@@ -59,15 +59,15 @@ namespace beecrypt {
 			String(const array<jchar>&, const array<jchar>&);
 
 		public:
-			static String valueOf(bool b);
-			static String valueOf(jchar c);
-			static String valueOf(jint i);
-			static String valueOf(jlong l);
+			static String valueOf(const bool b);
+			static String valueOf(const jchar c);
+			static String valueOf(const jint i);
+			static String valueOf(const jlong l);
 
 		public:
 			String();
-			String(char);
-			String(jchar);
+			String(const char);
+			String(const jchar);
 			String(const char*);
 			String(const jchar*, const jint offset, const jint length);
 			String(const bytearray&);
