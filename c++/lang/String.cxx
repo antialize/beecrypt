@@ -33,7 +33,7 @@ using namespace beecrypt::lang;
 #include <unicode/ustdio.h>
 #include <unicode/ustring.h>
 
-String::String(const array<jchar>& swapWith)
+String::String(array<jchar>& swapWith)
 {
 	assert(swapWith.size() <= Integer::MAX_VALUE);
 
