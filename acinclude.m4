@@ -1136,7 +1136,6 @@ AC_DEFUN([BEE_CC_NOEXECSTACK],[
       bc_cv_cc_noexecstack=no
       bc_gnu_stack=''
       ;;
-
     *)
       CFLAGS_save=$CFLAGS
       if test "$bc_cv_prog_INTEL_CC" = yes; then
@@ -1178,35 +1177,42 @@ AC_DEFUN([BEE_CC_NOEXECSTACK],[
 dnl BEE_CXX_NOEXECSTACK
 AC_DEFUN([BEE_CXX_NOEXECSTACK],[
   AC_CACHE_CHECK([whether we can use noexecstack flag in C++],bc_cv_cxx_noexecstack,[
-    CXXFLAGS_save=$CXXFLAGS
-    if test "$bc_cv_prog_INTEL_CXX" = yes; then
-      CXXFLAGS="$CXXFLAGS -Qoption,asm,--noexecstack"
-    else
-      CXXFLAGS="$CXXFLAGS -Wa,--noexecstack"
-    fi
-    AC_LANG_PUSH(C++)
-    # first try to compile it
-    AC_COMPILE_IFELSE([
-      AC_LANG_PROGRAM([[]],[[int x = 0]])
-      ],[
-      # did compile
-      $CXX -S $CXXFLAGS conftest.$ac_ext > /dev/null 2>&1
-      $CXX -o conftest$ac_exeext $CXXFLAGS conftest.s > /dev/null 2>&1
-      if test $? -eq 0; then
-        # did assemble
-        bc_cv_cxx_noexecstack=yes
-        bc_gnu_stack=`$EGREP -e '\.section.*GNU-stack' conftest.s`
+    case $target_os in
+    darwin*)
+      # Darwin's as doesn't grok noexecstack
+      bc_cv_cxx_noexecstack=no
+      ;;
+    *)
+      CXXFLAGS_save=$CXXFLAGS
+      if test "$bc_cv_prog_INTEL_CXX" = yes; then
+        CXXFLAGS="$CXXFLAGS -Qoption,asm,--noexecstack"
       else
-        # didn't assemble
+        CXXFLAGS="$CXXFLAGS -Wa,--noexecstack"
+      fi
+      AC_LANG_PUSH(C++)
+      # first try to compile it
+      AC_COMPILE_IFELSE([
+        AC_LANG_PROGRAM([[]],[[int x = 0]])
+        ],[
+        # did compile
+        $CXX -S $CXXFLAGS conftest.$ac_ext > /dev/null 2>&1
+        $CXX -o conftest$ac_exeext $CXXFLAGS conftest.s > /dev/null 2>&1
+        if test $? -eq 0; then
+          # did assemble
+          bc_cv_cxx_noexecstack=yes
+        else
+          # didn't assemble
+          CXXFLAGS=$CXXFLAGS_save
+          bc_cv_cxx_noexecstack=no
+        fi
+        ],[
+        # didn't compile
         CXXFLAGS=$CXXFLAGS_save
         bc_cv_cxx_noexecstack=no
-      fi
-      ],[
-      # didn't compile
-      CXXFLAGS=$CXXFLAGS_save
-      bc_cv_cxx_noexecstack=no
-      ])
-    AC_LANG_POP(C++)
+        ])
+      AC_LANG_POP(C++)
+      ;;
+    esac
     ])
   ])
 
