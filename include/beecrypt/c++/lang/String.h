@@ -55,7 +55,7 @@ namespace beecrypt {
 		private:
 			array<jchar> _value;
 
-			String(array<jchar>&);
+			String(const array<jchar>&);
 			String(const array<jchar>&, const array<jchar>&);
 
 		public:
