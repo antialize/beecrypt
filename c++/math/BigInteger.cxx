@@ -302,7 +302,7 @@ String BigInteger::toString() const throw ()
 	return toString(10);
 }
 
-String BigInteger::toString(int radix) const
+String BigInteger::toString(jint radix) const
 {
 	if (radix < Character::MIN_RADIX || radix > Character::MAX_RADIX)
 		radix = 10;
