@@ -26,9 +26,7 @@ LIBBEECRYPT_JAVA_LT_REVISION = 0
 
 INCLUDES = -I$(top_srcdir)/include
 
-libaltdir=$(prefix)/lib@LIBALT@
-
-libalt_LTLIBRARIES = libbeecrypt_java.la
+lib_LTLIBRARIES = libbeecrypt_java.la
 
 libbeecrypt_java_la_SOURCES = \
 beecrypt_tools.c \
