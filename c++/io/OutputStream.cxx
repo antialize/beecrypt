@@ -36,7 +36,7 @@ void OutputStream::flush() throw (IOException)
 {
 }
 
-void OutputStream::write(const byte* data, int offset, int length) throw (IOException)
+void OutputStream::write(const byte* data, jint offset, jint length) throw (IOException)
 {
 	if (length)
 	{

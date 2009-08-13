@@ -86,7 +86,7 @@ void FileOutputStream::write(byte b) throw (IOException)
 		#endif
 }
 
-void FileOutputStream::write(const byte* data, int offset, int length) throw (IOException)
+void FileOutputStream::write(const byte* data, jint offset, jint length) throw (IOException)
 {
 	if (length)
 	{

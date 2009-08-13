@@ -51,7 +51,7 @@ namespace beecrypt {
 			jint size() const throw ();
 
 			virtual void write(byte b) throw (IOException);
-			virtual void write(const byte* data, int offset, int length) throw (IOException);
+			virtual void write(const byte* data, jint offset, jint length) throw (IOException);
 			virtual void write(const bytearray& b) throw (IOException);
 			virtual void writeBoolean(bool v) throw (IOException);
 			virtual void writeByte(byte v) throw (IOException);

@@ -46,7 +46,7 @@ namespace beecrypt {
 			virtual void close() throw (IOException);
 			virtual void flush() throw (IOException);
 			virtual void write(byte b) throw (IOException) = 0;
-			virtual void write(const byte* data, int offset, int length) throw (IOException);
+			virtual void write(const byte* data, jint offset, jint length) throw (IOException);
 			virtual void write(const bytearray& b) throw (IOException);
 		};
 	}

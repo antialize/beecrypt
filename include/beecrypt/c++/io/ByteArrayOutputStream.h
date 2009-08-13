@@ -36,24 +36,24 @@ namespace beecrypt {
 		{
 		protected:
 			bytearray buf;
-			int       count;
+			jint      count;
 
 		public:
 			ByteArrayOutputStream();
-			ByteArrayOutputStream(int size);
+			ByteArrayOutputStream(jint size);
 			virtual ~ByteArrayOutputStream();
 
 			void reset() throw ();
-			int size() throw ();
+			jint size() throw ();
 			bytearray* toByteArray();
 			void toByteArray(bytearray& b);
-			void toByteArray(byte* data, int offset, int length);
+			void toByteArray(byte* data, jint offset, jint length);
 			void writeTo(OutputStream& out) throw (IOException);
 
 			virtual void close() throw (IOException);
 			virtual void flush() throw (IOException);
 			virtual void write(byte b) throw (IOException);
-			virtual void write(const byte* data, int offset, int length) throw (IOException);
+			virtual void write(const byte* data, jint offset, jint length) throw (IOException);
 			virtual void write(const bytearray& b) throw (IOException);
 		};
 	}
