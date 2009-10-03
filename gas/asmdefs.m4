@@ -39,6 +39,17 @@ define(C_FUNCTION_END,`
 ')
 ')
 
+ifelse(substr(ASM_OS,0,7),mingw32,`
+define(USE_TYPE_DIRECTIVE,yes)
+define(SYMTYPE,`
+	.def SYMNAME($1); .scl 2; .type 32; .endef
+')
+define(C_FUNCTION_END,`
+	.section .drectve
+	.ascii " -export:$1"
+')
+')
+
 define(SYMNAME,`GSYM_PREFIX`$1'')
 define(LOCAL,`LSYM_PREFIX`$1'')
 
