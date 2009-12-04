@@ -35,7 +35,9 @@ LIBBEECRYPT_LT_REVISION = 0
 
 AUTOMAKE_OPTIONS = gnu check-news no-dependencies
 
-SUBDIRS = . include $(MAYBE_SUB) tests docs gas masm
+ACLOCAL_AMFLAGS = -I m4
+
+SUBDIRS = . include tests docs gas masm
 
 if WITH_CPLUSPLUS
 SUBDIRS += c++

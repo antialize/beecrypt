@@ -644,9 +644,11 @@ BEE_INT_TYPES
 BEE_CPU_BITS
 
 # Generate output files.
+AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_FILES([
     Makefile
     config.m4
+	beecrypt.pc
 	include/Makefile
 	include/beecrypt/Doxyfile
 	include/beecrypt/c++/Doxyfile
