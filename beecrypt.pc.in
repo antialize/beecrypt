@@ -3,8 +3,8 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
-Name: BeeCrypt
+Name: @PACKAGE_NAME@
 Description: BeeCrypt Cryptography Library
-Version: @VERSION@
+Version: @PACKAGE_VERSION@
 Libs: -L${libdir} @LIBS@
 Cflags: -I${includedir}/beecrypt @OPENMP_CFLAGS@

@@ -69,6 +69,9 @@ libbeecrypt_la_DEPENDENCIES = $(BEECRYPT_OBJECTS)
 libbeecrypt_la_LIBADD = blowfishopt.lo mpopt.lo sha1opt.lo $(OPENMP_LIBS)
 libbeecrypt_la_LDFLAGS = -no-undefined -version-info $(LIBBEECRYPT_LT_CURRENT):$(LIBBEECRYPT_LT_REVISION):$(LIBBEECRYPT_LT_AGE)
 
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = beecrypt.pc
+
 EXTRA_DIST = BENCHMARKS BUGS CONTRIBUTORS README.WIN32 autogen.sh
 
 DISTCLEANFILES = mpopt.s blowfishopt.s sha1opt.s
