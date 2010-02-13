@@ -199,6 +199,28 @@ int benchmark(const blockCipher* bc, int keybits, int size)
 
 		printf("CBC decrypted %d KB in %.2f seconds = %.2f KB/s\n", iterations * size, exact, speed);
 
+		/* CTR decrypt */
+		iterations = 0;
+		start = timestamp();
+		do
+		{
+			if (blockCipherContextCTR(&bcc, cleartext, ciphertext, nblocks))
+			{
+				fprintf(stderr, "blockCipherContextCTR failed\n");
+				return -1;
+			}
+
+			now = timestamp();
+			iterations++;
+		} while (now < (start + (SECONDS * ONE_SECOND)));
+
+		exact = (now - start);
+		exact /= ONE_SECOND;
+
+		speed = (iterations * size) / exact;
+
+		printf("CTR decrypted %d KB in %.2f seconds = %.2f KB/s\n", iterations * size, exact, speed);
+
 		free(ciphertext);
 		free(cleartext);
 	}
