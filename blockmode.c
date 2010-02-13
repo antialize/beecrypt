@@ -33,16 +33,13 @@
 
 int blockEncryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, unsigned int nblocks)
 {
-	register const unsigned int blockwords = bc->blocksize >> 2;
+	const unsigned int blockwords = bc->blocksize >> 2;
+	unsigned int i;
 
-	while (nblocks > 0)
+	#pragma omp parallel for
+	for (i = 0; i < nblocks; i++)
 	{
-		bc->raw.encrypt(bp, dst, src);
-
-		dst += blockwords;
-		src += blockwords;
-
-		nblocks--;
+		bc->raw.encrypt(bp, dst + i * blockwords, src + i * blockwords);
 	}
 
 	return 0;
@@ -50,16 +47,13 @@ int blockEncryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, 
 
 int blockDecryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, unsigned int nblocks)
 {
-	register const unsigned int blockwords = bc->blocksize >> 2;
+	const unsigned int blockwords = bc->blocksize >> 2;
+	int i;
 
-	while (nblocks > 0)
+	#pragma omp parallel for
+	for (i = 0; i < nblocks; i++)
 	{
-		bc->raw.decrypt(bp, dst, src);
-
-		dst += blockwords;
-		src += blockwords;
-
-		nblocks--;
+		bc->raw.decrypt(bp, dst + i * blockwords, src + i * blockwords);
 	}
 
 	return 0;
