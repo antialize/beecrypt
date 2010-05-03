@@ -2,7 +2,7 @@
 # Makefile.am contains the top-level automake definitions
 #
 # Copyright (c) 2001, 2002, 2004 X-Way Rights BV
-# Copyright (c) 2009 Bob Deblier
+# Copyright (c) 2009, 2010 Bob Deblier
 #
 # Author: Bob Deblier <bob.deblier@telenet.be>
 #
@@ -29,8 +29,8 @@
 # 3. Interfaces removed (bad): Increment CURRENT, set AGE and REVISION to 0.
 #
 
-LIBBEECRYPT_LT_CURRENT = 7
-LIBBEECRYPT_LT_AGE = 0
+LIBBEECRYPT_LT_CURRENT = 11
+LIBBEECRYPT_LT_AGE = 5
 LIBBEECRYPT_LT_REVISION = 0
 
 AUTOMAKE_OPTIONS = gnu check-news no-dependencies
