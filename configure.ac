@@ -121,7 +121,9 @@ AC_AIX
 AC_PROG_CC
 AC_PROG_CPP
 AC_PROG_CXX
-AC_PROG_CXXCPP
+if test "$ac_with_cplusplus" = yes; then
+  AC_PROG_CXXCPP
+fi
 AM_PROG_AS
 AC_PROG_LD
 AC_PROG_LN_S
@@ -133,14 +135,18 @@ AC_PROG_LIBTOOL
 AC_LANG_PUSH(C)
 AC_OPENMP
 AC_LANG_POP(C)
-AC_LANG_PUSH(C++)
-AC_OPENMP
-AC_LANG_POP(C++)
+if test "$ac_with_cplusplus" = yes; then
+  AC_LANG_PUSH(C++)
+  AC_OPENMP
+  AC_LANG_POP(C++)
+fi
 
 # Checks for compiler characteristics and flags
 if test "$ac_enable_expert_mode" = no; then
   BEE_CC
-  BEE_CXX
+  if test "$ac_with_cplusplus" = yes; then
+    BEE_CXX
+  fi
 fi
 
 # Check for stack protection

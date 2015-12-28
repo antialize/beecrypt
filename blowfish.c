@@ -327,58 +327,54 @@ static uint32_t _bf_s[1024] = {
 #define DROUND(l,r) l ^= *(p--); r ^= ((s[((l>>24)&0xff)+0x000]+s[((l>>16)&0xff)+0x100])^s[((l>>8)&0xff)+0x200])+s[((l>>0)&0xff)+0x300]
 
 const blockCipher blowfish = {
-	.name = "Blowfish",
-	.paramsize = sizeof(blowfishParam),
-	.blocksize = 8,
-	.keybitsmin = 64,
-	.keybitsmax = 448,
-	.keybitsinc = 32,
-	.setup = (blockCipherSetup) blowfishSetup,
-	.setiv = (blockCipherSetIV) blowfishSetIV,
-	.setctr = (blockCipherSetCTR) blowfishSetCTR,
-	.getfb = (blockCipherFeedback) blowfishFeedback,
-	.raw =
+	"Blowfish",
+	sizeof(blowfishParam),
+	8,
+	64,
+	448,
+	32,
+	(blockCipherSetup) blowfishSetup,
+	(blockCipherSetIV) blowfishSetIV,
+	(blockCipherSetCTR) blowfishSetCTR,
+	(blockCipherFeedback) blowfishFeedback,
 	{
-		.encrypt = (blockCipherRawcrypt) blowfishEncrypt,
-		.decrypt = (blockCipherRawcrypt) blowfishDecrypt
+		(blockCipherRawcrypt) blowfishEncrypt,
+		(blockCipherRawcrypt) blowfishDecrypt
 	},
-	.ecb =
 	{
 		#ifdef AES_BLOWFISHENCRYPTECB
-		.encrypt = (blockCipherModcrypt) blowfishEncryptECB,
+		(blockCipherModcrypt) blowfishEncryptECB,
 		#else
-		.encrypt = (blockCipherModcrypt) 0,
+		(blockCipherModcrypt) 0,
 		#endif
 		#ifdef AES_BLOWFISHENCRYPTECB
-		.decrypt = (blockCipherModcrypt) blowfishDecryptECB,
+		(blockCipherModcrypt) blowfishDecryptECB,
 		#else
-		.decrypt = (blockCipherModcrypt) 0
+		(blockCipherModcrypt) 0
 		#endif
 	},
-	.cbc =
 	{
 		#ifdef AES_BLOWFISHENCRYPTCBC
-		.encrypt = (blockCipherModcrypt) blowfishEncryptCBC,
+		(blockCipherModcrypt) blowfishEncryptCBC,
 		#else
-		.encrypt = (blockCipherModcrypt) 0,
+		(blockCipherModcrypt) 0,
 		#endif
 		#ifdef AES_BLOWFISHENCRYPTCBC
-		.decrypt = (blockCipherModcrypt) blowfishDecryptCBC,
+		(blockCipherModcrypt) blowfishDecryptCBC,
 		#else
-		.decrypt = (blockCipherModcrypt) 0
+		(blockCipherModcrypt) 0
 		#endif
 	},
-	.ctr =
 	{
 		#ifdef AES_BLOWFISHENCRYPTCTR
-		.encrypt = (blockCipherModcrypt) blowfishEncryptCTR,
+		(blockCipherModcrypt) blowfishEncryptCTR,
 		#else
-		.encrypt = (blockCipherModcrypt) 0,
+		(blockCipherModcrypt) 0,
 		#endif
 		#ifdef AES_BLOWFISHENCRYPTCTR
-		.decrypt = (blockCipherModcrypt) blowfishDecryptCTR,
+		(blockCipherModcrypt) blowfishDecryptCTR,
 		#else
-		.decrypt = (blockCipherModcrypt) 0
+		(blockCipherModcrypt) 0
 		#endif
 	},
 };

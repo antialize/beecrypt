@@ -43,13 +43,13 @@ static uint32_t ripemd128hinit[4] = {
 /*@-sizeoftype@*/
 /*@unchecked@*/ /*@observer@*/
 const hashFunction ripemd128 = {
-	.name = "RIPEMD-128",
-	.paramsize = sizeof(ripemd128Param),
-	.blocksize = 64,
-	.digestsize = 16,
-	.reset = (hashFunctionReset) ripemd128Reset,
-	.update = (hashFunctionUpdate) ripemd128Update,
-	.digest = (hashFunctionDigest) ripemd128Digest
+	"RIPEMD-128",
+	sizeof(ripemd128Param),
+	64,
+	16,
+	(hashFunctionReset) ripemd128Reset,
+	(hashFunctionUpdate) ripemd128Update,
+	(hashFunctionDigest) ripemd128Digest
 };
 /*@=sizeoftype@*/
 

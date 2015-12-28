@@ -27,7 +27,7 @@
 #include "beecrypt/c++/lang/IllegalStateException.h"
 using namespace beecrypt::lang;
 
-Throwable::Throwable()
+Throwable::Throwable() : _msg(0)
 {
 	_cause = this;
 }

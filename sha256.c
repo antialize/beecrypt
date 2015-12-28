@@ -42,13 +42,13 @@ static const uint32_t hinit[8] = {
 };
 
 const hashFunction sha256 = {
-	.name = "SHA-256",
-	.paramsize = sizeof(sha256Param),
-	.blocksize = 64,
-	.digestsize = 32,
-	.reset = (hashFunctionReset) sha256Reset,
-	.update = (hashFunctionUpdate) sha256Update,
-	.digest = (hashFunctionDigest) sha256Digest
+	"SHA-256",
+	sizeof(sha256Param),
+	64,
+	32,
+	(hashFunctionReset) sha256Reset,
+	(hashFunctionUpdate) sha256Update,
+	(hashFunctionDigest) sha256Digest
 };
 
 int sha256Reset(register sha256Param* sp)

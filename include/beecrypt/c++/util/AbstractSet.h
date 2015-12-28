@@ -56,7 +56,7 @@ namespace beecrypt {
 					if (c->size() != size())
 						return false;
 
-					return containsAll(*c);
+					return AbstractCollection<E>::containsAll(*c);
 				}
 				return false;
 			}

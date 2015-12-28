@@ -51,6 +51,8 @@
 #  include "beecrypt/aes_le.h"
 #endif
 
+#include "beecrypt/mp.h"
+
 #ifdef ASM_AESENCRYPTECB
 extern int aesEncryptECB(aesParam*, uint32_t*, const uint32_t*, unsigned int);
 #endif
@@ -76,58 +78,54 @@ extern int aesDecryptCTR(aesParam*, uint32_t*, const uint32_t*, unsigned int);
 #endif
 
 const blockCipher aes = {
-	.name = "AES",
-	.paramsize = sizeof(aesParam),
-	.blocksize = 16,
-	.keybitsmin = 128,
-	.keybitsmax = 256,
-	.keybitsinc = 64,
-	.setup = (blockCipherSetup) aesSetup,
-	.setiv = (blockCipherSetIV) aesSetIV,
-	.setctr = (blockCipherSetCTR) aesSetCTR,
-	.getfb = (blockCipherFeedback) aesFeedback,
-	.raw =
+	"AES",
+	sizeof(aesParam),
+	16,
+	128,
+	256,
+	64,
+	(blockCipherSetup) aesSetup,
+	(blockCipherSetIV) aesSetIV,
+	(blockCipherSetCTR) aesSetCTR,
+	(blockCipherFeedback) aesFeedback,
 	{
-		.encrypt = (blockCipherRawcrypt) aesEncrypt,
-		.decrypt = (blockCipherRawcrypt) aesDecrypt
+		(blockCipherRawcrypt) aesEncrypt,
+		(blockCipherRawcrypt) aesDecrypt
 	},
-	.ecb =
 	{
 		#ifdef ASM_AESENCRYPTECB
-		.encrypt = (blockCipherModcrypt) aesEncryptECB,
+		(blockCipherModcrypt) aesEncryptECB,
 		#else
-		.encrypt = (blockCipherModcrypt) 0,
+		(blockCipherModcrypt) 0,
 		#endif
 		#ifdef ASM_AESDECRYPTECB
-		.decrypt = (blockCipherModcrypt) aesDecryptECB,
+		(blockCipherModcrypt) aesDecryptECB,
 		#else
-		.decrypt = (blockCipherModcrypt) 0,
+		(blockCipherModcrypt) 0,
 		#endif
 	},
-	.cbc =
 	{
 		#ifdef ASM_AESENCRYPTCBC
-		.encrypt = (blockCipherModcrypt) aesEncryptCBC,
+		(blockCipherModcrypt) aesEncryptCBC,
 		#else
-		.encrypt = (blockCipherModcrypt) 0,
+		(blockCipherModcrypt) 0,
 		#endif
 		#ifdef ASM_AESDECRYPTCBC
-		.decrypt = (blockCipherModcrypt) aesDecryptCBC,
+		(blockCipherModcrypt) aesDecryptCBC,
 		#else
-		.decrypt = (blockCipherModcrypt) 0
+		(blockCipherModcrypt) 0
 		#endif
 	},
-	.ctr =
 	{
 		#ifdef ASM_AESENCRYPTCTR
-		.encrypt = (blockCipherModcrypt) aesEncryptCTR,
+		(blockCipherModcrypt) aesDecryptCTR,
 		#else
-		.encrypt = (blockCipherModcrypt) 0,
+		(blockCipherModcrypt) 0,
 		#endif
 		#ifdef ASM_AESDECRYPTCTR
-		.decrypt = (blockCipherModcrypt) aesDecryptCTR,
+		(blockCipherModcrypt) aesEncryptCTR,
 		#else
-		.decrypt = (blockCipherModcrypt) 0
+		(blockCipherModcrypt) 0
 		#endif
 	}
 };

@@ -48,7 +48,7 @@ int blockEncryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, 
 int blockDecryptECB(const blockCipher* bc, blockCipherParam* bp, uint32_t* dst, const uint32_t* src, unsigned int nblocks)
 {
 	const unsigned int blockwords = bc->blocksize >> 2;
-	int i;
+	unsigned int i;
 
 	#pragma omp parallel for
 	for (i = 0; i < nblocks; i++)

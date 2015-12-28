@@ -152,6 +152,9 @@ AC_DEFUN([BEE_WITHOUT_ARCH],[
     m68k)
       bc_target_arch=m68k
       ;;
+	mips)
+	  bc_target_arch=mips
+	  ;;
     powerpc)
       bc_target_arch=powerpc
       ;;
@@ -1456,6 +1459,11 @@ AC_DEFUN([BEE_ASM_SOURCES],[
     m68k)
       AC_CONFIG_COMMANDS([mpopt.m68k],[
         m4 $srcdir/gas/mpopt.m68k.m4 > mpopt.s
+        ])
+      ;;
+	mips)
+      AC_CONFIG_COMMANDS([mpopt.mips32],[
+        m4 $srcdir/gas/mpopt.mips32.m4 > mpopt.s
         ])
       ;;
     powerpc)

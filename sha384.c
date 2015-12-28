@@ -67,13 +67,13 @@ static const uint64_t hinit[8] = {
 };
 
 const hashFunction sha384 = {
-	.name = "SHA-384",
-	.paramsize = sizeof(sha384Param),
-	.blocksize = 128,
-	.digestsize = 48,
-	.reset = (hashFunctionReset) sha384Reset,
-	.update = (hashFunctionUpdate) sha384Update,
-	.digest = (hashFunctionDigest) sha384Digest
+	"SHA-384",
+	sizeof(sha384Param),
+	128,
+	48,
+	(hashFunctionReset) sha384Reset,
+	(hashFunctionUpdate) sha384Update,
+	(hashFunctionDigest) sha384Digest
 };
 
 int sha384Reset(register sha384Param* sp)

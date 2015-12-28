@@ -14,6 +14,10 @@ Linux - I'm just a little cramped for space...
 
 BENCHmark Modular Exponentation (more is better):
 
+BeeCrypt 4.2.2 | gcc-4.4.5           | Debian Linux         | Core i7-2600  3400 |  16 GB: 64747
+BeeCrypt 4.2.2 | gcc-4.5.3           | Gentoo Linux         | Phenom II X4   945 |  16 GB: 39950 [--march=amdfam10]
+BeeCrypt 4.2.2 | gcc-4.4.4           | Gentoo Linux         | Phenom II X4   945 |   2 GB: 39820
+BeeCrypt 4.2.2 | gcc-4.4.3           | Gentoo Linux         | Athlon 64 x2 5050e |   2 GB: 32150
 BeeCrypt 4.2.0 | gcc-4.4.0           | Debian Linux         | Opteron 8354  2200 |  16 GB: 29373 [--with-arch=k8]
 BeeCrypt 4.2.0 | gcc-4.1.2           | Debian Linux         | Opteron 8354  2200 |  16 GB: 27911
 BeeCrypt 4.2.0 | gcc-4.4.0           | Debian Linux         | Xeon X5450    3000 |  16 GB: 25677
@@ -21,15 +25,17 @@ BeeCrypt 4.2.0 | gcc-4.3.3           | Debian Linux         | Xeon X5450    3000
 BeeCrypt 4.2.0 | gcc-4.0.0           | Fedora Core 4        | Athlon 64     3000+|   1 GB: 24910
 BeeCrypt 4.0.0 | gcc-3.3.3           | Fedora Core 2        | Athlon 64     3000+|   1 GB: 24870
 BeeCrypt 4.2.0 | gcc-3.4.3           | Fedora Core 3        | Athlon 64     3000+|   1 GB: 24654
+BeeCrypt 4.2.2 | gcc-4.6.3           | Fedora 16            | Power7        3350 |  64 GB: 20494
 BeeCrypt 4.0.0 | gcc-3.2.2           | SuSE Enterprise 8    | Opteron       1600 |   1 GB: 19460
 BeeCrypt 3.0.0 | gcc-3.x             | RedHat Linux         | Opteron MP    1600 |       : 17230
 BeeCrypt 3.1.0 | gcc-2.96            | RedHat AS 2.1        | Itanium 2     1400 |   1 GB: 11730
 BeeCrypt 4.2.0 | gcc-3.4.6           | CentOS 4.x           | P4 Xeon       3000 |  10 GB: 11648
-BeeCrypt 4.2.0 | gcc-4.1.2           | Debian Linux         | PPC 970       1800 | 512 MB: 10815
+BeeCrypt 4.2.2 | gcc-4.4.5           | Gentoo Linux         | PPC 970FX     1800 |   1 GB: 10795
 BeeCrypt 4.2.0 | gcc-3.3.3           | SuSE Enterprise 9    | POWER5        1650 |   1 GB: 10150
 BeeCrypt 3.0.0 | gcc-3.2.2           | Debian Linux 3.0     | Itanium 2      900 |  12 GB:  7317
 BeeCrypt 3.0.0 | gcc-3.3             | RedHat AS 2.1        | P4 Xeon       2400 |   4 GB:  6920 [--with-arch=pentium4]
 BeeCrypt 4.1.0 | gcc-3.3.3           | Fedora Core 2        | P4 Xeon       2400 |   1 GB:  6811 [--with-arch=pentium4]
+BeeCrypt 4.2.2 | gcc-4.4.3           | Deian Linux          | Cell          3200 | 256 MB:  6188
 BeeCrypt 3.0.0 | gcc-2.95.4          | Debian Linux 3.0     | Alpha EV6.7    666 |   2 GB:  5742
 BeeCrypt 4.1.2 | gcc-3.3.3           | SuSE Enterprise 9    | POWER4        1000 |  16 GB:  5620 
 BeeCrypt 4.2.0 | gcc-4.3.1           | Debian Linux         | PPC 7455      1333 |   1 GB:  3320
@@ -48,6 +54,9 @@ BeeCrypt 3.0.0 | gcc-2.95.4          | Debian Linux 3.0r1   | M68030          25
 BENCHmark Hash Function (more is better):
 
 MD5
+BeeCrypt 4.2.2 | gcc-4.4.4           | Gentoo Linux         | Phenom II X4   945 |   2 GB: 430   MB/s
+BeeCrypt 4.2.2 | gcc-4.4.3           | Gentoo Linux         | Ahtlon 64 x2 5050e |   2 GB: 344.6 MB/s
+BeeCrypt 4.2.2 | gcc-4.4.3           | Gentoo Linux         | Ahtlon 64 x2 5050e |   2 GB: 344.6 MB/s
 BeeCrypt 4.2.0 | gcc-3.4.6           | CentOS 4.x           | Xeon EM64T    3000 |  10 GB: 303.6 MB/s
 BeeCrypt 4.1.0 | gcc-3.4.2           | Fedora Core 3        | Athlon 64     3000+|   1 GB: 190.5 MB/s
 BeeCrypt 3.0.0 | gcc-2.96            | RedHat AS 2.1        | P4 Xeon       2400 |   4 GB: 137.0 MB/s [--with-arch=pentiumpro]
@@ -55,6 +64,8 @@ BeeCrypt 4.1.0 | gcc-3.3.3           | Fedora Core 2        | P4 Xeon       2400
 BeeCrypt 4.1.2 | gcc-3.3.3           | SuSE Enterprise 9    | POWER4        1000 |  16 GB:  43.9 MB/s
 
 SHA-1
+BeeCrypt 4.2.2 | gcc-4.4.4           | Gentoo Linux         | Phenom II X4   945 |   2 GB: 250   MB/s
+BeeCrypt 4.2.2 | gcc-4.4.3           | Gentoo Linux         | Ahtlon 64 x2 5050e |   2 GB: 207.5 MB/s
 BeeCrypt 4.1.0 | gcc-3.4.2           | Fedora Core 3        | Athlon 64     3000+|   1 GB: 117.4 MB/s
 BeeCrypt 4.2.0 | gcc-3.4.6           | CentOS 4.x           | Xeon EM64T    3000 |  10 GB: 111.8 MB/s
 BeeCrypt 4.1.0 | gcc-3.3.3           | Fedora Core 2        | P4 Xeon       2400 |   1 GB:  81.9 MB/s [--with-arch=pentium4]
@@ -62,6 +73,8 @@ BeeCrypt 3.0.0 | gcc-2.96            | RedHat AS 2.1        | P4 Xeon       2400
 BeeCrypt 4.1.2 | gcc-3.3.3           | SuSE Enterprise 9    | POWER4        1000 |  16 GB:  51.2 MB/s
 
 SHA-256
+BeeCrypt 4.2.2 | gcc-4.4.4           | Gentoo Linux         | Phenom II X4   945 |   2 GB: 128.7 MB/s
+BeeCrypt 4.2.2 | gcc-4.4.3           | Gentoo Linux         | Ahtlon 64 x2 5050e |   2 GB: 107.7 MB/s
 BeeCrypt 4.2.0 | gcc-3.4.6           | CentOS 4.x           | Xeon EM64T    3000 |  10 GB: 103.5 MB/s
 BeeCrypt 4.1.0 | gcc-3.4.2           | Fedora Core 3        | Athlon 64     3000+|   1 GB:  85.1 MB/s
 BeeCrypt 4.1.0 | gcc-3.3.3           | Fedora Core 2        | P4 Xeon       2400 |   1 GB:  42.4 MB/s [--with-arch=pentium4]
@@ -69,6 +82,8 @@ BeeCrypt 3.0.0 | gcc-2.96            | RedHat AS 2.1        | P4 Xeon       2400
 BeeCrypt 4.1.2 | gcc-3.3.3           | SuSE Enterprise 9    | POWER4        1000 |  16 GB:  32.8 MB/s
 
 SHA-512
+BeeCrypt 4.2.2 | gcc-4.4.4           | Gentoo Linux         | Phenom II X4   945 |   2 GB: 198.8 MB/s
+BeeCrypt 4.2.2 | gcc-4.4.3           | Gentoo Linux         | Ahtlon 64 x2 5050e |   2 GB: 168.8 MB/s
 BeeCrypt 4.1.0 | gcc-3.4.2           | Fedora Core 3        | Athlon 64     3000+|   1 GB: 129.6 MB/s
 BeeCrypt 4.2.0 | gcc-3.4.6           | CentOS 4.x           | Xeon EM64T    3000 |  10 GB:  92.6 MB/s
 BeeCrypt 4.1.0 | gcc-3.3.3           | SuSE Enterprise 9    | POWER4        1000 |  16 GB:  57.6 MB/s

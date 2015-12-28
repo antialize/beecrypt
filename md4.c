@@ -13,13 +13,13 @@ static uint32_t md4hinit[4] = { 0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476 }
 /*@-sizeoftype@*/
 /*@unchecked@*/ /*@observer@*/
 const hashFunction md4 = {
-	.name = "MD4",
-	.paramsize = sizeof(md4Param),
-	.blocksize = 64,
-	.digestsize = 16,
-	.reset = (hashFunctionReset) md4Reset,
-	.update = (hashFunctionUpdate) md4Update,
-	.digest = (hashFunctionDigest) md4Digest,
+	"MD4",
+	sizeof(md4Param),
+	64,
+	16,
+	(hashFunctionReset) md4Reset,
+	(hashFunctionUpdate) md4Update,
+	(hashFunctionDigest) md4Digest,
 };
 /*@=sizeoftype@*/
 

@@ -42,13 +42,13 @@ static const uint32_t hinit[8] = {
 };
 
 const hashFunction sha224 = {
-	.name = "SHA-224",
-	.paramsize = sizeof(sha224Param),
-	.blocksize = 64,
-	.digestsize = 24,
-	.reset = (hashFunctionReset) sha224Reset,
-	.update = (hashFunctionUpdate) sha224Update,
-	.digest = (hashFunctionDigest) sha224Digest
+	"SHA-224",
+	sizeof(sha224Param),
+	64,
+	24,
+	(hashFunctionReset) sha224Reset,
+	(hashFunctionUpdate) sha224Update,
+	(hashFunctionDigest) sha224Digest
 };
 
 int sha224Reset(register sha224Param* sp)
