@@ -90,7 +90,7 @@ Object* Provider::setProperty(const String& key, const String& value)
 
 			UErrorCode status = U_ZERO_ERROR;
 
-			ucnv_fromUChars(_conv, symname, 1024, src.data(), src.size(), &status);
+			ucnv_fromUChars(_conv, symname, 1024, reinterpret_cast<const UChar*>(src.data()), src.size(), &status);
 
 			if (status != U_ZERO_ERROR)
 					throw RuntimeException("error in ucnv_fromUChars");

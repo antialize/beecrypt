@@ -35,7 +35,7 @@ StringBuffer::StringBuffer() : _buffer(16)
 
 StringBuffer::StringBuffer(const char* s) : _buffer(16 + strlen(s))
 {
-	u_charsToUChars(s, _buffer.data(), _used = strlen(s));
+	u_charsToUChars(s, reinterpret_cast<UChar*>(_buffer.data()), _used = strlen(s));
 }
 
 StringBuffer::StringBuffer(const String& s) : _buffer(16 + s._value.size())
@@ -53,7 +53,7 @@ StringBuffer& StringBuffer::append(const char c)
 	synchronized (this)
 	{
 		core_ensureCapacity(_used+1);
-		u_charsToUChars(&c, _buffer.data() + _used++, 1);
+		u_charsToUChars(&c, reinterpret_cast<UChar*>(_buffer.data() + _used++), 1);
 	}
 	return *this;
 }
@@ -88,7 +88,7 @@ StringBuffer& StringBuffer::append(const char* s)
 		jint need = strlen(s);
 
 		core_ensureCapacity(_used + need);
-		u_charsToUChars(s, _buffer.data() + _used, need);
+		u_charsToUChars(s, reinterpret_cast<UChar*>(_buffer.data() + _used), need);
 
 		_used += need;
 	}

@@ -33,6 +33,8 @@ using namespace beecrypt::lang;
 #include <unicode/ustdio.h>
 #include <unicode/ustring.h>
 
+static_assert(sizeof(jchar) == sizeof(UChar), "jchar and UChar sizes mismatch");
+
 String::String(array<jchar>& swapWith)
 {
 	assert(swapWith.size() <= Integer::MAX_VALUE);
@@ -56,7 +58,7 @@ String::String()
 
 String::String(const char c) : _value(1)
 {
-	u_charsToUChars(&c, _value.data(), 1);
+	u_charsToUChars(&c, reinterpret_cast<UChar*>(_value.data()), 1);
 }
 
 String::String(const jchar c) : _value(&c, 1)
@@ -67,7 +69,7 @@ String::String(const char* value) : _value(::strlen(value))
 {
 	assert(_value.size() <= Integer::MAX_VALUE);
 
-	u_charsToUChars(value, _value.data(), _value.size());
+	u_charsToUChars(value, reinterpret_cast<UChar*>(_value.data()), _value.size());
 }
 
 String::String(const jchar* value, const jint offset, const jint length) : _value(value+offset, length)
@@ -449,7 +451,7 @@ std::ostream& beecrypt::lang::operator<<(std::ostream& stream, const String& str
 		if (U_FAILURE(status))
 			throw RuntimeException("ucnv_open failed");
 
-		int need = ucnv_fromUChars(loc, 0, 0, src.data(), src.size(), &status);
+		int need = ucnv_fromUChars(loc, 0, 0, reinterpret_cast<const UChar*>(src.data()), src.size(), &status);
 		if (U_FAILURE(status))
 			if (status != U_BUFFER_OVERFLOW_ERROR)
 				throw RuntimeException("ucnv_fromUChars failed");
@@ -458,7 +460,7 @@ std::ostream& beecrypt::lang::operator<<(std::ostream& stream, const String& str
 
 		status = U_ZERO_ERROR;
 
-		ucnv_fromUChars(loc, out, need+1, src.data(), src.size(), &status);
+		ucnv_fromUChars(loc, out, need+1, reinterpret_cast<const UChar*>(src.data()), src.size(), &status);
 		if (U_FAILURE(status))
 			throw RuntimeException("ucnv_fromUChars failed");
 

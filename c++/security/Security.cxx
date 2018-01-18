@@ -104,7 +104,7 @@ void Security::initialize()
 
 					const array<jchar>& src = value->toCharArray();
 
-					int need = ucnv_fromUChars(_loc, 0, 0, src.data(), src.size(), &status);
+					int need = ucnv_fromUChars(_loc, 0, 0, reinterpret_cast<const UChar*>(src.data()), src.size(), &status);
 					if (U_FAILURE(status))
 						if (status != U_BUFFER_OVERFLOW_ERROR)
 							throw RuntimeException("ucnv_fromUChars failed");
@@ -112,7 +112,7 @@ void Security::initialize()
 					char* shared_library = new char[need+1];
 
 					status = U_ZERO_ERROR;
-					ucnv_fromUChars(_loc, shared_library, need+1, src.data(), src.size(), &status);
+					ucnv_fromUChars(_loc, shared_library, need+1, reinterpret_cast<const UChar*>(src.data()), src.size(), &status);
 					if (U_FAILURE(status))
 						throw RuntimeException("ucnv_fromUChars failed");
 

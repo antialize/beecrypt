@@ -187,7 +187,7 @@ void DataOutputStream::writeUTF(const String& str) throw (IOException)
 	const array<jchar>& src = str.toCharArray();
 
 	// the expected status code here is U_BUFFER_OVERFLOW_ERROR
-	jint need = ucnv_fromUChars(_utf, 0, 0, src.data(), src.size(), &status);
+	jint need = ucnv_fromUChars(_utf, 0, 0, reinterpret_cast<const UChar*>(src.data()), src.size(), &status);
 	if (U_FAILURE(status))
 		if (status != U_BUFFER_OVERFLOW_ERROR)
 			throw IOException("ucnv_fromUChars failed");
@@ -200,7 +200,7 @@ void DataOutputStream::writeUTF(const String& str) throw (IOException)
 	status = U_ZERO_ERROR;
 
 	// the expected status code here is U_STRING_NOT_TERMINATED_WARNING
-	ucnv_fromUChars(_utf, (char*) buffer, need, src.data(), src.size(), &status);
+	ucnv_fromUChars(_utf, (char*) buffer, need, reinterpret_cast<const UChar*>(src.data()), src.size(), &status);
 	if (status != U_STRING_NOT_TERMINATED_WARNING)
 	{
 		delete[] buffer;

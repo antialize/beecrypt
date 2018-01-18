@@ -201,7 +201,7 @@ String DataInputStream::readUTF() throw (IOException)
 		jchar* buffer = new jchar[ulen+1];
 
 		status = U_ZERO_ERROR;
-		ucnv_toUChars(_utf, buffer, ulen+1, (const char*) data, (jint) utflen, &status);
+		ucnv_toUChars(_utf, reinterpret_cast<UChar*>(buffer), ulen+1, (const char*) data, (jint) utflen, &status);
 
 		delete[] data;
 
@@ -232,7 +232,7 @@ String DataInputStream::readLine() throw (IOException)
 
 	array<jchar> target_buffer(80);
 	jint         target_offset = 0;
-	      UChar* target = target_buffer.data();
+		  UChar* target = reinterpret_cast<UChar*>(target_buffer.data());
 	const UChar* target_limit = target+1;
 	      char  source_buffer[MAX_BYTES_PER_CHARACTER];
 	const char* source = source_buffer;

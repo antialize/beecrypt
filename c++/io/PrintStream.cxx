@@ -191,7 +191,7 @@ void PrintStream::print(jchar ch) throw ()
 			UErrorCode status = U_ZERO_ERROR;
 
 			// do conversion of one character
-			size_t used = ucnv_fromUChars(_loc, buffer, 8, &ch, 1, &status);
+			size_t used = ucnv_fromUChars(_loc, buffer, 8, reinterpret_cast<UChar*>(&ch), 1, &status);
 			if (U_FAILURE(status))
 				throw IOException("failure in ucnv_fromUChars");
 
@@ -268,14 +268,14 @@ void PrintStream::print(jlong x) throw ()
 
 void PrintStream::print(const array<jchar>& chars) throw ()
 {
-	print(chars.data(), chars.size());
+	print(reinterpret_cast<const UChar*>(chars.data()), chars.size());
 }
 
 void PrintStream::print(const String& str) throw ()
 {
 	const array<jchar>& tmp = str.toCharArray();
 
-	print(tmp.data(), tmp.size());
+	print(reinterpret_cast<const UChar*>(tmp.data()), tmp.size());
 }
 
 void PrintStream::println() throw ()
