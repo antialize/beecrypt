@@ -145,7 +145,11 @@ namespace beecrypt {
 					waiter*       prev;
 
 					waiter(bc_threadid_t owner, unsigned int lock_count);
+#if __cplusplus < 201103L
 					~waiter();
+#else
+					~waiter() noexcept(false);
+#endif
 				};
 
 				waiter* _lock_head;

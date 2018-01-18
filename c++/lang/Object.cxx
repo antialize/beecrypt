@@ -767,6 +767,9 @@ Object::FairMonitor::waiter::waiter(bc_threadid_t owner, unsigned int lock_count
 }
 
 Object::FairMonitor::waiter::~waiter()
+#if __cplusplus >= 201103L
+noexcept(false)
+#endif
 {
 	#if WIN32
 	if (!CloseHandle(event))
