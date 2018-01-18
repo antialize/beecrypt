@@ -11,7 +11,7 @@ AC_PROG_AWK
 
 # Checks for package options
 AC_ARG_ENABLE(expert-mode, [  --enable-expert-mode      follow user-defined CFLAGS settings [[default=no]]],[
-  ac_enable_expert_mode=yes
+  ac_enable_expert_mode=$enableval
   ],[
   if test "X$CFLAGS" != "X"; then
     echo "enabling expert mode"
@@ -25,7 +25,7 @@ AC_ARG_ENABLE(debug, [  --enable-debug          creates debugging code [[default
   if test "$ac_enable_expert_mode" = yes; then
     AC_MSG_ERROR([--enable-debug cannot be used in conjunction with --enable-expert-mode])
   fi
-  ac_enable_debug=yes
+  ac_enable_debug=$enableval
   ],[
   ac_enable_debug=no
   ])

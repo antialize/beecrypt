@@ -501,15 +501,6 @@ AC_DEFUN([BEE_GNU_CC],[
     AC_SUBST(OPENMP_LIBS,"-lgomp")
   fi
   case $bc_target_arch in
-  x86_64 | athlon64 | athlon-fx | k8 | opteron | em64t | nocona)
-    CC="$CC -m64"
-    ;;
-  i[[3456]]86 | \
-  pentium* | \
-  athlon*)
-    CC="$CC -m32"
-    CCAS="$CCAS -m32"
-    ;;
   ia64)
     case $target_os in
     # HP/UX on Itanium needs to be told that a long is 64-bit!
@@ -528,16 +519,7 @@ AC_DEFUN([BEE_GNU_CC],[
     aix*)
       CC="$CC -maix64"
       ;;
-    linux*)
-      CC="$CC -m64"
-      ;;
     esac
-    ;;
-  sparc | sparcv8*)
-    CC="$CC -m32"
-    ;;
-  sparc64 | sparcv9*)
-    CC="$CC -m64"
     ;;
   esac
   # Certain platforms needs special flags for multi-threaded code
@@ -667,14 +649,6 @@ dnl  BEE_GNU_CXX
 AC_DEFUN([BEE_GNU_CXX],[
   AC_REQUIRE([AC_PROG_CXX])
   case $bc_target_arch in
-  x86_64 | athlon64 | athlon-fx | k8 | opteron | em64t | nocona | core2)
-    CXX="$CXX -m64"
-    ;;
-  i[[3456]]86 | \
-  pentium* | \
-  athlon*)
-    CXX="$CXX -m32"
-    ;;
   ia64)
     case $target_os in
     # HP/UX on Itanium needs to be told that a long is 64-bit!
@@ -693,16 +667,7 @@ AC_DEFUN([BEE_GNU_CXX],[
     aix*)
       CXX="$CXX -maix64"
       ;;
-    linux*)
-      CXX="$CXX -m64"
-      ;;
     esac
-    ;;
-  sparc | sparcv8*)
-    CXX="$CXX -m32"
-    ;;
-  sparc64 | sparcv9*)
-    CXX="$CXX -m64"
     ;;
   esac
   # Certain platforms needs special flags for multi-threaded code
@@ -1613,21 +1578,6 @@ AC_DEFUN([BEE_MULTITHREAD],[
   AC_SUBST(TYPEDEF_BC_THREADID_T,$bc_typedef_bc_threadid_t)
   ])
 
-AH_BOTTOM([
-#if ENABLE_THREADS
-# ifndef _REENTRANT
-#  define _REENTRANT
-# endif
-# if LINUX
-#  define _LIBC_REENTRANT
-# endif
-#else
-# ifdef _REENTRANT
-#  undef _REENTRANT
-# endif
-#endif
-])
-
 
 dnl  BEE_THREAD_LOCAL_STORAGE
 AC_DEFUN([BEE_THREAD_LOCAL_STORAGE],[
@@ -1647,7 +1597,5 @@ AC_DEFUN([BEE_THREAD_LOCAL_STORAGE],[
   ])
 
 AH_BOTTOM([
-#if !ENABLE_THREAD_LOCAL_STORAGE
-# define __thread
-#endif
+#include "config.threads.h"
 ])
